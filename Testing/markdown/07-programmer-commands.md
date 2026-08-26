@@ -87,35 +87,47 @@ text:
 | **BASIC source** in a `bp` file | what they are for |
 | **VOC records** | fine — a VOC record is a few short fields |
 | **Dictionary records** | fine for a simple one; see the limit below |
-| **Data records with multivalues** | see the limit below |
-| **Anything with subvalue marks** | ***do not*** |
+| **Data records with multivalues** | fine — see the tokens below |
+| **Data records with subvalues** | fine — see the tokens below |
 
 ***A FIELD IS A LINE AND THAT PART NEEDS NO EXPLANATION.*** SD writes the
 working copy with one field per line, so moving between fields is moving
 between lines.
 
-***A VALUE MARK IS NOT A LINE, AND THAT IS THE LIMIT.*** It is a control
-character an editor cannot show, so a multivalued record would come back
-mangled. Instead:
+***A VALUE MARK IS NOT A LINE, AND NEITHER IS A SUBVALUE MARK.*** Both are
+control characters an editor cannot show, so each has a token you can type:
 
-> **Type `~~` where you want a value mark.** SD converts value marks to `~~`
-> on the way into the editor and `~~` back to value marks on the way out, so
-> multivalues are typeable as ordinary text.
+| Type | To get |
+|---|---|
+| `~~` | a **value** mark |
+| `` ~` `` | a **subvalue** mark |
+
+SD converts marks to tokens on the way into the editor and tokens back to
+marks on the way out, so multivalues and subvalues are both ordinary text
+while you are editing.
 
 ```
 SMITH~~JONES~~BROWN
 ```
 
-is a three-value field.
+is a three-value field, and
 
-***SUBVALUE MARKS ARE NOT CONVERTED.*** There is no token for them, so a record
-containing one reaches the editor as a control character and is not safe to
-edit this way. Use **`ed`**.
+```
+RED~`BLUE~~GREEN
+```
 
-***AND IF THE RECORD ALREADY CONTAINS `~~` AS DATA, YOU ARE ASKED FIRST.***
-The conversion back cannot tell your `~~` from one you typed as a value mark,
-so the editor says what will happen and lets you decide rather than silently
-converting it.
+is two values, the first of which has two subvalues.
+
+***A RECORD THAT CANNOT BE WRITTEN THIS WAY IS REFUSED, NOT MANGLED.*** Some
+records would come back different from how they went in — one that already
+contains `~~` as data, for instance, or one with a `~` sitting immediately
+before a mark, where the tilde and the token run together. Before opening the
+editor, SD converts the record and converts it back; **if the result is not
+what it started with, the verb refuses and names `ed`**, which needs none of
+this.
+
+**Text marks are not converted**, and are covered by the same refusal rather
+than being left to surprise you.
 
 **A compiled dictionary record is truncated to its first 15 fields** while you
 edit it, and recompiled with `cd` when you save — the same thing the old
