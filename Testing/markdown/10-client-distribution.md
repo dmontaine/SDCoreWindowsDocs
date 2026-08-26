@@ -54,7 +54,10 @@ shipping deliverable, not a testing convenience.**
 
 ## The one file no installer can update
 
-***mvDeveloper LOADS ITS OWN COPY***, from:
+**mvDeveloper is free, and is a 32-bit application** —
+<https://www.brianleach.co.uk/mvDeveloper>.
+
+***IT LOADS ITS OWN COPY OF THE CLIENT***, from:
 
 ```
 C:\Program Files (x86)\BLC\mvDeveloper\qmclilib.dll

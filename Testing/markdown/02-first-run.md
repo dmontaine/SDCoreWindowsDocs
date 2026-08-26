@@ -70,6 +70,19 @@ See [Not in SD Core](14-not-in-sd-core.html).
 In **`ed`**: `i` to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.
 
+> ***YOU DO NOT HAVE TO WRITE PROGRAMS IN `ed`.*** An account's `bp` file is a
+> **directory file** — an ordinary Windows folder with one file per program —
+> so Notepad++, VS Code or any text editor works on it just as well:
+>
+> ```
+> C:\ProgramData\SD\user_accounts\<account>\bp
+> ```
+>
+> Save the file, then **`basic`** and **`catalog`** it from inside SD as usual.
+> SD folds CR+LF line endings on the way in, so a Windows editor's output needs
+> nothing done to it — see
+> [Other hardening](13-hardening.html#line-endings).
+
 ```
 list customers
 count customers
@@ -141,11 +154,19 @@ off
 
 ## What to try next, in rough order of how likely it is to find something
 
-1. **Your own application data.** Restore a file you know and query it. The
-   query processor is where most of the surface area is.
+1. **Your own application data.** ***THERE IS NO RESTORE UTILITY***, so the
+   way in is a short BASIC program that reads your exported data and writes the
+   records. Then query it — the query processor is where most of the surface
+   area is.
 2. **A client program against the API.** Point it at port 4243 — **not** an ssh
    tunnel any more. It needs a client library from this release, because the
-   old cleartext login is gone. See [API access](09-api-access.html) and
+   old cleartext login is gone. ***THE ARCHITECTURE MUST MATCH THE
+   APPLICATION***, and ***THE DLL GOES IN THE SAME DIRECTORY AS THE APPLICATION
+   THAT LOADS IT*** — Windows searches there before `PATH`.
+   **If you have no client of your own, mvDeveloper is free** and is a 32-bit
+   application, so it wants the 32-bit `qmclilib.dll`:
+   <https://www.brianleach.co.uk/mvDeveloper>. See
+   [API access](09-api-access.html) and
    [Client distribution](10-client-distribution.html).
 3. **A standard account.** Create one without `programmer` and confirm it can
    run your application but not edit it.
