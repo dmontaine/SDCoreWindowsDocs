@@ -60,15 +60,24 @@ fail if one goes stale.
 
 | | |
 |---|---|
-| [Your first thirty minutes](01a-first-run.html) | install → account → file → a second user over ssh, in eight steps |
-| [Running SD](01b-running-sd.html) | the service, `sd -start` / `-stop`, and the unclean-shutdown case |
-| [Client distribution](06a-client-distribution.html) | which DLL, 32- versus 64-bit, and the one file no installer can update |
+| [Your first thirty minutes](02-first-run.html) | install → account → file → a second user over ssh, in eight steps |
+| [Running SD](03-running-sd.html) | the service, `sd -start` / `-stop`, and the unclean-shutdown case |
+| [Client distribution](09-client-distribution.html) | which DLL, 32- versus 64-bit, and the one file no installer can update |
 
-***THEY ARE NUMBERED `01a`, `01b` AND `06a` SO THEY SIT IN READING ORDER
-WITHOUT RENUMBERING THE NINE YOU ALREADY HAVE.*** The walkthrough in particular
-had to come straight after installation rather than at the end of the set. **If
-you would rather have a clean `01`–`13`, say so** — it is one commit now and a
-worse one later, once the set grows.
+***THEY WERE FIRST NUMBERED `01a`, `01b` AND `06a` TO AVOID RENUMBERING THE
+NINE ALREADY COMMITTED. THAT WAS WRONG AND IS FIXED — THE SET IS NOW A FLAT
+`00`–`13`.***
+
+**Windows Explorer and the renderer sorted those names differently**, which is
+why you could not find the new pages. Explorer's collation ignores the hyphen,
+so `01a-first-run` sorts **before** `01-installation`; python's `sorted()`
+compares bytes, where `-` (0x2D) precedes `a` (0x61), so it sorts after. **The
+reading order existed only inside the renderer** — in the folder, the
+walkthrough sat above the installation page it was meant to follow, and client
+distribution above the API page.
+
+A flat numbering sorts identically everywhere. Nothing else about the three
+pages changed.
 
 **Two things in those pages are worth a specific look:**
 
@@ -209,7 +218,7 @@ before the first release, not after.
 
 **18. How are the client libraries published for this release?**
 
-Raised while writing [Client distribution](06a-client-distribution.html), and I
+Raised while writing [Client distribution](09-client-distribution.html), and I
 could not answer it from the record. The two client repositories each have
 their own Inno installer (`sdclient.iss`, `qmclient.iss`), and no built DLL is
 committed to either — a clone builds.

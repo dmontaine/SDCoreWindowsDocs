@@ -36,7 +36,7 @@ data in bulk.
 
 The development set: the compilers, the editor, the cataloguer, the file and
 index definition verbs, the bulk record editors and the process introspection
-verbs. See [Programmer commands](04-programmer-commands.html) for what each one
+verbs. See [Programmer commands](06-programmer-commands.html) for what each one
 is for.
 
 ### The counts are arithmetic, not observation
@@ -58,7 +58,7 @@ reporting.
 ### Administrator — 21 more
 
 Account and grant administration, system-wide state, and the shell escapes. See
-[Administrator commands](03-administrator-commands.html).
+[Administrator commands](05-administrator-commands.html).
 
 > ***NONE OF THE THREE IS A WALL.*** An administrator can copy any verb into
 > any account's VOC afterwards. **The reduced VOC is the posture an account

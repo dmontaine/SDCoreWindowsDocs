@@ -21,7 +21,7 @@ underneath: the login protocol, the port, the identity a session runs as, and
 what it is allowed to open.**
 
 > **The account's tier and its access route are independent.** Tier decides
-> which verbs are in the VOC ([Account types](02-account-types.html)); `ssh` /
+> which verbs are in the VOC ([Account types](04-account-types.html)); `ssh` /
 > `api` / `both` / `none` decides how the account is reached. A standard
 > account with API access, a programmer with ssh only, and an administrator
 > with both are all normal.
@@ -106,7 +106,7 @@ A caller must clear three gates, in this order:
 3. **Pass the account's own group check.**
 
 ***FAILED API LOGINS ARE WRITTEN TO THE AUDIT TRAIL***, with the reason. See
-[Other hardening](09-hardening.html).
+[Other hardening](12-hardening.html).
 
 ## A session is confined to its own account
 

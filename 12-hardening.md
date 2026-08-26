@@ -3,7 +3,7 @@ Subtitle: The catalogue and pcode locks, scheduled jobs, the logs, line endings,
 
 Everything on this page is a change you may notice while testing, grouped by
 what it touches. The identity model and the file permissions are on
-[Security](08-security.html); this is the remainder.
+[Security](11-security.html); this is the remainder.
 
 ## The global catalogue
 
@@ -87,7 +87,7 @@ There are three, and they are not interchangeable.
 
 | File | Where | For |
 |---|---|---|
-| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, `logto`, grants. See [Security](08-security.html#the-audit-trail) |
+| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, `logto`, grants. See [Security](11-security.html#the-audit-trail) |
 | `errlog` | `C:\ProgramData\SD\sdsys` | diagnostics, and API connection records |
 | `sd-elevate.log` | `C:\ProgramData\SD` | **what the elevation helper actually did** |
 

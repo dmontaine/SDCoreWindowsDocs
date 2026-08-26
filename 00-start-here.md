@@ -19,18 +19,18 @@ this set, assume it behaves as you expect.
 | | |
 |---|---|
 | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
-| ***[Your first thirty minutes](01a-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
-| [Running SD](01b-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
-| [Account types](02-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
-| [Administrator commands](03-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
-| [Programmer commands](04-programmer-commands.html) | The development verbs a standard account does not get |
-| [ssh access](05-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
-| [API access](06-api-access.html) | The client API, its port, and the login that replaced the old one |
-| [Client distribution](06a-client-distribution.html) | Which library an application needs, and the one file no installer can update |
-| [Lower case](07-lower-case.html) | Case in commands, file names, record ids and account names |
-| [Security](08-security.html) | The identity model, and what protects the database |
-| [Other hardening](09-hardening.html) | Auditing, the shell permit list, and the rest |
-| [Not in SD Core](10-not-in-sd-core.html) | What has been removed, and what to use instead |
+| ***[Your first thirty minutes](02-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
+| [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
+| [Account types](04-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
+| [Administrator commands](05-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
+| [Programmer commands](06-programmer-commands.html) | The development verbs a standard account does not get |
+| [ssh access](07-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
+| [API access](08-api-access.html) | The client API, its port, and the login that replaced the old one |
+| [Client distribution](09-client-distribution.html) | Which library an application needs, and the one file no installer can update |
+| [Lower case](10-lower-case.html) | Case in commands, file names, record ids and account names |
+| [Security](11-security.html) | The identity model, and what protects the database |
+| [Other hardening](12-hardening.html) | Auditing, the shell permit list, and the rest |
+| [Not in SD Core](13-not-in-sd-core.html) | What has been removed, and what to use instead |
 
 ## The five things most likely to surprise you
 
@@ -38,26 +38,26 @@ this set, assume it behaves as you expect.
 `sd` puts you in the SD account with your own name; if there is no such
 account, or you are not in the `sdusers` group, you are refused. Administration
 is gated on being an elevated Windows administrator, not on a secret SD holds.
-See [Security](08-security.html).
+See [Security](11-security.html).
 
 **2. Accounts SD creates cannot log in to Windows at this machine.** They are
 denied the physical console and Remote Desktop, deliberately. They reach SD
 **over ssh, or through an API client, or both** — and which of those is a
 required keyword on `create.account`. **Multi-user access over Remote Desktop
 is not supported** and is not a gap to be filled later. See
-[ssh access](05-ssh-access.html) and [API access](06-api-access.html).
+[ssh access](07-ssh-access.html) and [API access](08-api-access.html).
 
 **3. A new account gets a reduced VOC unless you say otherwise.** A standard
 account cannot compile, catalogue, edit or create files. `programmer` and
 `administrator` keywords on `create.account` decide that.
-See [Account types](02-account-types.html).
+See [Account types](04-account-types.html).
 
 **4. Commands and names are lower case now.** Everything that can be lower case
 is. Typing in upper case still works — the lookup tries what you typed, then
-lower, then upper. See [Lower case](07-lower-case.html).
+lower, then upper. See [Lower case](10-lower-case.html).
 
 **5. The API login is SCRAM, and the old cleartext one is gone.** Clients built
-against the old protocol will not connect. See [API access](06-api-access.html).
+against the old protocol will not connect. See [API access](08-api-access.html).
 
 ## What this release is
 

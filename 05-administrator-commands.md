@@ -10,7 +10,7 @@ anything.
 **Being an SD administrator means being an elevated Windows administrator.**
 There is no SD password that confers it. Several of these verbs check for
 elevation and say so rather than failing obscurely — see
-[Security](08-security.html).
+[Security](11-security.html).
 
 ## Accounts
 
@@ -24,7 +24,7 @@ update.account
 clean.account
 ```
 
-Covered in full in [Account types](02-account-types.html). The three points
+Covered in full in [Account types](04-account-types.html). The three points
 worth repeating here:
 
 - **One of `ssh`, `api`, `both`, `none` is required** on `create.account user`.
@@ -68,7 +68,7 @@ user through Task Manager or `Get-CimInstance Win32_Process`, so SD prompts for
 it instead, masked.
 
 The password matters for **API logins only**. Console and ssh logins ask for
-nothing — see [Security](08-security.html).
+nothing — see [Security](11-security.html).
 
 ## Locks and sessions
 

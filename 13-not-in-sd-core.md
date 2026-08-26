@@ -61,7 +61,7 @@ session ran over port 4245. There was also no way to switch the feature off —
 the `NETFILES` setting was read at start-up and then never consulted.
 
 ***THE API IS NOT AFFECTED.*** `SDClient` and the remote API are a separate
-mechanism and are unchanged. See [API access](06-api-access.html).
+mechanism and are unchanged. See [API access](08-api-access.html).
 
 **`NETFILES` is still accepted in `sd.conf`** and does nothing, so an existing
 configuration file will not stop SD starting.
@@ -154,7 +154,7 @@ the physical keyboard together, so allowing one allows the other. A verb that
 lifted the restriction was built and deleted the next day for exactly that
 reason. If you want it, you want Windows Server, RDP client access licences and
 probably a commercial product built for it. See
-[ssh access](05-ssh-access.html).
+[ssh access](07-ssh-access.html).
 
 ***SD CANNOT BE INSTALLED SILENTLY.*** `/SILENT` and `/VERYSILENT` are refused,
 with a message saying why, and there is no switch to override it. Installing
@@ -165,11 +165,11 @@ Unattended deployment is not supported.
 ***scp AND sftp DO NOT WORK INTO A FULL INSTALLATION***, for anybody,
 administrators included. This is the accepted cost of putting every ssh session
 straight into SD. **Pull files rather than pushing them** — see
-[ssh access](05-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
+[ssh access](07-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
 stand-alone installation is unaffected.
 
 ***THE CLEARTEXT API LOGIN IS GONE***, and a client that still sends a password
-in clear is refused outright. See [API access](06-api-access.html).
+in clear is refused outright. See [API access](08-api-access.html).
 
 ## Linux-only mechanisms
 
@@ -181,4 +181,4 @@ but two consequences show:
   not a security control here. Windows ACLs are, and SD sets them.
 - **There is no `sdsys` uid to drop to.** Privilege is elevation, and the
   operating system's groups are the whole of the authorisation model. See
-  [Security](08-security.html).
+  [Security](11-security.html).

@@ -101,7 +101,7 @@ speaks the new login too — `connect()` takes the same arguments, but **the
 program has to be running under this release at both ends.**
 
 Everything about what a connected session may open, the three gates it must
-clear, and the identity it runs as is on [API access](06-api-access.html).
+clear, and the identity it runs as is on [API access](08-api-access.html).
 
 ## Building from source
 

@@ -65,7 +65,7 @@ model implied one the filesystem never enforced. This states the real position
 instead of dressing it up.
 
 **Passwords still matter for the API**, which is a separate door and does
-require one — see [API access](06-api-access.html).
+require one — see [API access](08-api-access.html).
 
 ## What actually protects the database
 
@@ -211,4 +211,4 @@ people over ssh should be told that plainly.
 **SD has no file-level access control of its own** on the console and ssh
 paths. The one place a path gate does exist is the API, where a session is
 confined to the account it stands in — see
-[API access](06-api-access.html#a-session-is-confined-to-its-own-account).
+[API access](08-api-access.html#a-session-is-confined-to-its-own-account).

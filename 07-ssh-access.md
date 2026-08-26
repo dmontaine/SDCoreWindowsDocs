@@ -9,7 +9,7 @@ Windows accounts.
 **They reach SD over ssh, or through an API client, or both.** Which of those
 an account may use is chosen when it is created and is a required keyword — see
 [Per-account control](#per-account-control) below. This page covers the ssh
-route; [API access](06-api-access.html) covers the other.
+route; [API access](08-api-access.html) covers the other.
 
 This has no equivalent in OpenQM or in SD on Linux, and it shapes almost
 everything else about running SD Core on Windows.
@@ -182,7 +182,7 @@ is irrelevant to them.
 `modify.account fred both` changes it afterwards — and remember the keyword
 says what the access **is**, not what to add, so `modify.account fred api`
 takes ssh away. Administrators always have both. See
-[Account types](02-account-types.html).
+[Account types](04-account-types.html).
 
 ## What ssh-only does not mean
 
@@ -190,12 +190,12 @@ takes ssh away. Administrators always have both. See
 run*.** Confining a user to SD rather than to a shell is the separate
 `ForceCommand` control above, and reaching the operating system from inside SD
 is the separate `os.users` permit list — see
-[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and).
+[Administrator commands](05-administrator-commands.html#the-shell-escapes-sh-and).
 
 **And ssh-only does not give users isolation from each other's data.** Every SD
 process opens the database under the invoking user's own token, so everyone who
 uses SD needs file access to the tree and can read another account's directory
-from outside SD. See [Security](08-security.html).
+from outside SD. See [Security](11-security.html).
 
 ## One measured caution about remote administration
 

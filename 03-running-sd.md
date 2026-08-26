@@ -92,7 +92,7 @@ returns you to the session you already have.
 Worth knowing alongside it: **`sh` itself needs either an elevated session or a
 `yes` in `os.users`**, so an ordinary account cannot leave SD this way at all,
 and one reached over ssh never can. See
-[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and).
+[Administrator commands](05-administrator-commands.html#the-shell-escapes-sh-and).
 
 ## The command line
 
@@ -120,7 +120,7 @@ where SD checks whether they are allowed in.
 **`sd <command>` needs an elevated session**, or an entry for that account in
 `batch.jobs`. That is what makes scheduled jobs possible without handing them
 administrator rights — see
-[Other hardening](09-hardening.html#scheduled-jobs).
+[Other hardening](12-hardening.html#scheduled-jobs).
 
 **`sd <command>` no longer walks into a password prompt it cannot answer.** It
 used to reach the *"needs a password"* prompt and block for ever on a read that
