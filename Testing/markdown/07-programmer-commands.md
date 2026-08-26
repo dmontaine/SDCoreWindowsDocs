@@ -1,9 +1,9 @@
 Title: Programmer commands
-Subtitle: The 41 development verbs a standard account does not get, and what withholding them does and does not do.
+Subtitle: The 42 development verbs a standard account does not get, and what withholding them does and does not do.
 
 A **standard** account gets 77 verbs — enough to run an application and nothing
 that edits code or data in bulk. A **programmer** account gets those plus the
-41 below. An **administrator** account gets all of them, plus
+42 below. An **administrator** account gets all of them, plus
 [21 more](06-administrator-commands.html).
 
 This split does not exist in OpenQM, where every account gets the same VOC.
@@ -39,7 +39,8 @@ create.account user fred programmer both
 | | |
 |---|---|
 | **`ed`** | the line editor. Needs nothing installed |
-| **`edit`** | the **full-screen** editor — opens the record in Microsoft Edit |
+| **`edit`** | a **full-screen** editor — opens the record in Microsoft Edit |
+| **`micro`** | a **full-screen** editor — opens the record in micro |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
 
@@ -48,32 +49,40 @@ programmer needs these to debug their own code.
 
 ### Editors
 
+***THERE ARE TWO, AND THEY BEHAVE IDENTICALLY.*** The verb chooses the editor
+and nothing else changes:
+
+| | |
+|---|---|
+| **`edit`** | **Microsoft Edit** — ships in current Windows builds |
+| **`micro`** | **micro** — never ships with Windows; the installer fetches it |
+
+```
+edit  bp myprog
+micro bp myprog
+edit  dict customers name
+```
+
 ***`edit` USED TO BE A SECOND NAME FOR `ed`, AND IS NOT ANY MORE.*** If you
 have been typing it to get the line editor, you will now get a full screen.
 
-```
-edit bp myprog
-edit dict customers name
-```
-
-It writes the record to a working copy, opens **Microsoft Edit** on it, reads
+Either verb writes the record to a working copy, opens the editor on it, reads
 it back, and asks whether to save. For a `bp` record it then offers the compile
-and the catalogue, which is the loop the old `micro` verb had.
+and the catalogue, which is the loop the old **`micro`** verb had.
 
-**Microsoft Edit is a terminal editor**, so it works over ssh as well as at the
-console. Current Windows builds already carry it as `edit.exe`; where a machine
-does not, the SD installer installs it, and if that could not be done **`edit`**
-says so and names the command that installs it. `C:\ProgramData\SD\install-edit.log`
-records what the installer found.
+**Both are terminal editors**, so both work over ssh as well as at the console.
+Where a machine does not have one, the SD installer installs it; if that could
+not be done, the verb says so and names the command that installs it.
+`C:\ProgramData\SD\install-editors.log` records what the installer found.
 
 **`ed` is unaffected and is still there.** Nothing has been taken away.
 
 > ***WHAT AN EDITOR CAN REACH, and it is worth knowing before you hand this to
 > somebody.*** An editor can open any file the person running it is allowed to
-> open, so **`edit`** reaches beyond SD's own files. It is not a shell —
-> Microsoft Edit has no way to run a command — and standard accounts do not
-> have the verb, nor does any session that arrived over the API. **The line
-> here is the account tier, not the `os.users` list that governs `sh`.** See
+> open, so both verbs reach beyond SD's own files. Neither is a shell — neither
+> editor can run a command — and standard accounts have neither verb, nor does
+> any session that arrived over the API. **The line here is the account tier,
+> not the `os.users` list that governs `sh`.** See
 > [Security](12-security.html).
 
 The removed full-screen editors are a different matter: `sed`,
@@ -142,17 +151,18 @@ into the SDSYS `bp` file, and anything you have compiled from it, survives an
 upgrade untouched** — SD now ships nothing into that file at all, so it is
 created empty and is yours.
 
-## The full list of the 41
+## The full list of the 42
 
 **`basic`** · **`catalog`** · **`catalogue`** · **`delete.catalog`** · **`delete.catalogue`** ·
 **`compile.dict`** · **`cd`** · **`generate`** · **`phantom`** · **`run`** · **`map`** · **`debug`** ·
-**`ed`** · **`edit`** · **`create.file`** · **`delete.file`** · **`clear.file`** ·
+**`ed`** · **`edit`** · **`micro`** · **`create.file`** · **`delete.file`** · **`clear.file`** ·
 **`configure.file`** · **`analyse.file`** · **`analyze.file`** · **`fstat`** · **`hsm`** ·
 **`set.trigger`** · **`create.index`** · **`delete.index`** · **`build.index`** ·
 **`make.index`** · **`list.index`** · **`copy`** · **`copyp`** · **`delete`** · **`rename`** ·
 **`reformat`** · **`sreformat`** · **`sort.item`** · **`delete.common`** · **`cname`** ·
 **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`**
 
-> **This list was 42 until `modify` was removed from SD Core.** A standard
-> account's count did not move, because `modify` was already withheld from it —
-> it left both sides of the arithmetic at once.
+> **This list was 42, then 41 when `modify` was removed from SD Core, and is
+> 42 again now `micro` is back.** A standard account's count did not move on
+> either occasion: both verbs were on both sides of the arithmetic at once —
+> in `NEWVOC` and in the standard tier's omit list.

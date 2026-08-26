@@ -64,8 +64,9 @@ ed customers 1001
 ```
 
 **`ed`** is the **line** editor, and it needs nothing installed. If you would
-rather have a full screen, **`edit`** opens the same record in Microsoft Edit —
-see [Programmer commands](07-programmer-commands.html#editors). The old
+rather have a full screen, **`edit`** opens the same record in Microsoft Edit
+and **`micro`** opens it in micro — see
+[Programmer commands](07-programmer-commands.html#editors). The old
 full-screen editors `sed`, `update.record` and `modify` are all gone; see
 [Not in SD Core](14-not-in-sd-core.html).
 

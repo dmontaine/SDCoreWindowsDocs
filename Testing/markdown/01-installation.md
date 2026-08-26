@@ -138,23 +138,24 @@ metered connection or an offline machine. The installer reports it in as many
 words, with the command to retry — and you should read that report, because in
 that state **no account but yours can sign in anywhere.**
 
-## The full-screen editor
+## The full-screen editors
 
-**The installer makes sure a terminal editor is on the machine**, because the
-**`edit`** verb runs one. Current Windows builds already carry `edit.exe`;
-where a machine does not, the installer installs **Microsoft Edit** with
-winget. It is not offered as a choice, for the same reason the ssh server is
-not: a programmer account with a verb that does nothing is worse than either
-answer.
+**The installer makes sure the two terminal editors are on the machine**,
+because the **`edit`** and **`micro`** verbs run them. Current Windows builds
+already carry `edit.exe`; micro never ships with Windows, so it is always a
+winget install. Neither is offered as a choice, for the same reason the ssh
+server is not: a programmer account with a verb that does nothing is worse
+than either answer.
 
-**If it cannot be installed, the install still succeeds.** No winget, no
-network or a policy in the way all end the same: SD is complete and only
-**`edit`** is not — **`ed`**, the line editor, needs nothing. What happened is
-in `C:\ProgramData\SD\install-edit.log`, and to do it by hand afterwards,
+**If one cannot be installed, the install still succeeds.** No winget, no
+network or a policy in the way all end the same: SD is complete and one editor
+verb is not — **`ed`**, the line editor, needs nothing. What happened is in
+`C:\ProgramData\SD\install-editors.log`, and to do it by hand afterwards,
 from an elevated prompt:
 
 ```
-winget install --id Microsoft.Edit --exact --scope machine
+winget install -e --id Microsoft.Edit --scope machine
+winget install -e --id zyedidia.micro --scope machine
 ```
 
 ***THE SCOPE IS NOT OPTIONAL.*** Without it winget installs into the profile of

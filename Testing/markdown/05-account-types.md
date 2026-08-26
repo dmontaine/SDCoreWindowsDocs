@@ -10,8 +10,8 @@ thing entirely — a shared place, not a person.
 
 | | Standard | Programmer | Administrator |
 |---|---|---|---|
-| Verbs | 77 | 77 + 41 | 77 + 41 + 21 |
-| VOC records on creation | 354 | 395 | 416 |
+| Verbs | 77 | 77 + 42 | 77 + 42 + 21 |
+| VOC records on creation | 354 | 396 | 417 |
 | Can run an application | yes | yes | yes |
 | Can compile, catalogue, edit | **no** | yes | yes |
 | Can create or configure files | **no** | yes | yes |
@@ -32,25 +32,29 @@ read-only inspectors — **`search`**, **`list.diff`**, **`list.item`**, **`list
 Everything an application built on SD invokes, and nothing that edits code or
 data in bulk.
 
-### Programmer — 41 more
+### Programmer — 42 more
 
-The development set: the compilers, the editor, the cataloguer, the file and
-index definition verbs, the bulk record editors and the process introspection
-verbs. See [Programmer commands](07-programmer-commands.html) for what each one
+The development set: the compilers, the two full-screen editors, the
+cataloguer, the file and index definition verbs, the bulk record editors and
+the process introspection verbs. See [Programmer commands](07-programmer-commands.html) for what each one
 is for.
 
 ### The counts are arithmetic, not observation
 
-Installed `NEWVOC` holds 394 names, of which `%t` is a dynamic-file artefact
-and the two tier lists are never copied — so **391 records reach a full VOC**.
+Installed `NEWVOC` holds 395 names, of which `%t` is a dynamic-file artefact
+and the two tier lists are never copied — so **392 records reach a full VOC**.
 **`create.account`** then adds four of its own (`$command.stack`, `$hold`,
 `$savedlists`, `bp`):
 
 ```
-ADMINISTRATOR   391 + 21 + 4 = 416
-PROGRAMMER      391      + 4 = 395
-STANDARD        391 - 41 + 4 = 354
+ADMINISTRATOR   392 + 21 + 4 = 417
+PROGRAMMER      392      + 4 = 396
+STANDARD        392 - 42 + 4 = 354
 ```
+
+**A standard account's total did not move when `micro` was added**, because
+**`micro`** joined `NEWVOC` and `TIER.OMIT.STANDARD` at once — it is on both sides
+of the subtraction.
 
 If your counts differ, one of the two tier lists differs — which is worth
 reporting.

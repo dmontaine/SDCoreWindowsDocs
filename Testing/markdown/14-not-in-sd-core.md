@@ -28,11 +28,12 @@ gone as *programs*; the capability is not.
 
 `modify` is received by **no account of any tier**.
 
-> ***`micro` WAS ON THIS PAGE AND HAS COME OFF IT.*** It was removed on
-> 17 Aug 2026 because it launched an external editor, which is a way out of SD
-> onto the machine underneath it. That was reversed on 26 Aug 2026: **`edit`**
-> is the same idea, done deliberately, limited to programmer and administrator
-> accounts and refused over the API.
+> ***`micro` WAS ON THIS PAGE AND HAS COME OFF IT — UNDER ITS OWN NAME.*** It
+> was removed on 17 Aug 2026 because it launched an external editor, which is a
+> way out of SD onto the machine underneath it. That was reversed on
+> 26 Aug 2026, and there are now **two** full-screen editors, **`edit`** and
+> **`micro`**: the same idea, done deliberately, limited to programmer and
+> administrator accounts and refused over the API.
 
 **`modify.account` and `modify.password` are not affected.** They are different
 verbs with different programs behind them, and both remain administrator
