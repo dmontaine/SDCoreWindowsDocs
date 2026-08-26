@@ -79,9 +79,6 @@ other.
 
 ## What lands where
 
-Two roots, following Windows convention rather than the Unix layout stage 1
-used.
-
 | What | Where | Was, on Linux |
 |---|---|---|
 | Binaries, and the MSYS2 DLLs beside them | `C:\Program Files\SD\usr\bin\` | `/usr/local/bin` |
