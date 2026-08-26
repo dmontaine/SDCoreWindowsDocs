@@ -77,13 +77,60 @@ not be done, the verb says so and names the command that installs it.
 
 **`ed` is unaffected and is still there.** Nothing has been taken away.
 
-> ***WHAT AN EDITOR CAN REACH, and it is worth knowing before you hand this to
-> somebody.*** An editor can open any file the person running it is allowed to
-> open, so both verbs reach beyond SD's own files. Neither is a shell — neither
-> editor can run a command — and standard accounts have neither verb, nor does
-> any session that arrived over the API. **The line here is the account tier,
-> not the `os.users` list that governs `sh`.** See
-> [Security](12-security.html).
+### Both editors need `OS.EXECUTE` permission as well as the verb
+
+***HAVING THE VERB IS NOT ENOUGH.*** An editor runs outside SD, so reaching one
+is reaching the operating system — and who may do that is **field 2 of your
+record in `os.users`**, the same field that governs `OS.EXECUTE` from inside a
+program. Two gates, and both have to pass:
+
+| | |
+|---|---|
+| the VOC tier | decides **who has the verb** — programmer and administrator |
+| `os.users` field 2 | decides **whether it runs** |
+
+**An elevated session passes on its own**, exactly as `sh` does, so an empty
+list cannot lock the machine's own administrator out.
+
+**A missing record, or a missing file, means no** — the same direction `sh`
+fails in.
+
+If you have the verb and not the permission you get told so by name, and told
+what to ask for:
+
+```
+edit is not available to fred.
+It runs an editor outside SD, so it needs OS.EXECUTE permission: field 2
+of your record in the SD system file os.users, which only an administrator
+can change.
+ed, the line editor, needs none of this.
+```
+
+An administrator grants it — see
+[Administrator commands](06-administrator-commands.html#the-list).
+
+**A session with no terminal is refused first and separately**: an API session
+or a piped script has nowhere to draw a full screen, and is told that rather
+than being told about `os.users`.
+
+> ***WHAT AN EDITOR CAN REACH, and it is worth knowing before you grant it.***
+> An editor can open any file the person running it is allowed to open, so both
+> verbs reach beyond SD's own files. Neither is a shell — neither editor can
+> run a command. That is what field 2 is deciding, and it is why the verb alone
+> was not made enough. See [Security](12-security.html).
+
+### Over ssh
+
+**Both should work over an ssh session**, which is the point of a terminal
+editor: an ssh session reaches SD through a terminal like any other, and SD
+hands the editor that terminal rather than reading it through a pipe.
+
+***AN ssh SESSION CAN NEVER BE ELEVATED***, though, so an administrator
+arriving that way needs an `os.users` entry the same as anybody else — being an
+administrator is not enough on its own over ssh.
+
+**If an editor misbehaves over ssh and not at the console, that is worth
+reporting** with the terminal you connected from.
 
 The removed full-screen editors are a different matter: `sed`,
 `update.record` and `modify` are gone and are not coming back. See

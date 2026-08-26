@@ -133,7 +133,13 @@ they **`logto`** somewhere else.
 | Field | Controls | Value |
 |---|---|---|
 | 1 | `SH` — a shell at the command prompt | `yes`, or anything else for no |
-| 2 | `OS.EX` — `OS.EXECUTE` from inside a program | `yes`, or anything else for no |
+| 2 | `OS.EX` — `OS.EXECUTE` from inside a program, **and the `edit` and `micro` editors** | `yes`, or anything else for no |
+
+***FIELD 2 IS WHAT LETS A PROGRAMMER USE THE FULL-SCREEN EDITORS.*** They run
+an editor outside SD, so they are reaching the operating system whatever the
+VOC tier says. A programmer with the verb and no `yes` in field 2 is told the
+command is not available and what to ask for — see
+[Programmer commands](07-programmer-commands.html#both-editors-need-osexecute-permission-as-well-as-the-verb).
 
 **A missing record, or a missing file, means no.** An installation that has
 never set `os.users` up denies both to ordinary accounts.
