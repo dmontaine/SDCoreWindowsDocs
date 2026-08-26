@@ -96,7 +96,7 @@ on the tier for anything:
 **A programmer with `OS.EX` set has the operating system**, whatever their VOC
 says, because they can write and run BASIC. That is why field 2 of `os.users`
 exists and why it is now enforced — see
-[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and-).
+[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and).
 
 ## Two things to know when you compile
 

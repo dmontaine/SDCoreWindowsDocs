@@ -14,14 +14,19 @@ this set, assume it behaves as you expect.
 
 ## The pages
 
+**Read them in this order the first time.** After that they stand alone.
+
 | | |
 |---|---|
 | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
+| ***[Your first thirty minutes](01a-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
+| [Running SD](01b-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
 | [Account types](02-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
 | [Administrator commands](03-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
 | [Programmer commands](04-programmer-commands.html) | The development verbs a standard account does not get |
 | [ssh access](05-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
 | [API access](06-api-access.html) | The client API, its port, and the login that replaced the old one |
+| [Client distribution](06a-client-distribution.html) | Which library an application needs, and the one file no installer can update |
 | [Lower case](07-lower-case.html) | Case in commands, file names, record ids and account names |
 | [Security](08-security.html) | The identity model, and what protects the database |
 | [Other hardening](09-hardening.html) | Auditing, the shell permit list, and the rest |

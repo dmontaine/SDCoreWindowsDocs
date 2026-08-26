@@ -55,17 +55,35 @@ all.** The practical consequence is that a release which changes a dialog, a
 verb or a message needs somebody to re-read the affected pages; nothing will
 fail if one goes stale.
 
-**4. Three topics testers will want that are not on your list.** I have not
-written any of them. Each would be a short page:
+**~~4. Three topics testers will want that are not on your list.~~ ANSWERED
+26 Aug 2026 — all three written.**
 
 | | |
 |---|---|
-| **Starting and stopping SD** | the `String Database (SD)` service, `sd -start` / `-stop`, what to do after an unclean shutdown |
-| **A first-thirty-minutes walkthrough** | install → make an account → sign in → create a file → run something. The thing testers ask for first |
-| **Client distribution** | which DLL, 32- versus 64-bit, what to give an application developer |
+| [Your first thirty minutes](01a-first-run.html) | install → account → file → a second user over ssh, in eight steps |
+| [Running SD](01b-running-sd.html) | the service, `sd -start` / `-stop`, and the unclean-shutdown case |
+| [Client distribution](06a-client-distribution.html) | which DLL, 32- versus 64-bit, and the one file no installer can update |
 
-Add any of them, leave them for a later round, or are they too close to stock
-OpenQM to belong in a delta set?
+***THEY ARE NUMBERED `01a`, `01b` AND `06a` SO THEY SIT IN READING ORDER
+WITHOUT RENUMBERING THE NINE YOU ALREADY HAVE.*** The walkthrough in particular
+had to come straight after installation rather than at the end of the set. **If
+you would rather have a clean `01`–`13`, say so** — it is one commit now and a
+worse one later, once the set grows.
+
+**Two things in those pages are worth a specific look:**
+
+- **The walkthrough opens by telling the tester to sign out of Windows and back
+  in.** That is not padding — the installing user's token cannot carry
+  `sdusers` until they do, and the symptom reads as a broken install. It is
+  also why the post-install check offered at the end of the installer is always
+  the incomplete run.
+- **Client distribution names `C:\Program Files (x86)\BLC\mvDeveloper\qmclilib.dll`
+  as the one file no installer or `PATH` entry can update**, because Windows
+  searches an executable's own directory first. That is the most likely way to
+  test an old client without realising it. **Confirm you are happy naming
+  mvDeveloper and that path in a document testers will read.**
+
+**And one thing I could not settle** — question 18 below.
 
 ## C. Specific features
 
@@ -188,3 +206,19 @@ would catch and which looks exactly like a correct release.
 
 Say the word and I will write it; it is half an hour and it wants to exist
 before the first release, not after.
+
+**18. How are the client libraries published for this release?**
+
+Raised while writing [Client distribution](06a-client-distribution.html), and I
+could not answer it from the record. The two client repositories each have
+their own Inno installer (`sdclient.iss`, `qmclient.iss`), and no built DLL is
+committed to either — a clone builds.
+
+**What a tester cannot work out is what they will actually be handed:** a
+client installer zipped beside the server one, a separate download, or nothing
+yet. The page currently says *"if you need a client and cannot find one, ask
+rather than building from source"*, which is honest but is a placeholder.
+
+***THIS INTERACTS WITH THE pCloud/SourceForge PLAN***: if the release is one
+zip containing the installer and the PDFs, the client installers are either in
+it or they are a second download, and the documentation should say which.

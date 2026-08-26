@@ -190,7 +190,7 @@ takes ssh away. Administrators always have both. See
 run*.** Confining a user to SD rather than to a shell is the separate
 `ForceCommand` control above, and reaching the operating system from inside SD
 is the separate `os.users` permit list — see
-[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and-).
+[Administrator commands](03-administrator-commands.html#the-shell-escapes-sh-and).
 
 **And ssh-only does not give users isolation from each other's data.** Every SD
 process opens the database under the invoking user's own token, so everyone who
