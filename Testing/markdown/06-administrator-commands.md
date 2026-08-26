@@ -120,15 +120,47 @@ who could never have one.
 
 ### The list
 
-From SDSYS:
-
-```
-ed os.users don
-```
-
 One record per person, **keyed by the name they sign in with, not by the
 account name**. The login name follows the person, so it does not change when
 they **`logto`** somewhere else.
+
+### How you grant it
+
+From an **elevated** session, because the file is writable only by an
+administrator:
+
+```
+logto sdsys
+ed os.users don
+```
+
+The record is two lines and nothing else. To give `don` the shell and the
+editors:
+
+```
+yes
+yes
+```
+
+In **`ed`**: `i` to insert, type the two lines, a full stop on its own line to
+stop inserting, then `fi` to file and exit. **Field 1 is `SH`, field 2 is
+`OS.EX`** — the order matters and there is nothing else in the record.
+
+| What you want `don` to have | Field 1 | Field 2 |
+|---|---|---|
+| nothing outside SD | *no record at all* | |
+| the editors, but no shell at the prompt | anything but `yes` | `yes` |
+| a shell, but programs may not shell out | `yes` | anything but `yes` |
+| both | `yes` | `yes` |
+
+**`don` is the Windows login name, not the SD account name.** They are usually
+the same; where they are not, this file wants the one the person signs in with.
+
+***THE CHANGE TAKES EFFECT ON THEIR NEXT COMMAND***, not at their next login —
+the list is read when the shell or the editor is asked for.
+
+**To take it away, set the field to anything else or delete the record.**
+Deleting the record removes both.
 
 | Field | Controls | Value |
 |---|---|---|

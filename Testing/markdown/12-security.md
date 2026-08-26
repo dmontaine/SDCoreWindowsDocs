@@ -151,6 +151,50 @@ icacls "C:\ProgramData\SD\sdsys\$CRED"
 If that prints permissions, the file is still open. ***If it says "Access is
 denied", it is protected — which is what you want.***
 
+## Reaching the operating system from inside SD
+
+***THERE ARE THREE WAYS OUT OF SD ONTO THE MACHINE, AND ALL THREE ARE ON ONE
+LIST.***
+
+| | What it is | Governed by |
+|---|---|---|
+| **`sh`** and `!` | a shell at the `:` prompt | `os.users` field 1 |
+| `OS.EXECUTE` | the operating system from inside a BASIC program | `os.users` field 2 |
+| **`edit`** and **`micro`** | a text editor, running outside SD | `os.users` field 2 |
+
+**`os.users` is in SDSYS and is read-only to everybody else on disk.** That ACL
+is the whole of the protection: without it a user grants themselves any of the
+three in one line, and every check above it is decoration.
+
+**Four rules hold for all three:**
+
+**1. A missing record, or a missing file, means no.** An installation that has
+never set `os.users` up denies all three to ordinary accounts. That is the
+opposite of the VOC tier lists, where a missing record means the *full* VOC —
+do not carry one convention across to the other.
+
+**2. An elevated session passes on its own**, whatever the list says, so an
+empty list cannot lock the machine's own administrator out. ***An ssh session
+can never be elevated***, so somebody arriving that way needs a record even if
+they are an administrator.
+
+**3. None of the three is available over the API.** An API session is not
+treated as an administrator for any purpose.
+
+**4. Nothing in SD limits what you then do.** Once field 1 or field 2 says
+`yes`, SD is not standing between that person and the machine — **the boundary
+from that point on is their own Windows account's permissions**, and nothing
+else. A listed person gets a real shell, with pipes and redirection; an editor
+can open any file they are allowed to open, in the data tree or outside it.
+
+> ***SO FIELD 1 AND FIELD 2 ARE STATEMENTS OF TRUST IN A PERSON.*** They are
+> not a convenience to be handed out because somebody asked for a full-screen
+> editor. Grant them on the same basis you would grant a shell account on the
+> machine, because that is close to what you are granting.
+
+**The record format, and how to grant and remove it**, are on
+[Administrator commands](06-administrator-commands.html#how-you-grant-it).
+
 ## Privileged work is done through a script, not a command line
 
 When SD creates an account, sets a password or edits a group, it writes a short

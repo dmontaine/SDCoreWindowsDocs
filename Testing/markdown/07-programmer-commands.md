@@ -77,6 +77,68 @@ not be done, the verb says so and names the command that installs it.
 
 **`ed` is unaffected and is still there.** Nothing has been taken away.
 
+### What the editors are good for, and what they are not
+
+**They are text editors**, so they suit a record whose content is lines of
+text:
+
+| | |
+|---|---|
+| **BASIC source** in a `bp` file | what they are for |
+| **VOC records** | fine — a VOC record is a few short fields |
+| **Dictionary records** | fine for a simple one; see the limit below |
+| **Data records with multivalues** | see the limit below |
+| **Anything with subvalue marks** | ***do not*** |
+
+***A FIELD IS A LINE AND THAT PART NEEDS NO EXPLANATION.*** SD writes the
+working copy with one field per line, so moving between fields is moving
+between lines.
+
+***A VALUE MARK IS NOT A LINE, AND THAT IS THE LIMIT.*** It is a control
+character an editor cannot show, so a multivalued record would come back
+mangled. Instead:
+
+> **Type `~~` where you want a value mark.** SD converts value marks to `~~`
+> on the way into the editor and `~~` back to value marks on the way out, so
+> multivalues are typeable as ordinary text.
+
+```
+SMITH~~JONES~~BROWN
+```
+
+is a three-value field.
+
+***SUBVALUE MARKS ARE NOT CONVERTED.*** There is no token for them, so a record
+containing one reaches the editor as a control character and is not safe to
+edit this way. Use **`ed`**.
+
+***AND IF THE RECORD ALREADY CONTAINS `~~` AS DATA, YOU ARE ASKED FIRST.***
+The conversion back cannot tell your `~~` from one you typed as a value mark,
+so the editor says what will happen and lets you decide rather than silently
+converting it.
+
+**A compiled dictionary record is truncated to its first 15 fields** while you
+edit it, and recompiled with `cd` when you save — the same thing the old
+`micro` verb did.
+
+### Give these verbs only to people you trust
+
+***AN EDITOR CAN WRITE ANYWHERE ITS USER CAN WRITE.*** It opens the record you
+named, but nothing stops the person then opening any other file on the machine
+that their Windows account may open — inside the SD data tree or outside it
+altogether. **That is not a hole in SD; it is what an editor is**, and it is
+the reason these verbs are behind `OS.EXECUTE` permission and not merely behind
+the programmer tier.
+
+**So `os.users` field 2 is a statement of trust in a person, not a
+convenience.** Before granting it, ask the same question you would ask before
+giving somebody the shell — because in terms of what they can reach on disk,
+you are.
+
+Neither editor can run a command, so neither is a shell. **What they are is
+read and write access to the filesystem, with the account's own Windows
+permissions.** See [Security](12-security.html).
+
 ### Both editors need `OS.EXECUTE` permission as well as the verb
 
 ***HAVING THE VERB IS NOT ENOUGH.*** An editor runs outside SD, so reaching one

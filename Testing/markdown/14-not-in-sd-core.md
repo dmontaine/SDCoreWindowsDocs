@@ -21,9 +21,10 @@ SD Core for Windows.
 | `update.record` — the full-screen record editor | **`edit`** or **`ed`** |
 | `modify` — the full-screen record editor from OpenQM | **`edit`** or **`ed`** |
 
-**SD Core's own full-screen editing is `edit`**, which opens the record in
-Microsoft Edit — see
-[Programmer commands](07-programmer-commands.html#editors). The three above are
+**SD Core's own full-screen editing is `edit` and `micro`**, which open the
+record in Microsoft Edit and in micro — see
+[Programmer commands](07-programmer-commands.html#editors), which also says
+what they are good for and what they cannot do. The three above are
 gone as *programs*; the capability is not.
 
 `modify` is received by **no account of any tier**.
