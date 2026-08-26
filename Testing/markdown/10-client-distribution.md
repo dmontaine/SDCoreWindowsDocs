@@ -32,9 +32,10 @@ The `*client` names are for new work and are what the installers put on `PATH`.
 `sd4windows\sdb_ai\sd64\gplsrc\sdclilib` is the single source of truth. The
 32-bit build points straight at it.
 
-***THERE IS DELIBERATELY NO SECOND COPY.*** There used to be a middle hop, and
-it let the 32-bit DLL go stale and **ship without SCRAM** — sending passwords
-in clear against a server that no longer accepted them. The hop was removed.
+***THERE IS DELIBERATELY NO SECOND COPY.*** An earlier build of this port had a
+middle hop, and it let the 32-bit DLL go stale and **ship without SCRAM** —
+sending passwords in clear against a server that no longer accepted them. The
+hop was removed.
 
 **If you are testing the 32-bit client, confirm which build you have.** A
 client that predates SCRAM is refused outright by this server, and the refusal

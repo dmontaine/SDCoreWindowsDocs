@@ -32,9 +32,9 @@ sd -start
 
 ## `sd -start` and `sd -stop` tell the truth now
 
-Both used to answer from the **shared memory segment**, which outlives the
-daemon — so both could report success while doing nothing. Four things changed,
-and each is a state you may hit while testing.
+**Before this port, both answered from the shared memory segment**, which
+outlives the daemon — so both could report success while doing nothing. Four
+things changed, and each is a state you may hit while testing.
 
 ***"SD is already started" IS NOW ONLY SAID WHEN THE DAEMON REALLY IS
 RUNNING***, and it tells you the process id — the Windows one, the number Task
@@ -68,9 +68,11 @@ If SD is stopped abruptly — the power goes, or the process is killed — it
 leaves a shared memory segment behind. ***ON WINDOWS THAT SURVIVES A REBOOT,
 WHERE ON LINUX IT WOULD NOT.***
 
-SD used to refuse to start on the next boot and say *"Run sd -stop to clear
-it"*, so **the machine came up with SD unavailable to everybody** until
-somebody logged in and typed it by hand.
+**Earlier builds of this port refused to start on the next boot** and said
+*"Run sd -stop to clear it"*, so **the machine came up with SD unavailable to
+everybody** until somebody logged in and typed it by hand. There was no Linux
+behaviour to inherit here: on Linux the segment does not survive the reboot at
+all.
 
 Nothing from before a restart can still be using that segment, so SD now
 discards it and starts normally, printing:
@@ -118,13 +120,20 @@ their own — they arrive in their own and reach the rest with **`logto`**, whic
 where SD checks whether they are allowed in.
 
 **`sd <command>` needs an elevated session**, or an entry for that account in
-`batch.jobs`. That is what makes scheduled jobs possible without handing them
-administrator rights — see [Scheduled jobs](04-scheduled-jobs.html).
+`batch.jobs`. **Any account can be given one, whatever its tier** — standard,
+programmer or administrator. The account type does not decide what may run; the
+administrator's list does. That is what makes scheduled jobs possible without
+handing them administrator rights — see
+[Scheduled jobs](04-scheduled-jobs.html).
 
-**`sd <command>` no longer walks into a password prompt it cannot answer.** It
-used to reach the *"needs a password"* prompt and block for ever on a read that
-never got input, with nothing in any log because nothing had gone wrong from
-SD's side.
+***`sd <command>` RUNS AND EXITS, AND IS NEVER ASKED TO SET A PASSWORD.*** Nor
+is any session with no terminal — a scheduled task, or a piped script. **Only
+an interactive `sd` with no command after it still asks**, and then only of an
+administrator account that has no password yet.
+
+**Earlier builds of this port** reached the *"needs a password"* prompt and
+blocked for ever on a read that never got input, with nothing in any log
+because nothing had gone wrong from SD's side.
 
 ## Where things are
 

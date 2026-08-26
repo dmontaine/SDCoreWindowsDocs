@@ -113,10 +113,10 @@ set.date
 
 ***WHO MAY USE `sh` IS A LIST YOU KEEP, NOT A MATTER OF ELEVATION.***
 
-This is one of the larger behavioural changes in the port. **`sh`** used to require
-an elevated session — and **an ssh session can never be elevated**, so
-programmers, the people who actually need a shell, were the ones who could
-never have one.
+This is one of the larger behavioural changes in the port. In earlier builds of
+it **`sh`** required an elevated session — and **an ssh session can never be
+elevated**, so programmers, the people who actually need a shell, were the ones
+who could never have one.
 
 ### The list
 
@@ -175,11 +175,12 @@ empty list cannot lock the machine's own administrator out.
 
 ### Neither is available over the API
 
-**`sh`** and `OS.EXECUTE` are refused to a session that arrived over the API. They
-used to run **as the LocalSystem account**, so a remote client could run any
-command on the machine with full privilege — more than the administrator at the
-keyboard gets. An API session is no longer treated as an administrator for any
-purpose.
+**`sh`** and `OS.EXECUTE` are refused to a session that arrived over the API.
+**Before this port they were not**, and on Windows that was worse than it
+sounds: in earlier builds of this port they ran **as the LocalSystem account**,
+so a remote client could run any command on the machine with full privilege —
+more than the administrator at the keyboard gets. An API session is no longer
+treated as an administrator for any purpose.
 
 ## The full list of the 21
 

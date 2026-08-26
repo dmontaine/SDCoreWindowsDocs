@@ -68,8 +68,8 @@ never did.
 ## The port
 
 **`sd.conf` sets `APIPORT=4243`**, and the server accepts API connections on
-any network interface. It used to ship commented out and listen on `127.0.0.1`
-only, which is why an ssh tunnel was needed.
+any network interface. **Earlier builds of this port shipped it commented out
+and listened on `127.0.0.1` only**, which is why an ssh tunnel was needed.
 
 ***IF YOU TUNNEL, STOP.*** `ssh -L 4243:127.0.0.1:4243 user@host` still works
 but is no longer what the design expects, and it is not tested. Point the
@@ -165,9 +165,10 @@ condition cannot go unnoticed a second time.
 
 ## `sh` and `OS.EXECUTE` are refused over the API
 
-They used to work, **and they ran as the LocalSystem account** — so a remote
-client could run any command on the machine with full privilege, which is more
-than the administrator sitting at the keyboard gets.
+**Before this port they were not refused**, and on Windows that turned out to
+be worse than it sounds: **an API session ran as the LocalSystem account**, so
+a remote client could run any command on the machine with full privilege —
+more than the administrator sitting at the keyboard gets.
 
 An API session is no longer treated as an administrator for any purpose, which
 is what SD's own code already assumed and did not enforce.

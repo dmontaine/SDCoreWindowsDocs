@@ -19,6 +19,17 @@ of commands. ***These pages cover those changes.***
 If you have used OpenQM, or SD on Linux, much of SD Core will still be
 familiar: the same data model, the same query processor, the same BASIC.
 
+## What "used to" means in these pages
+
+These pages describe changes, so ***used to***, ***no longer*** and ***now***
+run all through them. **The comparison is against the code this version was
+made from** — SD on Linux, and ScarletDME and OpenQM 2.6.6 behind it.
+
+***IT NEVER MEANS AN EARLIER RELEASE OF SD CORE FOR WINDOWS***, because this is
+the first one. Some of the changes are Windows-only and have no Linux original
+to differ from; those say ***earlier builds of this port*** instead, so the two
+are never confused.
+
 ## The pages
 
 **There are fifteen, and they are numbered.** Read them in numerical order the

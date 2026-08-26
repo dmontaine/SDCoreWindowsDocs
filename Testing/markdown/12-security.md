@@ -23,8 +23,10 @@ ARE.***
 held by every administrator — that is the OpenQM weakness this exists to
 remove.
 
-**`sd <command>` no longer asks you to set a password**, which it used to do by
-walking into a prompt it could never be given input for.
+**`sd <command>` never asks you to set a password.** It runs and exits, so it
+is not a session anybody is being invited into. In earlier builds of this port
+it walked into a prompt it could never be given input for. See
+[Running SD](03-running-sd.html#the-command-line).
 
 ## Being an administrator
 

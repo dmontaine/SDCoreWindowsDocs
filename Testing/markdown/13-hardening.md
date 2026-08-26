@@ -211,9 +211,9 @@ Forward slashes always worked and still do. **Both are now read the same way.**
 
 ## Setting no password
 
-Both the end of the installer and SD's own prompt used to say that without a
-password you could not use ssh or the API, and stop there. **That was true and
-easy to read as "some things will not work".**
+Earlier builds of this port had both the end of the installer and SD's own
+prompt say that without a password you could not use ssh or the API, and stop
+there. **That was true and easy to read as "some things will not work".**
 
 ***IT IS STRONGER THAN THAT, AND BOTH NOW SAY SO:*** with no password the
 account can be used **only at that computer** — at the keyboard, or through

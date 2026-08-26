@@ -4,10 +4,10 @@ Subtitle: Running an SD command on a timer, and the permit list that decides whi
 ***A SCHEDULED TASK CAN RUN AN SD COMMAND, AND ONLY THE COMMANDS AN
 ADMINISTRATOR HAS NAMED FOR IT.***
 
-Typing a command after `sd` — `sd my.report` — used to need a session started
-with *Run as administrator*. A scheduled task does not run that way, so there
-was no way to have SD do anything on a timer without handing the job
-administrator rights.
+Typing a command after `sd` — `sd my.report` — needed a session started with
+*Run as administrator* in earlier builds of this port. A scheduled task does
+not run that way, so there was no way to have SD do anything on a timer without
+handing the job administrator rights.
 
 There are two ways past that now:
 
@@ -38,6 +38,14 @@ line.
 **It is keyed by the account you end up in**, not by the Windows account name,
 and the two are usually the same. `sd -a<name>` cannot be used to reach
 somebody else's list: that form is refused unless the account is your own.
+
+***ANY ACCOUNT CAN BE GIVEN A LIST, WHATEVER ITS TIER*** — standard, programmer
+or administrator. The account type decides nothing here; the administrator's
+list does.
+
+**A standard account cannot write its own paragraph, though.** **`ed`** is not
+in the standard tier, so the paragraph the job runs has to be put there by
+somebody who can edit — see [Account types](05-account-types.html).
 
 Both shapes of record are read — one name per line, and a multivalued field 1 —
 so a record written with **`ed`** and a record written by a program agree. A name
@@ -93,15 +101,22 @@ session:
 
 One command name per line. Create the record if the account has none.
 
-**4. Create the scheduled task**, running the SD binary with the command after
-it:
+**4. Create the scheduled task.** Windows Task Scheduler runs it; two fields
+carry the whole of it:
 
-```
-"C:\Program Files\SD\usr\bin\sd.exe" my.report
-```
+| | |
+|---|---|
+| Program/script | `C:\Program Files\SD\usr\bin\sd.exe` |
+| Add arguments | `my.report` |
 
 The task runs as a Windows account, and that account needs a matching SD
-account — that is the whole of the sign-in.
+account — that is the whole of the sign-in. There is no password to configure
+anywhere in SD for it.
+
+***DO NOT TICK "RUN WITH HIGHEST PRIVILEGES".*** It is not needed, and the
+whole point of `batch.jobs` is a job that runs without administrator rights. A
+task that is elevated passes the gate on elevation alone and never consults the
+list, so it would also be a job nobody had approved a command for.
 
 ***WORTH REPORTING:*** accounts that **`create.account`** makes are denied
 interactive logon at this machine on purpose, and whether Task Scheduler
