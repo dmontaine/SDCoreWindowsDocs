@@ -5,21 +5,22 @@ There is no compiler to run and no dependency to resolve. SD Core for Windows
 ships as a single `sd-setup-W1.0-0.exe`, carries its own runtime beside
 `sd.exe`, and installs in one pass.
 
-This is the largest single difference from the Linux original. `installsdai.sh`
-existed because ScarletDME targeted four distributions and the end user had to
-compile; Windows has one target and one ABI, so none of that transfers.
+This is the largest single difference from the regular SD version — that, and
+the fact that this version is for Windows and not Linux. In regular SD,
+`installsdai.sh` existed because ScarletDME targeted four distributions and the
+end user had to compile; Windows has one target and one ABI, so none of that
+transfers.
 
 ## Before you start
 
 **You need an elevated session.** The installer creates local groups, sets
-file permissions, registers a service and assigns user rights. None of that is
-possible from a filtered token.
+file permissions, registers a service and assigns user rights. You can start
+the install from a normal console session — you will get an elevation prompt.
 
 ***SD CANNOT BE INSTALLED SILENTLY.*** This is deliberate, not a missing
 feature. The installer asks questions whose answers cannot be defaulted safely
 — which kind of installation, whether to expose ports, and the password on the
-account it makes for you. A silent install produced a system with no password
-on any account, and the ability to do it was removed.
+account it makes for you.
 
 **The installer does not ask where to put SD.** Both roots are fixed. See
 [What lands where](#what-lands-where).
@@ -33,10 +34,10 @@ The installer refuses to start, and changes nothing, if it finds:
   running, or
 - Windows' own ssh server with settings somebody has already changed.
 
-It names what it found — the service and its path, or the directive that was
-added — so you can decide what to do. **Remove the other ssh server, or put the
-ssh configuration back the way Windows shipped it, and run the installer
-again.**
+It tells you what it finds — the service and its path, or the directive that
+was added — so you can decide what to do. You may **remove the other ssh
+server, or put the ssh configuration back the way Windows shipped it, and run
+the installer again.**
 
 Why it is this strict: accounts SD creates cannot log in to Windows at all, so
 ssh is one of only two ways they reach the machine — and SD configures the ssh
@@ -62,20 +63,19 @@ install. Upgrading keeps whatever the computer already is.
 | `create.account group` | works | works |
 | scp / sftp | stop working, for everyone | **go on working** |
 
-***NOTHING ELSE IS CUT DOWN.*** Same SD, same language, same database, same
-commands. What a stand-alone installation lacks is the ways in from somewhere
-else.
+***NOTHING ELSE IS CUT DOWN.*** Same SD Core for Windows, same language, same
+database, same commands. What a stand-alone installation lacks is the ways in
+from somewhere else.
 
 **Why `create.account user` is refused on a stand-alone install** rather than
 quietly making something useless: the Windows account it would create is denied
 the console and Remote Desktop because it is meant to arrive over ssh. With no
-ssh server, it could sign in nowhere at all. You get message 10100 and no
-account is made.
+ssh server, it could sign in nowhere at all. You get a warning and no account
+is made.
 
-**To change your mind you must uninstall and install again.** Nothing inside SD
-converts one into the other, and deleting the marker file SD leaves in `sdsys`
-does not do it either — no ssh server would be installed and the API would
-still be off.
+**To change your mind — stand-alone to full, or the other way — you must
+uninstall and install again.** Nothing inside SD converts one into the
+other.
 
 ## What lands where
 
@@ -97,16 +97,12 @@ executable relocates the POSIX root to the DLL's directory minus two
 components, so only that depth puts `/` on `C:\Program Files\SD\`. Do not move
 the binaries.
 
-**The DLLs ship beside `sd.exe` on purpose.** Windows searches the executable's
-own directory before `PATH`, which avoids Git for Windows's rival
-`msys-2.0.dll` being picked up — a failure that makes SD report *"SD has not
-been started"* while it is running.
+**The DLLs ship beside `sd.exe` on purpose.** Do not change their location.
 
 ### Configuration
 
 Server and client both read `SD_CONFIG`, then fall back to
-`%ProgramData%\SD\sd.conf`. `SCARLET_CONFIG` is gone, and so is the
-`sd.ini`-in-`C:\Windows` fallback.
+`%ProgramData%\SD\sd.conf`.
 
 `sd.conf` is installed `onlyifdoesntexist` and marked never to uninstall, so
 your edits survive both upgrade and removal.
@@ -171,10 +167,7 @@ to skip past it silently.
 
 ## Upgrading
 
-**Installing a new release over an existing one now updates your database.
-Until 25 Aug 2026 it silently did not** — the installer left
-`C:\ProgramData\SD` completely alone if it was already there, so a fix could be
-released and never reach a machine that already had SD, with nothing to say so.
+**Installing a new release over an existing one updates your database.**
 
 | Replaced | Kept, and not touched |
 |---|---|

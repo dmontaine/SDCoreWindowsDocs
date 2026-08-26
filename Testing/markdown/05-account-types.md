@@ -107,8 +107,8 @@ token, and an ordinary SD session has a filtered one. Account creation works
 from the installer and from an elevated terminal, and not from a normal
 session.
 
-**`create.account user` is refused on a stand-alone installation**, with
-message 10100. See [Installing SD Core](01-installation.html#the-two-kinds-of-installation).
+**`create.account user` is refused on a stand-alone installation**, with a
+warning saying why. See [Installing SD Core](01-installation.html#the-two-kinds-of-installation).
 
 ## Group accounts
 
