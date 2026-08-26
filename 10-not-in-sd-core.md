@@ -1,0 +1,184 @@
+Title: Not in SD Core
+Subtitle: What has been removed, why, and what to use instead.
+
+This page exists so you do not spend time hunting for something that is not
+there. **It names what is gone and what to use in its place; it does not
+document the removed features themselves.**
+
+Everything here was in OpenQM, in ScarletDME, or in SD on Linux, and is not in
+SD Core for Windows.
+
+> **If you had a use for any of these, say so.** Several were removed on the
+> reasoning that nothing needed them. That reasoning is worth testing against
+> real use, and for some of them an administrator can put the verb back into an
+> account's VOC — the programs behind a few of them are still installed.
+
+## Editors
+
+| Gone | Use instead |
+|---|---|
+| `sed` — the full-screen editor | **`ed`**, the line editor |
+| `update.record` — the full-screen record editor | `ed` |
+| `modify` — the full-screen record editor from OpenQM | `ed` |
+| `micro` — launched an external editor | — |
+
+***THERE IS NO FULL-SCREEN EDITOR IN SD CORE. `ed` IS THE EDITOR.***
+
+`modify` is received by **no account of any tier**. `micro` went for the same
+reason `sh` is restricted: it was a way out of SD onto the machine underneath
+it.
+
+**`modify.account` and `modify.password` are not affected.** They are different
+verbs with different programs behind them, and both remain administrator
+commands.
+
+> `ed` was never affected by the keyboard faults that hit the full-screen
+> editors — it reads whole lines and goes through the command-line editor. **If
+> backspace is ever reported broken in `ed`, that is a new fault, not an old
+> one returning.**
+
+## The PROC language
+
+`PROC` is gone. **A VOC item of type `PQ` now reports that PROC is not
+supported instead of running.** Your `PQ` records are left alone — it is the
+interpreter that has gone, not the records.
+
+***DO NOT CONFUSE PROC WITH THE QUERY PROCESSOR.*** `LIST`, `COUNT`, `SELECT`
+and `SORT` are unaffected. They are a different thing despite the similar name.
+
+## SDNet — remote file access
+
+SD could open a file held on another SD server by putting `server;file` in a
+VOC entry. **That is gone. A VOC entry containing a semicolon is now simply a
+file name that does not resolve.**
+
+`SET.SERVER`, `DELETE.SERVER` and `LIST.SERVERS` have gone with it. **Two of
+those three had never worked in any case** — their VOC entries were malformed.
+
+**Why it went:** each server's user name and password were kept in `sd.conf`,
+obscured with a simple letter substitution that is not encryption, and the
+session ran over port 4245. There was also no way to switch the feature off —
+the `NETFILES` setting was read at start-up and then never consulted.
+
+***THE API IS NOT AFFECTED.*** `SDClient` and the remote API are a separate
+mechanism and are unchanged. See [API access](06-api-access.html).
+
+**`NETFILES` is still accepted in `sd.conf`** and does nothing, so an existing
+configuration file will not stop SD starting.
+
+## Virtual file systems
+
+***SD HAS NEVER BEEN ABLE TO OPEN A VIRTUAL FILE SYSTEM.*** Nothing in the
+file-opening code ever recognised a `VFS:` pathname. What the language carried
+was the *outline* of one, and none of it could be reached: a VOC F-pointer
+written as `VFS:something` was reported as a virtual file system, passed the
+name resolver, and then failed to open with an unrelated error.
+
+All of it has been removed, so the language no longer offers a feature it
+cannot perform.
+
+**These names are no longer defined, and a program mentioning one will no
+longer compile:**
+
+```
+FL$TYPE.VFS      SYSCOM KEYS.H
+ER$VFS.NAME      SYSCOM ERR.H
+ER$VFS.CLASS     SYSCOM ERR.H
+ER$VFS.NGLBL     SYSCOM ERR.H
+```
+
+`FTYPE` no longer returns `VFS` for a `VFS:` pathname. **Error numbers 3038,
+3039 and 3040 are retired and will not be given a new meaning.**
+
+***IF ONE OF YOUR PROGRAMS REFERS TO ANY OF THESE, it was testing for a state
+SD could not reach, and the test can be deleted.***
+
+Two unreachable pieces went with it: `_EXTENDLIST`, installed into the SDSYS
+`GPL.BP` file and loaded at every start-up although nothing ever called it; and
+the debugger's `(Networked)` file type, which no file could report once SDNet
+was gone.
+
+## Language and locale
+
+`NLS`, `SET.LANGUAGE` and `LOAD.LANGUAGE` are removed. **SD Core is English
+only**, and these were the only callers of the message-language machinery.
+
+## Embedded Python
+
+Dropped, and it is a statement about what SD Core is for rather than a
+packaging choice: the intended use is as a back end data store reached through
+the API.
+
+The C sources, the Makefile flags, 20 `GPL.BP/PY_*` programs,
+`SYSCOM/SDPYFUNC.H`, the `SD_Py*` error codes and the SDEXT keys have all gone.
+
+## Account and configuration items
+
+| Gone | Notes |
+|---|---|
+| `RDPACCOUNT`, `NO.RDPACCOUNT` | typing it now stops `create.account` with *Unexpected token (RDPACCOUNT)* and makes no account |
+| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. A `CREATUSR` line in `sd.conf` is still accepted and ignored |
+| `umask` | removed from every tier. It controls POSIX file-mode bits, which Windows does not use for security |
+| Field 4 of an `ACCOUNTS` record | the list of accounts allowed in. `list.grants` answers that question now |
+
+***ACCOUNTS ALREADY CREATED WITH `RDPACCOUNT` KEEP THEIR WINDOWS SIGN-IN.***
+Nothing goes round and takes it back, because SD did not record which accounts
+they were. If you have any, either delete and recreate them, or add them to the
+restricted group by hand:
+
+```
+net localgroup sdsshonly <name> /add
+```
+
+## The five programs SD used to ship into the SDSYS BP file
+
+`PCL` and `PCL.GRID` (printer control), `U0032` and `U50BB` (user exits) and
+`VFS.CLS` (a template class module) are no longer installed there.
+
+**PCL is unaffected as a printer feature** — the `PCL` keyword and the
+catalogued `PCL` routine are both still there. What has gone is a second, older
+copy of the source sitting in `BP`.
+
+***SD NOW SHIPS NOTHING INTO THE SDSYS BP FILE.*** It is created empty and is
+yours — and because of that, **`bp` and its compiled objects are now preserved
+when you upgrade**, alongside your accounts and the rest of your own data.
+
+## Things that were never features, and are not coming
+
+These are not removals. They are stated here because a tester will otherwise
+assume they exist.
+
+***MULTI-USER ACCESS OVER REMOTE DESKTOP IS NOT SUPPORTED.*** It follows from
+the access model and is settled. One Windows setting covers Remote Desktop and
+the physical keyboard together, so allowing one allows the other. A verb that
+lifted the restriction was built and deleted the next day for exactly that
+reason. If you want it, you want Windows Server, RDP client access licences and
+probably a commercial product built for it. See
+[ssh access](05-ssh-access.html).
+
+***SD CANNOT BE INSTALLED SILENTLY.*** `/SILENT` and `/VERYSILENT` are refused,
+with a message saying why, and there is no switch to override it. Installing
+ends by asking for a password and a silent install has nobody to ask — it used
+to finish with **no password on any account** and say nothing about it.
+Unattended deployment is not supported.
+
+***scp AND sftp DO NOT WORK INTO A FULL INSTALLATION***, for anybody,
+administrators included. This is the accepted cost of putting every ssh session
+straight into SD. **Pull files rather than pushing them** — see
+[ssh access](05-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
+stand-alone installation is unaffected.
+
+***THE CLEARTEXT API LOGIN IS GONE***, and a client that still sends a password
+in clear is refused outright. See [API access](06-api-access.html).
+
+## Linux-only mechanisms
+
+The Linux privilege model does not survive the move and has been replaced
+rather than emulated. Most of this is invisible unless you are reading source,
+but two consequences show:
+
+- **`chmod` does nothing.** The MSYS2 mount is `noacl`, so file-mode bits are
+  not a security control here. Windows ACLs are, and SD sets them.
+- **There is no `sdsys` uid to drop to.** Privilege is elevation, and the
+  operating system's groups are the whole of the authorisation model. See
+  [Security](08-security.html).

@@ -1,0 +1,32 @@
+# SD Core for Windows documentation
+#
+# THE MARKDOWN IS THE SOURCE. The .html and .pdf beside it are generated:
+#
+#   python  <sd4windows>\sdb_ai\sd64\gplbld\mkdoc.py --in . --out .
+#   powershell -File <sd4windows>\sdb_ai\sd64\gplbld\mkpdf.ps1 -In .
+#
+# WHY THEY START IGNORED, given this repository deliberately has no
+# no-binaries rule (owner, 26 Aug 2026).  Permission is not the same as
+# advisability, and the two directions are not equally reversible:
+#
+#   - ignored now, tracked later  ->  delete two lines, commit.  Costs nothing.
+#   - tracked now, ignored later  ->  the binaries stay in history for ever.
+#
+# So this is the direction that keeps the choice open, not a ruling on it.
+# The cost of tracking them is real: each PDF is ~200 KB, so a one-word fix to
+# a Markdown page would commit a quarter-megabyte of unreadable diff, and the
+# repository would grow monotonically.
+#
+# THREE OPTIONS, and it is the owner's call - question 16 of
+# QUESTIONS-2026-08-26.md:
+#   a. leave this as it is and attach the PDFs to a GitHub release
+#   b. delete the *.pdf line to track the deliverable, so a clone needs no
+#      toolchain
+#   c. delete both lines - the HTML is text and diffs readably, and a PDF is
+#      one browser print away from it
+*.html
+*.pdf
+
+# Windows shell litter
+Thumbs.db
+desktop.ini
