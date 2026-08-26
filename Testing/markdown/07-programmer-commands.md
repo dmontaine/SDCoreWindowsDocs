@@ -75,6 +75,29 @@ Where a machine does not have one, the SD installer installs it; if that could
 not be done, the verb says so and names the command that installs it.
 `C:\ProgramData\SD\install-editors.log` records what the installer found.
 
+***ONLY `micro` HIGHLIGHTS SD BASIC.*** Microsoft Edit has no syntax
+highlighting at all, which is the one real difference between the two verbs:
+
+| | |
+|---|---|
+| **`micro`** | statements, reserved words, intrinsic functions, `@variables`, `$directives`, labels, strings, numbers and comments |
+| **`edit`** | plain text |
+
+**It applies to a `bp` record and to nothing else.** SD names the working copy
+so that micro can recognise the language — a record edited out of any other
+file is plain text, which is the honest answer for a VOC entry or a data
+record.
+
+> **The word lists are generated from the compiler.** They come out of
+> `BCOMP`'s own tables — **218 statements, 37 reserved words and 176 intrinsic
+> functions** — so the highlighting cannot drift from the language. **If a name
+> you expect is not coloured, that is worth reporting**: it means the two have
+> come apart, which is exactly what generating them was meant to prevent.
+
+**Nothing is installed into your profile.** SD ships the rules with itself and
+points micro at them, so they work for every account on the machine including
+the ones that cannot log in to Windows.
+
 **`ed` is unaffected and is still there.** Nothing has been taken away.
 
 ### What the editors are good for, and what they are not
