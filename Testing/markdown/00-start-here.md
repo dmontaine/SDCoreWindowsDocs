@@ -3,35 +3,44 @@ Subtitle: What this set is, who it is for, and what it deliberately leaves out.
 
 You already know MultiValue. This set does not teach it.
 
-SD Core for Windows is a port of ScarletDME, which is a fork of OpenQM. If you
-have used OpenQM — or SD on Linux — almost everything here will be familiar:
-the same data model, the same query processor, the same BASIC. **These pages
-cover only what is different**, so you can get a test system running and know
-where the behaviour has changed under you.
+SD Core for Windows is a version of SD, with elements found in the main SD
+version and in ScarletDME. ScarletDME was a fork of the original GPL release of
+OpenQM 2.6.6.
 
-Anything true of stock OpenQM is out of scope. If a verb is not mentioned in
-this set, assume it behaves as you expect.
+***THAT LINEAGE MATTERS WHEN YOU GO LOOKING FOR DOCUMENTATION.*** Not all the
+features of the **commercial** OpenQM 2.6.6 were in the GPL release, and **no
+documentation specific to the GPL version was ever released**. So even the
+OpenQM documents are not authoritative here.
+
+**The OpenQM 2.6.6 documents can be used as a reference**, but SD Core has
+additions, changes and deletions — of features, of structure, of security and
+of commands. ***These pages cover those changes.***
+
+If you have used OpenQM, or SD on Linux, much of SD Core will still be
+familiar: the same data model, the same query processor, the same BASIC.
 
 ## The pages
 
-**Read them in this order the first time.** After that they stand alone.
+**There are fifteen, and they are numbered.** Read them in numerical order the
+first time; after that they stand alone.
 
-| | |
-|---|---|
-| [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
-| ***[Your first thirty minutes](02-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
-| [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
-| [Scheduled jobs](04-scheduled-jobs.html) | Running an SD command on a timer, and the permit list that decides which ones |
-| [Account types](05-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
-| [Administrator commands](06-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
-| [Programmer commands](07-programmer-commands.html) | The development verbs a standard account does not get |
-| [ssh access](08-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
-| [API access](09-api-access.html) | The client API, its port, and the login that replaced the old one |
-| [Client distribution](10-client-distribution.html) | Which library an application needs, and the one file no installer can update |
-| [Lower case](11-lower-case.html) | Case in commands, file names, record ids and account names |
-| [Security](12-security.html) | The identity model, and what protects the database |
-| [Other hardening](13-hardening.html) | Auditing, the shell permit list, and the rest |
-| [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
+| | | |
+|---|---|---|
+| **00** | Start here | this page — what the set is and what it leaves out |
+| **01** | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
+| **02** | ***[Your first thirty minutes](02-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
+| **03** | [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
+| **04** | [Scheduled jobs](04-scheduled-jobs.html) | Running an SD command on a timer, and the permit list that decides which ones |
+| **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
+| **06** | [Administrator commands](06-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
+| **07** | [Programmer commands](07-programmer-commands.html) | The development verbs a standard account does not get |
+| **08** | [ssh access](08-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
+| **09** | [API access](09-api-access.html) | The client API, its port, and the login that replaced the old one |
+| **10** | [Client distribution](10-client-distribution.html) | Which library an application needs, and the one file no installer can update |
+| **11** | [Lower case](11-lower-case.html) | Case in commands, file names, record ids and account names |
+| **12** | [Security](12-security.html) | The identity model, and what protects the database |
+| **13** | [Other hardening](13-hardening.html) | Auditing, the shell permit list, and the rest |
+| **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 
 ## The five things most likely to surprise you
 
