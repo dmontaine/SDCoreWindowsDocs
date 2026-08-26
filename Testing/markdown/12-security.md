@@ -65,7 +65,7 @@ model implied one the filesystem never enforced. This states the real position
 instead of dressing it up.
 
 **Passwords still matter for the API**, which is a separate door and does
-require one — see [API access](08-api-access.html).
+require one — see [API access](09-api-access.html).
 
 ## What actually protects the database
 
@@ -86,7 +86,7 @@ group, to administrators and to the system, **and to nobody else**.
 
 Before this, every SD user could read and rewrite every other user's account
 files from Explorer or a command prompt — outside SD, so none of SD's own
-permission checks applied. SD has always refused to let you `logto` an account
+permission checks applied. SD has always refused to let you **`logto`** an account
 you are not a member of; this makes the files agree with that.
 
 **Nothing you type changes, and your own account is unaffected** — you are a
@@ -115,7 +115,7 @@ phantom. The commands that *do* write them are already administrator commands
 and are unaffected.
 
 ***`sdsys\$ipc` IS DELIBERATELY UNCHANGED.*** Every session writes to it, and
-it is how a `phantom` is given its command.
+it is how a **`phantom`** is given its command.
 
 The global catalogue and the pcode library are locked the same way.
 
@@ -211,4 +211,4 @@ people over ssh should be told that plainly.
 **SD has no file-level access control of its own** on the console and ssh
 paths. The one place a path gate does exist is the API, where a session is
 confined to the account it stands in — see
-[API access](08-api-access.html#a-session-is-confined-to-its-own-account).
+[API access](09-api-access.html#a-session-is-confined-to-its-own-account).

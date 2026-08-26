@@ -18,21 +18,21 @@ SD Core for Windows.
 | Gone | Use instead |
 |---|---|
 | `sed` — the full-screen editor | **`ed`**, the line editor |
-| `update.record` — the full-screen record editor | `ed` |
-| `modify` — the full-screen record editor from OpenQM | `ed` |
+| `update.record` — the full-screen record editor | **`ed`** |
+| `modify` — the full-screen record editor from OpenQM | **`ed`** |
 | `micro` — launched an external editor | — |
 
 ***THERE IS NO FULL-SCREEN EDITOR IN SD CORE. `ed` IS THE EDITOR.***
 
 `modify` is received by **no account of any tier**. `micro` went for the same
-reason `sh` is restricted: it was a way out of SD onto the machine underneath
+reason **`sh`** is restricted: it was a way out of SD onto the machine underneath
 it.
 
 **`modify.account` and `modify.password` are not affected.** They are different
 verbs with different programs behind them, and both remain administrator
 commands.
 
-> `ed` was never affected by the keyboard faults that hit the full-screen
+> **`ed`** was never affected by the keyboard faults that hit the full-screen
 > editors — it reads whole lines and goes through the command-line editor. **If
 > backspace is ever reported broken in `ed`, that is a new fault, not an old
 > one returning.**
@@ -61,7 +61,7 @@ session ran over port 4245. There was also no way to switch the feature off —
 the `NETFILES` setting was read at start-up and then never consulted.
 
 ***THE API IS NOT AFFECTED.*** `SDClient` and the remote API are a separate
-mechanism and are unchanged. See [API access](08-api-access.html).
+mechanism and are unchanged. See [API access](09-api-access.html).
 
 **`NETFILES` is still accepted in `sd.conf`** and does nothing, so an existing
 configuration file will not stop SD starting.
@@ -116,10 +116,10 @@ The C sources, the Makefile flags, 20 `GPL.BP/PY_*` programs,
 
 | Gone | Notes |
 |---|---|
-| `RDPACCOUNT`, `NO.RDPACCOUNT` | typing it now stops `create.account` with *Unexpected token (RDPACCOUNT)* and makes no account |
-| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. A `CREATUSR` line in `sd.conf` is still accepted and ignored |
+| `RDPACCOUNT`, `NO.RDPACCOUNT` | typing it now stops **`create.account`** with *Unexpected token (RDPACCOUNT)* and makes no account |
+| `CREATUSR` | **`config`** no longer lists it; `config('CREATUSR')` returns nothing. A `CREATUSR` line in `sd.conf` is still accepted and ignored |
 | `umask` | removed from every tier. It controls POSIX file-mode bits, which Windows does not use for security |
-| Field 4 of an `ACCOUNTS` record | the list of accounts allowed in. `list.grants` answers that question now |
+| Field 4 of an `ACCOUNTS` record | the list of accounts allowed in. **`list.grants`** answers that question now |
 
 ***ACCOUNTS ALREADY CREATED WITH `RDPACCOUNT` KEEP THEIR WINDOWS SIGN-IN.***
 Nothing goes round and takes it back, because SD did not record which accounts
@@ -154,7 +154,7 @@ the physical keyboard together, so allowing one allows the other. A verb that
 lifted the restriction was built and deleted the next day for exactly that
 reason. If you want it, you want Windows Server, RDP client access licences and
 probably a commercial product built for it. See
-[ssh access](07-ssh-access.html).
+[ssh access](08-ssh-access.html).
 
 ***SD CANNOT BE INSTALLED SILENTLY.*** `/SILENT` and `/VERYSILENT` are refused,
 with a message saying why, and there is no switch to override it. Installing
@@ -165,11 +165,11 @@ Unattended deployment is not supported.
 ***scp AND sftp DO NOT WORK INTO A FULL INSTALLATION***, for anybody,
 administrators included. This is the accepted cost of putting every ssh session
 straight into SD. **Pull files rather than pushing them** — see
-[ssh access](07-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
+[ssh access](08-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
 stand-alone installation is unaffected.
 
 ***THE CLEARTEXT API LOGIN IS GONE***, and a client that still sends a password
-in clear is refused outright. See [API access](08-api-access.html).
+in clear is refused outright. See [API access](09-api-access.html).
 
 ## Linux-only mechanisms
 
@@ -181,4 +181,4 @@ but two consequences show:
   not a security control here. Windows ACLs are, and SD sets them.
 - **There is no `sdsys` uid to drop to.** Privilege is elevation, and the
   operating system's groups are the whole of the authorisation model. See
-  [Security](11-security.html).
+  [Security](12-security.html).

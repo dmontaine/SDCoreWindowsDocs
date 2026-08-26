@@ -21,7 +21,7 @@ underneath: the login protocol, the port, the identity a session runs as, and
 what it is allowed to open.**
 
 > **The account's tier and its access route are independent.** Tier decides
-> which verbs are in the VOC ([Account types](04-account-types.html)); `ssh` /
+> which verbs are in the VOC ([Account types](05-account-types.html)); `ssh` /
 > `api` / `both` / `none` decides how the account is reached. A standard
 > account with API access, a programmer with ssh only, and an administrator
 > with both are all normal.
@@ -100,13 +100,13 @@ A caller must clear three gates, in this order:
 
 1. **Complete the SCRAM exchange** against a password held for that account —
    so **an account with no password cannot connect at all**.
-2. **Be a member of the `sdapi` group**, which no account joins unless you put
-   it there. `create.account user fred api` or `... both` does that; `ssh` or
-   `none` does not.
+2. **Be a member of the `sdapi` group**, which an account joins only when you
+   give it API access. `create.account user fred api` or `... both` does that;
+   `ssh` or `none` does not.
 3. **Pass the account's own group check.**
 
 ***FAILED API LOGINS ARE WRITTEN TO THE AUDIT TRAIL***, with the reason. See
-[Other hardening](12-hardening.html).
+[Other hardening](13-hardening.html).
 
 ## A session is confined to its own account
 

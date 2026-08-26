@@ -23,11 +23,11 @@ thing entirely — a shared place, not a person.
 
 ### Standard — 77 verbs
 
-What an application needs and no more: query and list (`select`, `list`,
-`get.list` and family), spool and print, session and environment (`logto`,
-`date`, `who`, `set`), screen and message, prompt and input state, and eight
-read-only inspectors — `search`, `list.diff`, `list.item`, `list.common`,
-`list.vars`, `report.src`, `report.style`, `format`.
+What an application needs and no more: query and list (**`select`**, **`list`**,
+**`get.list`** and family), spool and print, session and environment (**`logto`**,
+**`date`**, **`who`**, **`set`**), screen and message, prompt and input state, and eight
+read-only inspectors — **`search`**, **`list.diff`**, **`list.item`**, **`list.common`**,
+**`list.vars`**, **`report.src`**, **`report.style`**, **`format`**.
 
 Everything an application built on SD invokes, and nothing that edits code or
 data in bulk.
@@ -36,14 +36,14 @@ data in bulk.
 
 The development set: the compilers, the editor, the cataloguer, the file and
 index definition verbs, the bulk record editors and the process introspection
-verbs. See [Programmer commands](06-programmer-commands.html) for what each one
+verbs. See [Programmer commands](07-programmer-commands.html) for what each one
 is for.
 
 ### The counts are arithmetic, not observation
 
 Installed `NEWVOC` holds 394 names, of which `%t` is a dynamic-file artefact
 and the two tier lists are never copied — so **391 records reach a full VOC**.
-`create.account` then adds four of its own (`$command.stack`, `$hold`,
+**`create.account`** then adds four of its own (`$command.stack`, `$hold`,
 `$savedlists`, `bp`):
 
 ```
@@ -58,7 +58,7 @@ reporting.
 ### Administrator — 21 more
 
 Account and grant administration, system-wide state, and the shell escapes. See
-[Administrator commands](05-administrator-commands.html).
+[Administrator commands](06-administrator-commands.html).
 
 > ***NONE OF THE THREE IS A WALL.*** An administrator can copy any verb into
 > any account's VOC afterwards. **The reduced VOC is the posture an account
@@ -80,7 +80,7 @@ create.account other <name> <pathname> {no.query}
 ### One of `ssh`, `api`, `both`, `none` is required
 
 ***THERE IS NO DEFAULT, ON PURPOSE.*** An account that should only ever be
-reached with `logto` says `none` and means it. The old silent behaviour — ssh
+reached with **`logto`** says `none` and means it. The old silent behaviour — ssh
 yes, API no — could not tell that apart from somebody who had not thought about
 it.
 
@@ -122,7 +122,7 @@ modify.account add payroll fred
 ```
 
 Reach it with `logto payroll`, or through an F pointer. On a stand-alone
-installation, `logto` into a group account from a session run as administrator.
+installation, **`logto`** into a group account from a session run as administrator.
 
 ## Sharing a user account
 
@@ -144,13 +144,13 @@ account's record, and **Windows fixes group membership when you sign in**. So:
 
 Both verbs print that reminder every time.
 
-`list.grants` also shows the account's own user, which is always there and is
+**`list.grants`** also shows the account's own user, which is always there and is
 not a grant. It is listed anyway so that what you see matches the Windows group
 it is reporting.
 
 > The old field 4 of an `ACCOUNTS` record — a list of accounts allowed in — has
 > been removed, and `list accounts` no longer shows a *Granted to* column.
-> `list.grants` answers that question now.
+> **`list.grants`** answers that question now.
 
 ## Changing an account afterwards
 
@@ -178,7 +178,7 @@ so there is nothing to *set* for the first time.
 
 ## Deleting an account
 
-`delete.account` **asks once, then removes everything.** The single question
+**`delete.account`** **asks once, then removes everything.** The single question
 names exactly what will go, including the Windows account when there is one to
 remove.
 
@@ -189,7 +189,7 @@ shorter wording in that case rather than promising something it will not do.
 
 **1. `update.account` never takes a verb away.** SD only ever *adds* records to
 a VOC at an update. An account created before a verb was withdrawn keeps it, and
-running `update.account` will not remove it.
+running **`update.account`** will not remove it.
 
 **2. `sdusers` membership needs a fresh logon.** Same reason as grants. After
 being added to the group, sign out of Windows and back in, or you cannot read

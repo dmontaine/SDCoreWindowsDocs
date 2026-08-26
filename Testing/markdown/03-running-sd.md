@@ -86,13 +86,13 @@ system that is already up.
 
 ## SD will not start a second time inside itself
 
-If you leave SD with `sh` and then type `sd` in that shell, it says so and
+If you leave SD with **`sh`** and then type `sd` in that shell, it says so and
 returns you to the session you already have.
 
 Worth knowing alongside it: **`sh` itself needs either an elevated session or a
 `yes` in `os.users`**, so an ordinary account cannot leave SD this way at all,
 and one reached over ssh never can. See
-[Administrator commands](05-administrator-commands.html#the-shell-escapes-sh-and).
+[Administrator commands](06-administrator-commands.html#the-shell-escapes-sh-and).
 
 ## The command line
 
@@ -114,13 +114,12 @@ sd --help           this summary
 
 **`sd -a<name>` is refused unless `<name>` is your own account.** An
 administrator no longer opens somebody else's account without ever being in
-their own — they arrive in their own and reach the rest with `logto`, which is
+their own — they arrive in their own and reach the rest with **`logto`**, which is
 where SD checks whether they are allowed in.
 
 **`sd <command>` needs an elevated session**, or an entry for that account in
 `batch.jobs`. That is what makes scheduled jobs possible without handing them
-administrator rights — see
-[Other hardening](12-hardening.html#scheduled-jobs).
+administrator rights — see [Scheduled jobs](04-scheduled-jobs.html).
 
 **`sd <command>` no longer walks into a password prompt it cannot answer.** It
 used to reach the *"needs a password"* prompt and block for ever on a read that

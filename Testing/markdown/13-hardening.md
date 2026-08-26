@@ -1,18 +1,18 @@
 Title: Other hardening
-Subtitle: The catalogue and pcode locks, scheduled jobs, the logs, line endings, and the rest of the smaller changes.
+Subtitle: The catalogue and pcode locks, the logs, line endings, and the rest of the smaller changes.
 
 Everything on this page is a change you may notice while testing, grouped by
 what it touches. The identity model and the file permissions are on
-[Security](11-security.html); this is the remainder.
+[Security](12-security.html); this is the remainder.
 
 ## The global catalogue
 
 ***ADDING TO OR REMOVING FROM THE SYSTEM-WIDE CATALOGUE NOW REQUIRES
 ADMINISTRATOR RIGHTS, WHICHEVER WAY YOU ASK FOR IT.***
 
-`catalog` already required them for the spelled-out form,
+**`catalog`** already required them for the spelled-out form,
 `catalog bp myprog global`. **It did not require them for the form most people
-use** — putting a `*`, `!`, `_` or `$` in front of the name. `delete.catalog`
+use** — putting a `*`, `!`, `_` or `$` in front of the name. **`delete.catalog`**
 required nothing at all, by either route.
 
 This matters because the system-wide catalogue holds the programs SD runs for
@@ -28,7 +28,7 @@ catalog bp myprog          private catalogue, this account
 catalog bp myprog local    this account's VOC
 ```
 
-Both still work, in any account you are allowed to `logto` into. The only thing
+Both still work, in any account you are allowed to **`logto`** into. The only thing
 an ordinary user can no longer do is catalogue a program whose name starts with
 `*`, `!`, `_` or `$` — those characters mean *system-wide*. Name it without
 one.
@@ -55,31 +55,12 @@ and that is already elevated. **If you have anything that writes into
 
 ## Scheduled jobs
 
-***A SCHEDULED TASK CAN NOW RUN AN SD COMMAND, AND ONLY THE COMMANDS AN
-ADMINISTRATOR HAS NAMED FOR IT.***
+A scheduled task can run an SD command without administrator rights, and only
+the commands an administrator has named for it. The permit list is the SDSYS
+file `batch.jobs`, locked read-only to SD users by the same control as the
+[`os.users` list](06-administrator-commands.html#the-list).
 
-Typing a command after `sd` — `sd my.report` — used to need a session started
-with *Run as administrator*. A scheduled task does not run that way, so there
-was no way to have SD do anything on a timer without handing the job
-administrator rights.
-
-There are now two ways past that:
-
-| | |
-|---|---|
-| an elevated session | runs anything, exactly as before |
-| anything else | runs what is listed for its account in the SD system file `batch.jobs` |
-
-**Only an administrator can change `batch.jobs`.** One record per account, one
-command name on each line.
-
-The command **must be a single name with nothing after it**, and it must be a
-paragraph or a sentence in that account. ***THERE IS NO PASSWORD ANYWHERE IN
-THIS*** — the job signs in as its own Windows account and SD puts it in the
-matching SD account.
-
-Nothing changes for a session you type at: commands entered at the `:` prompt
-are unaffected.
+It has its own page: **[Scheduled jobs](04-scheduled-jobs.html)**.
 
 ## The logs
 
@@ -87,7 +68,7 @@ There are three, and they are not interchangeable.
 
 | File | Where | For |
 |---|---|---|
-| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, `logto`, grants. See [Security](11-security.html#the-audit-trail) |
+| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, **`logto`**, grants. See [Security](12-security.html#the-audit-trail) |
 | `errlog` | `C:\ProgramData\SD\sdsys` | diagnostics, and API connection records |
 | `sd-elevate.log` | `C:\ProgramData\SD` | **what the elevation helper actually did** |
 
@@ -202,7 +183,7 @@ right all along — its name describes an operating system, but what matters is
 the byte protocol.
 
 ***EXISTING ACCOUNTS KEEP THEIR OLD SETTING*** until their VOC is updated, by
-answering `Y` to *"Update VOC to new release?"* or running `update.account`.
+answering `Y` to *"Update VOC to new release?"* or running **`update.account`**.
 Until then, `term windows` sets it for the session. All 62 definitions are
 still shipped, so `term wyse60` still works.
 

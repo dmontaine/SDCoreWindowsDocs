@@ -101,7 +101,7 @@ speaks the new login too — `connect()` takes the same arguments, but **the
 program has to be running under this release at both ends.**
 
 Everything about what a connected session may open, the three gates it must
-clear, and the identity it runs as is on [API access](08-api-access.html).
+clear, and the identity it runs as is on [API access](09-api-access.html).
 
 ## Building from source
 
@@ -120,10 +120,21 @@ server at all.
 > third-party crypto libraries. Any change to the client has to keep working in
 > a 32-bit process.
 
-## What is not settled yet
+## How the clients will be published
 
-***HOW THE CLIENTS ARE PUBLISHED FOR THIS RELEASE HAS NOT BEEN DECIDED.*** The
-installers exist; whether they are zipped beside the server installer, released
-separately, or both, is open. **If you need a client and cannot find one, ask
-rather than building from source** — the answer may be that a package is
-waiting.
+***THERE WILL BE A CLIENT INSTALLER OF ITS OWN, AND IT WILL CARRY MORE THAN THE
+DLLs.***
+
+| | |
+|---|---|
+| In it | the client DLLs, this documentation, and the related utilities |
+| Not in it | source code of any kind |
+| Where the source is | GitHub only. The installer creates a `docs` subdirectory, and the references to the repositories are in there |
+
+***THAT INSTALLER IS NOT WHAT W1.0-0 SHIPS.*** It is a change to the installer
+and it has not been made yet. What exists today is what the section above
+describes: each client repository builds its own DLL and carries its own Inno
+installer, and no built DLL is committed to any of them.
+
+**So if you need a client and cannot find one, ask rather than building from
+source** — the answer may be that a package is waiting.

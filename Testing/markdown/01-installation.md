@@ -117,7 +117,7 @@ your edits survive both upgrade and removal.
 |---|---|
 | `sdusers` | grants access to the files under `C:\ProgramData\SD`. Everyone who uses SD needs it |
 | `sdsshonly` | carries the two deny rights that confine an account to ssh. Every non-administrator account SD creates joins it |
-| `sdu_<name>` | one per account, created by `create.account` |
+| `sdu_<name>` | one per account, created by **`create.account`** |
 | the service | **String Database (SD)** |
 | ACLs | inheritance is broken on `C:\ProgramData\SD` and access granted narrowly. This is what makes the database private from the rest of the machine |
 
@@ -199,7 +199,7 @@ upgrading***, to bring that account's VOC up to date with the new release.
 
 > **SD only ever adds records to a VOC at an update, never removes them.** An
 > account created before a verb was withdrawn keeps it. That is why
-> `update.account` cannot be relied on to take something away.
+> **`update.account`** cannot be relied on to take something away.
 
 ## Uninstalling
 

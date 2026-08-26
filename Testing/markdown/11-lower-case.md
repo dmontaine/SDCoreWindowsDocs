@@ -32,7 +32,7 @@ multifile resolution, the `LOGIN` paragraph lookup, and `SET.FILE`'s default
 
 | | |
 |---|---|
-| Commands in the VOC | `list`, `count`, `select`, `create.file`, `setptr` … and that is how they appear in `list voc`, `listv` and `ct voc` |
+| Commands in the VOC | **`list`**, `count`, **`select`**, **`create.file`**, **`setptr`** … and that is how they appear in `list voc`, `listv` and `ct voc` |
 | System files on disk | `accounts`, `bp`, `bp.out`, `gpl.bp`, `messages`, `newvoc`, `pcode.out`, `syscom`, `voc`, `voc.dic`, `voc_template` and the rest |
 | The `BP` and `GPL.BP` VOC entries | `bp` and `gpl.bp` |
 | The hold file | `$hold` |
@@ -52,7 +52,7 @@ Two changes that go together:
 - **Record ids in directory files** are matched case insensitively.
 - **Queries against a directory file** match ids the same way.
 
-`create.file` also takes a `no.case` option, which creates a file whose record
+**`create.file`** also takes a `no.case` option, which creates a file whose record
 ids are treated as case insensitive: SD writes records preserving the casing
 given by whatever performs the write, and reads locate records regardless of
 casing.
@@ -67,7 +67,7 @@ same as-typed → lower → upper order as everything else.
 ## Account names
 
 **Account names have never been case sensitive and still are not.**
-`create.account`, `logto` and the rest accept whatever case you type.
+**`create.account`**, **`logto`** and the rest accept whatever case you type.
 
 What changed is only how the register file is named on disk: new accounts are
 recorded in lower case, so `sdsys\accounts\don` matches the account's own
@@ -77,10 +77,10 @@ directory. **Existing accounts keep the names they already have.**
 
 ***AN ACCOUNT CREATED BEFORE THIS KEEPS THE UPPER-CASE NAMES IN ITS VOC AND GOES
 ON WORKING. THERE IS NOTHING TO MIGRATE.*** An account you create now, or one
-you refresh with `update.account`, gets the new spelling.
+you refresh with **`update.account`**, gets the new spelling.
 
 Because SD only ever *adds* VOC records at an update, an old account will end
-up holding both spellings after `update.account`. That is harmless — they
+up holding both spellings after **`update.account`**. That is harmless — they
 dispatch to the same programs.
 
 ## The Turkish and Azeri fix
@@ -103,6 +103,6 @@ changes on a system whose locale was never affected.
 
 ## Two related refusals that no longer depend on case
 
-`delete.file`'s refusal to delete `voc` and `$acc` no longer depends on the
+**`delete.file`**'s refusal to delete `voc` and `$acc` no longer depends on the
 case you type. It could not be got round before, because those names were upper
 case — **it could have been, once they are not.**

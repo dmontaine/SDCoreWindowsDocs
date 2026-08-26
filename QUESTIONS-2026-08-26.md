@@ -1,233 +1,101 @@
 Title: Questions on the first document set
-Subtitle: Not part of the tester set — a review list, 26 Aug 2026.
+Subtitle: Answered 26 Aug 2026. Two are still open — they are first.
 
-Everything below is written so you can answer in a word or a sentence. **Nothing
-here blocked the drafting**; the eleven pages are complete and consistent under
-the assumption stated with each question. Where I guessed, the guess is named.
+***THIS FILE IS NOT PART OF THE TESTER SET.*** It is the review list for the
+first document set, with your answers recorded against each question and what
+was done about them. Delete or move it before the set goes out.
 
-***THIS FILE IS NOT PART OF THE TESTER SET.*** Delete or move it before the set
-goes out.
+**Sixteen of the eighteen are answered and applied.** The two below are not.
 
-## A. One defect found while writing
+---
 
-***1. THE CHANGELOG SENDS USERS TO AN `sd.conf` THAT DOES NOT EXIST.***
+## STILL OPEN
 
-The entry of 21 Aug 2026, *"THE API IS REACHED AT ITS OWN PORT NOW"*, ends:
+### 7. The `limitssh` question — you said you were not sure what was being proposed
 
-> *"to turn the API off altogether, comment out the APIPORT line in
-> `C:\ProgramData\SD\sdsys\sd.conf` and restart SD"*
+**Here is the whole of it, and then four ways to settle it.**
 
-The file is at **`C:\ProgramData\SD\sd.conf`** — `gplsrc/sddefs.h:262`
-(`SD_CONFIG_DEFAULT`) and `sd.iss:407`, which installs it to `{#DataDir}`, not
-into `sdsys`. The 21 Aug entry names `sdsys\sd.conf` twice.
+The installer offers a task, ***ticked by default***, called *"Limit ssh to SD
+users and administrators"*. When it runs it adds two lines to
+`C:\ProgramData\ssh\sshd_config`, inside its own fenced block:
 
-I have written the correct path in the documents. **The changelog ships to
-users and still carries the wrong one.** Do you want a correction entry, or a
-silent fix?
+```
+AllowGroups <sdssh> <the administrators group>
+ForceCommand "C:\Program Files\SD\usr\bin\sd.exe"
+```
 
-## B. Scope of the set
+The original is copied to `sshd_config.before-sd` first, and uninstalling SD
+strips the block again.
 
-**2. "Do not document any features missing from SD Core" versus the topic
-*Historical features not available in SD Core*.**
+***THE PART THAT IS A QUESTION.*** `allow-ssh-groups.ps1` refuses to touch an
+`sshd_config` that **already** has an `AllowGroups`, `AllowUsers`, `DenyGroups`
+or `DenyUsers` line — that is somebody's policy, and merging into it blind
+either widens it or locks its author out. **But a stock `sshd_config` has none
+of those lines.** So on a machine where somebody had already installed OpenSSH
+and left it at its defaults, the ticked-by-default task reconfigures an ssh
+server SD did not install, and every ssh session on that machine — not only
+SD's — lands in SD.
 
-I read the first as *do not write usage documentation for things that are not
-there*, and the second as *tell a tester what is gone so they stop looking for
-it*. So page 10 is a list of removals with what to use instead, and describes
-none of the removed features.
+**Why it is ticked rather than offered.** The opposite default was tried and
+cost a fault: with no `ForceCommand`, an account created as ssh-only got a
+**PowerShell prompt** instead of SD. Found on this machine, 21 Aug 2026.
 
-**Is that the split you intended?** The alternative readings are that page 10
-should go entirely, or that it should be a bare list with no explanation.
-
-**~~3. Where does this set ultimately live?~~ ANSWERED 26 Aug 2026.**
-
-> *"There will be a separate repository on github for all the documentation we
-> create. It will not have the no binary bits rule."*
-
-Recorded in PROJECT_STATUS. **Two follow-on questions it raises are 15 and 16
-below** — neither is urgent, but both are easier to settle before the
-repository exists than after.
-
-**Noted and not acted on:** the 25 Aug reasoning for keeping documentation in
-the code repository was that a detached copy drifts — *"on 25 Aug alone, four
-statements in the installer dialogs had quietly stopped being true."* That was
-outweighed rather than answered, so **drift is now caught by a person or not at
-all.** The practical consequence is that a release which changes a dialog, a
-verb or a message needs somebody to re-read the affected pages; nothing will
-fail if one goes stale.
-
-**~~4. Three topics testers will want that are not on your list.~~ ANSWERED
-26 Aug 2026 — all three written.**
+**Four ways to settle it.** No recommendation; the page changes to match
+whichever you pick.
 
 | | |
 |---|---|
-| [Your first thirty minutes](02-first-run.html) | install → account → file → a second user over ssh, in eight steps |
-| [Running SD](03-running-sd.html) | the service, `sd -start` / `-stop`, and the unclean-shutdown case |
-| [Client distribution](09-client-distribution.html) | which DLL, 32- versus 64-bit, and the one file no installer can update |
+| **a. Leave it** | ticked, and it applies to a stock config. Simplest, and an ssh-only account is always safe. The cost is the one above |
+| **b. Tick it only when SD installed the ssh server** | a pre-existing server gets the task unticked. An administrator who wants the lock-down has to notice it |
+| **c. Refuse a stock config too** | treat *no policy line* the same as *somebody's policy*: never touch a server SD did not install, and print the two lines for them to add by hand |
+| **d. Leave it ticked and say more in the wizard** | the page names scp and sftp today; it could also name the two lines and the backup file, so the tick is an informed one |
 
-***THEY WERE FIRST NUMBERED `01a`, `01b` AND `06a` TO AVOID RENUMBERING THE
-NINE ALREADY COMMITTED. THAT WAS WRONG AND IS FIXED — THE SET IS NOW A FLAT
-`00`–`13`.***
+### 14. Remote administration over ssh — you did not answer this one
 
-**Windows Explorer and the renderer sorted those names differently**, which is
-why you could not find the new pages. Explorer's collation ignores the hyphen,
-so `01a-first-run` sorts **before** `01-installation`; python's `sorted()`
-compares bytes, where `-` (0x2D) precedes `a` (0x61), so it sorts after. **The
-reading order existed only inside the renderer** — in the folder, the
-walkthrough sat above the installation page it was meant to follow, and client
-distribution above the API page.
+A local account arriving over the network gets a **filtered** token, so an SD
+administrator over ssh may be unable to elevate, and so unable to reach SDSYS.
+***THIS HAS NEVER BEEN MEASURED.***
 
-A flat numbering sorts identically everywhere. Nothing else about the three
-pages changed.
+Page 12 currently says exactly that, including that it is unmeasured.
 
-**Two things in those pages are worth a specific look:**
+**Do you want that stated to testers, or held back until somebody measures
+it?** Leaving it in invites a tester to measure it for us, which is the
+argument for; the argument against is that an unmeasured caveat in a document
+reads as a defect report.
 
-- **The walkthrough opens by telling the tester to sign out of Windows and back
-  in.** That is not padding — the installing user's token cannot carry
-  `sdusers` until they do, and the symptom reads as a broken install. It is
-  also why the post-install check offered at the end of the installer is always
-  the incomplete run.
-- **Client distribution names `C:\Program Files (x86)\BLC\mvDeveloper\qmclilib.dll`
-  as the one file no installer or `PATH` entry can update**, because Windows
-  searches an executable's own directory first. That is the most likely way to
-  test an old client without realising it. **Confirm you are happy naming
-  mvDeveloper and that path in a document testers will read.**
+---
 
-**And one thing I could not settle** — question 18 below.
+## ANSWERED, AND WHAT WAS DONE
 
-## C. Specific features
+| | Your answer | What changed |
+|---|---|---|
+| **1.** the changelog sends users to an `sd.conf` that does not exist | silent fix | `sdsys/changelog` now reads `C:\ProgramData\SD\sd.conf`. No correction entry. **A second wrong statement in the same entry was fixed with it** — see 8 |
+| **2.** *"do not document missing features"* versus *"tell them what is gone"* | the interpretation was correct | Page 14 stays a list of removals with what to use instead, describing none of them |
+| **3.** where the set lives | its own GitHub repository, without the no-binaries rule | `SDCoreWindowsDocs`, now at `C:\Users\dmont\Projects\SD Core for Windows 1.0-0 Docs` with `Testing`, `User` and `Technical` sets |
+| **4.** three topics not on your list | all three written | Now pages 02, 03 and 10 |
+| **5.** `create.account other` | do not document | Left out of the account-types page. Its own header calls it *"maintained for backwards compatibility"*, and it needs the accounts record hand-edited |
+| **6.** `batch.jobs` — scheduled jobs | a feature; give it its own page | **New page 04, Scheduled jobs**, and the set renumbered to a flat `00`–`14`. The hardening page keeps a pointer |
+| **8.** `sdapi` group wording | *"which an account joins only when you give it API access"* | Changed on page 09 **and in the changelog**, which carried the old wording. The old form contradicted the sentence after it: `create.account user fred api` joins the group for you (`CREATEA:1428`) |
+| **9.** product name | confirmed | *SD Core for Windows* in titles and the header bar, *SD Core* in prose |
+| **10.** version string | `W1.0-0` | Page 00 now tells a tester to quote `W1.0-0` and says where to find it — the header bar, the installer file name, and `sd --version` |
+| **11.** verbs or commands | the methodology was correct | *Verbs* for what a VOC contains, *commands* for what a person types |
+| **12.** lower case | **bold lower case for verbs** | 198 verb names across the set are now bold. The list is not hand-written: it is read from `sdsys/newvoc` and the two `TIER.*` records, so it cannot drift from what a VOC holds |
+| **13.** the Turkish and Azeri fix | leave as written | Page 12 describes it from the changelog |
+| **15.** does the toolchain move | move it — possibly to several machines | `mkdoc.py` and `mkpdf.ps1` are now in `tools\` here, and both are **out of** `assert-current.ps1`'s `$neverShipped`. A clone needs no checkout of `sd4windows` |
+| **16.** are the PDFs tracked | generated after a change, and only the ones that changed | `.gitignore` keeps `*.html`, `*.pdf` and `*.zip` out. Two deliverables eventually — a PDF download and the pages on a web site — both built from the Markdown at release time |
+| **17.** a release step | a short script | `tools\release.ps1`. It renders only what changed, **refuses to zip if any PDF is older than its Markdown**, and prints the SHA256 |
+| **18.** how the client libraries are published | a client installer carrying the DLLs, the documentation and related utilities; no source; source on GitHub, referenced from a `docs` subdirectory the installer creates | Page 10 says that, and says plainly that **it is not what W1.0-0 ships** — it needs an installer change that has not been made |
 
-**5. `create.account other`.**
+## Notes on two of those
 
-`CREATEA`'s own header says it is *"maintained for backwards compatibility"*
-and *"will require manual editing of the accounts record to specify the group
-the account belongs to."*
+**On 12, and it is worth knowing before the next set is written.** A verb is
+bold only when the whole code span is the verb name. `create.account user fred
+api` is a **command** somebody types and is left plain, which is question 11's
+distinction made visible. Upper-case spans are left alone too — page 11 is
+about case folding and its capitals are the demonstration.
 
-**I left it out of the account-types page deliberately** — documenting a form
-that needs hand-editing to work invites people to use it. Confirm, or should it
-be documented with the caveat?
-
-**6. `batch.jobs` — scheduled jobs.** Currently a section on the *Other
-hardening* page. It is arguably a feature rather than hardening, and testers
-running overnight reports will look for it under its own name. Own page?
-
-**7. The `limitssh` question that PROJECT_STATUS records as yours.**
-
-On a machine whose `sshd_config` is **stock** — no `AllowGroups` line — the
-default-ticked *limit ssh* task edits an ssh server SD did not install, because
-refusal 2 in `allow-ssh-groups.ps1` only fires when a policy line already
-exists.
-
-The ssh page currently describes the behaviour as it is. **If you rule on this,
-the page changes.** Not a documentation question, but it is on the critical
-path for what page 5 says.
-
-**8. `sdapi` group wording.** I wrote *"a member of the `sdapi` group, which no
-account joins unless you put it there"*. Strictly, `create.account user x api`
-or `... both` joins it for you. Is the changelog's original wording still
-accurate, or should it read *"which an account joins only when you give it API
-access"*?
-
-## D. House style, so a later round matches
-
-**9. Product name.** The banner says **SD CORE**. I have used *SD Core for
-Windows* in page titles and the header bar, and *SD Core* in prose. Confirm.
-
-**10. Version string.** The release stamp is **W1.0-0** and the folder you
-named is **1.0-0**. Pages show `W1.0-0` in the header bar. Confirm which a
-tester should quote in a report.
-
-**11. "Verbs" or "commands"?** SD's source and the tier lists say *verbs*;
-OpenQM's documentation says *commands*. I have used **verbs** when talking
-about what a VOC contains and **commands** when talking about what a person
-types. Fine, or pick one?
-
-**12. Lower case in the documents.** The sample you approved shows commands in
-lower case and I have kept that throughout, including for verbs whose changelog
-entries are written in capitals. Confirm — it is a one-line change to the
-renderer either way.
-
-## E. Things I could not check
-
-**13. The Turkish and Azeri fix.** Page 7 describes it from the changelog. It
-has not been exercised on such a locale as far as the record shows. Worth
-telling testers to try, or leave the claim as written?
-
-**14. Remote administration over ssh.** PROJECT_STATUS records that a local
-account arriving over the network gets a **filtered** token, so an SD
-administrator over ssh may be unable to elevate and so unable to reach SDSYS —
-and that this **has never been measured**. Page 5 says exactly that, including
-that it is unmeasured. **Do you want that stated to testers**, or held back
-until somebody measures it?
-
-## F. Raised by the new documentation repository
-
-Added 26 Aug 2026, after the decision that documentation gets its own GitHub
-repository without the no-binaries rule. **Neither is urgent, and both are
-cheaper to settle before the repository exists than after.**
-
-**15. Does the toolchain move with the documentation?**
-
-`mkdoc.py` (Markdown → HTML) and `mkpdf.ps1` (HTML → PDF) are both in
-`sd4windows\sdb_ai\sd64\gplbld`, and both are on `assert-current`'s
-`$neverShipped` list so they cost no install cycle.
-
-| | |
-|---|---|
-| **Leave them in `gplbld`** | one toolchain, already wired into the guard. But the documentation repository then cannot build its own pages without a checkout of `sd4windows` |
-| **Move them to the doc repository** | it becomes self-contained. Requires removing both from `$neverShipped` in the same commit, or the guard reports the tree stale by their absence |
-
-**No recommendation — it depends on whether anyone but you will build the
-documentation.** If the answer is "only me, on this machine", leaving them is
-simpler.
-
-**16. Are the rendered PDFs tracked, or generated on demand?**
-
-***YOUR ANSWER TO WHY THE PDFs EXIST MOSTLY SETTLES THIS.*** You said they are
-the deliverable: zipped with the installer, shared on pCloud, eventually
-SourceForge.
-
-**A release artefact does not need to be in git history to do its job** — it
-needs to be **reproducible at release time** from tracked source, which
-`mkdoc.py` + `mkpdf.ps1` already are. So the current `.gitignore` fits your
-workflow as it stands, and the only open part is convenience:
-
-| | |
-|---|---|
-| **Leave them ignored** *(current)* | clean history. You render before each release and zip the result |
-| **Track them** | a clone carries the deliverable with no toolchain — useful if anyone else ever assembles a release. Costs ~200 KB of binary diff per edited page, for ever |
-
-***THE PDFs ARE NOT AT RISK EITHER WAY.*** `.gitignore` keeps them out of
-history; it does not delete them. All twelve are on disk beside the Markdown
-and in your P-drive copy.
-
-**17. Do you want a release step, rather than assembling the zip by hand?**
-
-Raised by the same answer. A short script would: render every page fresh from
-the Markdown, check that no PDF is older than its source, zip them with a
-version-stamped name, and print the SHA256 so what you upload can be verified
-against what you built.
-
-***THE REASON IT IS WORTH MORE THAN THE TEN MINUTES IT SAVES:*** the
-separate-documentation-repository decision gave up the only automatic check
-that a page still matches the product. **Zipping by hand adds a second way to
-drift** — shipping a PDF rendered before the last Markdown fix, which nothing
-would catch and which looks exactly like a correct release.
-
-Say the word and I will write it; it is half an hour and it wants to exist
-before the first release, not after.
-
-**18. How are the client libraries published for this release?**
-
-Raised while writing [Client distribution](09-client-distribution.html), and I
-could not answer it from the record. The two client repositories each have
-their own Inno installer (`sdclient.iss`, `qmclient.iss`), and no built DLL is
-committed to either — a clone builds.
-
-**What a tester cannot work out is what they will actually be handed:** a
-client installer zipped beside the server one, a separate download, or nothing
-yet. The page currently says *"if you need a client and cannot find one, ask
-rather than building from source"*, which is honest but is a placeholder.
-
-***THIS INTERACTS WITH THE pCloud/SourceForge PLAN***: if the release is one
-zip containing the installer and the PDFs, the client installers are either in
-it or they are a second download, and the documentation should say which.
+**On 16 and 17 together.** Moving the documentation out of `sd4windows` gave up
+the only automatic check that a page still matched the product. `release.ps1`
+does not replace that — nothing can, short of a person re-reading the pages —
+but it does close the second gap the move opened, which is shipping a PDF
+rendered before the last fix to its Markdown.

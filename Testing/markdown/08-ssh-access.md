@@ -9,7 +9,7 @@ Windows accounts.
 **They reach SD over ssh, or through an API client, or both.** Which of those
 an account may use is chosen when it is created and is a required keyword — see
 [Per-account control](#per-account-control) below. This page covers the ssh
-route; [API access](08-api-access.html) covers the other.
+route; [API access](09-api-access.html) covers the other.
 
 This has no equivalent in OpenQM or in SD on Linux, and it shapes almost
 everything else about running SD Core on Windows.
@@ -52,7 +52,7 @@ Two Windows user rights, applied **to a group, once** — not per account:
 | `SeDenyInteractiveLogonRight` | blocks the physical console |
 | `SeDenyRemoteInteractiveLogonRight` | blocks Remote Desktop |
 
-Both are on the group `sdsshonly`, and `create.account` joins every
+Both are on the group `sdsshonly`, and **`create.account`** joins every
 non-administrator account to it.
 
 ***NETWORK LOGON IS NOT DENIED, AND MUST NOT BE.*** Win32-OpenSSH
@@ -172,7 +172,7 @@ keywords is required:
 | `create.account user fred ssh` | a terminal session over ssh |
 | `create.account user fred api` | **an API client only** — no terminal, and nothing on this page applies to them |
 | `create.account user fred both` | either |
-| `create.account user fred none` | neither — reachable only with `logto` from another session |
+| `create.account user fred none` | neither — reachable only with **`logto`** from another session |
 
 ***AN `api` ACCOUNT NEVER TOUCHES ANY OF THIS.*** No ssh session, no
 `ForceCommand`, no port 22. If your testers are running a GUI client against
@@ -182,7 +182,7 @@ is irrelevant to them.
 `modify.account fred both` changes it afterwards — and remember the keyword
 says what the access **is**, not what to add, so `modify.account fred api`
 takes ssh away. Administrators always have both. See
-[Account types](04-account-types.html).
+[Account types](05-account-types.html).
 
 ## What ssh-only does not mean
 
@@ -190,12 +190,12 @@ takes ssh away. Administrators always have both. See
 run*.** Confining a user to SD rather than to a shell is the separate
 `ForceCommand` control above, and reaching the operating system from inside SD
 is the separate `os.users` permit list — see
-[Administrator commands](05-administrator-commands.html#the-shell-escapes-sh-and).
+[Administrator commands](06-administrator-commands.html#the-shell-escapes-sh-and).
 
 **And ssh-only does not give users isolation from each other's data.** Every SD
 process opens the database under the invoking user's own token, so everyone who
 uses SD needs file access to the tree and can read another account's directory
-from outside SD. See [Security](11-security.html).
+from outside SD. See [Security](12-security.html).
 
 ## One measured caution about remote administration
 
