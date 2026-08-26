@@ -63,9 +63,11 @@ create.file customers
 ed customers 1001
 ```
 
-**`ed`** is the **line** editor and it is the editor this system uses. There is no
-full-screen editor — `sed`, `update.record` and `modify` have all been removed.
-See [Not in SD Core](14-not-in-sd-core.html).
+**`ed`** is the **line** editor, and it needs nothing installed. If you would
+rather have a full screen, **`edit`** opens the same record in Microsoft Edit —
+see [Programmer commands](07-programmer-commands.html#editors). The old
+full-screen editors `sed`, `update.record` and `modify` are all gone; see
+[Not in SD Core](14-not-in-sd-core.html).
 
 In **`ed`**: `i` to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.

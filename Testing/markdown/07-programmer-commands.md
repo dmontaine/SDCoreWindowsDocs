@@ -38,15 +38,46 @@ create.account user fred programmer both
 
 | | |
 |---|---|
-| **`ed`** · **`edit`** | the line editor, and **the editor this system uses** |
+| **`ed`** | the line editor. Needs nothing installed |
+| **`edit`** | the **full-screen** editor — opens the record in Microsoft Edit |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
 
 The debug family moved from administrator to programmer deliberately — a
 programmer needs these to debug their own code.
 
-***THERE IS NO FULL-SCREEN EDITOR.*** `sed`, `update.record` and `modify` have
-all been removed from SD Core. **`ed`** is the editor. See
+### Editors
+
+***`edit` USED TO BE A SECOND NAME FOR `ed`, AND IS NOT ANY MORE.*** If you
+have been typing it to get the line editor, you will now get a full screen.
+
+```
+edit bp myprog
+edit dict customers name
+```
+
+It writes the record to a working copy, opens **Microsoft Edit** on it, reads
+it back, and asks whether to save. For a `bp` record it then offers the compile
+and the catalogue, which is the loop the old `micro` verb had.
+
+**Microsoft Edit is a terminal editor**, so it works over ssh as well as at the
+console. Current Windows builds already carry it as `edit.exe`; where a machine
+does not, the SD installer installs it, and if that could not be done **`edit`**
+says so and names the command that installs it. `C:\ProgramData\SD\install-edit.log`
+records what the installer found.
+
+**`ed` is unaffected and is still there.** Nothing has been taken away.
+
+> ***WHAT AN EDITOR CAN REACH, and it is worth knowing before you hand this to
+> somebody.*** An editor can open any file the person running it is allowed to
+> open, so **`edit`** reaches beyond SD's own files. It is not a shell —
+> Microsoft Edit has no way to run a command — and standard accounts do not
+> have the verb, nor does any session that arrived over the API. **The line
+> here is the account tier, not the `os.users` list that governs `sh`.** See
+> [Security](12-security.html).
+
+The removed full-screen editors are a different matter: `sed`,
+`update.record` and `modify` are gone and are not coming back. See
 [Not in SD Core](14-not-in-sd-core.html).
 
 ### Files

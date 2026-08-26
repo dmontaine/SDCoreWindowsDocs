@@ -17,16 +17,22 @@ SD Core for Windows.
 
 | Gone | Use instead |
 |---|---|
-| `sed` — the full-screen editor | **`ed`**, the line editor |
-| `update.record` — the full-screen record editor | **`ed`** |
-| `modify` — the full-screen record editor from OpenQM | **`ed`** |
-| `micro` — launched an external editor | — |
+| `sed` — the full-screen editor | **`edit`**, or **`ed`** for the line editor |
+| `update.record` — the full-screen record editor | **`edit`** or **`ed`** |
+| `modify` — the full-screen record editor from OpenQM | **`edit`** or **`ed`** |
 
-***THERE IS NO FULL-SCREEN EDITOR IN SD CORE. `ed` IS THE EDITOR.***
+**SD Core's own full-screen editing is `edit`**, which opens the record in
+Microsoft Edit — see
+[Programmer commands](07-programmer-commands.html#editors). The three above are
+gone as *programs*; the capability is not.
 
-`modify` is received by **no account of any tier**. `micro` went for the same
-reason **`sh`** is restricted: it was a way out of SD onto the machine underneath
-it.
+`modify` is received by **no account of any tier**.
+
+> ***`micro` WAS ON THIS PAGE AND HAS COME OFF IT.*** It was removed on
+> 17 Aug 2026 because it launched an external editor, which is a way out of SD
+> onto the machine underneath it. That was reversed on 26 Aug 2026: **`edit`**
+> is the same idea, done deliberately, limited to programmer and administrator
+> accounts and refused over the API.
 
 **`modify.account` and `modify.password` are not affected.** They are different
 verbs with different programs behind them, and both remain administrator
