@@ -155,19 +155,36 @@ simpler.
 
 **16. Are the rendered PDFs tracked, or generated on demand?**
 
-The rule no longer forbids tracking them, but permission is not the same as
-advisability. ***A tracked PDF produces a large binary diff on every
-re-render***, and these are ~200 KB each — so a one-word fix to a Markdown page
-commits a quarter-megabyte of unreadable change, and the repository grows
-monotonically.
+***YOUR ANSWER TO WHY THE PDFs EXIST MOSTLY SETTLES THIS.*** You said they are
+the deliverable: zipped with the installer, shared on pCloud, eventually
+SourceForge.
 
-The usual alternatives:
+**A release artefact does not need to be in git history to do its job** — it
+needs to be **reproducible at release time** from tracked source, which
+`mkdoc.py` + `mkpdf.ps1` already are. So the current `.gitignore` fits your
+workflow as it stands, and the only open part is convenience:
 
 | | |
 |---|---|
-| **Track them** | anyone cloning gets the deliverable with no toolchain. Simplest for testers |
-| **`.gitignore` them, attach to a GitHub release** | clean history, and a release is a natural place for "the 1.0-0 documents" |
-| **Track the HTML only** | it is text, so it diffs; the PDF is one browser print away |
+| **Leave them ignored** *(current)* | clean history. You render before each release and zip the result |
+| **Track them** | a clone carries the deliverable with no toolchain — useful if anyone else ever assembles a release. Costs ~200 KB of binary diff per edited page, for ever |
 
-I would suggest the middle one, but **it is a judgement about who consumes the
-repository**, and you know that better than I do.
+***THE PDFs ARE NOT AT RISK EITHER WAY.*** `.gitignore` keeps them out of
+history; it does not delete them. All twelve are on disk beside the Markdown
+and in your P-drive copy.
+
+**17. Do you want a release step, rather than assembling the zip by hand?**
+
+Raised by the same answer. A short script would: render every page fresh from
+the Markdown, check that no PDF is older than its source, zip them with a
+version-stamped name, and print the SHA256 so what you upload can be verified
+against what you built.
+
+***THE REASON IT IS WORTH MORE THAN THE TEN MINUTES IT SAVES:*** the
+separate-documentation-repository decision gave up the only automatic check
+that a page still matches the product. **Zipping by hand adds a second way to
+drift** — shipping a PDF rendered before the last Markdown fix, which nothing
+would catch and which looks exactly like a correct release.
+
+Say the word and I will write it; it is half an hour and it wants to exist
+before the first release, not after.
