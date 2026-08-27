@@ -57,9 +57,13 @@ for name in sorted(os.listdir(md_dir)):
             return '[%s](%s)' % (title, target)
         return m.group(0)
 
-    src = re.sub(r'\*(SD Basic - [^*]+?)\*', sub, src)
+    # BOTH SETS.  The User folder now holds the SD Basic reference and the
+    # SD TCL reference, and a TCL page refers forward to TCL pages not yet
+    # written exactly as a Basic page did.  titles{} is built from every
+    # Title: line already, so only the prefix needed widening.
+    src = re.sub(r'\*(SD (?:Basic|TCL) - [^*]+?)\*', sub, src)
 
-    left = len(re.findall(r'\*SD Basic - [^*]+?\*', src))
+    left = len(re.findall(r'\*SD (?:Basic|TCL) - [^*]+?\*', src))
     left_total += left
     changed_total += changed
     if src != orig:

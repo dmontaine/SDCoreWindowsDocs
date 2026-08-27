@@ -15,7 +15,7 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | the SD BASIC reference — **18 pages**: 17 by subject, plus `18` the alphabetical syntax card |
+| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own syntax card. Twelve TCL topic pages are planned and three are written |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
@@ -92,11 +92,18 @@ python tools\checklinks.py User\markdown User\html
 
 ## Measuring
 
-These four run a program inside a real SD session and refuse a run that did not
+These five run something inside a real SD session and refuse a run that did not
 measure anything. `tools\probes\README.md` says which takes which.
+
+**They default to a user account, not `SDSYS`, and that is not only about file
+permissions.** `LOGTO SDSYS` asks UAC when the session is not already elevated,
+so every run against `SDSYS` puts a consent prompt in front of whoever is at the
+machine — six runs, six prompts. Measure in a user account unless `SDSYS` is
+itself the subject.
 
 | | |
 |---|---|
+| `sdtcl.ps1` | run **TCL commands** and print what SD said; refuses a transcript with fewer command echoes than commands sent |
 | `sdprobe.ps1` | run one BASIC probe; refuses without its START and END markers |
 | `sdprobe2.ps1` | **two sessions at once**, for locking; refuses unless they demonstrably contended |
 | `sdcompile.ps1` | compile only, for measuring what the compiler **refuses** |
