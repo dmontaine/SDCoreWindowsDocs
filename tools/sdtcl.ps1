@@ -29,6 +29,23 @@
 # command echoes than commands sent, and it says so - an empty transcript
 # scored against a set of patterns produces tidy negatives that look like
 # findings.
+#
+# ***THE TIMEOUT PATH COSTS THE INSTALL, NOT JUST THE RUN.  AVOID REACHING
+# IT.***  Killing the job kills the sd session, and PROJECT_STATUS.md is
+# explicit: "never Stop-Process an sd session on a tree you still want to
+# measure."  The dead session keeps its user-table slot; nothing reaps it
+# without elevation; LOGOUT n only marks it "(logout pending)" because logout
+# signals a process that is gone; and sdwind's five-minute check_lost_users()
+# sweep has been observed answering every NEW session "Forced logout" for
+# twenty minutes.  Recovery is elevated: sd -cleanup, then a service restart
+# if that does not take.
+#
+# SO THE RULE IS PREVENTION, AND IT IS ONE RULE: NEVER SEND A COMMAND THAT CAN
+# PROMPT.  A prompt eats the following lines as its answers and the session
+# then waits for ever.  COPY prompts when a select list is active - give it
+# explicit record ids, or NO.QUERY.  CREATE.FILE, DELETE.FILE and DELETE all
+# take NO.QUERY.  SAVE.LIST and GET.LIST prompt when the name is omitted.
+# If a verb has a confirmation, supply the switch that suppresses it.
 
 [CmdletBinding()]
 param(
@@ -85,10 +102,26 @@ $text = (($out -replace ($esc + '\[[0-9;]*[A-Za-z]'), '') -join "`n")
 if ($timedOut) {
     Write-Output $text
     Write-Output ''
-    Write-Output "*** SD did not finish in $TimeoutSec s - it is waiting for input."
-    Write-Output '*** A timed-out session keeps its user-table slot and locks, so'
-    Write-Output '*** sdwind will not shut down and cycle.ps1 will refuse to start.'
-    Write-Output '*** Stop-Process the sd.exe PID before running anything else.'
+    Write-Output "*** SD did not finish in $TimeoutSec s - it was waiting for input,"
+    Write-Output '*** and the session has now been killed.  A command prompted and ate'
+    Write-Output '*** the following lines as its answers; look at the transcript above'
+    Write-Output '*** to see which one, and give it NO.QUERY or explicit arguments.'
+    Write-Output '***'
+    Write-Output '*** THIS HAS COST THE INSTALL, NOT JUST THE RUN.  The dead session'
+    Write-Output '*** keeps its user-table slot.  LOGOUT n will only mark it "(logout'
+    Write-Output '*** pending)" - logout signals a process that no longer exists - and'
+    Write-Output '*** BUILD.INDEX and anything else needing exclusive access will be'
+    Write-Output '*** refused while it is there.  RECOVERY IS ELEVATED:'
+    Write-Output '***'
+    Write-Output '***     & "C:\Program Files\SD\usr\bin\sd.exe" -cleanup'
+    Write-Output '***'
+    Write-Output '*** The leading & is required.  A quoted path at the start of a'
+    Write-Output '*** PowerShell line is an expression, not a command, so without it'
+    Write-Output '*** the switch is a parser error and nothing runs.'
+    Write-Output '***'
+    Write-Output '*** and restart the SD service if that does not take.  Check the'
+    Write-Output '*** errlog for "Forced logout": sdwind sweeps every five minutes and'
+    Write-Output '*** has been seen refusing healthy sessions after a kill.'
     exit 2
 }
 
