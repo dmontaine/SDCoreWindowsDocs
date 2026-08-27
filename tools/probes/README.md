@@ -12,7 +12,7 @@ runner can refuse a run that died half way through.
 
 | runner | probes | what it refuses |
 |---|---|---|
-| `..\sdprobe.ps1` | `p14c-txn`, `p15*`, `p16*`, `p17-debug` | a run without START, END and `0 error(s)` |
+| `..\sdprobe.ps1` | `p14c-txn`, `p15*`, `p16*`, `p17-debug`, `p25-holdtrip` | a run without START, END and `0 error(s)` |
 | `..\sdprobe2.ps1` | `p14-holder` + `p14-contender`, `p14b-holder` + `p14b-contender` | two sessions that did not demonstrably contend |
 | `..\sdcompile.ps1` | `pcompile-restricted`, `pcompile-debug` | a compile that never reached the source, or that succeeded when it was meant to fail |
 | `..\sddebug.ps1` | `p17-prog`, `p17-prog2` | a run where the debugger's `>` prompt never appeared |
