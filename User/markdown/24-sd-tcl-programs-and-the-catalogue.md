@@ -103,7 +103,7 @@ account.
 ### Seeing and removing
 
 ```
-map {all} {lptr {n}}
+map {all} {lptr {n}} {file {name}}
 ```
 
 ```

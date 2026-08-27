@@ -15,7 +15,7 @@ Four document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. **All fourteen TCL topic pages, `19` to `32`, are written.** `18` is Modern Program Structure — scope, local routines and objects. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC, `95` SD TCL (not yet written) |
+| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (144 verbs) |
 | `Administrator/` | **three documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
@@ -76,7 +76,41 @@ done
 Both take one file as well as a directory, so a single changed page costs one
 render rather than forty-three.
 
-## Regenerating the syntax card
+## Regenerating the syntax cards
+
+***THE CARDS LIVE AT THE END, `94` ONWARDS, SO MORE CAN BE ADDED WITHOUT
+RENUMBERING ANYTHING.*** Owner's ruling, 27 Aug 2026: parking them high means
+that when they are eventually renumbered it is only ever the cards that move.
+
+| | |
+|---|---|
+| `User/markdown/94-sd-basic-syntax.md` | SD BASIC, from `mksyntax.py` |
+| `User/markdown/95-sd-tcl-syntax.md` | SD TCL, from `mktclsyntax.py` |
+
+### The SD TCL card
+
+```
+python tools\mktclsyntax.py <sd4windows>\sdb_ai\sd64\sdsys User\markdown\95-sd-tcl-syntax.md
+```
+
+Its roster is computed from SD's own VOC — the verb records in `newvoc` plus
+`TIER.ADD.ADMINISTRATOR`, **144** — and it **refuses to write the page** if a
+verb has no line, or if a line names something that is not a verb. It caught
+`selecte` on the first run, which is a BASIC statement.
+
+The syntax itself lives in `tools/tcl-syntax-shapes.txt`, **not** in the
+programs' `START-DESCRIPTION` blocks. Sixty-three of the ninety-seven
+catalogued verbs carry one and none is used as content: they are in a different
+notation and several are stale — `LIST.READU`'s omits `DETAIL`,
+`CREATE.ACCOUNT`'s predates every tier and access keyword. **They are used as a
+control instead**: the script reports where a block mentions a keyword the card
+does not, as a lead for a person to follow. That found six real omissions on its
+first run, in `cd`, `delete.index`, `fstat`, `map`, `option` and `setptr`.
+
+**The tier column is read from the same two lists the account-creation code
+uses**, so the card cannot drift from what an account actually gets.
+
+### The SD BASIC card
 
 `User/markdown/94-sd-basic-syntax.md` is **generated, not edited**:
 

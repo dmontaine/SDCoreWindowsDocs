@@ -251,6 +251,7 @@ show it.
 | **`logto`** *account* | change account without logging out |
 | **`off`** · **`quit`** | end the session |
 | **`option`** {*name*} {**on**\|**off**\|**display**} | set or show a session option |
+| **`option all off`** | turn every session option off at once |
 | **`alias`** *command* *target* | make *command* run as *target* |
 | **`alias`** *command* | remove that alias |
 | **`alias`** | list the aliases |
