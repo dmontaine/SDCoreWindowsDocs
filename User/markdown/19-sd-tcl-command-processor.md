@@ -312,11 +312,15 @@ are administrator-only:
 | | |
 |---|---|
 | **standard** | `abort` `alias` `clear.abort` `clear.stack` `display` `get.stack` `go` `if` `list.vars` `logto` `off` `option` `pause` `quit` `report.src` `save.stack` `set` `set.exit.status` `stop` `who` `who.am.i` |
-| **administrator** | `sh` `!` |
 
-Which tier an account has is fixed when the account is created, and an account
-that does not have a verb does not have the VOC record for it — the name is
-simply not recognised.
+**Everything on this page is in a standard account.** An account that does not
+have a verb does not have the VOC record for it — the name is simply not
+recognised rather than refused.
+
+***THE TWO `OS` VERBS ARE THE EXCEPTION AND ARE NOT DOCUMENTED HERE.*** `sh` and
+`!` reach the Windows shell, are administrator-tier, and are gated a second time
+by a list of who may use them. They are in the **administrator documentation**,
+under *Operating System Access*, which is a separate set.
 
 ## See also
 

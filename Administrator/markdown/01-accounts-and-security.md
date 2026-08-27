@@ -1,10 +1,17 @@
-Title: SD TCL - Accounts and Security
+Title: Accounts and Security
 Subtitle: Making and changing accounts, passwords, who may enter an account, and reading the system's configuration.
 
 These are the verbs that decide **who may use this installation and what they
 may do with it.** They are the administrator's set, they are the smallest set
 on the machine, and almost all of them need more than the verb before they will
 do anything.
+
+> ***THIS DOCUMENT IS SEPARATE SO THAT IT CAN BE WITHHELD.*** Everything in the
+> administrator set describes verbs an ordinary account does not have and cannot
+> run. It is a complete set on its own and **links to nothing outside itself**,
+> so that handing somebody the user documentation without this never leaves them
+> at a page that is not there. Where a user-set page is worth naming, it is
+> named in words rather than linked.
 
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
@@ -351,6 +358,11 @@ gate is at the top of the program the three grant verbs share.
 
 ## See also
 
-[SD TCL - The Command Processor](19-sd-tcl-command-processor.html) ·
-[SD TCL - Processes and Phantoms](30-sd-tcl-processes-and-phantoms.html) ·
-[SD Basic - System and Environment](16-sd-basic-system-and-environment.html).
+[Sessions and Locks](02-sessions-and-locks.html) ·
+[Operating System Access](03-operating-system-access.html).
+
+**In the user documentation**, which does not repeat any of this: *SD TCL - The
+Command Processor* for how a verb is dispatched and what a VOC record holds, and
+*SD Basic - System and Environment* for what a program can read about its own
+session. Those pages are in a different set and are deliberately not linked from
+here — see the note at the top.

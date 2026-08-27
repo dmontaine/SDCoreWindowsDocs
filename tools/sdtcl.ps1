@@ -80,15 +80,31 @@ Write-Output '---------------------------------------------------------------'
 
 $body = "`n" + ((@("LOGTO $Account", 'TERM 200,9999') + $Commands + @('OFF')) -join "`n") + "`n"
 
+# ANYTHING SD's CHILD SHELL WRITES TO stderr ARRIVES HERE AS AN ErrorRecord,
+# AND UNDER ErrorActionPreference='Stop' THAT KILLS THIS SCRIPT AND LOSES THE
+# WHOLE TRANSCRIPT.  Not theoretical - it happened twice in one session,
+# 27 Aug 2026, measuring the SH verb: "SH sd" hits SD's own nested-session
+# guard, and "SH echo a && echo b" is a PowerShell 5.1 parse error.  Both wrote
+# one line to stderr; both times every command before them was lost and the run
+# had to be repeated.
+#
+# SO Receive-Job RUNS WITH 'Continue' AND THE ERROR STREAM IS KEPT, not
+# discarded: what the child shell said on stderr is part of the measurement -
+# a refusal is usually the thing being measured - and swallowing it would
+# leave a tidy transcript with the answer missing.
 $job = Start-Job -ScriptBlock { param($exe, $text) $text | & $exe } -ArgumentList $sdExe, $body
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 if (Wait-Job $job -Timeout $TimeoutSec) {
-    $out = Receive-Job $job
+    $out = Receive-Job $job 2>&1
     $timedOut = $false
 } else {
     Stop-Job $job
-    $out = Receive-Job $job
+    $out = Receive-Job $job 2>&1
     $timedOut = $true
 }
+$ErrorActionPreference = $prevEAP
+$out = $out | ForEach-Object { if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.ToString() } else { $_ } }
 Remove-Job $job -Force
 
 # WINDOWS POWERSHELL 5.1 HAS NO `e ESCAPE - it arrived in PowerShell 6, so a

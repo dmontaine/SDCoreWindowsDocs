@@ -10,12 +10,13 @@ below.
 
 ## Layout
 
-Three document sets, each with the same three folders:
+Four document sets, each with the same three folders:
 
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
 | `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. **All fourteen TCL topic pages, `19` to `32`, are written.** `18` is Modern Program Structure — scope, local routines and objects. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC, `95` SD TCL (not yet written) |
+| `Administrator/` | **three documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
@@ -24,6 +25,12 @@ Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
 comes from `BCOMP`'s own tables, and every example was run before it was
 written down. `tools\probes\` holds the programs that produced the numbers and
 `tools\probes\README.md` says which runner takes which.
+
+***SETS NEVER LINK TO EACH OTHER, AND THAT IS ENFORCED BY CONVENTION RATHER
+THAN BY A TOOL.*** Each set is handed out on its own, so a link from one to
+another would be a 404 for whoever was given only the first. `Administrator/` is
+the reason the rule now matters: withholding it must not break the `User` set.
+Where a page in another set is worth naming, **name it in words**.
 
 `QUESTIONS-2026-08-26.md` at the top is the review list for the tester set,
 with the answers recorded against each question. **It is not part of any set.**

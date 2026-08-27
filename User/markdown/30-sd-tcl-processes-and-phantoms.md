@@ -1,10 +1,10 @@
 Title: SD TCL - Processes and Phantoms
-Subtitle: Listing sessions, seeing what one is doing, running work in the background, and ending a session that will not end itself.
+Subtitle: Seeing what a session is doing, running work in the background, and taking a snapshot of a running program.
 
 Every SD session is a process with a **user number**, and almost everything on
 this page takes one. The number is not the Windows process id and it is not the
 account name: it is SD's own handle on a session, it is reused after a session
-ends, and it is what `logout`, `pstat` and `pdump` all expect.
+ends, and it is what `pstat` and `pdump` both expect.
 
 A **phantom** is a session with no terminal. You start one, it runs a command in
 the background under its own user number, and what it would have displayed is
@@ -19,36 +19,20 @@ marks a word typed as it stands; braces mark an optional part.
 > is on the page: neither can be driven down a pipe, so both are described from
 > their source rather than shown.
 
-## Who is logged in: `listu`
+## What is not on this page
 
-```
-listu {no.page} {lptr {n}}
-```
+***SEEING OTHER PEOPLE'S SESSIONS, AND ENDING THEM, ARE ADMINISTRATOR VERBS.***
+`listu` lists every session on the machine and `logout` *n* ends one, and
+neither is in an ordinary account's VOC. They are documented in the
+**administrator documentation**, under *Sessions and Locks*, which is a
+separate set your administrator may or may not have given you.
 
-```
-:listu
-  User  Pid          Puid  Login time    Origin : Username
-    12  1789               27 Aug 13:14  : don
-    19  1808               27 Aug 13:53  : don
-*   27  1828               27 Aug 13:59  : don
-```
+**`logout` with no argument is the exception and every account has it** — it
+ends your own session and is `quit` under another name. That is worth knowing
+before typing it intending to list something.
 
-| | |
-|---|---|
-| **`*`** | the session you are typing in |
-| **`User`** | SD's user number — the one every other verb here wants |
-| **`Pid`** | the Windows process id |
-| **`Puid`** | the user number of the **parent**, filled in for a phantom and blank otherwise |
-| **`Origin`** | where the session came from |
-| **`Username`** | the Windows account the session is running as, not the SD account it is in |
-
-***`Origin` IS BLANK FOR A LOCAL SESSION AND THAT IS NOT A FAULT.*** It reports
-an address or a device name, and a console or piped session has neither. It
-reads `Phantom` for a phantom, an IP address for a network client, and
-`SDNet`/`SDVbSrvr` with the address for the two server connection types.
-
-**`(logout pending)`** after the name means somebody has asked that session to
-end and it has not gone yet. See *When a session will not end* below.
+What is here is **your own processes**: what this session is doing, work you
+started in the background, and how to look at either.
 
 ## What a session is doing: `pstat`
 
@@ -105,9 +89,10 @@ to the target and waits for the answer, for up to four seconds. A session that
 never answers gets that line.
 
 ***THAT IS THE CHEAPEST WAY TO FIND A DEAD SESSION.*** A session killed from
-outside SD keeps its entry in the user table, so `listu` still shows it and its
-slot is still counted; `pstat` is what tells you nothing is behind the entry.
-User 12 in both listings above is one of those.
+outside SD keeps its entry in the user table and its slot is still counted;
+`pstat` is what tells you nothing is behind the entry. User 12 in both listings
+above is one of those. **Clearing it is an administrator's job** — reporting the
+user number is the useful thing you can do.
 
 ## Running something in the background: `phantom`
 
@@ -185,50 +170,6 @@ not `listu` — a phantom somebody else started does not appear, and neither doe
 one your session started before you `logto`'d somewhere else. The register it
 reads is keyed by the parent's user number.
 
-## Ending a session: `logout`
-
-```
-logout                  end this session
-logout n {n …}          end another session, by user number
-logout all              end every session but this one
-```
-
-***`logout` WITH NO ARGUMENT ENDS YOUR OWN SESSION.*** It is `quit` under
-another name, and it is worth knowing before you type `logout` intending to
-list something.
-
-```
-:logout 999
-Only administrators can logout processes running with other usernames
-```
-
-**An ordinary session may end only its own sessions** — ones running under the
-same Windows account. Anything else needs an elevated session, and that is what
-the message above reports; user 999 does not exist, and an unelevated session
-cannot tell the difference, because it is refused before the number is looked
-up.
-
-**`logout all`** is stricter still: it needs an elevated session **and** must be
-run from the `SDSYS` account. It leaves your own session alone.
-
-### When a session will not end
-
-`logout` **signals** a process. If the process has already gone — killed from
-outside SD, or lost with a terminal — there is nothing to signal, and the
-session's entry stays where it is with **`(logout pending)`** beside it in
-`listu`.
-
-***THE ENTRY MATTERS BECAUSE IT HOLDS A SLOT AND AN EXCLUSIVE-ACCESS CLAIM.***
-`NUMUSERS` counts it, and any verb that wants a file to itself — `build.index`
-is the usual one — is refused while it is there. Recovery is not another
-`logout`: it is an elevated
-
-```
-sd -cleanup
-```
-
-and a restart of the SD service if that does not take it.
-
 ## Dumping a process: `pdump`
 
 ```
@@ -291,18 +232,16 @@ The debugger itself — the commands it takes once it is attached — is in
 |---|---|
 | **standard** | `status` |
 | **programmer** | `phantom` `pstat` `pdebug` `pdump` |
-| **administrator** | `listu` `logout` |
 
 ***THE ONLY ONE EVERY ACCOUNT HAS IS `status`***, and it reports nothing but
-that account's own phantoms. Seeing the whole machine — who is logged in, what
-they are running — starts at the programmer tier and ends there: `pstat` will
-report every session, and `listu` and `logout`, the two that name and end other
-people's, are administrator verbs.
+that account's own phantoms. The rest are programmer verbs: making a background
+process, and looking at one.
 
 **There are two gates and they are not the same one.** The tier decides whether
 you have the verb at all; **elevation decides whether it does anything to
-somebody else.** `logout n` and `pdump n` are both in a session's hands for its
-own processes and refuse for another Windows account's without it.
+somebody else.** `pstat` will report any session; `pdump` *n* is yours to use on
+your own processes and refuses for another Windows account's without an elevated
+session.
 
 ## See also
 
