@@ -132,13 +132,21 @@ ordinary source reads normally.
 | **`os.users` field 2** | the `OS.EXECUTE` field, decides whether it may run |
 
 An editor runs outside SD, so it needs operating-system permission that `ed`
-does not. An administrator's session passes outright; everyone else needs a
-record in the system file `os.users` whose field 2 reads `yes`, **and only an
-administrator can put one there.**
+does not. It comes from a record in the system file `os.users` whose field 2
+reads `yes`, **and only an administrator can put one there.**
 
-***ON A NEW INSTALL NOBODY HAS ONE.*** `os.users` ships empty, so until an
-administrator writes a record into it, `edit` and `micro` refuse every
-unelevated session — the account that installed SD included.
+***AN ADMINISTRATOR GETS ONE WITHOUT ASKING.*** An account created with the
+**ADMINISTRATOR** tier — which is the tier of the account SD's installer makes
+for whoever installs it — is written into `os.users` as it is created, with both
+fields `yes`. So an administrator reaches the operating system **without
+elevating**, and these two verbs work in an ordinary session.
+
+**It is a default, not a rule.** The record is ordinary data and an
+administrator can edit it, including their own. An account of any other tier
+starts with no record and is refused until somebody writes one.
+
+An elevated session passes anyway, whatever the file says — otherwise an empty
+`os.users` would lock the machine's own administrator out.
 
 ***AND A SESSION WITH NO TERMINAL IS REFUSED BEFORE ANYTHING IS WRITTEN*** — an
 API session, or a script driving SD down a pipe:
