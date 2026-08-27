@@ -130,6 +130,13 @@ DOCS = {
 # from "missed".  All seventeen categories are written as of 26 Aug 2026, so it
 # is empty - it stays because a new category would start life in it.
 #
+# THE RESTRICTED NAMES ARE STILL ASSIGNED TO USER DOCUMENTS HERE, ON PURPOSE.
+# The owner moved them off the User SYNTAX CARD on 26 Aug 2026 and into the
+# Technical set; the User pages that DESCRIBE them - 09 is nothing else, 13,
+# 16, 17 in part - still do, so this script is still telling the truth about
+# where each name is explained.  If those pages move too, move the names here
+# with them.
+#
 # 18 SYNTAX IS DELIBERATELY NOT HERE.  It is not a category: it is one
 # alphabetical run of EVERY name, so listing it would assign all 411 twice and
 # defeat the duplicate check this script exists for.  Its own completeness is

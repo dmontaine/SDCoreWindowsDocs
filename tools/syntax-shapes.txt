@@ -279,3 +279,11 @@ WRITEV = `writev` *var* `to` *file.var*, *id*, *field* {`on error` …}
 WRITEVU = `writevu` *var* `to` *file.var*, *id*, *field* {`on error` …}
 XLATE = `xlate(`{*dict*`,`} *file.name*, *id*, *field*, *action*`)`
 FOLDS = `folds(`*arr*, *width* {, *delimiter*}`)`
+
+# Internal-only intrinsics whose handler is a special case.  All four take a
+# one-dimensional MATRIX name rather than an expression in at least one
+# position, which is why the argument count cannot express them.
+BTREE = `btree(`*file.var*, *matrix*`)` — *matrix* is a `dim`med one-dimensional name
+REMOVEF = `removef(`*string* {, *occurrence*}`)`
+SCAN = `scan(`*a* {, *matrix*}`)` — *matrix* is a `dim`med one-dimensional name
+SORTNEXT = `sortnext(`*matrix*`)` — *matrix* is a `dim`med one-dimensional name

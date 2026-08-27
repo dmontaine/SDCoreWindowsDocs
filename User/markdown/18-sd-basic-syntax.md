@@ -12,19 +12,25 @@ either case.
 > **This page is generated, and it is checked for completeness rather than
 > proof-read for it.** The roster comes from `BCOMP`'s own tables — the same
 > extraction the rest of this set uses — and `tools/mksyntax.py` refuses to
-> write the page if a single name accepted by the compiler has no line on it.
-> Argument counts for functions are read out of `BCOMP`'s dispatch table,
-> which is positional against the name list and carries each name in a
-> comment; the script asserts the two agree before it uses either. The
-> shapes that a count cannot express — every statement, and about twenty
-> functions — come from documents 01 to 17, where they were measured.
+> write the page if a single name that belongs on it has no line. Argument
+> counts for functions are read out of `BCOMP`'s dispatch table, which is
+> positional against the name list and carries each name in a comment; the
+> script asserts the two agree before it uses either. The shapes that a count
+> cannot express — every statement, and about twenty functions — come from
+> documents 01 to 17, where they were measured.
 
-***THREE THINGS ARE MARKED, AND THEY ARE THE ONES THAT WASTE TIME.***
+***WHAT IS NOT HERE, AND WHERE IT WENT.*** Everything on this card is
+something an application may use. Names that an ordinary program **cannot**
+compile are in the Technical set, under *SD Basic - Restricted Commands*: the
+restricted statements, the internal-only functions, and the one name that is
+in the compiler's table with nothing behind it. **If you are looking for
+something and it is not here, that is where to look before concluding it does
+not exist.**
+
+***ONE THING IS MARKED, AND IT IS THE ONE THAT WASTES TIME.***
 
 | | |
 |---|---|
-| ***(restricted)*** | internal programs only. An ordinary account gets *"Unrecognised statement"* |
-| ***(no such thing)*** | in the compiler's table with nothing behind it. It does not compile for anybody |
 | ***(clause word)*** | not a statement — a word that belongs inside another one's syntax |
 
 
@@ -37,18 +43,11 @@ either case.
 | **`abss`** | `abss(`*a*`)` |
 | **`accept.socket.connection`** | `accept.socket.connection(`*a*, *b*`)` |
 | **`acos`** | `acos(`*a*`)` |
-| **`add`** | `add` *n* `to` *variable* ***(restricted)*** |
-| **`akclear`** | `akclear` *file.var*, *index* `then` … `else` … ***(restricted)*** |
-| **`akdelete`** | `akdelete` *file.var*, *index*, *key* `then` … `else` … ***(restricted)*** |
-| **`akenable`** | `akenable` *file.var*, *index*, *state* ***(restricted)*** |
-| **`akread`** | `akread` *var* `from` *file.var*, *index*, *key* `then` … `else` … ***(restricted)*** |
-| **`akrelease`** | `akrelease` *file.var*, *index*, *key* ***(restricted)*** |
-| **`akwrite`** | `akwrite` *var* `to` *file.var*, *index*, *key* `then` … `else` … ***(restricted)*** |
 | **`alpha`** | `alpha(`*a*`)` |
 | **`ands`** | `ands(`*a*, *b*`)` |
 | **`append`** | clause of `openseq`, and of `edit` ***(clause word)*** |
 | **`arg`** | `arg(`*a*`)` |
-| **`arg.count`** | `arg.count(``)` |
+| **`arg.count`** | `arg.count()` |
 | **`ascii`** | `ascii(`*a*`)` |
 | **`asin`** | `asin(`*a*`)` |
 | **`assigned`** | `assigned(`*a*`)` |
@@ -69,7 +68,6 @@ either case.
 | **`bittest`** | `bittest(`*a*, *b*`)` |
 | **`bitxor`** | `bitxor(`*a*, *b*`)` |
 | **`break`** | `break on`   ·   `break off`   ·   `break` *n* |
-| **`breakpoint`** | `breakpoint` *action*, *qualifier* ***(restricted)*** |
 | **`by`** | clause of `locate` and `sselect` — `by` `'AL'`, `'AR'`, `'DL'`, `'DR'` ***(clause word)*** |
 
 ## C
@@ -77,7 +75,6 @@ either case.
 | | |
 |---|---|
 | **`call`** | `call` *name*`(`*arg*, …`)`   ·   `call @`*var*`(`*arg*, …`)` |
-| **`callv`** | `callv` *name*`(`*arg*, …`)` ***(restricted)*** |
 | **`capturing`** | clause of `execute` and `os.execute` — take the output ***(clause word)*** |
 | **`case`** | `case` *condition*, inside `begin case` … `end case` |
 | **`catalogued`** | `catalogued(`*a*`)` |
@@ -87,7 +84,7 @@ either case.
 | **`change`** | `change(`*string*, *from*, *to* {, *occurrences* {, *start*}}`)` |
 | **`char`** | `char(`*a*`)` |
 | **`checksum`** | `checksum(`*a*`)` |
-| **`chgphant`** | `chgphant(``)` |
+| **`chgphant`** | `chgphant()` |
 | **`class`** | `class` *name* |
 | **`clear`** | `clear` — zeroes every variable |
 | **`clearcommon`** | `clearcommon` {*name*} |
@@ -98,22 +95,19 @@ either case.
 | **`close`** | `close` *file.var* {`on error` …} |
 | **`close.socket`** | `close.socket` *socket* |
 | **`closeseq`** | `closeseq` *file.var* |
-| **`col1`** | `col1(``)` |
-| **`col2`** | `col2(``)` |
+| **`col1`** | `col1()` |
+| **`col2`** | `col2()` |
 | **`com`** | `com` `/`*name*`/` *var*, … — synonym of `common` |
 | **`commit`** | `commit`, inside `begin transaction` … `end transaction` |
 | **`common`** | `common` `/`*name*`/` *var*, *matrix*`(`*n*`)`, … |
-| **`como`** | `como on` *name*   ·   `como off`   ·   `como` *name* {`on error` …} ***(restricted)*** |
 | **`compare`** | `compare(`*a*, *b* {, *justification*}`)` |
 | **`config`** | `config(`*a*`)` |
-| **`configure.file`** | `configure.file` *file.var*, *key*, *value* `then` … `else` … ***(restricted)*** |
 | **`continue`** | `continue` — next iteration of the enclosing `loop` or `for` |
 | **`convert`** | `convert(`*a*, *b*, *c*`)` |
 | **`cos`** | `cos(`*a*`)` |
 | **`count`** | `count(`*a*, *b*`)` |
 | **`counts`** | `counts(`*a*, *b*`)` |
 | **`create`** | `create` *file.var* `then` … `else` … |
-| **`create.ak`** | `create.ak` *file.var*, *index*, *dict.rec* `then` … `else` … ***(restricted)*** |
 | **`create.file`** | `create.file` *name* {`directory`} {`on error` …} |
 | **`create.server.socket`** | `create.server.socket(`*addr*, *port* {, *flags*}`)` |
 | **`crop`** | `crop(`*a*`)` |
@@ -126,17 +120,12 @@ either case.
 | | |
 |---|---|
 | **`data`** | `data` *expr*, … |
-| **`date`** | `date(``)` |
+| **`date`** | `date()` |
 | **`dcount`** | `dcount(`*a*, *b*`)` |
 | **`debug`** | `debug` — needs `basic` *file* *record* `debugging` |
-| **`debug.off`** | `debug.off` ***(restricted)*** |
-| **`debug.on`** | `debug.on` ***(restricted)*** |
-| **`debug.set`** | `debug.set` *var* {, *qualifier*} `to` *value* ***(restricted)*** |
 | **`deffun`** | `deffun` *name*`(`*arg*, …`)` {`calling` *"cat.name"*} {`local`} |
 | **`del`** | `del` *arr*`<`*f* {, *v* {, *sv*}}`>` |
 | **`delete`** | `delete` *file.var*, *id* {`on error` …}   ·   `delete(`*arr*, *f* {, *v* {, *sv*}}`)` |
-| **`delete.ak`** | `delete.ak` *file.var*, *index* `then` … `else` … ***(restricted)*** |
-| **`delete.common`** | `delete.common` *name* ***(restricted)*** |
 | **`deletelist`** | `deletelist` *name* `then` … `else` … |
 | **`deleteseq`** | `deleteseq` *path* {`on error` …} `then` … `else` … |
 | **`deleteu`** | `deleteu` *file.var*, *id* {`on error` …} |
@@ -167,7 +156,6 @@ either case.
 | **`eqs`** | `eqs(`*a*, *b*`)` |
 | **`equ`** | `equ` *name* `to` *value* — synonym of `equate` |
 | **`equate`** | `equate` *name* `to` *value* {, *name* `to` *value*} … |
-| **`errmsg`** | ***(no such thing)*** — in the statement table with no opcode behind it |
 | **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` {*l*}} {`rtnlist` {*v*}} |
 | **`exit`** | `exit` — leave the enclosing `loop` or `for` |
 | **`exp`** | `exp(`*a*`)` |
@@ -184,7 +172,6 @@ either case.
 | **`fileinfo`** | `fileinfo(`*file.var*, *key*`)` |
 | **`filelock`** | `filelock` *file.var* {`locked` …} {`on error` …} — ***no `then`/`else`*** |
 | **`fileunlock`** | `fileunlock` *file.var* {`on error` …} |
-| **`find`** | `find` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … |
 | **`findstr`** | `findstr` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … |
 | **`flush`** | `flush` *file.var* `then` … `else` … |
 | **`fmt`** | `fmt(`*a*, *b*`)` |
@@ -203,7 +190,7 @@ either case.
 |---|---|
 | **`ges`** | `ges(`*a*, *b*`)` |
 | **`get`** | `get` *var* `from` *object* |
-| **`get.messages`** | `get.messages(``)` |
+| **`get.messages`** | `get.messages()` |
 | **`get.port.params`** | `get.port.params(`*a*`)` |
 | **`getlist`** | `getlist` *name* {`to` *list.no*} `then` … `else` — ***the `then`/`else` is not optional*** |
 | **`getnls`** | `getnls(`*a*`)` |
@@ -253,14 +240,13 @@ either case.
 
 | | |
 |---|---|
-| **`keyboard.input`** | `keyboard.input` *string* ***(restricted)*** |
 | **`keycode`** | `keycode(`{*timeout*}`)` |
 | **`keyedit`** | `keyedit` *key*, *action* |
 | **`keyexit`** | `keyexit` *key*, *action* |
 | **`keyin`** | `keyin(`{*timeout*}`)` |
 | **`keyinc`** | `keyinc(`{*timeout*}`)` |
 | **`keyinr`** | `keyinr(`{*timeout*}`)` |
-| **`keyready`** | `keyready(``)` |
+| **`keyready`** | `keyready()` |
 | **`keytrap`** | `keytrap` *key*, *action* |
 
 ## L
@@ -301,7 +287,6 @@ either case.
 | **`min`** | `min(`*a*, *b*`)` |
 | **`minimum`** | `minimum(`*a*`)` |
 | **`mod`** | `mod(`*a*, *b*`)` |
-| **`modify`** | `modify` *file.var*, *id* ***(restricted)*** |
 | **`mods`** | `mods(`*a*, *b*`)` |
 
 ## N
@@ -335,7 +320,7 @@ either case.
 | **`openpath`** | `openpath` *path* `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
 | **`ors`** | `ors(`*a*, *b*`)` |
-| **`os.error`** | `os.error(``)` |
+| **`os.error`** | `os.error()` |
 | **`os.execute`** | `os.execute` *command* {`capturing` *var*} |
 | **`outerjoin`** | `outerjoin(`*a*, *b*, *c*`)` |
 | **`overlay`** | clause of `input` — type over what is already there ***(clause word)*** |
@@ -360,7 +345,6 @@ either case.
 | **`procread`** | `procread` *var* `then` … `else` … |
 | **`procwrite`** | `procwrite` *var* |
 | **`program`** | `program` *name* |
-| **`prompt`** | `prompt` *character* |
 | **`public`** | `public` *var*, … |
 | **`pwr`** | `pwr(`*a*, *b*`)` |
 
@@ -368,7 +352,6 @@ either case.
 
 | | |
 |---|---|
-| **`quit`** | `quit` ***(restricted)*** |
 | **`quote`** | `quote(`*a*`)` |
 
 ## R
@@ -395,26 +378,21 @@ either case.
 | **`recordlockl`** | `recordlockl` *file.var*, *id* {`locked` …} {`on error` …} |
 | **`recordlocku`** | `recordlocku` *file.var*, *id* {`locked` …} {`on error` …} |
 | **`release`** | `release` {*file.var* {, *id*}} {`on error` …} — bare `release` releases everything |
-| **`release.lock`** | `release.lock` *n* ***(restricted)*** |
 | **`rem`** | `rem(`*a*, *b*`)` |
 | **`remark`** | `remark` *text* — synonym of `rem` |
 | **`remove`** | `remove` *value* `from` *arr* `setting` *delimiter.code* |
 | **`remove.break.handler`** | `remove.break.handler` |
-| **`remove.token`** | `remove.token` ***(restricted)*** |
 | **`repeat`** | `repeat` — closes a `loop` |
 | **`replace`** | `replace(`*arr*, *f* {, *v* {, *sv*}}, *value*`)` |
-| **`reset.modes`** | `reset.modes` *mask* ***(restricted)*** |
 | **`restore.screen`** | `restore.screen` *image*, *restore.cursor* |
 | **`return`** | `return` {`to` *label*}   ·   `return(`*value*`)` from a function |
 | **`returning`** | clause of `execute` — take the command's error text ***(clause word)*** |
 | **`reuse`** | `reuse(`*a*`)` |
-| **`rewind`** | `rewind` *file.var* `then` … `else` … ***(restricted)*** |
 | **`rnd`** | `rnd(`*a*`)` |
 | **`rollback`** | `rollback`, inside `begin transaction` … `end transaction` |
 | **`rqm`** | `rqm` {*seconds*} |
 | **`rtnlist`** | clause of `execute` — take the list the command left ***(clause word)*** |
 | **`rtrans`** | `rtrans(`*file.var*, *id*, *field*, *action*`)` |
-| **`run`** | `run` {*file*} *record* {*options*} ***(restricted)*** |
 
 ## S
 
@@ -441,12 +419,8 @@ either case.
 | **`set.arg`** | `set.arg` *n*, *value* |
 | **`set.break.handler`** | `set.break.handler` *subroutine.name* |
 | **`set.exit.status`** | `set.exit.status` *n* |
-| **`set.modes`** | `set.modes` *mask* ***(restricted)*** |
 | **`set.port.params`** | `set.port.params(`*a*, *b*`)` |
 | **`set.socket.mode`** | `set.socket.mode(`*a*, *b*, *c*`)` |
-| **`set.status`** | `set.status` *n* ***(restricted)*** |
-| **`set.trigger`** | `set.trigger` *file.var*, *mode*, *program* {, *modes*} ***(restricted)*** |
-| **`set.unassigned`** | `set.unassigned` *var* ***(restricted)*** |
 | **`setleft`** | `setleft` *index* `from` *file.var* — ***no `then`/`else`*** |
 | **`setnls`** | `setnls` *key*, *value* |
 | **`setpu`** | `setpu` `on` *unit*, *key*, *value* |
@@ -457,9 +431,6 @@ either case.
 | **`sin`** | `sin(`*a*`)` |
 | **`sleep`** | `sleep` {*seconds*}   ·   `sleep` *hh:mm:ss* |
 | **`socket.info`** | `socket.info(`*a*, *b*`)` |
-| **`sortadd`** | `sortadd` *key*, *data* ***(restricted)*** |
-| **`sortclear`** | `sortclear` ***(restricted)*** |
-| **`sortinit`** | `sortinit` *keys*, *memory* ***(restricted)*** |
 | **`soundex`** | `soundex(`*a*`)` |
 | **`soundexs`** | `soundexs(`*a*`)` |
 | **`space`** | `space(`*a*`)` |
@@ -468,7 +439,7 @@ either case.
 | **`sqrt`** | `sqrt(`*a*`)` |
 | **`squote`** | `squote(`*a*`)` |
 | **`sselect`** | `sselect` {*file.var*} {`by` *field*} {`to` *list.no*} |
-| **`status`** | `status(``)` |
+| **`status`** | `status()` |
 | **`step`** | clause of `for`: `for` *v* `=` *a* `to` *b* `step` *n* ***(clause word)*** |
 | **`stop`** | `stop` {*message*} |
 | **`str`** | `str(`*a*, *b*`)` |
@@ -493,8 +464,8 @@ either case.
 | **`tclread`** | `tclread` *var* |
 | **`terminfo`** | `terminfo(`*capability* {, *arg*, …}`)` |
 | **`then`** | clause of `if`, and of every statement that has an `else` ***(clause word)*** |
-| **`time`** | `time(``)` |
-| **`timedate`** | `timedate(``)` |
+| **`time`** | `time()` |
+| **`timedate`** | `timedate()` |
 | **`timeout`** | `timeout` *file.var*, *seconds* |
 | **`to`** | clause of `open`, `for`, `equate`, `readcsv`, `select`, `savelist`, `writecsv` ***(clause word)*** |
 | **`trans`** | `trans(`{*dict*`,`} *file.name*, *id*, *field*, *action*`)` |
@@ -513,7 +484,6 @@ either case.
 |---|---|
 | **`umask`** | `umask(`*a*`)` |
 | **`unassigned`** | `unassigned(`*a*`)` |
-| **`unload.object`** | `unload.object` *class* ***(restricted)*** |
 | **`unlock`** | `unlock` {*n*} |
 | **`until`** | clause of `loop`: `loop` … `until` *condition* … `repeat` |
 | **`upcase`** | `upcase(`*a*`)` |
@@ -522,7 +492,6 @@ either case.
 
 | | |
 |---|---|
-| **`varset`** | `varset` *var*, *value* ***(restricted)*** |
 | **`vartype`** | `vartype(`*a*`)` |
 | **`void`** | `void` *function.call* — call a function and discard its value |
 | **`vslice`** | `vslice(`*a*, *b*`)` |
@@ -533,14 +502,12 @@ either case.
 |---|---|
 | **`waiting`** | clause of `input`: `input` *var* `waiting` *seconds* ***(clause word)*** |
 | **`wake`** | `wake` *user.no* |
-| **`watch`** | `watch` *var* ***(restricted)*** |
 | **`weofseq`** | `weofseq` *file.var* {`on error` …} |
 | **`while`** | clause of `loop`: `loop` … `while` *condition* … `repeat` |
 | **`write`** | `write` *var* `to` *file.var*, *id* {`on error` …} — ***inside a transaction the lock must already be held*** |
 | **`write.socket`** | `write.socket(`*a*, *b*, *c*, *d*`)` |
 | **`writeblk`** | `writeblk` *var* `to` *file.var* {`on error` …} |
 | **`writecsv`** | `writecsv` *value*, … `to` *file.var* `then` … `else` … |
-| **`writepkt`** | `writepkt` *data* ***(restricted)*** |
 | **`writeseq`** | `writeseq` *var* `to` *file.var* {`on error` …} `then` … `else` … |
 | **`writeseqf`** | `writeseqf` *var* `to` *file.var* {`on error` …} `then` … `else` … |
 | **`writeu`** | `writeu` *var* `to` *file.var*, *id* {`on error` …} |

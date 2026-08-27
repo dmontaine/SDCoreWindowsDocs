@@ -1,8 +1,16 @@
 #
-# mksyntax.py <gpl.bp/BCOMP> <out.md>
+# mksyntax.py <gpl.bp/BCOMP> <user-18.md> <technical-01.md>
 #
-# Build User document 18, the syntax card: ONE alphabetical run of every name
-# BCOMP accepts, with its syntax and nothing else.
+# Build TWO pages that partition every name BCOMP accepts:
+#
+#   User 18       SD Basic - Syntax, one alphabetical run of everything an
+#                 application may use, syntax only.
+#   Technical 01  SD Basic - Restricted Commands, the ones it may not -
+#                 restricted statements, internal-only functions, and the
+#                 names that are in a table with no opcode behind them.
+#
+# The split is the owner's ruling of 26 Aug 2026.  The script checks that the
+# two pages partition the roster, so a name cannot fall down the gap.
 #
 # WHY IT IS GENERATED.  The card's whole value is that every name is on it.  A
 # hand-written list of four hundred entries is a list with omissions nobody
@@ -37,7 +45,8 @@ import re
 import sys
 
 BCOMP = sys.argv[1]
-OUT = sys.argv[2]
+OUT = sys.argv[2]          # User 18, the syntax card
+OUT_RESTRICTED = sys.argv[3]   # Technical 01, the restricted commands
 SHAPES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                       'syntax-shapes.txt')
 
@@ -101,6 +110,12 @@ starts = [n for n, ln in enumerate(lines) if 'on i goto' in ln and 'in.' in ln]
 if len(starts) < 2:
     sys.exit('cannot find both intrinsic dispatch blocks - refusing')
 hp = handlers(starts[1])
+internal = ordered('int.intrinsics')
+hi = handlers(starts[0])
+if len(internal) != len(hi):
+    sys.exit('int.intrinsic name list is %d and its dispatch list is %d - they '
+             'are positional and have drifted apart.  Refusing.'
+             % (len(internal), len(hi)))
 
 if len(pub) != len(hp):
     sys.exit('intrinsic name list is %d and its dispatch list is %d - they are '
@@ -131,11 +146,15 @@ ARITY = {
 }
 LETTERS = ['a', 'b', 'c', 'd', 'e']
 derived = {}
-for name, (hnd, _c) in zip(pub, hp):
+for name, (hnd, _c) in list(zip(pub, hp)) + list(zip(internal, hi)):
     if hnd in ARITY:
         n = ARITY[hnd]
-        args = ', '.join('*%s*' % LETTERS[i] for i in range(n))
-        derived[name] = '`%s(`%s`)`' % (name.lower(), args)
+        if n == 0:
+            # no empty inline-code span between the brackets
+            derived[name] = '`%s()`' % name.lower()
+        else:
+            args = ', '.join('*%s*' % LETTERS[i] for i in range(n))
+            derived[name] = '`%s(`%s`)`' % (name.lower(), args)
 
 # ------------------------------------------------------------- the data file
 
@@ -156,27 +175,61 @@ with io.open(SHAPES, encoding='utf-8', newline='') as f:
 if not shapes:
     sys.exit('syntax-shapes.txt is empty - refusing')
 
+# ------------------------------------------------------- the three exclusions
+
+# NAMES THAT COME OFF THE USER CARD, on the owner's ruling of 26 Aug 2026.
+# They are not things an application programmer can use, and a lookup card that
+# lists them invites somebody to try.  They go to the Technical set instead,
+# where the audience is somebody working on SD rather than with it.
+#
+#   RESTRICTED   the 36 in BCOMP's restricted.statements.  An ordinary account
+#                compiling one gets "Unrecognised statement".
+#   INTERNAL     the 38 in BCOMP's int.intrinsics.  Worse than unavailable -
+#                the compiler reads an unknown function name as a MATRIX, so
+#                the complaint is "Matrix X is not referenced in a DIM
+#                statement" at the last line of the program.
+#   NO_SUCH_THING  in a table with no opcode behind it.  It compiles for
+#                nobody, restricted or not.  Enumerated by hand because the
+#                only way to find one is to compile it: ERRMSG's opcode was
+#                removed on 28 Jul 24 and the name was left in the table.
+#                Measured - "Unrecognised statement", in an ordinary account
+#                and with the DEBUGGING keyword alike.
+NO_SUCH_THING = {'ERRMSG'}
+
+INTERNAL = set(internal)
+TECHNICAL = RESTRICTED | INTERNAL | NO_SUCH_THING
+CARD = (EVERYTHING - TECHNICAL)
+ALL_NAMES = EVERYTHING | INTERNAL
+
 # ------------------------------------------------------------- the null case
 
 entries = {}
-for name in EVERYTHING:
+for name in ALL_NAMES:
     if name in shapes:
         entries[name] = shapes[name]
     elif name in derived:
         entries[name] = derived[name]
 
-missing = sorted(EVERYTHING - set(entries))
-bogus = sorted(set(shapes) - EVERYTHING)
+missing = sorted(ALL_NAMES - set(entries))
+bogus = sorted(set(shapes) - ALL_NAMES)
 
 print('BCOMP accepts        : %d name(s)' % len(EVERYTHING))
 print('  statements         : %d' % len(STATEMENTS))
 print('  restricted         : %d' % len(RESTRICTED))
 print('  reserved words     : %d' % len(RESERVED))
 print('  intrinsics         : %d' % len(INTRINSICS))
+print('internal-only        : %d (a separate BCOMP table)' % len(INTERNAL))
+print()
+print('the User card        : %d' % len(CARD))
+print('the Technical page   : %d  = %d restricted + %d internal + %d no-such-thing'
+      % (len(TECHNICAL), len(RESTRICTED), len(INTERNAL), len(NO_SUCH_THING)))
 print('shapes given by hand : %d' % len(shapes))
 print('shapes derived       : %d' % len(derived))
-print('entries on the card  : %d' % len(entries))
+print('lines available      : %d of %d' % (len(entries), len(ALL_NAMES)))
 print()
+if len(CARD) + len(TECHNICAL) != len(ALL_NAMES):
+    sys.exit('REFUSED: the two pages do not partition the roster - %d + %d != %d'
+             % (len(CARD), len(TECHNICAL), len(ALL_NAMES)))
 if bogus:
     print('=== IN syntax-shapes.txt, NOT ACCEPTED BY BCOMP (%d) ===' % len(bogus))
     print('  ' + ' '.join(bogus))
@@ -185,28 +238,32 @@ if missing:
     print('=== ACCEPTED BY BCOMP, NO SYNTAX LINE (%d) ===' % len(missing))
     print('  ' + ' '.join(missing))
     print()
-    print('REFUSED: the card is not complete, and a lookup card that is missing')
-    print('         a name is worse than none - the reader concludes it does')
-    print('         not exist.  Add the lines to syntax-shapes.txt.')
+    print('REFUSED: a page is not complete, and a lookup that is missing a name')
+    print('         is worse than none - the reader concludes it does not')
+    print('         exist.  Add the lines to syntax-shapes.txt.')
     sys.exit(1)
 if bogus:
     print('REFUSED: a name in the data file that BCOMP does not accept is either')
     print('         a typo or a statement that has been removed.')
     sys.exit(1)
 
-# ------------------------------------------------------------------ the page
+# ----------------------------------------------------------------- the pages
 
 def kind(name):
-    if name in INTRINSICS:
-        return 'function'
+    if name in NO_SUCH_THING:
+        return 'no such thing'
+    if name in INTERNAL:
+        return 'internal'
     if name in RESTRICTED:
         return 'restricted'
+    if name in INTRINSICS:
+        return 'function'
     if name in STATEMENTS:
         return 'statement'
     return 'clause word'
 
 
-HEAD = u"""Title: SD Basic - Syntax
+CARD_HEAD = u"""Title: SD Basic - Syntax
 Subtitle: Every statement and function, alphabetically, with its syntax and nothing else.
 
 A lookup card, and nothing else. If you know what you want and have forgotten
@@ -220,24 +277,30 @@ either case.
 > **This page is generated, and it is checked for completeness rather than
 > proof-read for it.** The roster comes from `BCOMP`'s own tables — the same
 > extraction the rest of this set uses — and `tools/mksyntax.py` refuses to
-> write the page if a single name accepted by the compiler has no line on it.
-> Argument counts for functions are read out of `BCOMP`'s dispatch table,
-> which is positional against the name list and carries each name in a
-> comment; the script asserts the two agree before it uses either. The
-> shapes that a count cannot express — every statement, and about twenty
-> functions — come from documents 01 to 17, where they were measured.
+> write the page if a single name that belongs on it has no line. Argument
+> counts for functions are read out of `BCOMP`'s dispatch table, which is
+> positional against the name list and carries each name in a comment; the
+> script asserts the two agree before it uses either. The shapes that a count
+> cannot express — every statement, and about twenty functions — come from
+> documents 01 to 17, where they were measured.
 
-***THREE THINGS ARE MARKED, AND THEY ARE THE ONES THAT WASTE TIME.***
+***WHAT IS NOT HERE, AND WHERE IT WENT.*** Everything on this card is
+something an application may use. Names that an ordinary program **cannot**
+compile are in the Technical set, under *SD Basic - Restricted Commands*: the
+restricted statements, the internal-only functions, and the one name that is
+in the compiler's table with nothing behind it. **If you are looking for
+something and it is not here, that is where to look before concluding it does
+not exist.**
+
+***ONE THING IS MARKED, AND IT IS THE ONE THAT WASTES TIME.***
 
 | | |
 |---|---|
-| ***(restricted)*** | internal programs only. An ordinary account gets *"Unrecognised statement"* |
-| ***(no such thing)*** | in the compiler's table with nothing behind it. It does not compile for anybody |
 | ***(clause word)*** | not a statement — a word that belongs inside another one's syntax |
 
 """
 
-TAIL = u"""
+CARD_TAIL = u"""
 ## See also
 
 [SD Basic - Program Structure](01-sd-basic-program-structure.html) ·
@@ -246,25 +309,79 @@ TAIL = u"""
 [SD Basic - System and Environment](16-sd-basic-system-and-environment.html).
 """
 
-out = [HEAD]
-letter = None
-for name in sorted(entries):
-    first = name[0]
-    if first != letter:
-        letter = first
-        out.append(u'\n## %s\n\n' % letter)
-        out.append(u'| | |\n|---|---|\n')
-    line = entries[name]
-    if kind(name) == 'restricted' and '(restricted)' not in line:
-        line += u' ***(restricted)***'
-    if kind(name) == 'clause word' and '(clause word)' not in line:
-        line += u' ***(clause word)***'
-    out.append(u'| **`%s`** | %s |\n' % (name.lower(), line))
-out.append(TAIL)
+TECH_HEAD = u"""Title: SD Basic - Restricted Commands
+Subtitle: The statements and functions an ordinary program cannot compile, and what the compiler says when it tries.
 
-text = u''.join(out)
-with io.open(OUT, 'w', encoding='utf-8', newline='\n') as f:
-    f.write(text)
-print('wrote %s  %d bytes, %d entries, %d letter sections'
-      % (OUT, len(text), len(entries), text.count('\n## ')))
+This is a Technical document. Nothing on this page is available to an
+application: every name here needs a program compiled with `$internal`, which
+in turn needs an administrator in the `SDSYS` account. They are listed because
+they exist, because they appear in SD's own source, and because the errors
+they produce name something other than the real cause.
+
+*Italics* mark something you supply, **bold** a word typed as it stands, and
+braces an optional part.
+
+> **This page is generated from `BCOMP`'s own tables** by
+> `tools/mksyntax.py`, the same script that builds the User set's syntax card,
+> and the two **partition** the roster: every name the compiler accepts is on
+> exactly one of them, and the script refuses to write either page if that
+> stops being true.
+
+## The three kinds, and how each one fails
+
+| | |
+|---|---|
+| ***(restricted)*** | a statement in `BCOMP`'s `restricted.statements`. An ordinary account gets ***"Unrecognised statement"***, which at least names the right line |
+| ***(internal)*** | a function in `BCOMP`'s `int.intrinsics`. ***The message names something else entirely***: an unknown function is read as a matrix reference, so the complaint is ***"Matrix X is not referenced in a DIM statement"*** — reported at the **last line of the program**, nowhere near the call. With three or more arguments it is *"Right bracket not found where expected"* instead, because a matrix takes at most two subscripts |
+| ***(no such thing)*** | in a table with no opcode behind it. It compiles for **nobody** — `$internal` does not help |
+
+***THE SECOND ROW IS THE ONE TO REMEMBER.*** If a function you are certain
+exists produces a complaint about a `dim` statement you never wrote, it does
+exist, and this account may not call it.
+
+**`$internal` needs both halves.** `BCOMP` tests
+`kernel(K$INTERNAL, -1) and kernel(K$ADMINISTRATOR, -1)` — internal mode alone
+was enough until 13 Aug 2026, and it was not safe: internal programs are the
+only ones that may set the administrator flag, and `sd -internal` is not itself
+gated, so any account could have compiled a three-line program that granted
+itself administrator rights. That was demonstrated, not theorised.
+
+"""
+
+TECH_TAIL = u"""
+## See also
+
+The User set's *SD Basic - Syntax* card carries everything an application may
+use. `UPSTREAM_FIXES.md` in the `sd4windows` repository carries the defects
+found in these areas that are upstream's rather than this port's.
+"""
+
+
+def render(names, head, tail, mark_kinds):
+    out = [head]
+    letter = None
+    for name in sorted(names):
+        if name[0] != letter:
+            letter = name[0]
+            out.append(u'\n## %s\n\n' % letter)
+            out.append(u'| | |\n|---|---|\n')
+        line = entries[name]
+        k = kind(name)
+        if k in mark_kinds and ('(%s)' % k) not in line:
+            line += u' ***(%s)***' % k
+        out.append(u'| **`%s`** | %s |\n' % (name.lower(), line))
+    out.append(tail)
+    return u''.join(out)
+
+
+card = render(CARD, CARD_HEAD, CARD_TAIL, {'clause word'})
+tech = render(TECHNICAL, TECH_HEAD, TECH_TAIL,
+              {'restricted', 'internal', 'no such thing'})
+
+for path, text, label in ((OUT, card, 'User 18 syntax card'),
+                          (OUT_RESTRICTED, tech, 'Technical 01 restricted')):
+    with io.open(path, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(text)
+    print('wrote %-52s %6d bytes, %3d entries'
+          % (path, len(text), text.count('\n| **`')))
 sys.exit(0)

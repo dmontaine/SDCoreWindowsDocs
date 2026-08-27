@@ -15,8 +15,8 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | the SD BASIC reference — **18 pages, complete**: 17 by subject, plus `18` the alphabetical syntax card |
-| `Technical/` | not written yet |
+| `User/` | the SD BASIC reference — **18 pages**: 17 by subject, plus `18` the alphabetical syntax card |
+| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
 
@@ -63,6 +63,18 @@ for functions are read out of `BCOMP`'s dispatch table, which is positional
 against the name list; the script asserts the two agree before using either.
 Everything a count cannot express lives in `tools/syntax-shapes.txt`, one
 `NAME = syntax` per line. **Edit that file, then regenerate.**
+
+It writes **two** pages and checks that they **partition** the roster —
+every name on exactly one of them, 447 of 447:
+
+| | |
+|---|---|
+| `User/markdown/18-sd-basic-syntax.md` | 372 names an application may use |
+| `Technical/markdown/01-sd-basic-restricted-commands.md` | 75 it may not — 36 restricted statements, 38 internal-only functions, and `errmsg`, which is in a table with no opcode behind it |
+
+**`checklinks.py` on `Technical` refuses today**, and it is right to: the
+set is one page with no cross-references, so it finds no links at all. Run
+it there once there is a second page.
 
 ## Checking a set
 
