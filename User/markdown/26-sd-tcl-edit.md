@@ -141,9 +141,23 @@ for whoever installs it — is written into `os.users` as it is created, with bo
 fields `yes`. So an administrator reaches the operating system **without
 elevating**, and these two verbs work in an ordinary session.
 
-**It is a default, not a rule.** The record is ordinary data and an
-administrator can edit it, including their own. An account of any other tier
-starts with no record and is refused until somebody writes one.
+**It is a default, not a rule**, and there are keywords for it:
+
+| | |
+|---|---|
+| **`create.account user`** *name* … **`os-on`** | give the new account `OS.EXECUTE` — and these two verbs |
+| **`create.account user`** *name* … **`sh-on`** | give it the `sh` verb |
+| **`modify.account`** *name* **`os-on`** \| **`os-off`** | change it afterwards |
+| **`modify.account`** *name* **`sh-on`** \| **`sh-off`** | the same for the `sh` verb |
+
+They are four switches over two fields rather than four names for one state, so
+`sh-off` leaves `OS.EXECUTE` alone. **`modify.account` needs an elevated
+session**, as it always has — you elevate to grant somebody the right not to
+have to.
+
+The record is ordinary data, so an administrator can also edit it by hand with
+`ed os.users` *name* from `sdsys`. An account of any other tier starts with no
+record and is refused until somebody grants it.
 
 An elevated session passes anyway, whatever the file says — otherwise an empty
 `os.users` would lock the machine's own administrator out.
