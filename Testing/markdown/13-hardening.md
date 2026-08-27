@@ -188,15 +188,13 @@ Until then, `term windows` sets it for the session. **63 definitions ship,
 compiling to 100 terminal names** — the extra names are variants such as
 `vt100-w` and `vt220-at` — so `term wyse60` still works.
 
-***A NAME THAT IS NOT INSTALLED LEAVES YOU WITH NO CAPABILITIES AT ALL***, not
-with the type you had before: SD frees the old definition before it discovers
-the new one is missing. Nothing warns you, and the symptom is that nothing
-positions, clears or backspaces. **`term` with no argument reports the type
-actually in force**, which is how you tell.
+**A name that is not installed is refused and your current type is kept** —
+*"Unrecognised terminal name"* — so a typo costs you nothing. **`term` with no
+argument reports the type actually in force**, which is how to check.
 
-Watch for near-misses. There is no plain `vt320` — the shipped name is
-`vt320-at`. `terminfo.src` ships with SD, so `sdtic` can add a definition that
-is not there.
+Watch for near-misses all the same. There is no plain `vt320` — the shipped
+name is `vt320-at`. `terminfo.src` ships with SD, so `sdtic` can add a
+definition that is not there.
 
 **Backspace works**, at the prompt and when you are asked for a password.
 
