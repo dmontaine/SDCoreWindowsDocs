@@ -49,18 +49,17 @@ system(key)
 | `91` | **is this Windows?** | `1` |
 | `1006` | Windows NT style? | ***`0`*** |
 | `1009` | endian — 0 little | `0` |
-| `1010` | platform name | ***`Linux`*** |
+| `1010` | platform name | `Windows` |
 | `1012` | SD version | `W1.0-0` |
 | `1013` / `1014` | user limit, without / with the phantom pool | `20` / `20` |
 | `1015` | computer name | `Gitorli` (example) |
 | `1017` | port number of a tcp connection | `0` |
 | `1028` | system id | `1028` |
 
-***DO NOT ASK `system(1010)` WHAT PLATFORM THIS IS. IT ANSWERS `Linux`.*** The
-server is built against a POSIX runtime and the platform name comes from the
-build, not from the machine. `system(1006)` reads `0` as well. **`system(91)`
-is the one that is right** — it reads `1`, and it is the only one of the three
-that this port sets deliberately.
+***TWO OF THOSE THREE ANSWER CORRECTLY AND ONE DOES NOT.*** `system(91)` reads
+`1` and `system(1010)` reads `Windows`. **`system(1006)`, "Windows NT style?",
+reads `0`** — it is the one to leave alone. **Ask `system(91)` whether this is
+Windows**; it is the key this port sets deliberately for that purpose.
 
 ### Paths, and they are not all in the same form
 
@@ -169,19 +168,21 @@ Measured on a stock installation:
 | `config('SORTMEM')` | `4096` |
 | `config('SPOOLER')` | empty |
 
-***THE NAME IS CASE SENSITIVE, AND AT MOST EIGHT CHARACTERS, AND THE TWO FAIL
-DIFFERENTLY.*** Both measured:
+***THE NAME IS CASE SENSITIVE AND AT MOST EIGHT CHARACTERS. BOTH FAILURES NOW
+LOOK THE SAME***, which is the point — a name that is too long is a name that
+does not exist, and a caller cannot tell the two apart. Both measured:
 
 | | |
 |---|---|
 | `config('numlocks')` — right name, wrong case | empty, `status()` **1004** |
-| `config('NOSUCHKEY')` — **nine** characters | ***the program aborts***: *"Data cannot be converted to a string"* |
+| `config('NOSUCHKEY')` — **nine** characters | empty, `status()` **1004** |
 
-The second is a defect, and it is upstream's: the name is copied into a
-nine-byte buffer, a longer one is rejected before the result variable has been
-given a value, and what gets returned is whatever was on the stack. **Keep
-every `config()` name to eight characters and upper case**, and there is no
-route into it.
+**Keep every `config()` name to eight characters and upper case.**
+
+*(A name over eight characters aborted the caller in earlier builds of this
+port — *"Data cannot be converted to a string"* — because the length was
+rejected before the result variable had been given a value. **Fixed 26 Aug 2026
+and re-measured**: neither call aborts.)*
 
 ## SYSMSG()
 

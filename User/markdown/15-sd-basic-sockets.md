@@ -152,13 +152,13 @@ can go down a socket and come back as itself.
 |---|---|---|
 | `4` | blocking | set 0 → reads 0; set 1 → reads 1 |
 | `5` | disable Nagle | set 1 → reads 1 |
-| `6` | keep-alive | ***set 0 → reads 1*** |
+| `6` | keep-alive | set 0 → reads 0; set 1 → reads 1 |
 | anything else | | returns **0**, `status()` **1006** |
 
-***KEY 6 CANNOT BE TURNED OFF, AND IT REPORTS SUCCESS.*** `set.socket.mode(s,
-6, 0)` returned **1** and `socket.info(s, 6)` then read **1**. The C ignores the
-value you pass and always enables keep-alive. Do not write code that depends on
-switching it off; the call will tell you it worked.
+*(Key 6 could not be turned off in earlier builds of this port — the value you
+passed was discarded, keep-alive was enabled whatever you asked for, and the
+call reported success. **Fixed 26 Aug 2026 and re-measured**:
+`set.socket.mode(s, 6, 0)` returns `1` and `socket.info(s, 6)` then reads `0`.)*
 
 ## When the far end goes away
 
