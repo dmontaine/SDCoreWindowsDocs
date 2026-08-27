@@ -41,13 +41,45 @@ Page width: 132
 Page depth: 9999
 ```
 
-> ***`term default` DOES NOT MEAN 80×24, AND WHAT IT MEANS DEPENDS ON HOW YOU
-> GOT HERE.*** In the piped session these listings were measured in, `term
-> default` reported **`Page width: 20`** and **`Page depth: 24`** — a session
-> with no real terminal has no size to fall back to, and that is what it fell
-> back to. **At a console or over ssh you will get your actual terminal.** The
-> number above is quoted because it was measured, not because it is the answer
-> you should expect.
+The depth stayed at 9999 because only the width was given.
+
+### SD's default page is 120 × 36
+
+***NOT 80 × 24.*** SD's default terminal size is **120 columns by 36 lines**,
+and it is not a cosmetic choice: the shipped `@` dictionary records and the
+default `list` report layouts are formatted for that width. A report that looks
+wrapped or truncated on a narrow window is usually the window, not the report.
+
+**Where the number comes from**, in order, when a session starts:
+
+| | |
+|---|---|
+| 1 | the `LINES` and `COLUMNS` environment variables, if they are numeric |
+| 2 | otherwise the terminfo entry's `lines` and `cols` |
+| 3 | **otherwise 36 and 120** |
+
+and whatever comes out is then raised to the minimum of 10 lines by 20 columns
+if it is smaller. So an ssh session or a console window normally gets its real
+size, and **120 × 36 is what SD falls back to when nothing else answers** — a
+phantom, a piped script, a service.
+
+> ***AND `term default` DOES NOT GIVE YOU 120 × 36. IT GIVES 20 × 24.***
+> Measured, and it is not an artefact of how these listings were taken — the
+> verb sets the **minimum** width and a fixed depth rather than the defaults:
+>
+> ```
+> :term default
+> :term
+> Page width: 20
+> Page depth: 24
+> ```
+>
+> **`term 120,36` is what actually restores the default.** The constants for
+> 120 and 36 exist and are the ones the login path uses; `term default` reaches
+> for a different pair. This is a defect and it is upstream's as well as ours —
+> it is recorded in the project's fix lists. Until it is fixed, treat `term
+> default` as *"make the page as small as it will go"*, which is rarely what
+> anybody wants.
 
 **`Device`** is the terminfo entry in use, `windows` on this port. If a terminal
 type has no terminfo entry SD falls back to `windows` rather than failing, so

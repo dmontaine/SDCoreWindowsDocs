@@ -198,6 +198,37 @@ definition that is not there.
 
 **Backspace works**, at the prompt and when you are asked for a password.
 
+### The page is 120 × 36, not 80 × 24
+
+***SD'S DEFAULT TERMINAL SIZE IS 120 COLUMNS BY 36 LINES.*** It is not a
+cosmetic default: the shipped `@` dictionary records and the default `list`
+report layouts are formatted for 120 columns. **A console window narrower than
+that makes ordinary reports look wrapped or truncated**, which reads as a
+formatting bug and is not one.
+
+`term` reports the size in force, above the `Device` line:
+
+```
+:term
+Page width: 120
+Page depth: 36
+Device    : windows
+```
+
+**The size is worked out at login**, in this order: the `LINES` and `COLUMNS`
+environment variables if they are numeric, otherwise the terminfo entry's
+`lines` and `cols`, **otherwise 36 and 120** — then raised to a minimum of
+10 × 20 if smaller. So a console or ssh session normally gets its real window
+size and 120 × 36 is the fallback when nothing answers, which is the case for a
+phantom or a piped script.
+
+> ***`term default` DOES NOT RESTORE IT. IT SETS 20 × 24.*** Measured. The verb
+> reaches for the *minimum* width and a fixed depth instead of the defaults,
+> which are defined right beside them and are what the login path uses.
+> **`term 120,36` is what actually puts it back.** The defect is upstream's as
+> well as ours and is on both fix lists; if you are testing report layout, set
+> the size explicitly rather than trusting `term default`.
+
 ## Paths
 
 ***A WINDOWS PATH TYPED AT THE COMMAND PROMPT IS NO LONGER CUT OFF AT THE FIRST

@@ -49,12 +49,19 @@ term
 |---|---|
 | **`who`** | the account you are standing in |
 | `listf` | the files in it |
-| **`term`** | your terminal type — should say `Device : windows` |
+| **`term`** | your terminal type and page size — should say `Device : windows` |
 
 **If `term` says something else and your arrow keys do not work**, run
 `term windows` for this session and see
 [Other hardening](13-hardening.html#the-terminal). An account created before
 the `WINDOWS` definition shipped keeps its old setting until **`update.account`**.
+
+***`term` ALSO REPORTS THE PAGE SIZE, AND SD'S DEFAULT IS 120 × 36 — NOT
+80 × 24.*** The shipped dictionaries and the default `list` layouts are
+formatted for 120 columns, so **a console window narrower than that makes
+ordinary reports look wrapped or truncated** and the report is not at fault.
+Widen the window, or set it for the session with `term 120,36`. See
+[Other hardening](13-hardening.html#the-terminal).
 
 ## 4. Make a file and put something in it
 
