@@ -37,3 +37,8 @@
 # Windows shell litter
 Thumbs.db
 desktop.ini
+
+# Python's byte-cache for tools\.  Generated, machine-specific, and it appeared
+# as untracked the first time a tool here was imported rather than run.
+__pycache__/
+*.pyc

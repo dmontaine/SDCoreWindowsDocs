@@ -174,13 +174,6 @@ h1 {
   margin: 0 0 0.35rem;
   letter-spacing: -0.01em;
 }
-.subtitle {
-  margin: 0 0 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-soft);
-  font-size: 1.05rem;
-}
 h2 {
   font-size: 1.4rem;
   margin: 2.75rem 0 0.9rem;
@@ -284,6 +277,103 @@ footer {
   font-size: 0.82rem;
 }
 
+/* --- title page ---------------------------------------------------------
+   On screen it is the top of the page and reads as a cover; in print it is
+   page 1 on its own.  It carries the two things the Markdown supplies - the
+   title and the subtitle - and the copyright and licence, which come from
+   mkdoc.py so that every document says the same thing. */
+
+.titlepage {
+  /* .page IS A GRID, AND THIS IS A GRID ITEM.  Without the span it is placed
+     in the first 14rem track - the one the table of contents lives in - and
+     the whole cover renders as a narrow column beside the contents list.  It
+     looked like a styling nicety and was a layout fault. */
+  grid-column: 1 / -1;
+  max-width: 40rem;
+  margin: 0 auto 3.5rem;
+  padding: 3rem 0 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.titlepage .tp-product {
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 1.6rem;
+}
+
+.titlepage .tp-product span {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--rule-firm);
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+
+.titlepage h1.tp-title {
+  font-size: 2.35rem;
+  line-height: 1.15;
+  margin: 0 0 0.85rem;
+  border: 0;
+  padding: 0;
+}
+
+.titlepage .tp-subtitle {
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0 0 2.4rem;
+  max-width: 34rem;
+}
+
+.titlepage dl.tp-meta {
+  margin: 0 0 2.2rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.titlepage dl.tp-meta > div {
+  display: flex;
+  gap: 1rem;
+  padding: 0.28rem 0;
+}
+
+.titlepage dl.tp-meta dt {
+  flex: 0 0 9.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 0.15rem;
+}
+
+.titlepage dl.tp-meta dd {
+  margin: 0;
+  flex: 1;
+}
+
+.titlepage .tp-licence p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 0.7rem;
+  max-width: 36rem;
+}
+
+.titlepage .tp-url {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  word-break: break-all;
+}
+
+@media (max-width: 34rem) {
+  .titlepage dl.tp-meta > div { display: block; }
+  .titlepage dl.tp-meta dt { margin-bottom: 0.1rem; }
+}
+
 /* --- print -------------------------------------------------------------
    The browser IS the PDF exporter, so this is not a nicety.  Colours are
    forced back to black on white because a dark-mode machine would otherwise
@@ -321,7 +411,77 @@ footer {
   th { border-bottom: 1.5pt solid #000; }
   td, th { border-bottom: 0.5pt solid #999; }
   footer { border-top: 0.5pt solid #999; padding: 0.5rem 0; }
+
+  /* THE TITLE PAGE IS PAGE 1 AND NOTHING ELSE IS ON IT.  Both spellings are
+     given because the modern "break-after" is not honoured by every engine
+     that prints, and the legacy "page-break-after" is what actually fires in
+     Chromium's print path today. */
+  .titlepage {
+    max-width: none;
+    margin: 0;
+    padding: 0 0 1rem;
+    border-bottom: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+  .titlepage h1.tp-title { font-size: 26pt; margin-top: 2.5cm; }
+  .titlepage .tp-subtitle { font-size: 12pt; }
+  .titlepage dl.tp-meta { border-color: #999; }
+  .titlepage .tp-licence p { font-size: 9.5pt; }
 }
+'''
+
+
+# ---------------------------------------------------------------------------
+# The title page.
+#
+# WHY IT IS GENERATED HERE RATHER THAN WRITTEN INTO EACH MARKDOWN FILE.  There
+# are seventeen documents in the User set alone.  A copyright line pasted into
+# each one is seventeen places to update when the year, the licence or the
+# release changes, and seventeen chances for one of them to say something
+# different from the rest.  The Markdown supplies the two things that differ
+# per document - Title and Subtitle - and everything else comes from here.
+#
+# IT IS A REAL FIRST PAGE IN THE PDF.  The print stylesheet breaks after it,
+# so browser-to-PDF puts the content on page 2 rather than running the cover
+# into the first heading.
+# ---------------------------------------------------------------------------
+
+COPYRIGHT = 'Copyright © 2026 Donald Montaine'
+
+LICENCE_NAME = ('Creative Commons Attribution-ShareAlike 4.0 International '
+                '(CC BY-SA 4.0)')
+
+LICENCE_URL = 'https://creativecommons.org/licenses/by-sa/4.0/'
+
+LICENCE_SUMMARY = [
+    ('You are free to <strong>share</strong> this document - copy and '
+     'redistribute it in any medium or format - and to <strong>adapt</strong> '
+     'it - remix, transform and build upon it - for any purpose, including '
+     'commercially.'),
+    ('Two conditions apply. <strong>Attribution:</strong> you must give '
+     'appropriate credit, provide a link to the licence, and indicate if '
+     'changes were made. <strong>ShareAlike:</strong> if you remix, transform '
+     'or build upon this document, you must distribute what you produce under '
+     'the same licence. You may not add legal terms or technological measures '
+     'that restrict others from doing anything the licence permits.'),
+    ('This is a summary and not a substitute for the licence itself. The '
+     'complete text is at <span class="tp-url">' + LICENCE_URL + '</span>.'),
+]
+
+TITLEPAGE = '''<section class="titlepage">
+<p class="tp-product">@PRODUCT@ <span>@VERSION@</span></p>
+<h1 class="tp-title">@TITLE@</h1>
+@TP_SUBTITLE@
+<dl class="tp-meta">
+<div><dt>Released with</dt><dd>@PRODUCT@ @VERSION@</dd></div>
+<div><dt>Copyright</dt><dd>@COPYRIGHT@</dd></div>
+<div><dt>Licence</dt><dd>@LICENCE_NAME@</dd></div>
+</dl>
+<div class="tp-licence">
+@LICENCE_SUMMARY@
+</div>
+</section>
 '''
 
 
@@ -336,13 +496,12 @@ PAGE = '''<!DOCTYPE html>
 <body>
 <div class="masthead"><div><strong>@PRODUCT@</strong><span>@VERSION@</span></div></div>
 <div class="page">
+@TITLEPAGE@
 @TOC@<main>
-<h1>@TITLE@</h1>
-@SUBTITLE@
 @BODY@
 </main>
 </div>
-<footer>@PRODUCT@ @VERSION@. Generated from @SOURCE@.</footer>
+<footer>@PRODUCT@ @VERSION@. @COPYRIGHT@. Licensed under @LICENCE_NAME@. Generated from @SOURCE@.</footer>
 </body>
 </html>
 '''
@@ -386,17 +545,32 @@ def build(path, out_dir, product, version):
 
     sub_html = ''
     if subtitle:
-        sub_html = '<p class="subtitle">%s</p>' % html.escape(subtitle)
+        sub_html = '<p class="tp-subtitle">%s</p>' % html.escape(subtitle)
+
+    titlepage = (TITLEPAGE
+                 .replace('@TP_SUBTITLE@', sub_html)
+                 .replace('@LICENCE_SUMMARY@',
+                          '\n'.join('<p>%s</p>' % s for s in LICENCE_SUMMARY)))
 
     page = (PAGE
             .replace('@CSS@', CSS)
+            .replace('@TITLEPAGE@', titlepage)
             .replace('@PRODUCT@', html.escape(product))
             .replace('@VERSION@', html.escape(version))
             .replace('@TITLE@', html.escape(title))
-            .replace('@SUBTITLE@', sub_html)
+            .replace('@COPYRIGHT@', COPYRIGHT)
+            .replace('@LICENCE_NAME@', LICENCE_NAME)
             .replace('@TOC@', toc_html)
             .replace('@BODY@', body)
             .replace('@SOURCE@', html.escape(os.path.basename(path))))
+
+    # The title page is the one part of this file a reader would notice missing,
+    # and a template typo would drop it silently - the page would still render.
+    if 'class="titlepage"' not in page:
+        raise RuntimeError('%s rendered without a title page' % path)
+    if COPYRIGHT not in page or LICENCE_URL not in page:
+        raise RuntimeError('%s rendered without the copyright or licence'
+                           % path)
 
     stem = os.path.splitext(os.path.basename(path))[0]
     out = os.path.join(out_dir, stem + '.html')
