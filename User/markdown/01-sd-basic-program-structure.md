@@ -46,8 +46,15 @@ local function name {(arguments)}
 ```
 
 These live inside the program that uses them rather than in the catalogue, and
-they can declare `private` variables of their own. They are called the same way
-as external ones — the difference is where the compiler looks.
+they can declare `private` variables of their own — which is how you get a
+routine whose working variables do not collide with the rest of the program.
+
+***THEY ARE NOT CALLED THE WAY EXTERNAL ONES ARE.*** A local subroutine is
+reached with `gosub name(…)` and not `call`; a local function must be declared
+with `deffun … local` before it is used; and both need an explicit `return`,
+because falling into the closing `end` stops the program. All of that, with the
+scope rules and the errors each mistake produces, is on
+[SD Basic - Modern Program Structure](18-sd-basic-modern-program-structure.html).
 
 ### Internal subroutines
 
@@ -254,34 +261,31 @@ session.
 
 ## Class modules and objects
 
-```
-class name
-public property, ...
-private variable, ...
-public subroutine name{(arguments)}
-public function name{(arguments)}
-get name{(arguments)}
-set name{(arguments)}
-```
+SD BASIC has class modules with member variables, methods, properties,
+constructors, destructors and inheritance. **They have their own page**, because
+they are a different way of writing a program rather than a feature of this one:
+[SD Basic - Modern Program Structure](18-sd-basic-modern-program-structure.html).
+
+The short form:
 
 ```
-object(catalogued.name {, arguments})
-objinfo(variable, key)
-inherit object
-disinherit object
-unload.object name
+class name {inherits base}
+private variable, ...          public variable, ...
+public subroutine name(...)    public function name(...)
+get name                       set name(value)
+end
 ```
 
-A class module is a program declared with `class` instead of `program`. Its
-`public` items are reachable from outside, its `private` ones are not, and
-`get`/`set` define a property that looks like a variable to the caller.
+```
+o = object('CLASSNAME')
+o->method(args)
+o->property = value
+```
 
-`object()` creates an instance; `objinfo(v, 0)` reports whether a variable holds
-one and `objinfo(v, 1)` gives the class name. `inherit` brings another object's
-public members into the current one.
-
-**This is the least-used corner of the language.** Existing MultiValue
-applications almost never use it, and nothing in SD itself does.
+***SD'S OWN CLIENT LIBRARY IS A CLASS MODULE.*** `gpl.bp/SDCLIENT` is 1,040
+lines with 33 members and both lifecycle hooks — connecting to another SD server
+from BASIC means instantiating it. *(An earlier version of this page said
+nothing in SD used class modules. That was wrong.)*
 
 ## Arguments
 

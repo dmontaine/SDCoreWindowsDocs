@@ -42,8 +42,25 @@ tools\sddebug.ps1  -Source tools\probes\p17-prog.b -Commands 'STACK','/N','S','R
 | `p25-holdtrip` | the `ed` hold-file round trip. Compiled 27 Aug 2026, **never run** |
 | `p30-processes` | `pstat` at each level seen from inside a call, and `pdump` of the running session. **`phantom` and `pdebug` are deliberately absent** and must not be added: a phantom child inherits the pipe, and `pdebug` polls the keyboard, so either hangs a scripted session |
 | `p31-locks` | what `list.readu` and `list.locks` actually print, from a session holding an update lock, a read lock, a file lock and a task lock against itself. **It also measures `delete.file ... no.query` prompting anyway** — the stacked `data 'Y'` answers are why it no longer hangs, and the captured prompt text is the evidence for PRE_RELEASE #26 |
+| `p18-class-base` / `p18-class` | a base class and a derived one, covering the INHERITS clause, private and public members, CREATE.OBJECT and DESTROY.OBJECT, a public subroutine and function, and a GET/SET property pair. **They are compiled AND privately catalogued** as ZZBASE and ZZCLS before `p18-objects` will run |
+| `p18-objects` | uses them: `->` for all four member kinds, `objinfo`, release-triggers-destructor, and local subroutines and functions. **Reaching a private member is after the END marker** because it aborts. **Not an sdprobe one-liner** - it needs three records placed and two catalogued first; the sequence is below |
 | `pcompile-restricted` | what an ordinary account may not compile — the internal-only intrinsics and the restricted statements |
 | `pcompile-debug` | the same for the debugging family, run twice: with and without the `DEBUGGING` keyword |
+
+## The three-record sequence for `p18-*`
+
+`sdprobe.ps1` places one record and runs it. The object probe needs three, two
+of them catalogued, so it is driven with `sdtcl.ps1` instead. Copy the sources
+into the account's `bp` as `ZZBASE`, `ZZCLS` and `ZZOBJ`, stripping CRs, then:
+
+```
+sdtcl.ps1 -Commands 'basic bp zzbase','basic bp zzcls','basic bp zzobj',
+                    'catalog bp zzbase','catalog bp zzcls','run bp zzobj'
+```
+
+**A private catalogue is enough** — nothing here needs an elevated session.
+The run is good only if it prints `ZZMATH.END`; everything after that marker is
+the deliberate abort.
 
 ## The rules they were written to
 

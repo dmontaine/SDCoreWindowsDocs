@@ -15,7 +15,7 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. **All fourteen TCL topic pages, `19` to `32`, are written**; only the generated card at `33` is left |
+| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. **All fourteen TCL topic pages, `19` to `32`, are written.** `18` is Modern Program Structure — scope, local routines and objects. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC, `95` SD TCL (not yet written) |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
@@ -71,10 +71,10 @@ render rather than forty-three.
 
 ## Regenerating the syntax card
 
-`User/markdown/18-sd-basic-syntax.md` is **generated, not edited**:
+`User/markdown/94-sd-basic-syntax.md` is **generated, not edited**:
 
 ```
-python tools\mksyntax.py <sd4windows>\sdb_ai\sd64\sdsys\gpl.bp\BCOMP User\markdown\18-sd-basic-syntax.md
+python tools\mksyntax.py <sd4windows>\sdb_ai\sd64\sdsys\gpl.bp\BCOMP User\markdown\94-sd-basic-syntax.md
 ```
 
 Its roster is `BCOMP`'s own tables and it **refuses to write the page if any
@@ -89,7 +89,7 @@ every name on exactly one of them, 447 of 447:
 
 | | |
 |---|---|
-| `User/markdown/18-sd-basic-syntax.md` | 372 names an application may use |
+| `User/markdown/94-sd-basic-syntax.md` | 372 names an application may use |
 | `Technical/markdown/01-sd-basic-restricted-commands.md` | 75 it may not — 36 restricted statements, 38 internal-only functions, and `errmsg`, which is in a table with no opcode behind it |
 
 **`checklinks.py` on `Technical` refuses today**, and it is right to: the

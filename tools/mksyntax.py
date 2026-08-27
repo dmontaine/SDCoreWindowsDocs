@@ -45,7 +45,7 @@ import re
 import sys
 
 BCOMP = sys.argv[1]
-OUT = sys.argv[2]          # User 18, the syntax card
+OUT = sys.argv[2]          # User 94, the SD BASIC syntax card
 OUT_RESTRICTED = sys.argv[3]   # Technical 01, the restricted commands
 SHAPES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                       'syntax-shapes.txt')
@@ -378,7 +378,7 @@ card = render(CARD, CARD_HEAD, CARD_TAIL, {'clause word'})
 tech = render(TECHNICAL, TECH_HEAD, TECH_TAIL,
               {'restricted', 'internal', 'no such thing'})
 
-for path, text, label in ((OUT, card, 'User 18 syntax card'),
+for path, text, label in ((OUT, card, 'User 94 syntax card'),
                           (OUT_RESTRICTED, tech, 'Technical 01 restricted')):
     with io.open(path, 'w', encoding='utf-8', newline='\n') as f:
         f.write(text)
