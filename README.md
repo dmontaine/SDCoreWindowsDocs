@@ -49,6 +49,26 @@ powershell -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
 MSYS2 python, or `pip install markdown`). `mkpdf.ps1` needs Edge or Chrome,
 which every supported Windows machine already has.
 
+***THEY ARE TWO STEPS AND THE SECOND IS THE ONE THAT GETS FORGOTTEN.*** Pages
+19 to 27 of the `User` set were written, rendered to HTML and pushed with **no
+PDF at all**, and nothing said so — `release.ps1` exists precisely so this
+cannot happen, and running the two steps by hand skips its bookkeeping.
+
+**The check is markdown against PDF, not HTML against PDF.** Re-rendering the
+HTML touches every file's mtime, so comparing those two reports the whole set
+as stale and tells you nothing. Only the source answers the question:
+
+```sh
+for m in Testing/markdown/*.md; do
+  p="Testing/pdf/$(basename "$m" .md).pdf"
+  [ -f "$p" ] || echo "MISSING $p"
+  [ "$m" -nt "$p" ] && echo "STALE   $p"
+done
+```
+
+Both take one file as well as a directory, so a single changed page costs one
+render rather than forty-three.
+
 ## Regenerating the syntax card
 
 `User/markdown/18-sd-basic-syntax.md` is **generated, not edited**:
