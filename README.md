@@ -15,7 +15,7 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. Fourteen TCL topic pages are planned and nine are written |
+| `User/` | **two references.** `01`-`18` SD BASIC: 17 by subject plus `18` the alphabetical syntax card. `19`- SD TCL: the verbs you type, by subject, ending in its own generated syntax card at `33`. **All fourteen TCL topic pages, `19` to `32`, are written**; only the generated card at `33` is left |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
@@ -108,7 +108,7 @@ python tools\checklinks.py User\markdown User\html
 |---|---|
 | `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
 | `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
-| `checklinks.py` | every link in the rendered pages. **157 links, 0 broken** |
+| `checklinks.py` | every link in the rendered pages. **183 links, 0 broken** across 32 `User` pages |
 
 ## Measuring
 

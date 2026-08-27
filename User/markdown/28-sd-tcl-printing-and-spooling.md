@@ -71,6 +71,93 @@ the prompt:
 **`paper.size`, `cpi`, `pcl`, `symbol.set`, `weight` and `overlay`** are the
 printer-formatting set and behave as they always did.
 
+## The same settings in keywords: `printer`
+
+```
+printer {unit} query                    report one unit
+printer {unit} at printer.name          send it to a Windows printer
+printer {unit} file file.name record    send it to a record
+printer {unit} width n | lines n        the page
+printer {unit} top.margin n | bottom.margin n | left.margin n
+printer {unit} keep.open | close
+printer {unit} reset                    back to the defaults
+```
+
+***`printer` DOES THE SAME JOB AS `setptr` AND DOES NOT ASK FIRST.*** That is
+the reason to know it exists: `setptr` confirms before it changes a unit unless
+you remember `brief`, and `printer` has no confirmation at all. **It is the form
+to use from a phantom, a script or an API session.**
+
+More than one keyword may be given, in any order. The unit number comes before
+the keywords and **defaults to 0**, the terminal.
+
+**`query` is the per-unit report**, and it names things `setptr display`'s
+columns do not:
+
+```
+:printer query
+PRINT UNIT 0
+   Page width     : 80
+   Lines per page : 66
+   Top margin     : 0
+   Bottom margin  : 0
+   Left margin    : 0
+   Mode           : 1
+   Printer        : (Default)
+```
+
+```
+:printer 1 query
+PRINT UNIT 1
+   Page width     : 80
+   Lines per page : 66
+   Top margin     : 0
+   Bottom margin  : 0
+   Left margin    : 0
+   Mode           : 3
+   Target         : $hold P1
+```
+
+**The last line names the destination, and its wording tells you whether one has
+been set:**
+
+| | |
+|---|---|
+| `Printer        : (Default)` | mode 1, no printer named — the Windows default |
+| `Printer        : `*name* | mode 1, that Windows printer |
+| `Target         : $hold P`*n* | mode 3, nothing named — the unit's own hold record |
+| `Pathname       : `*path* | mode 3, that destination |
+
+`setptr display` shows none of this; it is a table of numbers.
+
+Setting and putting back, measured in one session — the two `query` reports are
+cut to the lines that moved:
+
+```
+:printer 1 width 132 lines 60
+:printer 1 query
+   Page width     : 132
+   Lines per page : 60
+:printer 1 reset
+:printer 1 query
+   Page width     : 80
+   Lines per page : 66
+```
+
+**Nothing is printed on the way through** — the settings are the report, and
+`query` is how you see them. `reset` puts width, depth and all three margins
+back to their defaults **and clears the destination as well**: the printer name
+on unit 0, the file and record on any other unit. *(Unit 1 above had no
+destination set either side of the reset, so its last line reads `Target` both
+times — that is the wording for "nothing named", not evidence that `reset` left
+it alone.)*
+
+| | |
+|---|---|
+| *Invalid print unit number* | `printer` with nothing after it, or a unit outside the range |
+| *Unexpected token (%1)* | a keyword it does not know |
+| *Printer name not recognised* | `at` with a name Windows does not have |
+
 ## Holding a unit open
 
 ```

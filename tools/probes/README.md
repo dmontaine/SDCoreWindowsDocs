@@ -12,7 +12,7 @@ runner can refuse a run that died half way through.
 
 | runner | probes | what it refuses |
 |---|---|---|
-| `..\sdprobe.ps1` | `p14c-txn`, `p15*`, `p16*`, `p17-debug`, `p25-holdtrip` | a run without START, END and `0 error(s)` |
+| `..\sdprobe.ps1` | `p14c-txn`, `p15*`, `p16*`, `p17-debug`, `p25-holdtrip`, `p30-processes`, `p31-locks` | a run without START, END and `0 error(s)` |
 | `..\sdprobe2.ps1` | `p14-holder` + `p14-contender`, `p14b-holder` + `p14b-contender` | two sessions that did not demonstrably contend |
 | `..\sdcompile.ps1` | `pcompile-restricted`, `pcompile-debug` | a compile that never reached the source, or that succeeded when it was meant to fail |
 | `..\sddebug.ps1` | `p17-prog`, `p17-prog2` | a run where the debugger's `>` prompt never appeared |
@@ -39,6 +39,9 @@ tools\sddebug.ps1  -Source tools\probes\p17-prog.b -Commands 'STACK','/N','S','R
 | `p16c-config` | `config()` with a lower-case name and with a name over eight characters. Both are after the END marker; the second aborts |
 | `p17-debug` | what a session can tell about debugging without entering the debugger |
 | `p17-prog` / `p17-prog2` | small programs to drive the debugger over: watch, breakpoint, step, `set`, and the variable types |
+| `p25-holdtrip` | the `ed` hold-file round trip. Compiled 27 Aug 2026, **never run** |
+| `p30-processes` | `pstat` at each level seen from inside a call, and `pdump` of the running session. **`phantom` and `pdebug` are deliberately absent** and must not be added: a phantom child inherits the pipe, and `pdebug` polls the keyboard, so either hangs a scripted session |
+| `p31-locks` | what `list.readu` and `list.locks` actually print, from a session holding an update lock, a read lock, a file lock and a task lock against itself. **It also measures `delete.file ... no.query` prompting anyway** — the stacked `data 'Y'` answers are why it no longer hangs, and the captured prompt text is the evidence for PRE_RELEASE #26 |
 | `pcompile-restricted` | what an ordinary account may not compile — the internal-only intrinsics and the restricted statements |
 | `pcompile-debug` | the same for the debugging family, run twice: with and without the `DEBUGGING` keyword |
 

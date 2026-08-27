@@ -194,7 +194,83 @@ too long — useful on a machine where people walk away from a prompt, and worth
 thinking about before enabling on a machine where a long-running interactive job
 is normal.
 
-## Dates
+## The command echo: `echo`
+
+```
+echo on
+echo off
+echo
+```
+
+**`echo off` stops SD echoing what you type**; with no keyword it toggles.
+Neither form prints anything, and `echo off` suppresses its own confirmation
+along with everything else.
+
+```
+:echo off
+:28 DON
+:who
+28 DON
+```
+
+That is one `who` under `echo off` and one after `echo on`. **The first has no
+`:who` line above it** — its output ran straight on after the prompt — and
+`echo on` produced no line of its own either, because the echo it restores does
+not apply to the command that restores it.
+
+***IT IS NOT `hush`, AND CONFUSING THE TWO WASTES TIME.*** `echo` decides
+whether your **input** is shown back; `hush` decides whether SD's **output** is
+shown at all. A session that has gone completely silent has `hush on` set; one
+where the commands vanish but the answers still appear has `echo off`.
+
+## Dates and times
+
+```
+date                    today, spelled out
+date internal           today as SD's internal day number
+date n                  day number n, spelled out
+date some-date          that date's day number
+time                    the time and the date
+time internal           seconds since midnight
+```
+
+```
+:time
+14:10:34 27 AUG 2026
+:date
+Thursday, 27 August 2026  02:10pm
+```
+
+***`date` PRINTS THE TIME AND `time` PRINTS THE DATE.*** Both print both, in
+different formats and a different order, and neither name says so. `date` is
+the long spelled-out form and `time` is the short one.
+
+**`internal`** on either gives the raw number a program would see:
+
+```
+:date internal
+21424
+:time internal
+51088
+```
+
+the day number and seconds since midnight. **`date` with an argument is a
+converter, and which way it converts depends on what you give it** — a bare
+number is read as a day number and comes back as a date, anything else is read
+as a date and comes back as a day number:
+
+```
+:date 20000
+Monday, 03 October 2022
+:date 4 jul 2026
+21370
+:date zznotadate
+Invalid date format
+```
+
+`time` takes no argument other than `internal`.
+
+### Which way round a date is read: `date.format`
 
 ```
 date.format on | off | display

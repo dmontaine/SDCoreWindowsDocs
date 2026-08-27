@@ -1,0 +1,311 @@
+Title: SD TCL - Processes and Phantoms
+Subtitle: Listing sessions, seeing what one is doing, running work in the background, and ending a session that will not end itself.
+
+Every SD session is a process with a **user number**, and almost everything on
+this page takes one. The number is not the Windows process id and it is not the
+account name: it is SD's own handle on a session, it is reused after a session
+ends, and it is what `logout`, `pstat` and `pdump` all expect.
+
+A **phantom** is a session with no terminal. You start one, it runs a command in
+the background under its own user number, and what it would have displayed is
+written to a file instead.
+
+SD folds case, so a command may be typed in either case. Commands are shown here
+in lower case. In the tables, *italics* mark something you supply and **bold**
+marks a word typed as it stands; braces mark an optional part.
+
+> **The listings on this page were produced by running them**, on SD Core for
+> Windows W1.0-0. The two exceptions are `phantom` and `pdebug`, and the reason
+> is on the page: neither can be driven down a pipe, so both are described from
+> their source rather than shown.
+
+## Who is logged in: `listu`
+
+```
+listu {no.page} {lptr {n}}
+```
+
+```
+:listu
+  User  Pid          Puid  Login time    Origin : Username
+    12  1789               27 Aug 13:14  : don
+    19  1808               27 Aug 13:53  : don
+*   27  1828               27 Aug 13:59  : don
+```
+
+| | |
+|---|---|
+| **`*`** | the session you are typing in |
+| **`User`** | SD's user number — the one every other verb here wants |
+| **`Pid`** | the Windows process id |
+| **`Puid`** | the user number of the **parent**, filled in for a phantom and blank otherwise |
+| **`Origin`** | where the session came from |
+| **`Username`** | the Windows account the session is running as, not the SD account it is in |
+
+***`Origin` IS BLANK FOR A LOCAL SESSION AND THAT IS NOT A FAULT.*** It reports
+an address or a device name, and a console or piped session has neither. It
+reads `Phantom` for a phantom, an IP address for a network client, and
+`SDNet`/`SDVbSrvr` with the address for the two server connection types.
+
+**`(logout pending)`** after the name means somebody has asked that session to
+end and it has not gone yet. See *When a session will not end* below.
+
+## What a session is doing: `pstat`
+
+```
+pstat {user n} {level n} {no.page} {lptr {n}}
+```
+
+With no arguments it reports every session; **`user`** *n* restricts it to one.
+
+```
+:pstat
+User Detail
+  27 Account: DON
+     Command: pstat
+     $PSTAT 141 (262)
+  12 (Not responding)
+```
+
+Each line under a user number is the account it is in, the command it is
+running, and where in that command it currently is — program name, source line,
+and the address in hexadecimal.
+
+### The levels are additive
+
+| | |
+|---|---|
+| default | the current program only |
+| **`level 1`** | the whole **call stack** |
+| **`level 2`** | the **internal subroutine** stack — where each `gosub` will return to |
+| **`level 3`** | both |
+
+Measured from inside a running program, which is where the levels are worth
+having — at the prompt there is nothing on the stack but `pstat` itself:
+
+```
+User Detail
+  27 Account: DON
+     Command: pstat user 27 level 1
+     $PSTAT 141 (262)
+     Command processor
+     /cygdrive/c/ProgramData/SD/user_accounts/don/BP.OUT/ZZMATH 34 (152)
+     Command processor
+```
+
+Read it downwards: `$PSTAT` is running, called by the command processor, which
+was reached by `execute` from the program `ZZMATH` at line 34, which the command
+processor started. **`level 3` adds an indented line under each frame** for the
+`gosub` inside it.
+
+### `(Not responding)` means the process is gone, not busy
+
+`pstat` does not read another session's memory. It **asks** — it posts an event
+to the target and waits for the answer, for up to four seconds. A session that
+never answers gets that line.
+
+***THAT IS THE CHEAPEST WAY TO FIND A DEAD SESSION.*** A session killed from
+outside SD keeps its entry in the user table, so `listu` still shows it and its
+slot is still counted; `pstat` is what tells you nothing is behind the entry.
+User 12 in both listings above is one of those.
+
+## Running something in the background: `phantom`
+
+```
+phantom command
+```
+
+The command is everything after the verb. SD creates a new process, gives it a
+user number, and answers at once:
+
+```
+Started phantom user 31
+```
+
+**Your session does not wait**, and the phantom has no terminal, so anything it
+would have displayed goes to a **como** record instead — in the account's
+`$COMO` file, named `PH`*n*`_`*ddmmyy*`_`*hhmmss* for the phantom's user number
+and start time. `$COMO` is created if the account has not got one. The first
+line in the record is the phantom's own banner:
+
+```
+Phantom 31 started at 14:22:07 27 Aug 2026
+```
+
+so a phantom that produced nothing else is still distinguishable from one that
+never started.
+
+| refusal | when |
+|---|---|
+| *Phantom command missing* | `phantom` with nothing after it |
+| *Phantom processes cannot be started within a transaction* | inside `begin transaction` |
+| *Failed to create phantom process* | the operating system would not create the process |
+
+> ***A PHANTOM CANNOT BE STARTED FROM A SCRIPTED SESSION, AND THIS IS THE ONE
+> TO KNOW.*** When SD is fed commands down a pipe, the phantom child inherits
+> that pipe. The job then never completes — not even after the parent session
+> has exited — and the only way out is to kill the process, which leaves an
+> entry in the user table that needs an elevated `sd -cleanup` to clear.
+> **`phantom` is for a person at a prompt, or for a program, and not for a
+> piped script.** The listings above are quoted from the verb's own message
+> texts for that reason.
+
+**A phantom is not a scheduled job.** It runs once, now. Recurring work is a
+Windows scheduled task that starts SD, and that is a different subject.
+
+### What a phantom does not inherit
+
+***A PHANTOM IS A NEW SD PROCESS, NOT A BRANCH OF YOURS.*** It is started with
+`fork` and `exec` and goes through login of its own, so **nothing your session
+holds in memory reaches it** — no `@`-variables, no unnamed common, no open
+files, no active select list. **The command string is the only thing passed**,
+through a record in SD's `$IPC` file, and the session's option settings go with
+it only when the `INHERIT` option is set.
+
+## What phantoms have I started: `status`
+
+```
+status
+```
+
+```
+:status
+There are no phantom processes started by this process
+```
+
+which is the answer in any session that has not started one. When there are
+some, it prints a user number, the start time and the command for each:
+
+```
+User  Started            Command
+```
+
+***IT REPORTS ONLY YOUR OWN CHILDREN.*** It is not a system-wide view and it is
+not `listu` — a phantom somebody else started does not appear, and neither does
+one your session started before you `logto`'d somewhere else. The register it
+reads is keyed by the parent's user number.
+
+## Ending a session: `logout`
+
+```
+logout                  end this session
+logout n {n …}          end another session, by user number
+logout all              end every session but this one
+```
+
+***`logout` WITH NO ARGUMENT ENDS YOUR OWN SESSION.*** It is `quit` under
+another name, and it is worth knowing before you type `logout` intending to
+list something.
+
+```
+:logout 999
+Only administrators can logout processes running with other usernames
+```
+
+**An ordinary session may end only its own sessions** — ones running under the
+same Windows account. Anything else needs an elevated session, and that is what
+the message above reports; user 999 does not exist, and an unelevated session
+cannot tell the difference, because it is refused before the number is looked
+up.
+
+**`logout all`** is stricter still: it needs an elevated session **and** must be
+run from the `SDSYS` account. It leaves your own session alone.
+
+### When a session will not end
+
+`logout` **signals** a process. If the process has already gone — killed from
+outside SD, or lost with a terminal — there is nothing to signal, and the
+session's entry stays where it is with **`(logout pending)`** beside it in
+`listu`.
+
+***THE ENTRY MATTERS BECAUSE IT HOLDS A SLOT AND AN EXCLUSIVE-ACCESS CLAIM.***
+`NUMUSERS` counts it, and any verb that wants a file to itself — `build.index`
+is the usual one — is refused while it is there. Recovery is not another
+`logout`: it is an elevated
+
+```
+sd -cleanup
+```
+
+and a restart of the SD service if that does not take it.
+
+## Dumping a process: `pdump`
+
+```
+pdump n
+```
+
+Writes a snapshot of session *n* to a file and carries on; nothing is stopped
+and nothing is lost. The file is `sddump.`*n* in the directory named by the
+`DUMPDIR` configuration parameter, or in SD's own system directory when
+`DUMPDIR` is empty, which is how it ships:
+
+```
+Dumping process state as C:\ProgramData\SD\sdsys/sddump.27
+```
+
+It holds the `@`-variables, the current sentence and command, the call stack,
+open files and their locks, and named and unnamed common — which is to say **it
+holds application data**, and it is written where any SD user can read it.
+Treat a dump as you would the data of the program that produced it, and delete
+it when the question it was written to answer has been answered.
+
+| refusal | when |
+|---|---|
+| *User number required* | `pdump` with no number |
+| *Not logged in* | no session has that user number |
+| *PDUMP not allowed for processes run under other usernames* | the `PDUMP` configuration parameter has bit 1 set and the session is not elevated |
+
+**It is an event, not a call.** `pdump` marks the target and returns; the target
+writes the file when it next looks at its event flags. A process that is wedged
+somewhere that never checks will not produce one.
+
+## Debugging a phantom: `pdebug`
+
+```
+pdebug                  attach to a phantom that is waiting for a debugger
+pdebug command          start command as a phantom and attach to it
+```
+
+`pdebug` puts the SD debugger on **this** terminal and the program in a
+**phantom**, which is the only way to debug something that has no terminal of
+its own. With a command it starts the phantom for you; with none it waits for
+one to ask for a debugger, and **`Q`** gives up waiting.
+
+It refuses inside a phantom or an API session — *Phantom debugger can only be
+executed from an interactive session* — because it needs a terminal to draw the
+debugger on.
+
+> ***DO NOT SEND `pdebug` DOWN A PIPE.*** It polls the keyboard while it waits,
+> and in a piped session the input stream is the script, so it consumes the
+> commands that have not run yet. Together with the phantom it starts, that is
+> two ways for one verb to hang a scripted session. **It is described here from
+> source for exactly that reason.**
+
+The debugger itself — the commands it takes once it is attached — is in
+[SD Basic - Debugging](17-sd-basic-debugging.html).
+
+## Who has these verbs
+
+| | |
+|---|---|
+| **standard** | `status` |
+| **programmer** | `phantom` `pstat` `pdebug` `pdump` |
+| **administrator** | `listu` `logout` |
+
+***THE ONLY ONE EVERY ACCOUNT HAS IS `status`***, and it reports nothing but
+that account's own phantoms. Seeing the whole machine — who is logged in, what
+they are running — starts at the programmer tier and ends there: `pstat` will
+report every session, and `listu` and `logout`, the two that name and end other
+people's, are administrator verbs.
+
+**There are two gates and they are not the same one.** The tier decides whether
+you have the verb at all; **elevation decides whether it does anything to
+somebody else.** `logout n` and `pdump n` are both in a session's hands for its
+own processes and refuse for another Windows account's without it.
+
+## See also
+
+[SD TCL - Locks](31-sd-tcl-locks.html) ·
+[SD TCL - The Terminal and the Session](29-sd-tcl-the-terminal-and-the-session.html) ·
+[SD Basic - Debugging](17-sd-basic-debugging.html).
