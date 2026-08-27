@@ -141,7 +141,8 @@ for whoever installs it — is written into `os.users` as it is created, with bo
 fields `yes`. So an administrator reaches the operating system **without
 elevating**, and these two verbs work in an ordinary session.
 
-**It is a default, not a rule**, and there are keywords for it:
+**For an administrator it is a rule**, and it cannot be turned off. For every
+other tier it is a grant, and there are keywords for it:
 
 | | |
 |---|---|
@@ -154,6 +155,19 @@ They are four switches over two fields rather than four names for one state, so
 `sh-off` leaves `OS.EXECUTE` alone. **`modify.account` needs an elevated
 session**, as it always has — you elevate to grant somebody the right not to
 have to.
+
+***THE FOUR REFUSE AN ADMINISTRATOR, IN BOTH DIRECTIONS.*** An administrator
+has all three routes — `ssh`, the API and the operating system — as a rule, and
+none of them is `modify.account`'s to change:
+
+```
+:modify.account don os-off
+don is an administrator and always reaches the operating system
+```
+
+It is the same refusal `ssh`, `api`, `both` and `none` already give for an
+administrator, and it is deliberate rather than an oversight: the whole purpose
+of the tier is that it grants unlimited access.
 
 The record is ordinary data, so an administrator can also edit it by hand with
 `ed os.users` *name* from `sdsys`. An account of any other tier starts with no
