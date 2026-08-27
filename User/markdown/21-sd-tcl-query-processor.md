@@ -9,7 +9,7 @@ does all of that from one line of typing.
 the rest are one catalogued program reached through fourteen VOC records, each
 carrying a number that says which verb was typed. Two of the fourteen —
 `select` and `sselect` — build a list instead of printing one and are covered in
-*SD TCL - Select Lists*.
+[SD TCL - Select Lists](22-sd-tcl-select-lists.html).
 
 SD folds case, so a query may be typed in either case. Commands and keywords are
 shown here in lower case. In the tables, *italics* mark something you supply and
@@ -300,6 +300,6 @@ Reading and reporting are available to every account; the two verbs that
 
 ## See also
 
-*SD TCL - Select Lists* ·
+[SD TCL - Select Lists](22-sd-tcl-select-lists.html) ·
 [SD TCL - Files and Records](20-sd-tcl-files-and-records.html) ·
 [SD Basic - String Functions](04-sd-basic-string-functions.html).
