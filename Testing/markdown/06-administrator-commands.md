@@ -18,20 +18,27 @@ elevation and say so rather than failing obscurely — see
 create.account  user <name> {administrator | programmer} <ssh|api|both|none>
 create.account  group <name>
 delete.account  <name>
+modify.account  <name> <standard | programmer | administrator | suspended>
 modify.account  <name> <ssh|api|both|none>
+modify.account  <name> <sh-on | sh-off | os-on | os-off>
 modify.account  add <group> <user>
 update.account
 clean.account
 ```
 
-Covered in full in [Account types](05-account-types.html). The three points
-worth repeating here:
+Covered in full in [Account types](05-account-types.html). The points worth
+repeating here:
 
 - **One of `ssh`, `api`, `both`, `none` is required** on `create.account user`.
   There is no default.
 - **`modify.account` says what the access *is*, not what to add.**
-  `modify.account fred api` takes ssh away.
-- **`update.account` only ever adds VOC records**, never removes them.
+  `modify.account fred api` takes ssh away. The tier keyword works the same way.
+- **The tier can be changed after creation**, in either direction, and the VOC
+  is rebuilt at once. `suspended` is a fourth tier that denies entry.
+- **`update.account` only ever adds VOC records**, never removes them —
+  `modify.account <tier>` is the only thing that removes one.
+- **Nothing here changes an administrator's access.** ssh, the API and the
+  operating system are all a rule for that tier; downgrade the account first.
 
 **`clean.account`** tidies an account's workspace. **`update.account`** is the one you
 run in each account after upgrading SD.
@@ -126,8 +133,38 @@ they **`logto`** somewhere else.
 
 ### How you grant it
 
-From an **elevated** session, because the file is writable only by an
-administrator:
+**Four keywords on `modify.account` do it without your editing anything:**
+
+```
+modify.account fred sh-on      the sh verb and ! at the prompt
+modify.account fred sh-off
+modify.account fred os-on      OS.EXECUTE, and the edit and micro editors
+modify.account fred os-off
+```
+
+`create.account` takes the two `on` forms. **They are four switches over two
+fields**, not four names for one state, so `sh-off` leaves `OS.EXECUTE` alone —
+and the verb prints the resulting record, both fields, every time.
+
+***AN ADMINISTRATOR-TIER ACCOUNT GETS BOTH FIELDS WITHOUT BEING ASKED***,
+including the account the installer makes for whoever installs SD. That is why
+an administrator reaches the editors and the shell from an ordinary,
+unelevated session.
+
+**And the four keywords refuse an administrator, in both directions:**
+
+```
+:modify.account don os-off
+don is an administrator and always reaches the operating system
+```
+
+An administrator has all three routes — ssh, the API and the operating system —
+as a rule. Downgrade the account first if that is really what you want.
+
+### Or edit the record by hand
+
+The record is ordinary data. From an **elevated** session, because the file is
+writable only by an administrator:
 
 ```
 logto sdsys
@@ -175,6 +212,13 @@ command is not available and what to ask for — see
 
 **A missing record, or a missing file, means no.** An installation that has
 never set `os.users` up denies both to ordinary accounts.
+
+***ONE CASE HAND-EDITING IS THE ONLY WAY OUT OF.*** An account promoted to
+administrator gets both fields written; an account that was *adopted* over a
+Windows login which already had a record saying `no` **keeps that record**, and
+because the four keywords refuse an administrator, no verb can then change it.
+`ed os.users <name>` is the way out. It is rare, and it is the reason this
+section still documents the file rather than only the keywords.
 
 ### Both fields are enforced
 

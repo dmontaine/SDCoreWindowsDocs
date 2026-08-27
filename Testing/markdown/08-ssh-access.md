@@ -184,6 +184,19 @@ says what the access **is**, not what to add, so `modify.account fred api`
 takes ssh away. Administrators always have both. See
 [Account types](05-account-types.html).
 
+***A SUSPENDED ACCOUNT IS REFUSED AFTER THE CONNECTION IS MADE, NOT BEFORE.***
+`modify.account fred suspended` does not touch the `sdssh` group, so sshd still
+accepts Fred's connection and SD still starts — and then refuses him:
+
+```
+Account FRED is suspended
+```
+
+**A suspension is an SD control, not a network one.** That is what makes
+lifting it free: nothing was withdrawn, so nothing has to be restored. If you
+need the connection itself refused, take the account out of `sdssh` too with
+`modify.account fred none` — and remember you must then put it back by hand.
+
 ## What ssh-only does not mean
 
 **The deny rights control *where* an account may log in, not *what it may

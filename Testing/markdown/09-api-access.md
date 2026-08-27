@@ -125,6 +125,20 @@ every account as having been reachable.**
 means *not permitted* rather than *not found*. That distinction matters when
 you are debugging: 3035 is a containment refusal, not a missing file.
 
+***A SUSPENDED ACCOUNT IS REFUSED HERE TOO, AND DELIBERATELY SAYS NOTHING
+ABOUT WHY.*** `modify.account fred suspended` denies the API as well as ssh,
+and the message is the one this page already gives for an account that does
+not exist and for one you are not granted:
+
+```
+User not allowed in requested account
+```
+
+**All three answer identically on purpose**, so the API cannot be used to
+enumerate which accounts exist or what state they are in. If you are debugging
+a client that has suddenly stopped connecting, `list accounts` from an SD
+session is where the answer is — the `Tier` column will read `SUSPENDED`.
+
 ### If your data lives outside an account
 
 Name the directory in the **`NETDIRS`** setting in `C:\ProgramData\SD\sd.conf`,

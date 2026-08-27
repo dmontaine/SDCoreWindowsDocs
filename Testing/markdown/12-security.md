@@ -50,6 +50,31 @@ domain admin, an IT tool's service account — gets SDSYS. Linux sudoers is
 machine-wide too, so this is parity rather than a Windows weakness, but it
 should be a decision rather than a discovery.
 
+## Taking an account out of use without deleting it
+
+**`modify.account fred suspended`** denies entry at all three ways in — ssh and
+the console, **`logto`**, and the API. It is reversible with nothing to
+remember: the VOC and every Windows group membership are left exactly as they
+are, and the tier it displaced is recorded, so naming a tier brings the account
+back where it was.
+
+***UNDERSTAND WHAT IT IS AND IS NOT, BECAUSE THE NAME OVERSELLS IT.***
+
+| | |
+|---|---|
+| **It is** | an SD control. The three doors SD owns are shut |
+| **It is not** | a Windows control. Nothing is withdrawn there |
+
+So a suspended user's ssh connection is still accepted and SD still starts
+before refusing them, and **a suspended administrator keeps `Administrators`,
+keeps their `os.users` record, and can still elevate on this machine.** An
+elevated session can also still **`logto`** into a suspended account, which is
+deliberate — that is how you look at one.
+
+***IF YOU ARE SUSPENDING AN ACCOUNT TO CONTAIN SOMEBODY RATHER THAN TO PARK IT,
+DISABLE THE WINDOWS ACCOUNT TOO.*** Everything on this page rests on Windows
+identity; a control that does not touch Windows cannot be the whole answer.
+
 ## Understand what the security position rests on
 
 ***NOTHING IN SD CHECKS A SECRET AT CONSOLE OR ssh LOGIN. ACCESS IS ENTIRELY

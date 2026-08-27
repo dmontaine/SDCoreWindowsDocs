@@ -42,7 +42,7 @@ first time; after that they stand alone.
 | **02** | ***[Your first thirty minutes](02-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
 | **03** | [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
 | **04** | [Scheduled jobs](04-scheduled-jobs.html) | Running an SD command on a timer, and the permit list that decides which ones |
-| **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator and Group — what each one is and how to make it |
+| **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator, Suspended and Group — what each one is, how to make one, and how to change it afterwards |
 | **06** | [Administrator commands](06-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
 | **07** | [Programmer commands](07-programmer-commands.html) | The development verbs a standard account does not get |
 | **08** | [ssh access](08-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
