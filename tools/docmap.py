@@ -127,8 +127,14 @@ DOCS = {
 }
 
 # Documents not yet written; named here so the coverage report can tell "later"
-# from "missed".  All seventeen are written as of 26 Aug 2026, so it is empty -
-# it stays because an eighteenth document would start life in it.
+# from "missed".  All seventeen categories are written as of 26 Aug 2026, so it
+# is empty - it stays because a new category would start life in it.
+#
+# 18 SYNTAX IS DELIBERATELY NOT HERE.  It is not a category: it is one
+# alphabetical run of EVERY name, so listing it would assign all 411 twice and
+# defeat the duplicate check this script exists for.  Its own completeness is
+# checked by tools/mksyntax.py, which refuses to write the page if a single
+# name accepted by BCOMP has no line on it.
 LATER = {}
 
 # Names that legitimately belong in more than one document, because the

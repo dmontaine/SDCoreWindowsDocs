@@ -15,7 +15,7 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | the SD BASIC reference — **17 pages, complete** |
+| `User/` | the SD BASIC reference — **18 pages, complete**: 17 by subject, plus `18` the alphabetical syntax card |
 | `Technical/` | not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
@@ -49,6 +49,21 @@ powershell -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
 MSYS2 python, or `pip install markdown`). `mkpdf.ps1` needs Edge or Chrome,
 which every supported Windows machine already has.
 
+## Regenerating the syntax card
+
+`User/markdown/18-sd-basic-syntax.md` is **generated, not edited**:
+
+```
+python tools\mksyntax.py <sd4windows>\sdb_ai\sd64\sdsys\gpl.bp\BCOMP User\markdown\18-sd-basic-syntax.md
+```
+
+Its roster is `BCOMP`'s own tables and it **refuses to write the page if any
+name accepted by the compiler has no line on it** — 411 of 411. Argument counts
+for functions are read out of `BCOMP`'s dispatch table, which is positional
+against the name list; the script asserts the two agree before using either.
+Everything a count cannot express lives in `tools/syntax-shapes.txt`, one
+`NAME = syntax` per line. **Edit that file, then regenerate.**
+
 ## Checking a set
 
 ```
@@ -61,7 +76,7 @@ python tools\checklinks.py User\markdown User\html
 |---|---|
 | `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
 | `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
-| `checklinks.py` | every link in the rendered pages. **110 links, 0 broken** |
+| `checklinks.py` | every link in the rendered pages. **114 links, 0 broken** |
 
 ## Measuring
 
