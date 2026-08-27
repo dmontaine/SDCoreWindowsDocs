@@ -1,10 +1,15 @@
-Title: SD TCL - Editing
-Subtitle: The line editor that is always there, and the two full-screen editors that are not.
+Title: SD TCL - The ed Line Editor
+Subtitle: The editor that runs inside SD, needs no terminal, and can be driven from a script.
 
-Three verbs edit a record. **`ed` is the one that always works** — it is written
-in SD BASIC, draws nothing, needs no terminal and no permission beyond the verb
-itself. `edit` and `micro` hand the record to a Windows program, and both need
-two things `ed` does not.
+SD has three editors and they are all installed with it. **`ed` is the one that
+runs *inside* SD**: it is written in SD BASIC, draws nothing, and needs neither
+a terminal nor operating-system permission. That is what makes it the editor for
+a phantom, an API session, a session driven down a pipe, and anything you want
+to automate.
+
+The other two are [edit](26-sd-tcl-edit.html) and [micro](27-sd-tcl-micro.html),
+which hand the record to a full-screen Windows program. Use one of those when
+you are sitting at a terminal and want to see the whole record at once.
 
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
@@ -12,25 +17,11 @@ marks a word typed as it stands; braces mark an optional part. **`ed`'s own
 commands are shown in upper case**, which is how `ed`'s `HELP` prints them; it
 folds case too.
 
-> **Every `ed` listing on this page was produced by running it**, on SD Core
-> for Windows W1.0-0, against a scratch record in an account's `bp` file. The
-> `edit` and `micro` refusals quoted are the ones a session driven down a pipe
-> reaches; a full-screen editor needs a real terminal, so the rest of what
-> those two verbs do is described rather than transcribed.
+> **Every listing on this page was produced by running it**, on SD Core for
+> Windows W1.0-0, against a scratch record in an account's `bp` file.
 
-## Which one to use
+## Starting it
 
-| | |
-|---|---|
-| **`ed`** | always available. A line editor: you name a line and act on it |
-| **`edit`** | Microsoft Edit, full screen. Needs the editor installed **and** `OS.EXECUTE` permission **and** a terminal |
-| **`micro`** | the same, with micro — which highlights SD BASIC |
-
-***`edit` AND `micro` ARE ONE PROGRAM WITH TWO NAMES.*** The verb you type
-chooses the executable and nothing else; everything below about one is true of
-the other.
-
-## `ed`
 
 ```
 ed {dict} file {record...} {no.query}
@@ -96,6 +87,8 @@ ed dict voc who.am.i
 DICT voc who.am.i
 New record
 ```
+
+## The commands
 
 ### Making a record from nothing
 
@@ -372,109 +365,15 @@ is reported as line 2.
 > arguments** — `I` with text, `FI` with no name, never `FD` — and it runs
 > through without stopping.
 
-## `edit` and `micro`
 
-```
-edit {dict} file record
-micro {dict} file record
-```
+## Who has it
 
-They copy the record to a working file, run a Windows editor on the copy, read
-it back and ask whether to save it:
-
-| | |
-|---|---|
-| **the working copy** | `$hold`, named *record*`.editing`. It is removed on every exit, including the ones that fail |
-| **a `bp` record** | additionally gets `.sdbasic` on the end. SD ships micro's syntax rules for SD BASIC, and that suffix is how micro knows to use them — the record's own name tells it nothing |
-| **saving** | *"Save? <Y>es, <N>o"*, then for a `bp` record *"Compile?"* and *"Catalogue?"* |
-| **a `dict` record** | is always saved and re-compiled with `cd` |
-| **finishing** | *"<E>xit or <R>e-edit"*, so a compile error can be fixed without starting again |
-
-***VALUE AND SUBVALUE MARKS BECOME TYPEABLE TEXT.*** A field mark is a line
-break and needs nothing, but a value mark is a control character an editor
-either draws as a stray glyph or drops. So there are three tokens, and they
-work both ways round:
-
-| | |
-|---|---|
-| `~~` | a value mark |
-| `` ~` `` | a subvalue mark |
-| `~-` | a literal `~`, where one would otherwise be misread |
-
-`SMITH~~JONES~~BROWN` is a three-value field; ``RED~`BLUE~~GREEN`` is two
-values, the first with two subvalues.
-
-***THE CONVERSION IS LOSSLESS AND NOTHING IS REFUSED.*** `~` is the escape
-character, and SD writes a tilde as `~-` **only where the character after it
-would make the pair look like a token** — another `~`, a backtick, a `-`, or a
-mark. Everywhere else a tilde is left exactly as you wrote it, so `a~b` is
-still `a~b` and ordinary source reads normally. Type `~-` yourself when you
-want a literal `~` in one of those positions.
-
-> ***A TEXT MARK IS NOT CONVERTED.*** It reaches the editor as the control
-> character it is, and what becomes of it is up to the editor. **A record
-> containing one is a record for `ed`.**
-
-### Two gates, and both are separate from the verb
-
-| | |
-|---|---|
-| **the VOC tier** | decides whether you have the verb at all |
-| **`os.users` field 2** | the `OS.EXECUTE` field, decides whether it may run |
-
-An administrator's session passes the second gate outright. Everyone else needs
-a record in the system file `os.users` whose field 2 reads `yes`, **and only an
-administrator can put one there.**
-
-***ON A NEW INSTALL NOBODY HAS ONE.*** `os.users` ships empty, so until an
-administrator writes a record into it, `edit` and `micro` refuse every
-unelevated session — the account that installed SD included.
-
-### What the refusals look like
-
-Both usage errors name the verb you typed rather than the program behind it:
-
-```
-:edit
-No file name specified.  Usage: edit {dict} <file> <record>
-:edit bp
-No record name specified.  Usage: edit {dict} <file> <record>
-```
-
-**A session with no terminal is refused before anything is written** — an API
-session, or a script driving SD down a pipe:
-
-```
-:edit bp zzed
-edit needs a terminal to draw on, and this session has none.
-ed, the line editor, works anywhere.
-```
-
-```
-:micro bp zzed
-micro needs a terminal to draw on, and this session has none.
-ed, the line editor, works anywhere.
-```
-
-**A missing editor is named, with the command that installs it**, rather than
-producing an unchanged record and a confident *"Record is unchanged"*.
-
-## Who has these verbs
-
-**All three are programmer verbs.** A standard account has none of them and
-cannot edit a record at all.
-
-| | |
-|---|---|
-| **standard** | — |
-| **programmer** | `ed` `edit` `micro` |
-
-That is deliberate rather than an oversight: an application account runs
-catalogued programs, and a person who can edit a record can edit a dictionary,
-a VOC entry, or a program's source.
+**`ed` is a programmer verb.** A standard account does not have it, and does not
+have `edit` or `micro` either — an account that runs an application does not
+edit the records behind it.
 
 ## See also
 
-[SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html) ·
-[SD TCL - Files and Records](20-sd-tcl-files-and-records.html) ·
-[SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).
+[SD TCL - The edit Screen Editor](26-sd-tcl-edit.html) ·
+[SD TCL - The micro Screen Editor](27-sd-tcl-micro.html) ·
+[SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html).
