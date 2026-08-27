@@ -77,6 +77,29 @@ commands, and the two worth knowing on the first day are:
 | `> help keybindings` | every key, including the ones not listed above |
 | `> set` *option* *value* | change a setting for this session |
 
+## Saving is broken for an ordinary account in W1.0-0
+
+> ***`micro` DRAWS, EDITS AND HIGHLIGHTS CORRECTLY AND THEN CANNOT SAVE***,
+> unless the session is elevated:
+>
+> ```
+> Permission denied. Save with sudo not supported on Windows
+> ```
+>
+> **The record you were editing is not touched and nothing is lost** — the
+> failure is on micro's side of the working copy, and quitting without saving
+> leaves the record exactly as it was.
+>
+> **It is not a permission problem with your file or your account.** SD points
+> micro's configuration directory at a folder under `C:\Program Files`, which
+> micro has to write to and an ordinary account may not. Measured 27 Aug 2026;
+> it is recorded as a release blocker in the project's fix lists.
+>
+> ***UNTIL IT IS FIXED, USE `ed` FOR ANYTHING YOU INTEND TO SAVE.*** It runs
+> inside SD, needs no external editor and no operating-system access, and is
+> documented on [SD TCL - The ed Line Editor](25-sd-tcl-ed.html). `micro` is
+> still useful for reading a record with syntax highlighting.
+
 ## Highlighting SD BASIC
 
 ***SD SHIPS THE RULES AND POINTS micro AT THEM.*** They are generated from the
