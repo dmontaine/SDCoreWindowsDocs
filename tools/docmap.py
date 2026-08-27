@@ -1,0 +1,167 @@
+#
+# docmap.py <gpl.bp/BCOMP>
+#
+# Assign every name BCOMP accepts to exactly one User-set document, and report
+# what is unassigned or assigned twice.  The point is that a document set which
+# quietly misses a function must fail this rather than look finished.
+#
+import re
+import sys
+
+BCOMP = sys.argv[1]
+src = open(BCOMP, 'r', encoding='latin-1', newline='').read()
+
+TABLES = ['statements', 'non.debug.statements', 'restricted.statements',
+          'reserved.names', 'intrinsics']
+WORD = re.compile(r'"([A-Z][A-Z0-9.$]*)"')
+
+tables = {}
+for name in TABLES:
+    got = set()
+    for line in src.split('\n'):
+        s = line.strip()
+        if s.startswith('*'):
+            continue
+        if re.match(re.escape(name) + r'\s*(<[^>]*>)?\s*:?=', s):
+            got.update(WORD.findall(s))
+    if not got:
+        sys.exit('EMPTY table %s - refusing to report' % name)
+    tables[name] = got
+
+everything = set()
+for t in TABLES:
+    everything |= tables[t]
+
+DOCS = {
+ '01 Program Structure': """
+   PROGRAM SUBROUTINE SUB FUNCTION DEFFUN CLASS PUBLIC PRIVATE COMMON COM
+   CLEARCOMMON DELETE.COMMON EQUATE EQU INCLUDE DIM DIMENSION MAT MATBUILD
+   MATPARSE INMAT LOCAL CLEAR END VOID CALL CALLV SUBR CATALOGUED ARG ARG.COUNT
+   SET.ARG ASSIGNED UNASSIGNED SET.UNASSIGNED VARTYPE OBJECT OBJINFO INHERIT
+   DISINHERIT UNLOAD.OBJECT GET SET RETURN VARSET
+ """,
+ '02 Program Control': """
+   IF ELSE THEN CASE BEGIN FOR NEXT STEP TO LOOP REPEAT WHILE UNTIL DO
+   CONTINUE EXIT GO GOTO GOSUB ON BREAK ABORT STOP CHAIN ENTER EXECUTE PERFORM
+   RUN QUIT SET.EXIT.STATUS SLEEP NAP RQM PAUSE WAKE REM REMARK NULL
+   SET.BREAK.HANDLER REMOVE.BREAK.HANDLER CAPTURING RETURNING PASSLIST RTNLIST
+   CURRENT.LEVEL TRAPPING SET.STATUS
+ """,
+ '05 Dynamic Arrays': """
+   EXTRACT INSERT DELETE REPLACE LOCATE REMOVE DEL INS FIND FINDSTR DCOUNT
+   RAISE LOWER VSLICE REUSE SPLICE SUBSTRINGS FIELDSTORE GETREM SETREM
+   BEFORE IN SETTING FROM
+   ANDS ORS NOTS NOT EQS NES GTS GES LTS LES IFS CATS COUNTS LENS NUMS
+   ABSS NEGS MODS TRIMS TRIMBS TRIMFS SOUNDEXS SPACES STRS FMTS ICONVS OCONVS
+   FOLDS INDEXS FIELDS SUBSTITUTE SWAP MARK.MAPPING SORTINIT SORTADD SORTCLEAR
+   MAXIMUM MINIMUM SUM SUMMATION
+ """,
+ '06 Data Conversion': """
+   ICONV OCONV FMT XTD DTX CHAR SEQ ASCII EBCDIC ITYPE DPARSE CONVERT
+   SETNLS GETNLS PRECISION PWR PRINTERR
+ """,
+ '07 File Handling': """
+   OPEN OPENPATH CLOSE READ READL READU READV READVL READVU WRITE WRITEU
+   WRITEV WRITEVU DELETE DELETEU MATREAD MATREADL MATREADU MATWRITE MATWRITEU
+   CLEARFILE CREATE.FILE CREATE CONFIGURE.FILE FILEINFO FILE OUTERJOIN TRANS
+   RTRANS XLATE RECORDLOCKED RECORDLOCKL RECORDLOCKU FILELOCK FILEUNLOCK LOCK
+   UNLOCK RELEASE RELEASE.LOCK TRANSACTION COMMIT ROLLBACK SET.TRIGGER
+   FLUSH DIR MODIFY LOCKED OVERWRITE READONLY WAITING FROM
+ """,
+ '08 Select Lists': """
+   SELECT SSELECT SELECTE SELECTN SELECTV SELECTINDEX SELECTINFO SELECTLEFT
+   SELECTRIGHT SETLEFT SETRIGHT READNEXT READLIST SAVELIST DELETELIST GETLIST
+   FORMLIST CLEARSELECT LISTINDEX INDICES BY
+ """,
+}
+
+# Documents not yet written; named so the coverage report can tell "later" from
+# "missed".
+LATER = {
+ '09 Alternate Key Indexes': """
+   AKCLEAR AKDELETE AKENABLE AKREAD AKRELEASE AKWRITE CREATE.AK DELETE.AK
+ """,
+ '10 Sequential Files': """
+   OPENSEQ READSEQ WRITESEQ WRITESEQF CLOSESEQ SEEK WEOFSEQ READBLK WRITEBLK
+   NOBUF DELETESEQ TIMEOUT REWIND STATUS APPEND OVERWRITE READONLY
+ """,
+ '11 CSV Files': """
+   READCSV WRITECSV INPUTCSV PRINTCSV MATREADCSV DPARSE.CSV CSVDQ
+ """,
+ '12 Terminal Input and Output': """
+   PRINT CRT DISPLAY INPUT INPUTFIELD INPUTCLEAR INPUTERR INPUTBLK KEYIN KEYINC
+   KEYINR KEYCODE KEYREADY KEYEDIT KEYEXIT KEYTRAP KEYBOARD.INPUT HEADING
+   FOOTING PAGE PROMPT ECHO CLEARINPUT CLEARDATA DATA TCLREAD TERMINFO BINDKEY
+   SAVE.SCREEN RESTORE.SCREEN COL1 COL2 PANNING HIDDEN NOCASEINVERT
+   GET.PORT.PARAMS SET.PORT.PARAMS APPEND EDIT OVERLAY UPCASE
+ """,
+ '13 Printing': """
+   PRINTER PRINTER.SETTING SETPU GETPU HUSH COMO FOOTING
+ """,
+ '14 Locks and Transactions': """
+ """,
+ '15 Sockets': """
+   OPEN.SOCKET CLOSE.SOCKET READ.SOCKET WRITE.SOCKET CREATE.SERVER.SOCKET
+   ACCEPT.SOCKET.CONNECTION SET.SOCKET.MODE SOCKET.INFO SERVER.ADDR WRITEPKT
+ """,
+ '16 System and Environment': """
+   SYSTEM STATUS CONFIG ENV OS.ERROR OS.EXECUTE DATE TIME TIMEDATE SYSMSG
+   GET.MESSAGES SENDMAIL UMASK CHGPHANT SENTENCE ADD COMPARE CHECKSUM
+   SDENCRYPT SDDECRYPT CCALL REMOVE.TOKEN RESET.MODES SET.MODES ERRMSG
+   PROCREAD PROCWRITE LOGMSG SET.EXIT.STATUS
+ """,
+ '17 Debugging': """
+   DEBUG DEBUG.ON DEBUG.OFF DEBUG.SET BREAKPOINT WATCH
+ """,
+ '04 String Functions (written)': """
+   LEN INDEX COUNT FIELD TRIM TRIMB TRIMF CROP SPACE STR UPCASE DOWNCASE
+   SWAPCASE FOLD CHANGE COMPARE ALPHA MATCHFIELD QUOTE DQUOTE SQUOTE
+   SOUNDEX
+ """,
+ '03 Math Functions (written)': """
+   ABS ACOS ASIN ATAN COS SIN TAN EXP LN SQRT INT MOD DIV IDIV RDIV REM NEG
+   RND RANDOMIZE MAX MIN NUM BITAND BITNOT BITOR BITRESET BITSET BITTEST
+   BITXOR SHIFT
+ """,
+}
+
+# Names that legitimately belong in more than one document, because the
+# language really does use one word for two things.  Listed explicitly so that
+# an ACCIDENTAL double assignment is still reported.
+SHARED = set("""
+  DELETE FOOTING STATUS SET.EXIT.STATUS COMPARE REM FROM SETTING IN
+  OVERWRITE READONLY APPEND UPCASE
+""".split())
+
+assigned = {}
+dupes = []
+for group in (DOCS, LATER):
+    for doc, names in group.items():
+        for n in names.split():
+            if n in assigned and n not in SHARED:
+                dupes.append((n, assigned[n], doc))
+            assigned[n] = doc
+
+known = set(assigned)
+missing = sorted(everything - known)
+bogus = sorted(known - everything)
+
+print('BCOMP accepts        : %d name(s)' % len(everything))
+print('assigned to a document: %d name(s)' % len(known & everything))
+print()
+if dupes:
+    print('=== ASSIGNED TWICE (%d) ===' % len(dupes))
+    for n, a, b in dupes:
+        print('  %-24s %s  AND  %s' % (n, a, b))
+    print()
+if bogus:
+    print('=== ASSIGNED BUT NOT ACCEPTED BY BCOMP (%d) - typo or removed ===' % len(bogus))
+    print('  ' + ' '.join(bogus))
+    print()
+print('=== ACCEPTED BY BCOMP, ASSIGNED NOWHERE (%d) ===' % len(missing))
+print('  ' + ' '.join(missing) if missing else '  none')
+print()
+for doc in sorted(DOCS):
+    names = sorted(n for n in DOCS[doc].split() if n in everything)
+    print('%-26s %3d name(s)' % (doc, len(names)))
+sys.exit(1 if (missing or dupes or bogus) else 0)
