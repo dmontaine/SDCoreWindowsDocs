@@ -228,7 +228,7 @@ array.
 Missing pieces leave their variables empty; extra pieces are discarded.
 
 `dparse.csv` does the same for a CSV line, honouring quoting — see
-*SD Basic - CSV Files*.
+[SD Basic - CSV Files](11-sd-basic-csv-files.html).
 
 ## Dictionary conversions
 
@@ -269,4 +269,4 @@ places a floating-point number shows when it becomes a string, is in
 ## See also
 
 [SD Basic - String Functions](04-sd-basic-string-functions.html) · [SD Basic - Math Functions](03-sd-basic-math-functions.html) ·
-[SD Basic - File Handling](07-sd-basic-file-handling.html) · *SD Basic - CSV Files*.
+[SD Basic - File Handling](07-sd-basic-file-handling.html) · [SD Basic - CSV Files](11-sd-basic-csv-files.html).

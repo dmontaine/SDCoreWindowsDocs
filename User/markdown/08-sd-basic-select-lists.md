@@ -40,7 +40,7 @@ formlist array {to list}
 | `sselect` | every id, **sorted** |
 | `selectn` | as `select`, but does not clear the list first |
 | `selectv` | the list into a **variable** rather than a numbered list |
-| `selectindex` | from an alternate key index — see *SD Basic - Alternate Key Indexes* |
+| `selectindex` | from an alternate key index — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | `formlist` | builds a list from a dynamic array you already have |
 
 Measured on a file holding two records:
@@ -160,7 +160,7 @@ These walk an alternate key index in either direction from the current
 position, rather than building a whole list at once. `setleft` and `setright`
 position at the start or end without reading anything. They are covered with
 the rest of the index statements in
-*SD Basic - Alternate Key Indexes*.
+[SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html).
 
 ```
 listindex(list, delimiter, item)
@@ -207,5 +207,5 @@ Nothing in the select-list group has been removed from this port.
 
 ## See also
 
-[SD Basic - File Handling](07-sd-basic-file-handling.html) · *SD Basic - Alternate Key Indexes* ·
+[SD Basic - File Handling](07-sd-basic-file-handling.html) · [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) ·
 [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html) · [SD Basic - Program Control](02-sd-basic-program-control.html).

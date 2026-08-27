@@ -6,7 +6,7 @@ reading and writing whole records or single fields, the locking that keeps two
 sessions out of each other's way, and transactions.
 
 Sequential files — ordinary operating-system files read a line at a time — are
-in *SD Basic - Sequential Files*. Select lists are in
+in [SD Basic - Sequential Files](10-sd-basic-sequential-files.html). Select lists are in
 [SD Basic - Select Lists](08-sd-basic-select-lists.html).
 
 SD folds case, so a program may be written in either case. Keywords are shown
@@ -270,4 +270,4 @@ things about it changed:
 ## See also
 
 [SD Basic - Select Lists](08-sd-basic-select-lists.html) · [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html) ·
-*SD Basic - Sequential Files* · *SD Basic - Alternate Key Indexes*.
+[SD Basic - Sequential Files](10-sd-basic-sequential-files.html) · [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html).
