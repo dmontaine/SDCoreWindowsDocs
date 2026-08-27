@@ -107,13 +107,22 @@ it there once there is a second page.
 
 ```
 python tools\docmap.py <sd4windows>\sdb_ai\sd64\sdsys\gpl.bp\BCOMP
+python tools\tclmap.py <sd4windows>\sdb_ai\sd64\sdsys\newvoc
 python tools\linkup.py User\markdown
 python tools\checklinks.py User\markdown User\html
 ```
 
+***`tclmap.py` EXISTS BECAUSE `docmap.py`'s QUESTION IS NOT ENOUGH.*** A map
+says where a name is *meant* to be explained. On 27 Aug 2026 the TCL coverage
+was recorded as 127 of 144 and was really 118 — seven verbs counted as covered
+because their name appeared inside a warning, or inside a longer word. So
+`tclmap` requires **evidence on the page**: the verb backticked, or opening a
+line inside a fenced syntax block. Prose alone does not count.
+
 | | |
 |---|---|
 | `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
+| `tclmap.py` | the same for the **144 TCL verbs**, across the `User` and `Administrator` sets — **and it also checks the page actually documents the verb**, not merely that the name occurs somewhere. **144 of 144, 0 exempt** |
 | `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
 | `checklinks.py` | every link in the rendered pages. **183 links, 0 broken** across 32 `User` pages |
 

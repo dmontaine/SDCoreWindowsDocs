@@ -161,13 +161,19 @@ prints anything**, and `bell` with no keyword is an error rather than a toggle:
 ## Clearing type-ahead and stored prompts
 
 ```
-clearinput
-clearprompts
+clearinput      clear.input
+clearprompts    clear.prompts
 ```
 
 **`clearinput`** discards anything typed ahead but not yet read.
 **`clearprompts`** discards the inline prompt and response text a previous
 command left behind. Neither prints anything.
+
+***EACH HAS TWO SPELLINGS AND THEY ARE THE SAME VERB.*** `clear.input` and
+`clear.prompts` are separate VOC records pointing at the same internal verb
+number as the run-together forms, which is the pattern described on
+[SD TCL - The Command Processor](19-sd-tcl-command-processor.html). Use
+whichever reads better; nothing distinguishes them.
 
 > ***NEITHER CAN BE DEMONSTRATED DOWN A PIPE, AND `clearinput` SHOULD NOT BE
 > SENT DOWN ONE AT ALL.*** In a piped session the input stream *is* the script,
@@ -287,8 +293,10 @@ conversion code other than `D` is set, `display` names that too.
 
 **`date.format` with no keyword prints nothing** — like `pterm`, it wants one.
 
-**`set.date`** sets the machine's date and is an administrator verb; it is not
-session state and is not on this page.
+**Setting the machine's date is a different thing entirely** — it is an
+administrator verb, it changes the clock for the whole installation rather than
+for your session, and it is in the **administrator documentation** under
+*Accounts and Security*.
 
 ## Waiting
 

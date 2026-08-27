@@ -295,6 +295,31 @@ for changing an installation.
 running a pager over a file, so they work in any account and need no
 operating-system access.
 
+## Setting the machine's date: `set.date`
+
+```
+set.date date
+```
+
+Sets the **machine's** date, not a session preference — it changes the clock the
+whole installation reads. The argument goes through SD's `D` conversion, so
+anything `iconv(…, 'D')` accepts will do, and anything it does not is refused:
+
+| | |
+|---|---|
+| *Date required* | `set.date` with nothing after it |
+| *Invalid date format* | the argument is not a date SD can read |
+
+***THERE IS NO CONFIRMATION AND NO UNDO.*** It is described here from source
+rather than shown running, because demonstrating it would move the clock of the
+machine the documentation was measured on. **On Windows, changing the system
+date is itself a privileged operation**, so a session that has the verb may
+still be refused by the operating system underneath it.
+
+**Moving a live machine's date backwards is not a neutral act**: file
+timestamps, licence expiry, scheduled tasks and anything that reasons about
+elapsed time all read it. Treat it as a maintenance operation on a quiet system.
+
 ## `encrypt.field` does not work in this release
 
 ```
