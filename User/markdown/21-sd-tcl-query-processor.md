@@ -262,7 +262,7 @@ whole one.
 | **`file`** | to a file rather than a device |
 
 Printing, print units and `$hold` are in
-*SD TCL - Printing and Spooling*.
+[SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html).
 
 ## Querying a dictionary
 

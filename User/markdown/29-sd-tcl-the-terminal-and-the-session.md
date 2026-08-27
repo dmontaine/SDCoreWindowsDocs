@@ -1,0 +1,220 @@
+Title: SD TCL - The Terminal and the Session
+Subtitle: Screen size, terminal behaviour, silence, the inactivity timer, and writing to the error log.
+
+Two different things are called the terminal. **`term` is the page** — how wide
+and how deep SD thinks your screen is, which decides where output wraps and when
+it pauses. **`pterm` is the wire** — how bytes are treated on the way in and out.
+They are set separately and are almost never confused once you have seen both.
+
+SD folds case, so a command may be typed in either case. Commands are shown here
+in lower case. In the tables, *italics* mark something you supply and **bold**
+something you type as it stands.
+
+## The page: `term`
+
+```
+term                             display the settings
+term {width} {, lines} {type}    set them
+term colour {bgc}{,fgc}          set display colour
+term default                     back to the defaults
+term display                     show the terminfo bindings
+```
+
+```
+:term
+Page width: 200
+Page depth: 9999
+Device    : windows
+```
+
+**Depth is what decides paging.** A listing longer than the page pauses; set the
+depth very large and it does not. That is why scripts driving SD open with
+something like `term 200,9999` — a script has nobody to press a key at a
+`Press any key` prompt, and a paged listing down a pipe stops for ever.
+
+**Width sets only the width**, and the two are independent:
+
+```
+:term 132
+:term
+Page width: 132
+Page depth: 9999
+```
+
+> ***`term default` DOES NOT MEAN 80×24, AND WHAT IT MEANS DEPENDS ON HOW YOU
+> GOT HERE.*** In the piped session these listings were measured in, `term
+> default` reported **`Page width: 20`** and **`Page depth: 24`** — a session
+> with no real terminal has no size to fall back to, and that is what it fell
+> back to. **At a console or over ssh you will get your actual terminal.** The
+> number above is quoted because it was measured, not because it is the answer
+> you should expect.
+
+**`Device`** is the terminfo entry in use, `windows` on this port. If a terminal
+type has no terminfo entry SD falls back to `windows` rather than failing, so
+this line is worth reading when screen handling misbehaves.
+
+## The wire: `pterm`
+
+```
+:pterm display
+Break trapping: On  (char ^C)
+Case inversion: Off
+Input newline:  CR
+Output newline: CRLF
+Binary mode (client to server): Off
+Binary mode (server to client): Off
+Telnet negotiation: Off
+```
+
+***`pterm` WITH NO KEYWORD PRINTS NOTHING.*** It is not a display verb that has
+gone quiet — it takes a keyword and `display` is one of them. The full set:
+
+| | |
+|---|---|
+| **`pterm display`** | the settings above |
+| **`pterm lptr`** | send them to the default printer |
+| **`pterm break on`** \| **`off`** \| *c* | enable, disable, or set the break character |
+| **`pterm case invert`** \| **`noinvert`** | case inversion on input |
+| **`pterm newline cr`** \| **`lf`** \| **`crlf`** | the output line ending |
+| **`pterm return cr`** \| **`lf`** | the input line ending |
+| **`pterm binary on`** \| **`off`** | pass bytes through untranslated |
+| **`pterm telnet on`** \| **`off`** | recognise `TN_IAC` |
+| **`pterm reset`** *string* | the terminal reset string |
+| **`pterm prompt`** `":"` `"::"` | change the command prompt and the continuation prompt |
+
+**Input `CR`, output `CRLF` is the shipped setting** and it matches what SD
+writes to everything else externally readable on this port.
+
+***`pterm break off` DISABLES THE BREAK KEY FOR THE SESSION.*** It is the right
+thing before a job that must not be interrupted and the wrong thing to leave
+set, because it is also how you stop a runaway program.
+
+## Silence: `hush`
+
+```
+hush on
+hush off
+hush expression
+```
+
+**`hush on` discards output entirely** — it does not redirect it, and nothing is
+kept. With no argument it toggles.
+
+***IT SUPPRESSES THE COMMAND ECHO AS WELL AS THE OUTPUT***, which is more
+thorough than people expect. In the measurement below, `who` was typed **twice**
+— once inside the silence and once after it — and the transcript contains one:
+
+```
+:hush on
+:who
+14 DON
+:term 132
+```
+
+The first `who`, and `hush off` itself, produced no line at all. **If you are
+debugging a script that has gone quiet, an unmatched `hush on` looks exactly
+like a hang.**
+
+## The bell
+
+```
+bell on
+bell off
+```
+
+Sets or clears the character SD sends to sound the terminal bell. **Neither form
+prints anything**, and `bell` with no keyword is an error rather than a toggle:
+*Mode keyword missing or invalid*.
+
+## Clearing type-ahead and stored prompts
+
+```
+clearinput
+clearprompts
+```
+
+**`clearinput`** discards anything typed ahead but not yet read.
+**`clearprompts`** discards the inline prompt and response text a previous
+command left behind. Neither prints anything.
+
+> ***NEITHER CAN BE DEMONSTRATED DOWN A PIPE, AND `clearinput` SHOULD NOT BE
+> SENT DOWN ONE AT ALL.*** In a piped session the input stream *is* the script,
+> so discarding unread input discards the commands that have not run yet —
+> including the `off` that would have ended the session. **A run that did this
+> hung, was killed, and left a session in the user table that only an elevated
+> `sd -cleanup` could clear.** The listings on this page were measured with both
+> verbs removed from the batch. They are for a person at a terminal.
+
+## The inactivity timer
+
+```
+autologout
+autologout n
+```
+
+```
+:autologout
+Autologout is disabled
+```
+
+which is the shipped state. Setting a timer ends a session that has been idle
+too long — useful on a machine where people walk away from a prompt, and worth
+thinking about before enabling on a machine where a long-running interactive job
+is normal.
+
+## Dates
+
+```
+date.format on | off | display
+```
+
+```
+:date.format display
+European date format is off
+```
+
+**`on`** selects European (day-first) date format for the session, **`off`**
+returns to the default, and **`display`** reports which is in force. If a default
+conversion code other than `D` is set, `display` names that too.
+
+**`date.format` with no keyword prints nothing** — like `pterm`, it wants one.
+
+**`set.date`** sets the machine's date and is an administrator verb; it is not
+session state and is not on this page.
+
+## Waiting
+
+```
+sleep n
+sleep hh:mm{:ss}
+```
+
+A number is seconds; a time is *until* that time, rolling over midnight if it
+has already passed. **`sleep` with no argument returns immediately** rather than
+sleeping for ever — the argument parses as zero.
+
+## Writing to the error log
+
+```
+logmsg text
+```
+
+Everything after the verb is the message. It prints nothing, and what it writes
+is a stamped, attributed entry in the system error log:
+
+```
+27 Aug 26 13:13:31 User 11 (pid 1786, don):
+   page 28 measurement
+```
+
+***THE USER NUMBER, THE PROCESS ID AND THE ACCOUNT NAME ARE ADDED FOR YOU***, so
+a message does not need to say who wrote it. The log is
+`C:\ProgramData\SD\sdsys\errlog`, shared by every session, which makes `logmsg`
+the right way for a phantom or a scheduled job to report something a person will
+read later — there is no terminal to print to and no transcript kept.
+
+## See also
+
+[SD TCL - The Command Processor](19-sd-tcl-command-processor.html) ·
+[SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html) ·
+[SD Basic - Terminal Input and Output](12-sd-basic-terminal-input-and-output.html).
