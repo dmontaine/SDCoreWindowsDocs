@@ -154,6 +154,11 @@ one.**
 of 64 numbered general-purpose semaphores — used to serialise something that is
 not a record at all, such as a report run.
 
+***THE REST OF THIS IS ITS OWN PAGE.*** What the other session sees, what every
+`recordlocked()` code means, how to find out **who** holds a lock, and how long
+a wait actually is, are all in [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) — measured
+with two sessions running at once, which is the only way any of it can be.
+
 ## Transactions
 
 ```
@@ -171,6 +176,13 @@ none of it does. `rollback` discards the lot.
 **Locks taken inside a transaction are held until it ends**, whichever way it
 ends. That is what makes the transaction safe and also what makes a long one
 expensive — keep the span short, and never wait for user input inside one.
+
+***AND INSIDE A TRANSACTION YOU MUST ALREADY HOLD THE LOCK ON EVERY RECORD YOU
+WRITE.*** The same `write` that works outside one fails inside it with
+*"Error 3023 (o/s 0) writing record (Possible full disk?)"*, which is a lock
+error wearing a disk error's message. [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) has
+the measurements, along with what `commit`, `rollback` and simply reaching
+`end transaction` each do.
 
 ## Asking about a file
 
@@ -201,10 +213,17 @@ sequential.
 > `/cygdrive/c/ProgramData/...`, not `C:\ProgramData\...`. **Handing that
 > string to a Windows program does not work** — Windows reads it as a
 > drive-relative path and either fails silently or reports that the parent
-> directory does not exist. Convert it first with `kernel(K$WINPATH, path)`,
-> and refuse an empty answer rather than passing it on. This is not a
-> theoretical caution: it is what stopped the full-screen editors working the
-> first time they were built for this port.
+> directory does not exist. This is not a theoretical caution: it is what
+> stopped the full-screen editors working the first time they were built for
+> this port.
+>
+> ***AND THE CONVERSION FUNCTION IS NOT AVAILABLE TO AN ORDINARY PROGRAM.***
+> The kernel can convert such a path, and `kernel()` is an internal-only
+> intrinsic — measured, a `kernel(...)` call in a user account does not
+> compile, and the compiler's complaint is *"Matrix KERNEL is not referenced in
+> a DIM statement"*, reported at the last line of the program. See
+> [SD Basic - System and Environment](16-sd-basic-system-and-environment.html). **So a path a Windows program is going
+> to see should come from your own configuration, not from `fileinfo()`.**
 
 > **There is no record-count key.** Key `6` is the *minimum modulus* and reads
 > `1` on a small file whatever it contains — measured `1` with two records

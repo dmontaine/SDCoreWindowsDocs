@@ -73,11 +73,6 @@ DOCS = {
    SELECTRIGHT SETLEFT SETRIGHT READNEXT READLIST SAVELIST DELETELIST GETLIST
    FORMLIST CLEARSELECT LISTINDEX INDICES BY
  """,
-}
-
-# Documents not yet written; named so the coverage report can tell "later" from
-# "missed".
-LATER = {
  '09 Alternate Key Indexes': """
    AKCLEAR AKDELETE AKENABLE AKREAD AKRELEASE AKWRITE CREATE.AK DELETE.AK
  """,
@@ -98,6 +93,12 @@ LATER = {
  '13 Printing': """
    PRINTER PRINTER.SETTING SETPU GETPU HUSH COMO FOOTING
  """,
+# 14 carries no names of its own on purpose.  Every lock and transaction name
+# is introduced in 07 File Handling, which is where a reader meets them; 14 is
+# the deeper treatment - what the OTHER session sees - and assigning the names
+# twice would only defeat the duplicate check.  TESTLOCK and GETLOCKS belong to
+# it and are absent from the roster because they are internal-only intrinsics,
+# which BCOMP keeps in a separate table this script does not read.
  '14 Locks and Transactions': """
  """,
  '15 Sockets': """
@@ -113,17 +114,22 @@ LATER = {
  '17 Debugging': """
    DEBUG DEBUG.ON DEBUG.OFF DEBUG.SET BREAKPOINT WATCH
  """,
- '04 String Functions (written)': """
+ '04 String Functions': """
    LEN INDEX COUNT FIELD TRIM TRIMB TRIMF CROP SPACE STR UPCASE DOWNCASE
    SWAPCASE FOLD CHANGE COMPARE ALPHA MATCHFIELD QUOTE DQUOTE SQUOTE
    SOUNDEX
  """,
- '03 Math Functions (written)': """
+ '03 Math Functions': """
    ABS ACOS ASIN ATAN COS SIN TAN EXP LN SQRT INT MOD DIV IDIV RDIV REM NEG
    RND RANDOMIZE MAX MIN NUM BITAND BITNOT BITOR BITRESET BITSET BITTEST
    BITXOR SHIFT
  """,
 }
+
+# Documents not yet written; named here so the coverage report can tell "later"
+# from "missed".  All seventeen are written as of 26 Aug 2026, so it is empty -
+# it stays because an eighteenth document would start life in it.
+LATER = {}
 
 # Names that legitimately belong in more than one document, because the
 # language really does use one word for two things.  Listed explicitly so that

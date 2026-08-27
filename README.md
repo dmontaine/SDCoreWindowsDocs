@@ -15,10 +15,15 @@ Three document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | not written yet |
+| `User/` | the SD BASIC reference — **17 pages, complete** |
 | `Technical/` | not written yet |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
+
+**The `User` set is measured, not compiled from the old help tree.** Its roster
+comes from `BCOMP`'s own tables, and every example was run before it was
+written down. `tools\probes\` holds the programs that produced the numbers and
+`tools\probes\README.md` says which runner takes which.
 
 `QUESTIONS-2026-08-26.md` at the top is the review list for the tester set,
 with the answers recorded against each question. **It is not part of any set.**
@@ -43,6 +48,32 @@ powershell -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
 `mkdoc.py` needs **python-markdown** (`pacman -S msys/python-markdown` on the
 MSYS2 python, or `pip install markdown`). `mkpdf.ps1` needs Edge or Chrome,
 which every supported Windows machine already has.
+
+## Checking a set
+
+```
+python tools\docmap.py <sd4windows>\sdb_ai\sd64\sdsys\gpl.bp\BCOMP
+python tools\linkup.py User\markdown
+python tools\checklinks.py User\markdown User\html
+```
+
+| | |
+|---|---|
+| `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
+| `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
+| `checklinks.py` | every link in the rendered pages. **110 links, 0 broken** |
+
+## Measuring
+
+These four run a program inside a real SD session and refuse a run that did not
+measure anything. `tools\probes\README.md` says which takes which.
+
+| | |
+|---|---|
+| `sdprobe.ps1` | run one BASIC probe; refuses without its START and END markers |
+| `sdprobe2.ps1` | **two sessions at once**, for locking; refuses unless they demonstrably contended |
+| `sdcompile.ps1` | compile only, for measuring what the compiler **refuses** |
+| `sddebug.ps1` | compile in debug mode and drive the debugger from a script |
 
 ## Generated, not tracked
 
