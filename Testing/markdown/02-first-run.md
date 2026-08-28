@@ -60,7 +60,9 @@ the `WINDOWS` definition shipped keeps its old setting until **`update.account`*
 80 × 24.*** The shipped dictionaries and the default `list` layouts are
 formatted for 120 columns, so **a console window narrower than that makes
 ordinary reports look wrapped or truncated** and the report is not at fault.
-Widen the window, or set it for the session with `term 120,36`. See
+Widen the window, or set it for the session with `term default` — which puts
+the 120 × 36 back and prints nothing while doing it, so check with a bare
+`term` afterwards. `term 120,36` is the same thing typed out. See
 [Other hardening](13-hardening.html#the-terminal).
 
 ## 4. Make a file and put something in it

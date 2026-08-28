@@ -222,12 +222,14 @@ environment variables if they are numeric, otherwise the terminfo entry's
 size and 120 × 36 is the fallback when nothing answers, which is the case for a
 phantom or a piped script.
 
-> ***`term default` DOES NOT RESTORE IT. IT SETS 20 × 24.*** Measured. The verb
-> reaches for the *minimum* width and a fixed depth instead of the defaults,
-> which are defined right beside them and are what the login path uses.
-> **`term 120,36` is what actually puts it back.** The defect is upstream's as
-> well as ours and is on both fix lists; if you are testing report layout, set
-> the size explicitly rather than trusting `term default`.
+> ***`term default` RESTORES IT, AND IT PRINTS NOTHING WHEN IT DOES.*** It sets
+> the same 120 × 36 the login path falls back to and returns silently, so run a
+> bare `term` after it to see the result. `term 120,36` does the same by hand.
+>
+> **If you have notes from an earlier build, this is one of the things that
+> changed**: `term default` used to set 20 × 24 — the *minimum* width and a
+> fixed depth rather than the defaults — so it made the display worse instead of
+> putting it back.
 
 ## Paths
 

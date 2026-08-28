@@ -63,23 +63,20 @@ if it is smaller. So an ssh session or a console window normally gets its real
 size, and **120 × 36 is what SD falls back to when nothing else answers** — a
 phantom, a piped script, a service.
 
-> ***AND `term default` DOES NOT GIVE YOU 120 × 36. IT GIVES 20 × 24.***
-> Measured, and it is not an artefact of how these listings were taken — the
-> verb sets the **minimum** width and a fixed depth rather than the defaults:
+> ***`term default` PUTS THAT PAIR BACK, AND IT PRINTS NOTHING WHEN IT DOES.***
+> The verb sets the same 120 × 36 the login path falls back to, then returns
+> without a message — so the way to see that it worked is a bare `term` after
+> it, not the command itself:
 >
 > ```
 > :term default
 > :term
-> Page width: 20
-> Page depth: 24
+> Page width: 120
+> Page depth: 36
 > ```
 >
-> **`term 120,36` is what actually restores the default.** The constants for
-> 120 and 36 exist and are the ones the login path uses; `term default` reaches
-> for a different pair. This is a defect and it is upstream's as well as ours —
-> it is recorded in the project's fix lists. Until it is fixed, treat `term
-> default` as *"make the page as small as it will go"*, which is rarely what
-> anybody wants.
+> `term 120,36` does the same thing by hand and is worth knowing for the cases
+> where you want some other size back.
 
 **`Device`** is the terminfo entry in use, `windows` on this port. If a terminal
 type has no terminfo entry SD falls back to `windows` rather than failing, so
