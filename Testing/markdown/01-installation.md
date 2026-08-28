@@ -138,6 +138,19 @@ metered connection or an offline machine. The installer reports it in as many
 words, with the command to retry — and you should read that report, because in
 that state **no account but yours can sign in anywhere.**
 
+It is the same command either way, and it is repeated here because the closing
+report is easy to close. From an elevated prompt:
+
+```
+powershell -File "C:\Program Files\SD\install-ssh.ps1"
+```
+
+It exits **0** installed and running, **2** installed but Windows wants a
+restart before the service exists, **1** failed — and it prints which, so run
+it in a window you can read rather than expecting a log. It is safe to run
+twice: on a machine that already has the server it says so and changes
+nothing.
+
 ## The full-screen editors
 
 **The installer makes sure the two terminal editors are on the machine**,
