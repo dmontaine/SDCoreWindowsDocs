@@ -15,8 +15,8 @@ once. See [Changing an account afterwards](#changing-an-account-afterwards).
 
 | | Standard | Programmer | Administrator |
 |---|---|---|---|
-| Verbs | 77 | 77 + 42 | 77 + 42 + 21 |
-| VOC records on creation | 354 | 396 | 417 |
+| Verbs | 81 | 81 + 42 | 81 + 42 + 20 |
+| VOC records on creation | 354 | 396 | 416 |
 | Can run an application | yes | yes | yes |
 | Can compile, catalogue, edit | **no** | yes | yes |
 | Can create or configure files | **no** | yes | yes |
@@ -26,7 +26,7 @@ once. See [Changing an account afterwards](#changing-an-account-afterwards).
 
 **`administrator` implies `programmer`.** You do not need both keywords.
 
-### Standard — 77 verbs
+### Standard — 81 verbs
 
 What an application needs and no more: query and list (**`select`**, **`list`**,
 **`get.list`** and family), spool and print, session and environment (**`logto`**,
@@ -52,7 +52,7 @@ and the two tier lists are never copied — so **392 records reach a full VOC**.
 `$savedlists`, `bp`):
 
 ```
-ADMINISTRATOR   392 + 21 + 4 = 417
+ADMINISTRATOR   392 + 20 + 4 = 416
 PROGRAMMER      392      + 4 = 396
 STANDARD        392 - 42 + 4 = 354
 ```
@@ -66,11 +66,11 @@ reporting.
 
 **The same two numbers are what a tier change reports**, so you can predict
 them: moving between standard and programmer is **42** records either way, and
-between programmer and administrator **21**. A change that reports a different
+between programmer and administrator **20**. A change that reports a different
 number, or zero where it should have moved something, is worth reporting for
 the same reason.
 
-### Administrator — 21 more
+### Administrator — 20 more
 
 Account and grant administration, system-wide state, and the shell escapes. See
 [Administrator commands](06-administrator-commands.html).

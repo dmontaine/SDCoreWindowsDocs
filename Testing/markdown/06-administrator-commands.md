@@ -1,8 +1,8 @@
 Title: Administrator commands
-Subtitle: The 21 verbs an administrator account gets above a programmer, and how to use them.
+Subtitle: The 20 verbs an administrator account gets above a programmer, and how to use them.
 
 An administrator account receives everything a programmer account does, plus
-the 21 verbs below. In OpenQM most of these lived in `SYSTEM` and you reached
+the 20 verbs below. In OpenQM most of these lived in `SYSTEM` and you reached
 them by being there; in SD Core they are in the administrator's **own** account
 VOC, so an SD administrator no longer has to `logto sdsys` to administer
 anything.
@@ -58,11 +58,10 @@ WINDOWS AND BACK IN.*** Entry to an account is Windows group membership, and
 Windows fixes that at logon. **Somebody you have just revoked keeps the account
 until they get a new token.** Both verbs print the reminder every time.
 
-## Passwords and field encryption
+## Passwords
 
 ```
 modify.password {<account>}
-encrypt.field
 ```
 
 **`set.password` was renamed to `modify.password`** — every account now has a
@@ -264,11 +263,11 @@ so a remote client could run any command on the machine with full privilege —
 more than the administrator at the keyboard gets. An API session is no longer
 treated as an administrator for any purpose.
 
-## The full list of the 21
+## The full list of the 20
 
 **`create.account`** · **`delete.account`** · **`modify.account`** · **`update.account`** ·
 **`clean.account`** · **`grant`** · **`revoke`** · **`list.grants`** · **`unlock`** ·
-**`modify.password`** · **`encrypt.field`** · **`config`** · **`listu`** · **`list.readu`** ·
+**`modify.password`** · **`config`** · **`listu`** · **`list.readu`** ·
 **`list.locks`** · **`clear.locks`** · **`lock`** · **`logout`** · **`set.date`** · **`sh`** · `!`
 
 > **Twelve of these left `NEWVOC` on 24 Aug 2026** — **`config`**, **`listu`**,

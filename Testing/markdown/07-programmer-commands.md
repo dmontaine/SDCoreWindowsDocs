@@ -1,10 +1,10 @@
 Title: Programmer commands
 Subtitle: The 42 development verbs a standard account does not get, and what withholding them does and does not do.
 
-A **standard** account gets 77 verbs — enough to run an application and nothing
+A **standard** account gets 81 verbs — enough to run an application and nothing
 that edits code or data in bulk. A **programmer** account gets those plus the
 42 below. An **administrator** account gets all of them, plus
-[21 more](06-administrator-commands.html).
+[20 more](06-administrator-commands.html).
 
 This split does not exist in OpenQM, where every account gets the same VOC.
 None of the verbs below is new; what is new is that an account has to be
