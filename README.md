@@ -15,7 +15,7 @@ Four document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (144 verbs) |
+| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (143 verbs) |
 | `Administrator/` | **three documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
 | `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
 
@@ -94,9 +94,16 @@ python tools\mktclsyntax.py <sd4windows>\sdb_ai\sd64\sdsys User\markdown\95-sd-t
 ```
 
 Its roster is computed from SD's own VOC — the verb records in `newvoc` plus
-`TIER.ADD.ADMINISTRATOR`, **144** — and it **refuses to write the page** if a
+`TIER.ADD.ADMINISTRATOR`, **143** — and it **refuses to write the page** if a
 verb has no line, or if a line names something that is not a verb. It caught
 `selecte` on the first run, which is a BASIC statement.
+
+***AND IT CAUGHT THE SECOND HALF ITSELF, 28 Aug 2026.*** The roster is computed,
+so it dropped to 143 the day `encrypt.field` left `TIER.ADD.ADMINISTRATOR`; the
+shapes file and `tclmap`'s map are typed, so they did not. **Both generators had
+been refusing to run** — `NOT A VERB encrypt.field has a shape and is not on the
+roster` — which is the refusal working as designed, and it is the reason a
+computed roster is worth the trouble.
 
 The syntax itself lives in `tools/tcl-syntax-shapes.txt`, **not** in the
 programs' `START-DESCRIPTION` blocks. Sixty-three of the ninety-seven
@@ -156,7 +163,7 @@ line inside a fenced syntax block. Prose alone does not count.
 | | |
 |---|---|
 | `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
-| `tclmap.py` | the same for the **144 TCL verbs**, across the `User` and `Administrator` sets — **and it also checks the page actually documents the verb**, not merely that the name occurs somewhere. **144 of 144, 0 exempt** |
+| `tclmap.py` | the same for the **143 TCL verbs**, across the `User` and `Administrator` sets — **and it also checks the page actually documents the verb**, not merely that the name occurs somewhere. **143 of 143, 0 exempt** |
 | `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
 | `checklinks.py` | every link in the rendered pages. **183 links, 0 broken** across 32 `User` pages |
 

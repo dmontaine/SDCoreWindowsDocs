@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > the verb records in `newvoc` plus the ones an administrator account
-> adds, which is **144** verbs, and `tools/mktclsyntax.py` refuses to
+> adds, which is **143** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where they were measured against a running system.
 
@@ -26,7 +26,7 @@ name is simply not recognised.**
 |---|---|---|
 | **standard** | 81 verbs | every account has these |
 | **programmer** | 42 more | withheld from a standard account |
-| **administrator** | 21 more | and several need an elevated session as well |
+| **administrator** | 20 more | and several need an elevated session as well |
 
 ## The verbs
 
@@ -89,7 +89,6 @@ name is simply not recognised.**
 | **`echo`** | **`echo on`** | **`off`** | **`echo`** to toggle |  |
 | **`ed`** | **`ed`** {**`dict`**} *file* {*id* …} | P |
 | **`edit`** | **`edit`** {**`dict`**} *file* *record* | P |
-| **`encrypt.field`** | **`encrypt.field`** — **the program behind this verb is not in the distribution; every form fails to load** | A |
 | **`form.list`** | **`form.list`** {**`dict`**} *file* {*list.no*} |  |
 | **`format`** | **`format`** {*file*} {*record*} {**`case`**} |  |
 | **`fstat`** | **`fstat`** *file* **`on`** | **`off`** | {**`lptr`**}  ·  **`fstat global`** {**`lptr`**}  ·  **`fstat reset`**  ·  **`fstat`** | P |

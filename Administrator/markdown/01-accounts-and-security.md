@@ -320,19 +320,6 @@ still be refused by the operating system underneath it.
 timestamps, licence expiry, scheduled tasks and anything that reasons about
 elapsed time all read it. Treat it as a maintenance operation on a quiet system.
 
-## `encrypt.field` does not work in this release
-
-```
-:encrypt.field
-00001FCB: Unable to load '$CRYPTO' object code at line 1550 of $CPROC
-```
-
-***THE VERB IS IN AN ADMINISTRATOR'S VOC AND THE PROGRAM BEHIND IT IS NOT IN
-THE DISTRIBUTION.*** Every form of it fails the same way, at the point of
-loading, before it looks at anything you typed. **It is recorded as a defect
-against this release.** Treat field-level encryption as not present in SD Core
-for Windows W1.0-0; nothing else on this page depends on it.
-
 ## Deleting an account: `delete.account`
 
 ```

@@ -78,7 +78,6 @@ dump = **`dump`** {**`dict`**} *file* {*id* … | **`*`**} {**`(options`**}
 echo = **`echo on`** | **`off`** | **`echo`** to toggle
 ed = **`ed`** {**`dict`**} *file* {*id* …}
 edit = **`edit`** {**`dict`**} *file* *record*
-encrypt.field = **`encrypt.field`** — **the program behind this verb is not in the distribution; every form fails to load**
 form.list = **`form.list`** {**`dict`**} *file* {*list.no*}
 format = **`format`** {*file*} {*record*} {**`case`**}
 fstat = **`fstat`** *file* **`on`** | **`off`** | {**`lptr`**}  ·  **`fstat global`** {**`lptr`**}  ·  **`fstat reset`**  ·  **`fstat`**

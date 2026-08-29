@@ -5,9 +5,12 @@
 # write it if a single verb has no line - the same contract mksyntax.py has for
 # the SD BASIC card.
 #
-# THE ROSTER IS COMPUTED, NEVER TYPED.  144 verbs = the 123 verb records in
-# sdsys/newvoc plus the 21 named in newvoc/TIER.ADD.ADMINISTRATOR, asserted not
-# to overlap.  A VOC record is a verb if the first character of field 1 is V,
+# THE ROSTER IS COMPUTED, NEVER TYPED.  143 verbs = the 123 verb records in
+# sdsys/newvoc plus the 20 named in newvoc/TIER.ADD.ADMINISTRATOR, asserted not
+# to overlap.  It was 144 and 21 until encrypt.field left the tier list
+# (PRE_RELEASE 25).  THE ROSTER FOLLOWED ON ITS OWN because it is computed; the
+# shapes file did not, and the "not a verb" refusal below is what that is for.
+# A VOC record is a verb if the first character of field 1 is V,
 # or - for the four records that are a keyword AND a verb, which CPROC
 # re-parses from field 3 - the first character of field 3 is V.  Dispatch comes
 # from field 2, or field 4 for those four.

@@ -120,6 +120,20 @@ the API.
 The C sources, the Makefile flags, 20 `GPL.BP/PY_*` programs,
 `SYSCOM/SDPYFUNC.H`, the `SD_Py*` error codes and the SDEXT keys have all gone.
 
+## Field-level encryption
+
+**`encrypt.field` is gone, and with it field-level encryption from TCL.** The
+verb is in **no account's VOC at any tier** — it left
+`newvoc/TIER.ADD.ADMINISTRATOR` before W1.0-0, so an administrator account is
+20 verbs above a programmer and not 21. While it was still there it could not
+have worked: the `$CRYPTO` program behind it is not in the distribution, and
+every form of the verb failed at load, before it looked at what you typed.
+
+**Encryption in SD BASIC is unaffected and is the supported route.**
+`sdencrypt()` and `sddecrypt()` ship — see *SD Basic - System and Environment*
+— and replaced the older `encrypt()` and `decrypt()` functions. What has gone
+is the TCL verb that encrypted a field in place, and **nothing replaces that**.
+
 ## Account and configuration items
 
 | Gone | Notes |

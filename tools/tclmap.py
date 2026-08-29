@@ -21,8 +21,12 @@
 # is not evidence.  If that is too strict for a real page, widen the page, not
 # this test.
 #
-# THE ROSTER IS COMPUTED, NEVER TYPED.  144 = the 123 verb records in newvoc
-# plus the 21 in newvoc/TIER.ADD.ADMINISTRATOR, which do not overlap.  A VOC
+# THE ROSTER IS COMPUTED, NEVER TYPED.  143 = the 123 verb records in newvoc
+# plus the 20 in newvoc/TIER.ADD.ADMINISTRATOR, which do not overlap.  It was
+# 144 and 21 until encrypt.field left the tier list (PRE_RELEASE 25); the
+# ROSTER followed on its own, because it is computed - this COMMENT did not,
+# and neither did the shapes file or the map below, which is what made both
+# generators refuse.  A VOC
 # record is a verb if the first character of field 1 is V, or - for the four
 # records that are a keyword AND a verb - the first character of field 3.
 #
@@ -125,7 +129,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   clean.account config create.account delete.account encrypt.field grant
+   clean.account config create.account delete.account grant
    list.grants modify.account modify.password revoke set.date update.account
  """),
  ('Administrator', '02-sessions-and-locks.md', """
