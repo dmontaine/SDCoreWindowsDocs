@@ -15,9 +15,9 @@ Four document sets, each with the same three folders:
 | | |
 |---|---|
 | `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (143 verbs) |
-| `Administrator/` | **three documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
-| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. The rest is not written yet |
+| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. `32`-`34` VOC and dictionaries. `35`-`39` file system, standard subroutines, client API, glossary, terminfo. `40` Programming 101 — a tutorial with worked example programs. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (143 verbs) |
+| `Administrator/` | **eight documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption, `05` SDEXT, `06` system limits, `07` configuration, `08` installation. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
+| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. **`02` The Installed Scripts** — the PowerShell scripts the installer leaves on the machine |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
 
