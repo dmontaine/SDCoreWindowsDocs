@@ -1,13 +1,15 @@
 #
-# mksyntax.py <gpl.bp/BCOMP> <user-18.md> <technical-01.md>
+# mksyntax.py <gpl.bp/BCOMP> <user-94.md> <administrator-10.md>
 #
 # Build TWO pages that partition every name BCOMP accepts:
 #
-#   User 18       SD Basic - Syntax, one alphabetical run of everything an
+#   User 94       SD Basic - Syntax, one alphabetical run of everything an
 #                 application may use, syntax only.
-#   Technical 01  SD Basic - Restricted Commands, the ones it may not -
+#   Admin 10      SD Basic - Restricted Commands, the ones it may not -
 #                 restricted statements, internal-only functions, and the
 #                 names that are in a table with no opcode behind them.
+#                 It sat in a two-page Technical set until the W1.0-0 audit,
+#                 when the owner ruled that set dissolved into Administrator.
 #
 # The split is the owner's ruling of 26 Aug 2026.  The script checks that the
 # two pages partition the roster, so a name cannot fall down the gap.
@@ -46,7 +48,7 @@ import sys
 
 BCOMP = sys.argv[1]
 OUT = sys.argv[2]          # User 94, the SD BASIC syntax card
-OUT_RESTRICTED = sys.argv[3]   # Technical 01, the restricted commands
+OUT_RESTRICTED = sys.argv[3]   # Administrator 10, the restricted commands
 SHAPES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                       'syntax-shapes.txt')
 
@@ -221,7 +223,7 @@ print('  intrinsics         : %d' % len(INTRINSICS))
 print('internal-only        : %d (a separate BCOMP table)' % len(INTERNAL))
 print()
 print('the User card        : %d' % len(CARD))
-print('the Technical page   : %d  = %d restricted + %d internal + %d no-such-thing'
+print('the restricted page  : %d  = %d restricted + %d internal + %d no-such-thing'
       % (len(TECHNICAL), len(RESTRICTED), len(INTERNAL), len(NO_SUCH_THING)))
 print('shapes given by hand : %d' % len(shapes))
 print('shapes derived       : %d' % len(derived))
@@ -284,13 +286,13 @@ either case.
 > cannot express — every statement, and about twenty functions — come from
 > documents 01 to 17, where they were measured.
 
-***WHAT IS NOT HERE, AND WHERE IT WENT.*** Everything on this card is
-something an application may use. Names that an ordinary program **cannot**
-compile are in the Technical set, under *SD Basic - Restricted Commands*: the
-restricted statements, the internal-only functions, and the one name that is
-in the compiler's table with nothing behind it. **If you are looking for
-something and it is not here, that is where to look before concluding it does
-not exist.**
+**What is not here, and where it went.** Everything on this card is something
+an application may use. Names that an ordinary program **cannot** compile are
+in the administrator documentation, under *SD Basic - Restricted Commands*: the
+restricted statements, the internal-only functions, and the one name that is in
+the compiler's table with nothing behind it. **If you are looking for something
+and it is not here, that is where to look before concluding it does not
+exist.**
 
 ***ONE THING IS MARKED, AND IT IS THE ONE THAT WASTES TIME.***
 
@@ -312,11 +314,15 @@ CARD_TAIL = u"""
 TECH_HEAD = u"""Title: SD Basic - Restricted Commands
 Subtitle: The statements and functions an ordinary program cannot compile, and what the compiler says when it tries.
 
-This is a Technical document. Nothing on this page is available to an
-application: every name here needs a program compiled with `$internal`, which
-in turn needs an administrator in the `SDSYS` account. They are listed because
-they exist, because they appear in SD's own source, and because the errors
-they produce name something other than the real cause.
+Nothing on this page is available to an application: every name here needs a
+program compiled with `$internal`, which in turn needs an administrator in the
+`SDSYS` account. They are listed because they exist, because they appear in
+SD's own source, and because the errors they produce name something other than
+the real cause.
+
+> This document is separate so that it can be withheld. It links to nothing
+> outside the administrator set. Where a page in another set is worth naming,
+> it is named in words.
 
 *Italics* mark something you supply, **bold** a word typed as it stands, and
 braces an optional part.
@@ -351,9 +357,13 @@ itself administrator rights. That was demonstrated, not theorised.
 TECH_TAIL = u"""
 ## See also
 
+[Operating System Access](03-operating-system-access.html) covers the `sh` and
+`!` verbs, which are the other thing an ordinary account cannot reach.
+[Encryption and the SDEXT interface](04-sd-encryption.html) explains why
+`sdext` is on this page and what it costs an application.
+
 The User set's *SD Basic - Syntax* card carries everything an application may
-use. `UPSTREAM_FIXES.md` in the `sd4windows` repository carries the defects
-found in these areas that are upstream's rather than this port's.
+use, and the two partition the roster between them.
 """
 
 
@@ -379,7 +389,7 @@ tech = render(TECHNICAL, TECH_HEAD, TECH_TAIL,
               {'restricted', 'internal', 'no such thing'})
 
 for path, text, label in ((OUT, card, 'User 94 syntax card'),
-                          (OUT_RESTRICTED, tech, 'Technical 01 restricted')):
+                          (OUT_RESTRICTED, tech, 'Administrator 10 restricted')):
     with io.open(path, 'w', encoding='utf-8', newline='\n') as f:
         f.write(text)
     print('wrote %-52s %6d bytes, %3d entries'

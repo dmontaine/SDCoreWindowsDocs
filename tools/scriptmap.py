@@ -4,7 +4,7 @@
 # Check that every PowerShell script the installer leaves on the machine is
 # documented, and that the page names none that is not there.
 #
-# ***WHY IT EXISTS.***  Technical/02 said "twenty-six scripts ship" and
+# ***WHY IT EXISTS.***  The installed-scripts page said "twenty-six scripts ship" and
 # thirty-seven were installed.  Eleven had been added since the page was
 # written and nothing noticed, because the page is a hand-kept list of files
 # that live in another repository.  That is the same shape as the verb roster
@@ -37,7 +37,7 @@ if len(sys.argv) < 2:
 
 ROOT = sys.argv[1]
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGE = os.path.join('Technical', 'markdown', '02-the-installed-scripts.md')
+PAGE = os.path.join('Administrator', 'markdown', '09-the-installed-scripts.md')
 
 if not os.path.isdir(ROOT):
     sys.exit('scriptmap: no install at %s' % ROOT)

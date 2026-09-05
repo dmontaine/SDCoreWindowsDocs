@@ -33,7 +33,7 @@ import os
 import re
 
 DOCS_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SETS = ["Release", "User", "Administrator", "Technical"]
+SETS = ["GettingStarted", "User", "Administrator"]
 
 
 # ─── New CSS block ─────────────────────────────────────────────────────

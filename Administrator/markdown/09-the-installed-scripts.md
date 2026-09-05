@@ -288,3 +288,11 @@ Task Manager.
 elevate a running process. That is why administrator work is done by a separate
 helper process rather than by an elevated `sd.exe`: SD stays unelevated for its
 whole life.
+
+## See also
+
+[Installation and the service](08-sd-installation.html) covers what the
+installer puts on the machine and what an upgrade replaces.
+[Remote access and the machine](05-remote-access-and-the-machine.html) covers
+the four verbs that call seven of these scripts, and is the supported way to
+change any of those settings.

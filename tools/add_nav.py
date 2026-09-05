@@ -14,6 +14,13 @@ Also creates:
   - Administrator/html/index.html (Administrator set index)
 
 Each index entry links to the page and shows its source markdown file.
+
+A SET INDEX DOES NOT LINK BACK TO THE MASTER INDEX, and that is deliberate
+rather than an omission.  Each set is handed out on its own, so the master
+index is not there for whoever received one set - the link was a 404 in every
+delivered copy, and check_all_links.py reported exactly that three times during
+the W1.0-0 audit.  The master index is for browsing the tree locally and links
+downward only.
 """
 
 import os
@@ -27,7 +34,7 @@ VERSION = "W1.0-0"
 # ── Set definitions ──────────────────────────────────────────
 
 SETS = {
-    "Release": {
+    "GettingStarted": {
         "desc": "Installing and running SD Core on Windows, and what differs from OpenQM and SD on Linux.",
         "pages": [
             "00-start-here", "01-installation", "02-first-run",
@@ -67,18 +74,14 @@ SETS = {
         ],
     },
     "Administrator": {
-        "desc": "For administrators. Accounts, security, encryption, system limits, and installation.",
+        "desc": "For administrators. Accounts, security, remote access, encryption, configuration, installation, and what an ordinary program may not compile.",
         "pages": [
             "01-accounts-and-security", "02-sessions-and-locks",
             "03-operating-system-access", "04-sd-encryption",
-            "05-sd-sdext", "06-sd-system-limits",
+            "05-remote-access-and-the-machine", "06-sd-system-limits",
             "07-sd-admin-configuration", "08-sd-installation",
-        ],
-    },
-    "Technical": {
-        "desc": "For advanced users and contributors. Restricted commands and installed scripts.",
-        "pages": [
-            "01-sd-basic-restricted-commands", "02-the-installed-scripts",
+            "09-the-installed-scripts",
+            "10-sd-basic-restricted-commands",
         ],
     },
 }
@@ -486,7 +489,6 @@ footer {{
 {chr(10).join(rows)}
 </tbody>
 </table>
-<p style="margin-top:1.5rem"><a href="../index.html">&larr; All documentation sets</a></p>
 </main>
 </div>
 <footer>{PRODUCT} {VERSION}. Copyright &copy; 2026 Donald Montaine. Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</footer>

@@ -6,7 +6,7 @@ import re
 
 DOCS_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SETS = ["Release", "User", "Administrator", "Technical"]
+SETS = ["GettingStarted", "User", "Administrator"]
 
 for set_name in SETS:
     html_dir = os.path.join(DOCS_ROOT, set_name, "html")

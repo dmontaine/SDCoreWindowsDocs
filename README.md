@@ -10,14 +10,13 @@ below.
 
 ## Layout
 
-Four document sets, each with the same three folders:
+Three document sets, each with the same three folders:
 
 | | |
 |---|---|
-| `Release/` | 15 pages — installing SD Core on Windows, running it, and what differs from OpenQM and from SD on Linux. Named `Testing/` until the W1.0-0 audit, when the set stopped being for pre-release testers |
+| `GettingStarted/` | 15 pages — installing SD Core on Windows, running it, and what differs from OpenQM and from SD on Linux. Named `Testing/` until the W1.0-0 audit, when the set stopped being for pre-release testers |
 | `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. `32`-`34` VOC and dictionaries. `35`-`40` file system, standard subroutines, client API, glossary, terminfo, and a tutorial with worked programs. **The generated syntax cards live at the end, `94` onwards**, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (147 verbs) |
-| `Administrator/` | **eight documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption and the SDEXT interface, `05` remote access and the machine, `06` system limits, `07` configuration, `08` installation and the service. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
-| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. **`02` The Installed Scripts** — the 37 PowerShell scripts the installer leaves on the machine |
+| `Administrator/` | **ten documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption and the SDEXT interface, `05` remote access and the machine, `06` system limits, `07` configuration, `08` installation and the service, `09` the 37 installed scripts, `10` restricted commands. Everything in it is administrator-tier or unavailable to an application, **so an administrator can withhold the whole set** |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
 
@@ -50,8 +49,8 @@ Markdown, zips the result and prints the SHA256. `-Set User` does another set,
 The two steps it drives can also be run alone:
 
 ```
-python tools\mkdoc.py --in Release\markdown --out Release\html
-powershell -File tools\mkpdf.ps1 -In Release\html -Out Release\pdf
+python tools\mkdoc.py --in GettingStarted\markdown --out GettingStarted\html
+powershell -File tools\mkpdf.ps1 -In GettingStarted\html -Out GettingStarted\pdf
 ```
 
 `mkdoc.py` needs **python-markdown** (`pacman -S msys/python-markdown` on the
@@ -68,8 +67,8 @@ HTML touches every file's mtime, so comparing those two reports the whole set
 as stale and tells you nothing. Only the source answers the question:
 
 ```sh
-for m in Release/markdown/*.md; do
-  p="Release/pdf/$(basename "$m" .md).pdf"
+for m in GettingStarted/markdown/*.md; do
+  p="GettingStarted/pdf/$(basename "$m" .md).pdf"
   [ -f "$p" ] || echo "MISSING $p"
   [ "$m" -nt "$p" ] && echo "STALE   $p"
 done
@@ -147,11 +146,14 @@ every name on exactly one of them, 447 of 447:
 | | |
 |---|---|
 | `User/markdown/94-sd-basic-syntax.md` | 372 names an application may use |
-| `Technical/markdown/01-sd-basic-restricted-commands.md` | 75 it may not — 36 restricted statements, 38 internal-only functions, and `errmsg`, which is in a table with no opcode behind it |
+| `Administrator/markdown/10-sd-basic-restricted-commands.md` | 75 it may not — 36 restricted statements, 38 internal-only functions, and `errmsg`, which is in a table with no opcode behind it |
 
-**`checklinks.py` on `Technical` refuses today**, and it is right to: the
-set is one page with no cross-references, so it finds no links at all. Run
-it there once there is a second page.
+**The restricted card is in the `Administrator` set**, on the owner's ruling of
+4 Sep 2026. It lived in a two-page `Technical` set until then, and that set is
+gone: the installed-scripts page went to `Administrator` too. Both belong with
+material an administrator can withhold, and a two-page set had no cross-links,
+so `checklinks.py` correctly refused to certify it — PRE_RELEASE 34, closed by
+removing the set rather than by weakening the check.
 
 ## Checking a set
 

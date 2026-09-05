@@ -93,7 +93,8 @@ internal function table, so an ordinary account does not merely get refused —
 it gets a misleading error. An unknown function is read as a matrix reference,
 so the complaint is about a `dim` statement the program does not contain,
 reported at the last line rather than at the call. That behaviour is covered by
-the restricted-commands reference in the technical set.
+[SD Basic - Restricted Commands](10-sd-basic-restricted-commands.html) in this
+set.
 
 `$internal` needs both halves: the compiler tests for internal mode **and** for
 the administrator flag. Internal mode alone was enough until 13 August 2026 and
