@@ -56,6 +56,12 @@ made of these elements, separated by commas:
 | `MM` | month, two digits |
 | `MA` | month name, abbreviated (Jan) |
 | `ML` | month name, full (January) |
+| | |
+
+**`ML` and the rest of this table are elements of a date mask**, used inside a
+`D` conversion such as `D[DD ML YYYY]`. They are not conversions in their own
+right: `oconv(20899, 'ML')` returns the value unchanged, because `ML` alone is
+not a date conversion and SD passes through what it cannot convert.
 | `Y` | year, two digits |
 | `YY` | year, four digits |
 | `J` | Julian day of year |
@@ -122,7 +128,7 @@ MCL       MCU       MCC       MCT
 | `MCL` | convert to lower case |
 | `MCU` | convert to upper case |
 | `MCC` | capitalise each word |
-| `MCT` | title case — first letter of each sentence |
+| `MCT` | title case — the first letter of every word. Measured: `hello there world` becomes `Hello There World` |
 
 ### Radix conversion — MX, MO, MCD, MCX
 
@@ -354,14 +360,33 @@ processor works out a width from the data.
 
 ### Combined examples
 
+Every row below was run on W1.0-0 and shows what came back, including the
+trailing spaces the format adds.
+
 | Field 3 (conversion) | Field 5 (format) | Stored value | Output |
 |---|---|---|---|
-| `D2[DD/MM/YY]` | `10L` | `20899` | `29/08/26  ` |
-| `D[DD MMM YYYY]` | `12L` | `20899` | `29 Aug 2026` |
-| `MD2` | `10R2,` | `1234567` | `1,234.56` |
+| `D2/` | `10L` | `20899` | `03/20/25  ` |
+| `D` | `12L` | `20899` | `20 MAR 2025 ` |
+| `MD2` | `10R2,` | `1234567` | ` 12,345.67` |
+| `MD2,` | (none) | `1234567` | `12,345.67` |
 | `MCU` | `10L` | `hello` | `HELLO     ` |
+| `MCT` | (none) | `hello there world` | `Hello There World` |
 | (none) | `10R` | `123` | `       123` |
 | `MX` | `8R` | `255` | `      FF` |
+| `MB` | (none) | `5` | `101` |
+
+Three of these are worth reading twice.
+
+**Internal date 20899 is 20 March 2025.** Day zero is 31 December 1967, so an
+internal date does not correspond to anything you can guess.
+
+**`D2/` produces `03/20/25` — month first.** The bare `D` conversion produces
+`20 MAR 2025`, with the month abbreviated in capitals. If you want day first,
+say so in the conversion rather than relying on a default.
+
+**`MD2` scales rather than truncating.** `MD2` on 1234567 is `12345.67`, not
+`1234.56` — the digit count says where the decimal point goes, and no digits
+are lost.
 
 ## I-type expressions — field 2 for type I
 
