@@ -11,10 +11,9 @@ here in lower case. Braces mark optional parts of a syntax line; in the tables,
 *italics* mark something you supply and **bold** marks a word typed as it
 stands.
 
-> **Every result on this page was measured, not quoted.** The values shown were
-> produced by a program compiled and run on SD Core for Windows W1.0-0. Where
-> this port behaves differently from the older OpenQM and SD documentation, the
-> difference is called out rather than left for you to discover.
+> **Where this port behaves differently from the older OpenQM and SD
+> documentation, the difference is called out** rather than left for you to
+> discover.
 
 ## Numbers in SD BASIC
 

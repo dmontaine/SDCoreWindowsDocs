@@ -14,15 +14,6 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** The contention
-> results were produced by **two SD sessions running at the same time** — one
-> holding a lock, the other asking about it — on SD Core for Windows W1.0-0.
-> The two sessions rendezvous through a file rather than a timer, and the run
-> is refused unless the two report different user numbers and the second one
-> names the first as the holder. A measurement taken after the first session
-> had already finished would show no contention at all and would still print
-> numbers.
-
 ## The three kinds of lock
 
 | | |

@@ -9,11 +9,9 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** A single program was
-> both ends: it created a listening socket, connected to it, accepted the
-> connection, and sent bytes through it — `create.server.socket` calls
-> `listen()`, so a client can connect on loopback and wait in the backlog until
-> the same session accepts it. Compiled and run on SD Core for Windows W1.0-0.
+> **One program can be both ends.** `create.server.socket` calls `listen()`, so
+> a client can connect on loopback and wait in the backlog until the same
+> session accepts it.
 
 ## The nine names
 

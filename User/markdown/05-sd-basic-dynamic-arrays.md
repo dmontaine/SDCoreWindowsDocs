@@ -14,10 +14,8 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** The values shown were
-> produced by a program compiled and run on SD Core for Windows W1.0-0. In the
-> examples below, `^` stands for a field mark, `|` for a value mark and `\` for
-> a subvalue mark.
+> **In the examples below, `^` stands for a field mark, `|` for a value mark
+> and `\` for a subvalue mark.**
 
 ## The marks
 

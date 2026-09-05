@@ -11,9 +11,6 @@ SD folds case, so a program may be written in either case. Keywords and
 conversion codes are shown here in lower case; **the codes themselves are not
 case sensitive**. In the tables, *italics* mark something you supply.
 
-> **Every result on this page was measured, not quoted.** The values shown were
-> produced by a program compiled and run on SD Core for Windows W1.0-0.
-
 ## The two directions
 
 ```

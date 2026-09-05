@@ -10,10 +10,9 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** The transcripts below
-> are the debugger's own output on SD Core for Windows W1.0-0, produced by
-> driving a real session through it — including the `help` screen, which is
-> reproduced exactly as this port prints it.
+> **The transcripts below are the debugger's own output, reproduced exactly as
+> it prints them** — including the `help` screen. What you see on your own
+> screen should match character for character.
 
 ## Nothing works until you compile with DEBUGGING
 

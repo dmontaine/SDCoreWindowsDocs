@@ -10,10 +10,9 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** The values below came
-> back from a program run in an ordinary user account on SD Core for Windows
-> W1.0-0. Values that are particular to that machine — a user number, a
-> computer name, a process id — are marked as examples; the shapes are not.
+> **Values that are particular to one machine — a user number, a computer
+> name, a process id — are marked as examples; the shapes are not.** What you
+> see back will differ in the value and match in the form.
 
 ## SYSTEM()
 

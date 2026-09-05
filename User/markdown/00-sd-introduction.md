@@ -167,7 +167,3 @@ are not in SD Core for Windows:
 | *italics* | something you supply |
 | braces `{ }` | an optional part |
 | `code` | a command, a function name, or something you type |
-
-> **Every result in this documentation set was measured, not quoted.**
-> The values shown were produced by programs compiled and run on SD
-> Core for Windows W1.0-0.

@@ -9,10 +9,6 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every result on this page was measured, not quoted.** The values shown were
-> produced by a program that created a file, selected it, saved and restored
-> the list and deleted the file, compiled and run on SD Core for Windows W1.0-0.
-
 ## The eleven lists
 
 There are **eleven** select lists, numbered `0` to `10`. List `0` is the
