@@ -109,13 +109,40 @@ clear, and the identity it runs as is on [API access](09-api-access.html).
 
 ## Building from source
 
-Each client repository builds its own DLL; **no built DLL is committed to any
-of them**, so a clone builds. That is the same no-binaries rule the server
-repository follows.
+**There is one repository and it builds all four DLLs**:
+<https://github.com/dmontaine/sd4windows>. The client source is in it, at
+`sdb_ai/sd64/gplsrc/sdclilib`, and `make sd` produces the 64-bit and 32-bit
+pairs together with the server. **No built DLL is committed**, so a clone
+builds — the same no-binaries rule the whole repository follows.
 
-Each client also has its own Inno installer, alongside the server's, so a
-client can be distributed to an application developer without shipping the
-server at all.
+> **This changed on 4 September 2026 and earlier versions of this page said
+> otherwise.** The clients used to live in two repositories of their own, each
+> building its own DLL and carrying its own Inno installer. They were retired
+> because keeping a mirror in step by hand had gone wrong in the worst
+> available way: the 32-bit client was built from a copy that had not been
+> updated in over two weeks and **shipped sending passwords in clear**, with
+> nothing in either project able to notice. One source that cannot diverge
+> beats a check that reports divergence. **If you are looking for
+> `winsdclilib` or `sdclilib32`, that is why you cannot find them.**
+
+### Where the built clients are after an install
+
+The server installer places them under `C:\Program Files\SD`:
+
+| | |
+|---|---|
+| `usr\clients\client64\` | `sdclilib.dll`, `sdclient.dll`, and the import libraries to link against |
+| `usr\clients\client32\` | `qmclilib.dll`, `qmclient.dll`, and their import libraries |
+| `usr\bin\` | **both** DLL pairs again, beside `sd.exe`. That directory is on `PATH`, so it is where a 32-bit utility finds its client at run time |
+
+**The C headers are not shipped yet.** Take them from the repository.
+
+> **A note on how the 32-bit client is built, because it constrains changes to
+> it:** the DLL must stay a **single self-contained file that can be copied
+> next to an application** — hence static linking of the compiler runtime, and
+> hence a preference for Windows' own `bcrypt.dll` and `crypt32.dll` over
+> third-party crypto libraries. Any change to the client has to keep working in
+> a 32-bit process.
 
 > **A note on how the 32-bit client is built, because it constrains changes to
 > it:** the DLL must stay a **single self-contained file that can be copied
@@ -133,12 +160,12 @@ DLLs.**
 |---|---|
 | In it | the client DLLs, this documentation, and the related utilities |
 | Not in it | source code of any kind |
-| Where the source is | GitHub only. The installer creates a `docs` subdirectory, and the references to the repositories are in there |
+| Where the source is | GitHub only — <https://github.com/dmontaine/sd4windows>. The installer creates a `docs` subdirectory and names the repository there |
 
-**That installer is not what w1.0-0 ships.** It is a change to the installer
+**That installer is not what W1.0-0 ships.** It is a change to the installer
 and it has not been made yet. What exists today is what the section above
-describes: each client repository builds its own DLL and carries its own Inno
-installer, and no built DLL is committed to any of them.
+describes: the server installer builds and places all four DLLs, and there is
+no client-only package.
 
 **So if you need a client and cannot find one, ask rather than building from
 source** — the answer may be that a package is waiting.

@@ -91,7 +91,35 @@ This set is the delta. It covers installing SD Core on Windows, running it, and
 what differs from OpenQM and from SD on Linux. The reference for the language
 and the command processor is a separate set, and so is the administrator's.
 
+## Where the source is
+
+**Both repositories are public, and everything in them is open source.** SD is
+GPL software — `config gpl` at an `sd` prompt displays the licence, and the
+installed tree carries it as a file.
+
+| | |
+|---|---|
+| The server, the client libraries and the installer | <https://github.com/dmontaine/sd4windows> |
+| These pages | <https://github.com/dmontaine/SDCoreWindowsDocs> |
+
+**Neither repository contains a built binary, deliberately** — no `.exe`, no
+`.dll`, no object files. A clone builds. That is why installing means building,
+and why there is no download of a compiled artefact in the repository itself.
+
+The documentation repository holds the **Markdown only**; the HTML and PDF you
+are reading are generated from it and are not stored there.
+
 ## Reporting what you find
+
+**Open an issue on the server repository** — <https://github.com/dmontaine/sd4windows/issues>
+— for anything about SD itself, and on the documentation repository for an
+error in these pages. If you are not sure which, the server one is the right
+guess.
+
+**Issues rather than pull requests.** Both repositories are readable by anyone
+and **writable only by the author**, so a change cannot be merged from outside;
+a clear issue is worth more than a patch nobody can apply. A patch attached to
+an issue is welcome, it just travels that way.
 
 The two things worth reporting in most detail are **anything that behaves
 differently from OpenQM and is not described here**, and **anything in these
