@@ -5,8 +5,8 @@ The client API is the reason this port exists. SD Core for Windows is built to
 be used as a back end data store reached through the API, and that is the
 tie-breaker on most other design questions here.
 
-**The API is not just for developers and administrators.** It is a normal way
-for **any** account to use SD. A person running a custom GUI program that talks
+**The API is a normal way for any account to use SD**, not a facility reserved
+for developers and administrators. A person running a custom GUI program that talks
 to SD needs API access and may need nothing else — no ssh, no terminal, no
 development verbs. A standard-tier account with `api` access is an ordinary
 thing to create, and probably the commonest shape a deployed system will have:

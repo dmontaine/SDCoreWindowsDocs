@@ -22,8 +22,7 @@ keeps a SCRAM-SHA-256 verifier in the credential store, the API login proves
 knowledge of the password without sending it, and the primitives behind that
 exchange are the ones listed further down.
 
-**For encrypting application data**, the honest answer is that W1.0-0 does not
-provide a usable route. The functions exist and work, but the only way to
+**For encrypting application data**, W1.0-0 does not provide a usable route. The functions exist and work, but the only way to
 produce a key they accept is an internal-only call. This is set out in full
 under *Why field encryption is not available* below, because a site planning to
 encrypt fields needs to know before it writes the application, not after.

@@ -166,8 +166,8 @@ when you upgrade**, alongside your accounts and the rest of your own data.
 
 ## Things that were never features, and are not coming
 
-These are not removals. They are stated here because a tester will otherwise
-assume they exist.
+These are not removals. They are stated here because a reader coming from
+another MultiValue system will otherwise assume they exist.
 
 **Multi-user access over remote Desktop is not supported.** It follows from
 the access model and is settled. One Windows setting covers Remote Desktop and

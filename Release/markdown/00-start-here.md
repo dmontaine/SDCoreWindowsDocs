@@ -1,5 +1,5 @@
 Title: Start here
-Subtitle: What this set is, who it is for, and what it deliberately leaves out.
+Subtitle: What this set covers, who it is for, and what it deliberately leaves out.
 
 You already know MultiValue. This set does not teach it.
 
@@ -85,9 +85,11 @@ against the old protocol will not connect. See [API access](09-api-access.html).
 **W1.0-0.** Windows only. There are no `#ifdef` branches keeping Linux alive in
 this source — Linux SD is a separate project and this is not a build of it.
 
-**It is a hobby project with no release schedule.** This first document set
-exists so testers can find the edges. Comprehensive reference documentation
-comes later; this is the delta.
+**It is a hobby project with no release schedule.**
+
+This set is the delta. It covers installing SD Core on Windows, running it, and
+what differs from OpenQM and from SD on Linux. The reference for the language
+and the command processor is a separate set, and so is the administrator's.
 
 ## Reporting what you find
 

@@ -27,8 +27,8 @@ VERSION = "W1.0-0"
 # ── Set definitions ──────────────────────────────────────────
 
 SETS = {
-    "Testing": {
-        "desc": "For testers. The delta from OpenQM, what to watch for, and how to report what you find.",
+    "Release": {
+        "desc": "Installing and running SD Core on Windows, and what differs from OpenQM and SD on Linux.",
         "pages": [
             "00-start-here", "01-installation", "02-first-run",
             "03-running-sd", "04-scheduled-jobs", "05-account-types",

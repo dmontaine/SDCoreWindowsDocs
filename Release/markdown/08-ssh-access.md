@@ -175,9 +175,9 @@ keywords is required:
 | `create.account user fred none` | neither — reachable only with **`logto`** from another session |
 
 **An `api` account never touches any of this.** No ssh session, no
-`ForceCommand`, no port 22. If your testers are running a GUI client against
-SD, that is the account shape they want, and the ssh configuration on this page
-is irrelevant to them.
+`ForceCommand`, no port 22. For people running a GUI client against SD, that is
+the account shape they want, and the ssh configuration on this page does not
+apply to them.
 
 `modify.account fred both` changes it afterwards — and remember the keyword
 says what the access **is**, not what to add, so `modify.account fred api`

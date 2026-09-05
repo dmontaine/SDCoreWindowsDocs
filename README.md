@@ -14,10 +14,10 @@ Four document sets, each with the same three folders:
 
 | | |
 |---|---|
-| `Testing/` | the tester set — 15 pages, what ships with W1.0-0 |
-| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. `32`-`34` VOC and dictionaries. `35`-`39` file system, standard subroutines, client API, glossary, terminfo. `40` Programming 101 — a tutorial with worked example programs. ***THE GENERATED SYNTAX CARDS LIVE AT THE END, `94` ONWARDS***, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (143 verbs) |
-| `Administrator/` | **eight documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption, `05` SDEXT, `06` system limits, `07` configuration, `08` installation. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
-| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. **`02` The Installed Scripts** — the PowerShell scripts the installer leaves on the machine |
+| `Release/` | 15 pages — installing SD Core on Windows, running it, and what differs from OpenQM and from SD on Linux. Named `Testing/` until the W1.0-0 audit, when the set stopped being for pre-release testers |
+| `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. `32`-`34` VOC and dictionaries. `35`-`40` file system, standard subroutines, client API, glossary, terminfo, and a tutorial with worked programs. **The generated syntax cards live at the end, `94` onwards**, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (147 verbs) |
+| `Administrator/` | **eight documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption and the SDEXT interface, `05` remote access and the machine, `06` system limits, `07` configuration, `08` installation and the service. Every verb in it is administrator-tier, **so an administrator can withhold the whole set** |
+| `Technical/` | **`01` Restricted Commands** — what an ordinary program cannot compile. **`02` The Installed Scripts** — the 37 PowerShell scripts the installer leaves on the machine |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
 
@@ -26,14 +26,16 @@ comes from `BCOMP`'s own tables, and every example was run before it was
 written down. `tools\probes\` holds the programs that produced the numbers and
 `tools\probes\README.md` says which runner takes which.
 
-***SETS NEVER LINK TO EACH OTHER, AND THAT IS ENFORCED BY CONVENTION RATHER
-THAN BY A TOOL.*** Each set is handed out on its own, so a link from one to
-another would be a 404 for whoever was given only the first. `Administrator/` is
-the reason the rule now matters: withholding it must not break the `User` set.
-Where a page in another set is worth naming, **name it in words**.
+**Sets never link to each other, and that is enforced by convention rather than
+by a tool.** Each set is handed out on its own, so a link from one to another
+would be a 404 for whoever was given only the first. `Administrator/` is the
+reason the rule matters: withholding it must not break the `User` set. Where a
+page in another set is worth naming, **name it in words**.
 
-`QUESTIONS-2026-08-26.md` at the top is the review list for the tester set,
-with the answers recorded against each question. **It is not part of any set.**
+`analysis/` holds working material that is not part of any set and does not
+ship: the gap analysis this documentation was audited against, the W1.0-0 audit
+trail, the review questions from August 2026, and the documentation salvaged
+from the two retired client repositories.
 
 ## Building
 
@@ -48,26 +50,26 @@ Markdown, zips the result and prints the SHA256. `-Set User` does another set,
 The two steps it drives can also be run alone:
 
 ```
-python tools\mkdoc.py --in Testing\markdown --out Testing\html
-powershell -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
+python tools\mkdoc.py --in Release\markdown --out Release\html
+powershell -File tools\mkpdf.ps1 -In Release\html -Out Release\pdf
 ```
 
 `mkdoc.py` needs **python-markdown** (`pacman -S msys/python-markdown` on the
 MSYS2 python, or `pip install markdown`). `mkpdf.ps1` needs Edge or Chrome,
 which every supported Windows machine already has.
 
-***THEY ARE TWO STEPS AND THE SECOND IS THE ONE THAT GETS FORGOTTEN.*** Pages
-19 to 27 of the `User` set were written, rendered to HTML and pushed with **no
-PDF at all**, and nothing said so — `release.ps1` exists precisely so this
-cannot happen, and running the two steps by hand skips its bookkeeping.
+**They are two steps and the second is the one that gets forgotten.** Pages 19
+to 27 of the `User` set were written, rendered to HTML and pushed with **no PDF
+at all**, and nothing said so — `release.ps1` exists precisely so this cannot
+happen, and running the two steps by hand skips its bookkeeping.
 
 **The check is markdown against PDF, not HTML against PDF.** Re-rendering the
 HTML touches every file's mtime, so comparing those two reports the whole set
 as stale and tells you nothing. Only the source answers the question:
 
 ```sh
-for m in Testing/markdown/*.md; do
-  p="Testing/pdf/$(basename "$m" .md).pdf"
+for m in Release/markdown/*.md; do
+  p="Release/pdf/$(basename "$m" .md).pdf"
   [ -f "$p" ] || echo "MISSING $p"
   [ "$m" -nt "$p" ] && echo "STALE   $p"
 done
@@ -78,8 +80,8 @@ render rather than forty-three.
 
 ## Regenerating the syntax cards
 
-***THE CARDS LIVE AT THE END, `94` ONWARDS, SO MORE CAN BE ADDED WITHOUT
-RENUMBERING ANYTHING.*** Owner's ruling, 27 Aug 2026: parking them high means
+**The cards live at the end, `94` onwards, so more can be added without
+renumbering anything.** Owner's ruling, 27 Aug 2026: parking them high means
 that when they are eventually renumbered it is only ever the cards that move.
 
 | | |
@@ -94,16 +96,23 @@ python tools\mktclsyntax.py <sd4windows>\sdb_ai\sd64\sdsys User\markdown\95-sd-t
 ```
 
 Its roster is computed from SD's own VOC — the verb records in `newvoc` plus
-`TIER.ADD.ADMINISTRATOR`, **143** — and it **refuses to write the page** if a
+`TIER.ADD.ADMINISTRATOR`, **147** — and it **refuses to write the page** if a
 verb has no line, or if a line names something that is not a verb. It caught
 `selecte` on the first run, which is a BASIC statement.
 
-***AND IT CAUGHT THE SECOND HALF ITSELF, 28 Aug 2026.*** The roster is computed,
+**And it caught the second half itself, 28 Aug 2026.** The roster is computed,
 so it dropped to 143 the day `encrypt.field` left `TIER.ADD.ADMINISTRATOR`; the
 shapes file and `tclmap`'s map are typed, so they did not. **Both generators had
 been refusing to run** — `NOT A VERB encrypt.field has a shape and is not on the
 roster` — which is the refusal working as designed, and it is the reason a
 computed roster is worth the trouble.
+
+**The same mechanism went the other way and nobody ran it.** The roster grew to
+147 when the four machine-control verbs were added on 30 Aug 2026, and `tclmap`
+was red from that day until the W1.0-0 audit found it — because it lives in this
+repository and no check in `sd4windows` runs it. The lesson is in the audit
+trail under `analysis/`, and the answer was more checkers rather than more
+diligence.
 
 The syntax itself lives in `tools/tcl-syntax-shapes.txt`, **not** in the
 programs' `START-DESCRIPTION` blocks. Sixty-three of the ninety-seven
@@ -153,7 +162,7 @@ python tools\linkup.py User\markdown
 python tools\checklinks.py User\markdown User\html
 ```
 
-***`tclmap.py` EXISTS BECAUSE `docmap.py`'s QUESTION IS NOT ENOUGH.*** A map
+**`tclmap.py` exists because `docmap.py`'s question is not enough.** A map
 says where a name is *meant* to be explained. On 27 Aug 2026 the TCL coverage
 was recorded as 127 of 144 and was really 118 — seven verbs counted as covered
 because their name appeared inside a warning, or inside a longer word. So
@@ -163,9 +172,18 @@ line inside a fenced syntax block. Prose alone does not count.
 | | |
 |---|---|
 | `docmap.py` | assigns every name `BCOMP` accepts to exactly one document and exits non-zero on a gap. **411 of 411** |
-| `tclmap.py` | the same for the **143 TCL verbs**, across the `User` and `Administrator` sets — **and it also checks the page actually documents the verb**, not merely that the name occurs somewhere. **143 of 143, 0 exempt** |
+| `tclmap.py` | the same for the TCL verbs, across the `User` and `Administrator` sets — **and it also checks the page actually documents the verb**, not merely that the name occurs somewhere. **147 of 147, 0 exempt** |
+| `confmap.py` | the same for the configuration parameters `config.c` accepts, and it reports which of them anything still reads. **52 of 52** |
+| `verbcounts.py` | every verb count written in prose, against the counts computed from the VOC. Standard **82**, programmer **124**, administrator **147** |
+| `scriptmap.py` | every PowerShell script the installer leaves on the machine, against the page that lists them. **37 of 37** |
 | `linkup.py` | turns `*SD Basic - X*` into a link only for pages that exist |
-| `checklinks.py` | every link in the rendered pages. **183 links, 0 broken** across 32 `User` pages |
+| `checklinks.py` | every link in the rendered pages |
+
+**The last three were written during the W1.0-0 audit and each one found a real
+gap on its first run** — a configuration page listing 19 of 52 parameters and
+one that does not exist, six pages saying a standard account has 81 verbs when
+it has 82, and a page claiming 26 installed scripts when 37 ship. All three take
+a roster from the product and refuse to agree with a hand-kept list.
 
 ## Measuring
 

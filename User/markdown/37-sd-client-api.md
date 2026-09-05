@@ -5,9 +5,9 @@ The SDClient API lets an external application connect to SD, open
 files, read and write records, execute commands, call subroutines,
 and manage select lists — all through a single shared library.
 
-**The API is not just for developers and administrators.** It is a
-normal way for any account to use SD. A person running a custom GUI
-program that talks to SD needs API access and may need nothing else.
+**The API is a normal way for any account to use SD**, not a facility reserved
+for developers and administrators. A person running a custom GUI program that
+talks to SD needs API access and may need nothing else.
 
 ## The library
 

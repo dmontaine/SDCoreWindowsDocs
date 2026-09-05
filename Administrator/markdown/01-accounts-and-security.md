@@ -118,7 +118,7 @@ machine that can reach the API port.
 
 The full account of what creating a user account does to Windows — the groups,
 the disabled-then-enabled login, the console denial — is in the SD Core for
-Windows tester documentation, under *Account types*, and is not repeated here.
+Windows release documentation, under *Account types*, and is not repeated here.
 
 ## Changing one: `modify.account`
 

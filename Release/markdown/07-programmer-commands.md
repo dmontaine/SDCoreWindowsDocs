@@ -85,7 +85,7 @@ highlighting at all, which is the one real difference between the two verbs:
 
 **It applies to a `bp` record and to nothing else.** SD names the working copy
 so that micro can recognise the language — a record edited out of any other
-file is plain text, which is the honest answer for a VOC entry or a data
+file is treated as plain text, which is correct for a VOC entry or a data
 record.
 
 > **The word lists are generated from the compiler.** They come out of

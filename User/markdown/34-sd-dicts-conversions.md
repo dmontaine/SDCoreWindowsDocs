@@ -432,9 +432,9 @@ before display. SD compiles correlatives the same way it compiles
 I-types, storing the object in field 16 onward.
 
 Correlative codes are a Pick inheritance and are rarely used in new SD
-dictionaries. An I-type expression is clearer and more powerful. The
-correlative mechanism exists so that dictionaries imported from Pick
-systems continue to work.
+dictionaries. An I-type expression is easier to read and can express
+calculations a correlative string cannot. The correlative mechanism exists so
+that dictionaries imported from Pick systems continue to work.
 
 ## Chaining conversions
 
