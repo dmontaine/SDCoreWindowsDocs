@@ -124,8 +124,7 @@ The C sources, the Makefile flags, 20 `GPL.BP/PY_*` programs,
 
 **`encrypt.field` is gone, and with it field-level encryption from TCL.** The
 verb is in **no account's VOC at any tier** — it left
-`newvoc/TIER.ADD.ADMINISTRATOR` before W1.0-0, so an administrator account is
-20 verbs above a programmer and not 21. While it was still there it could not
+`newvoc/TIER.ADD.ADMINISTRATOR` before W1.0-0. While it was still there it could not
 have worked: the `$CRYPTO` program behind it is not in the distribution, and
 every form of the verb failed at load, before it looked at what you typed.
 

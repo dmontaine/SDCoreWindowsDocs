@@ -135,10 +135,15 @@ target, and the remaining fields carry options.
 
 | Field 2 | Field 3 | What it does |
 |---|---|---|
-| `CA` | *catalogue name* | a catalogued program — 97 of the shipped verbs |
-| `IN` | *number* | internal verb *n*, handled by the command processor itself — 45 verbs |
-| `OS` | *text* | an operating-system command — `sh` and `!` |
+| `CA` | *catalogue name* | a catalogued program — 99 of the shipped verbs |
+| `IN` | *number* | internal verb *n*, handled by the command processor itself — 42 verbs |
+| `OS` | *text* | an operating-system command — `sh` and `!`, and nothing else |
 | `CS` | *path* | a locally catalogued function |
+
+Those four rows account for 143 of the 147 verbs an administrator account has.
+The remaining four are the keyword records described above — `break`, `count`,
+`display` and `off` — where field 2 holds a keyword number rather than a
+dispatch type, and it is field 3 that marks the record as a verb.
 
 Field 4 carries dispatch options and **field 5 names a security subroutine**.
 If field 5 is present, that subroutine is called before the verb runs and
@@ -164,7 +169,7 @@ the command processor re-parses when the name is typed as a command.
 
 ***THIS MATTERS FOR COUNTING WHAT AN ACCOUNT HAS.*** A tally of VOC
 records whose field 1 begins with `V` misses all four, and `count` is not
-a marginal verb. A standard account has **81** verbs, not 77.
+a marginal verb. A standard account has **82** verbs, not 78.
 
 ## The Q record — an indirect pointer
 

@@ -173,7 +173,67 @@ names. ***AND THE TIER IS NOT THE PERMISSION*** — an administrator account who
 Windows login is not in `os.users`, and whose session is not elevated, has the
 verb and is refused by it. **Two gates, and both must pass.**
 
+## An SD administrator is a remote shell
+
+State this plainly to anyone deciding who gets an administrator account:
+
+**An SD administrator can run operating-system commands on the server, as
+LocalSystem, from any machine that can reach the API port.**
+
+Nothing here is a defect, and no single setting produces it. It follows from
+three rules that are each reasonable on their own:
+
+| | |
+|---|---|
+| An administrator always has API access | and it cannot be taken away |
+| An administrator always has `OS.EXECUTE` | and that cannot be taken away either |
+| For a session that arrived over a socket, `os.users` is the authority | the session's own token is LocalSystem |
+
+Put together, they mean the administrator tier carries remote command execution
+on the machine. That was measured end to end over a remote API connection, with
+the operating system reporting `nt authority\system`.
+
+**Do not treat "the API only listens on loopback" as a mitigation.** The port is
+reachable from another machine over an ssh tunnel, so a reader who concludes
+that a shut firewall closes this has drawn the wrong conclusion. What limits it
+is who holds an administrator account and who holds a credential for one.
+
+The verify suite asserts this behaviour, so a future change that quietly
+withheld `OS.EXECUTE` from a socket session would show up as a failing test
+rather than as a page that had silently become false.
+
+## The first logto out of the system account ends elevation
+
+An administrator working in `SDSYS` is elevated. **The moment they `logto`
+anywhere else, that elevation is given up** — the administrator flag is cleared
+and the elevated helper is stopped.
+
+This is deliberate. Without it the helper would outlive the rights it belongs
+to, leaving a session able to do privileged work from an ordinary account.
+
+The consequence a reader meets first is that **a second hop is refused**:
+
+```
+:logto sales
+:logto payroll
+```
+
+The second `logto` is not running as an administrator any more, so it costs a
+fresh UAC prompt. Recover by going back:
+
+```
+:logto sdsys
+```
+
+An administrator who chains two hops and does not know this will read it as a
+fault. It is the design working.
+
+The step is quiet for the ordinary case: a session moving between two ordinary
+accounts never had privilege, so nothing is given up and nothing is written to
+the audit trail.
+
 ## See also
 
 [Accounts and Security](01-accounts-and-security.html) ·
-[Sessions and Locks](02-sessions-and-locks.html).
+[Sessions and Locks](02-sessions-and-locks.html) ·
+[Remote Access and the Machine](05-remote-access-and-the-machine.html).

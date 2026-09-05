@@ -157,7 +157,7 @@ TCL commands. Replaces the removed PROC language.
 
 **Phantom** — see Background process.
 
-**Programmer** — the middle account tier. Gets 81 + 42 = 123 verbs:
+**Programmer** — the middle account tier. Gets 82 + 42 = 124 verbs:
 everything a standard account has, plus the development set (compile,
 catalogue, edit, file creation, index management, bulk record editing,
 process introspection).
@@ -198,7 +198,7 @@ with substitution parameters.
 **Session** — one connection to SD, from sign-in to `off`. Each
 session runs as the invoking user's Windows identity.
 
-**Standard** — the lowest account tier. Gets 81 verbs: enough to run
+**Standard** — the lowest account tier. Gets 82 verbs: enough to run
 an application and nothing that edits code or data in bulk. The default
 when no tier keyword is given on `create.account`.
 

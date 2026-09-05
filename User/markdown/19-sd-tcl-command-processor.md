@@ -81,7 +81,7 @@ command processor re-parses when the name is typed as a command.
 
 ***THIS MATTERS FOR COUNTING WHAT AN ACCOUNT HAS.*** A tally of VOC records
 whose field 1 begins with `V` misses all four, and `count` is not a marginal
-verb. A standard account has **81** verbs, not 77.
+verb. A standard account has **82** verbs, not 78.
 
 ## What kind of thing a verb is
 

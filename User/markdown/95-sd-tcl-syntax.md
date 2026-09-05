@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > the verb records in `newvoc` plus the ones an administrator account
-> adds, which is **143** verbs, and `tools/mktclsyntax.py` refuses to
+> adds, which is **147** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where they were measured against a running system.
 
@@ -24,9 +24,9 @@ name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **standard** | 81 verbs | every account has these |
+| **standard** | 82 verbs | every account has these |
 | **programmer** | 42 more | withheld from a standard account |
-| **administrator** | 20 more | and several need an elevated session as well |
+| **administrator** | 23 more | and several need an elevated session as well |
 
 ## The verbs
 
@@ -37,6 +37,7 @@ name is simply not recognised.**
 | **`alias`** | **`alias`** *command* *target* |  |
 | **`analyse.file`** | **`analyse.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} | P |
 | **`analyze.file`** | **`analyze.file`** — the same verb as **`analyse.file`** | P |
+| **`append.sd.path`** | **`append.sd.path`** {**`on`** | **`off`**} | A |
 | **`autologout`** | **`autologout`** {*minutes*} |  |
 | **`basic`** | **`basic`** {*file*} *record* {*record* …} | P |
 | **`bell`** | **`bell on`** | **`off`** |  |
@@ -62,7 +63,7 @@ name is simply not recognised.**
 | **`cname`** | **`cname`** *old.file* **`to`** *new.file* | P |
 | **`como`** | **`como on`** {*record*} | **`off`** | **`pause`** | **`resume`** |  |
 | **`compile.dict`** | **`compile.dict`** — the same verb as **`cd`** | P |
-| **`config`** | **`config`** | **`lptr`** | *param* *value* | **`gpl`** | **`contrib`** | A |
+| **`config`** | **`config`** {**`lptr`** | **`gpl`** | **`contrib`** | *param* *value*} | A |
 | **`configure.file`** | **`configure.file`** {**`dict`**} *voc.name* {*parameters*} | **`default`** | P |
 | **`copy`** | **`copy from`** {**`dict`**} *src* {**`to`** {**`dict`**} *tgt*} {*id* …} {**`(options`**} | P |
 | **`copy.list`** | **`copy.list`** *list* {**`,`***new*} {**`from`** *src*} {**`to`** *tgt*} {*options*} |  |
@@ -116,7 +117,7 @@ name is simply not recognised.**
 | **`listu`** | **`listu`** {**`no.page`**} {**`lptr`** {*n*}} | A |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | A |
 | **`logmsg`** | **`logmsg`** *text* |  |
-| **`logout`** | **`logout`** | *n* … | **`all`** | A |
+| **`logout`** | **`logout`** | *n* … | **`all`** | P |
 | **`logto`** | **`logto`** *account* |  |
 | **`make.index`** | **`make.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} | P |
 | **`map`** | **`map`** {**`all`**} {**`lptr`** {*n*}} {**`file`** {*name*}} | P |
@@ -139,6 +140,8 @@ name is simply not recognised.**
 | **`quit`** | **`quit`** — the same verb as **`off`** |  |
 | **`reformat`** | **`reformat`** {**`dict`**} *file* {*selection*} {*fields*} | P |
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
+| **`remote.api`** | **`remote.api`** {**`on`** | **`local`** | **`off`**} | A |
+| **`remote.ssh`** | **`remote.ssh`** {**`on`** | **`off`**} | A |
 | **`rename`** | **`rename`** — the same verb as **`cname`** | P |
 | **`report.src`** | **`report.src on`** | **`off`** | **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* | **`off`**} |  |
@@ -158,7 +161,7 @@ name is simply not recognised.**
 | **`show`** | **`show`** {**`dict`**} *file* {*selection*} |  |
 | **`sleep`** | **`sleep`** *n* | *hh*`:`*mm*{`:`*ss*} |  |
 | **`sort`** | **`sort`** {**`dict`**} *file* {*selection*} {*fields*} {*options*} |  |
-| **`sort.item`** | **`sort.item`** {**`dict`**} *file* {*selection*} | P |
+| **`sort.item`** | **`sort.item`** {**`dict`**} *file* {*selection*} |  |
 | **`sort.label`** | **`sort.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`sp.close`** | **`sp.close`** |  |
 | **`sp.open`** | **`sp.open`** |  |
@@ -166,13 +169,14 @@ name is simply not recognised.**
 | **`spool`** | **`spool`** *file* *id* … {**`lines`** *n* *m*} {**`lnum`**} {**`lptr`** *n*} |  |
 | **`sreformat`** | **`sreformat`** {**`dict`**} *file* {*selection*} {*fields*} | P |
 | **`sselect`** | **`sselect`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
+| **`ssh.server`** | **`ssh.server`** {**`install`** | **`remove`**} | A |
 | **`status`** | **`status`** |  |
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
 | **`term`** | **`term`** | *width*{`,`*lines*} {*type*} | **`colour`** *bg*{`,`*fg*} | **`default`** | **`display`** |  |
 | **`time`** | **`time`** | **`internal`** |  |
 | **`unlock`** | **`unlock file`** *n* {**`user`** *n*} *id* … | **`all`** | **`filelock`**  ·  **`unlock tasklock`** *n* … | A |
-| **`update.account`** | **`update.account`** | A |
+| **`update.accounts`** | **`update.accounts`** {**`all`**} | A |
 | **`who`** | **`who`** |  |
 | **`who.am.i`** | **`who.am.i`** |  |
 

@@ -26,7 +26,7 @@ once. See [Changing an account afterwards](#changing-an-account-afterwards).
 
 **`administrator` implies `programmer`.** You do not need both keywords.
 
-### Standard — 81 verbs
+### Standard — 82 verbs
 
 What an application needs and no more: query and list (**`select`**, **`list`**,
 **`get.list`** and family), spool and print, session and environment (**`logto`**,

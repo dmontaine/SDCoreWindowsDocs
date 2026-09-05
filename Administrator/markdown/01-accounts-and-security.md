@@ -46,7 +46,7 @@ The token a process gets is decided at process creation, so there is nothing
 you can type inside a running session to elevate it. **Start SD from an
 elevated terminal**, or accept the UAC prompt that `logto sdsys` raises. The
 three verbs on this page that do *not* test elevation are `clean.account`,
-`config` and `update.account`, and each of them acts only on the account you
+`config` and `update.accounts`, and each of them acts only on the account you
 are already standing in or on your own session.
 
 ## Making an account: `create.account`
@@ -79,6 +79,42 @@ keyword. Omitting the tier gives a **standard** account.
 **`sh-on`** and **`os-on`** may be added to give the new account the `sh` verb
 and `OS.EXECUTE`; see `modify.account` below, which has both and their `-off`
 forms.
+
+### The access model in three sentences
+
+Administrators have API access and `OS.EXECUTE` access automatically.
+Programmers and standard users do not, unless it is given specifically.
+**API access does not give `OS.EXECUTE` access.**
+
+The third sentence is the one a reader will otherwise get wrong, because the
+two grants look like one grant. They are not:
+
+| | |
+|---|---|
+| `api` | says who may **connect** |
+| `os-on` | says who may reach the **operating system** |
+
+Holding the first has never implied the second. They are independent settings
+and are checked in different places.
+
+Neither can be taken away from an administrator. `modify.account` refuses
+`os-off` and `sh-off` for an administrator account, exactly as it refuses
+`ssh`, `api` and `none`.
+
+### What os-on actually costs
+
+Granting `os-on` to a non-administrator is a larger decision than it looks.
+
+**That account reaches the operating system over the API as well as locally** —
+and over the API the session's process token is LocalSystem. Measured on a
+programmer-tier account over a remote API connection: the operating system
+reported the session as `nt authority\system`.
+
+This is accepted behaviour rather than a defect, and it follows from the way
+SD's listener creates a session. It is stated here because it is not something
+a reader should have to discover: `os-on` on a non-administrator account with
+API access gives that account the operating system, as LocalSystem, from any
+machine that can reach the API port.
 
 The full account of what creating a user account does to Windows — the groups,
 the disabled-then-enabled login, the console denial — is in the SD Core for
@@ -228,22 +264,116 @@ capture that is currently running is left alone and says so: *$COMO not cleaned
 use from an ordinary session, which is right: it deletes only that account's own
 scratch.
 
-## Refreshing an account's VOC: `update.account`
+## Refreshing an account's VOC: `update.accounts`
 
 ```
-update.account
+update.accounts {all}
 ```
 
 ```
 Copying records from NEWVOC to VOC...
 ```
 
-Copies the shipped verb and keyword definitions into the account you are
-standing in, adding what is missing and leaving your own VOC entries alone. It
-is what brings an existing account up to date after SD itself is upgraded, and
-**it respects the account's tier** — a standard account does not collect
-programmer verbs by being refreshed, and a suspended one keeps the tier it was
-suspended from.
+Copies the shipped verb and keyword definitions into an account, adding what is
+missing and leaving that account's own VOC entries alone. It is what brings an
+existing account up to date after SD itself is upgraded, and **it respects the
+account's tier** — a standard account does not collect programmer verbs by
+being refreshed, and a suspended one keeps the tier it was suspended from.
+
+With no keyword it updates the account you are standing in and then offers the
+rest, asking each time. **`all` is the unattended form**: it updates every
+registered account without asking.
+
+You will not normally type `all` yourself. The installer runs it during an
+upgrade, so a release that adds a VOC record reaches every existing account
+without anybody visiting them. Before that existed, an upgrade replaced the
+shipped files and no account gained a new verb.
+
+`all` is an explicit keyword rather than something inferred from how SD was
+started. The test for an internal session exists and would have worked, but it
+would have decided a rewrite of every account's VOC from a property nobody
+typing the verb can see.
+
+A second word that is not `all` is refused by name rather than ignored:
+
+```
+:update.accounts everything
+UPDATE.ACCOUNTS does not take everything
+```
+
+Quietly ignoring it would run the interactive form while the caller believed
+they had asked for the other one.
+
+### It never takes anything away
+
+`update.accounts` only ever adds. A record removed from an account stays
+removed. To keep an edit of your own, mark the record — see below.
+
+## Keeping your own version of a VOC record: `[locked]`
+
+This has no equivalent in OpenQM or in SD on Linux. Nothing you know from
+another MultiValue system will tell you it exists.
+
+A site that has customised one of SD's own VOC records marks it by putting
+`[locked]` in **field 1, after the type code**. `update.accounts` then leaves
+that record alone.
+
+```
+V[locked]
+CA
+$MYVERSION
+```
+
+### After the type code, not at the front
+
+The first character of field 1 **is** the type, so `[locked]V` would be read as
+a record of type `[`. Two characters are the type for a `P` record, and those
+are the only two-character types SD uses: `PA` for a paragraph and `PH` for a
+phrase.
+
+```
+PA[locked]
+```
+
+Anywhere later in field 1 works — the test searches the field rather than
+matching a fixed position. Case does not matter: both sides are upper-cased
+before comparison, so `[LOCKED]` and `[Locked]` are the same marker. A lock
+that failed open because somebody typed it in capitals would be worse than no
+lock at all, because the record it was meant to protect would be replaced
+silently.
+
+### A verb is not protected by it
+
+**`[locked]` is honoured on every kind of VOC record except a verb.** A verb
+marked `[locked]` is updated anyway, and the account is told which ones:
+
+```
+2 verb(s) marked [locked] were updated anyway: MYLIST MYREPORT
+```
+
+A verb is what SD runs. A locked one would go on naming the program, or the
+internal routine number, that this release replaced — and the internal case
+fails in the worst way available, because field 3 of an internal verb record is
+a *number*, so a reassignment sends the verb to a different function with no
+sign that anything is wrong.
+
+**The way to get a verb that behaves differently is to add your own**, under a
+name SD does not ship, modelled on the system one. `update.accounts` walks the
+records SD ships, so a verb of your own is never visited and needs no marker.
+
+### You are told what was withheld
+
+```
+3 VOC record(s) were left alone because they are marked [locked]: WINDOWS ...
+```
+
+The message names each record, and says plainly that any correction this
+release made to them has not been applied here.
+
+**That is the cost, and it belongs to the site rather than to SD.** A locked
+record keeps the version the account already had, so a defect fixed in that
+record stays unfixed in this account. Remove the marker from field 1 and run
+`update.accounts` again to take the new version.
 
 ## Reading and setting configuration: `config`
 
@@ -362,7 +492,7 @@ none of these names at all.
 | | |
 |---|---|
 | **needs elevation as well** | `create.account` `modify.account` `modify.password` (for another account) `delete.account` `grant` `revoke` `list.grants` |
-| **the verb is enough** | `clean.account` `update.account` `config` |
+| **the verb is enough** | `clean.account` `update.accounts` `config` |
 
 ***`list.grants` NEEDS ELEVATION EVEN THOUGH IT ONLY READS.*** It answers *who
 may enter this account*, which is worth knowing before you have it, and the

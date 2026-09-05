@@ -130,13 +130,16 @@ DOCS = [
  """),
  ('Administrator', '01-accounts-and-security.md', """
    clean.account config create.account delete.account grant
-   list.grants modify.account modify.password revoke set.date update.account
+   list.grants modify.account modify.password revoke set.date update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
    clear.locks list.locks list.readu listu lock logout unlock
  """),
  ('Administrator', '03-operating-system-access.md', """
    sh !
+ """),
+ ('Administrator', '05-remote-access-and-the-machine.md', """
+   append.sd.path remote.api remote.ssh ssh.server
  """),
 ]
 

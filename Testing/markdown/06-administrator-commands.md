@@ -1,8 +1,8 @@
 Title: Administrator commands
-Subtitle: The 20 verbs an administrator account gets above a programmer, and how to use them.
+Subtitle: The 23 verbs an administrator account gets above a programmer, and how to use them.
 
 An administrator account receives everything a programmer account does, plus
-the 20 verbs below. In OpenQM most of these lived in `SYSTEM` and you reached
+the 23 verbs below. In OpenQM most of these lived in `SYSTEM` and you reached
 them by being there; in SD Core they are in the administrator's **own** account
 VOC, so an SD administrator no longer has to `logto sdsys` to administer
 anything.
