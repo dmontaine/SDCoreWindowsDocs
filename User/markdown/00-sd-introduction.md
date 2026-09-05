@@ -1,9 +1,9 @@
 Title: SD Core - Introduction and Getting Started
 Subtitle: What a multivalue database is, what SD is, the four components, and your first session.
 
-You already know MultiValue. This page does not teach it. It orients you
-to SD Core for Windows: what it is, where it came from, what the pieces
-are, and how to take your first steps.
+This page orients you to SD Core for Windows: what a multivalue database is,
+where SD came from, what the pieces are, and how to take your first steps. It
+is the only page in this set that assumes nothing.
 
 ## What is a multivalue database?
 
@@ -42,7 +42,11 @@ BASIC.
 
 **SD Core for Windows is Windows only.** There are no `#ifdef` branches
 keeping Linux alive in this source — Linux SD is a separate project and
-this is not a build of it. SD Core does not ship source code.
+this is not a build of it.
+
+SD Core is free software under the GNU General Public Licence v3. `config gpl`
+displays the licence and `config contrib` the list of contributors. The
+installer carries compiled binaries; the source is a separate download.
 
 ## The four components
 
@@ -96,8 +100,9 @@ list customers
 count customers
 ```
 
-Commands are lower case now. Typing `LIST` still works — SD tries what
-you typed, then lower case, then upper.
+Commands are lower case now. Typing `LIST` still works — SD tries what you
+typed, then lower case, then upper, and finally with any hyphens changed to
+dots, so `clear-select` reaches `clear.select` too.
 
 ## Writing a program
 

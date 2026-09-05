@@ -63,6 +63,35 @@ type `list voc` or `LIST VOC` and reach the same file.
 **Account names are the deliberate exception.** They are still folded upward,
 and that is what makes signing in case-insensitive.
 
+### A hyphen is accepted where the verb has a dot
+
+After the three case attempts, the command processor tries the name again with
+any hyphens changed to dots. **So every dotted verb also answers to a hyphen.**
+
+```
+:clear-select
+Cleared numbered select list 0
+:clear.select
+Cleared numbered select list 0
+```
+
+This is a spelling variant rather than a second verb, and two controls show it:
+
+```
+:zzz-nosuch
+zzz-nosuch is not in your VOC
+:ct voc create-account
+Record 'create-account' not found
+```
+
+The first shows the fallback is not accepting anything at all. The second shows
+there is no `create-account` record in the VOC — the resolution happens in the
+command processor, not in the file.
+
+**The dotted spelling is the documented one** and is what every page here uses.
+The hyphen form is supported, and it is worth knowing because a typed hyphen
+will not produce the error you expect.
+
 ### If the VOC has nothing, the catalogue is tried
 
 A name that is not in the VOC is looked for in the **private catalogue** of the

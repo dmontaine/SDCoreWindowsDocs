@@ -60,8 +60,11 @@ sessions showing different accounts but the same username are, as far as
 
 **`Origin` is blank for a local session and that is not a fault.** It reports
 an address or a device name, and a console or piped session has neither. It
-reads `Phantom` for a phantom, an IP address for a network client, and
-`SDNet`/`SDVbSrvr` with the address for the two server connection types.
+reads `Phantom` for a phantom and an IP address for a network client.
+
+`SDNet` is also among the values it can print, and you will not see it: SDNet
+was removed from this port, so nothing can open the kind of session that would
+report it.
 
 **`(logout pending)`** after the name means somebody has asked that session to
 end and it has not gone. See below.

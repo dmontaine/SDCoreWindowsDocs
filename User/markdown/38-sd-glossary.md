@@ -164,10 +164,9 @@ process introspection).
 
 ## Q
 
-**QMSYS** — the system account. Called `sdsys` on disk. Holds the
-account register, the global catalogue, the pcode library, the
-credential file, the audit trail, the error log, and the system files
-(`newvoc`, `messages`, `syscom`, `os.users`, `batch.jobs`).
+**QMSYS** — what the system account is called in OpenQM. In SD it is
+`SDSYS`, and `sdsys` on disk. Nothing in SD Core answers to the name
+QMSYS; it is here so that a reader coming from OpenQM finds the entry.
 
 **Query processor** — the reporting language: `list`, `select`,
 `count`, `sort`, `sum`, and the rest. Reads dictionary definitions to
