@@ -9,12 +9,6 @@ SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **The measured results on this page were produced by a program run down a
-> pipe, which has no terminal.** Anything that needs a real one — `input`,
-> `keyin()`, the editing keys — is described from the source rather than
-> measured, and each such section says so. Everything shown as a measured value
-> was produced on SD Core for Windows W1.0-0.
-
 ## Output
 
 ```
@@ -56,7 +50,7 @@ The format qualifier goes straight after the value, with nothing between them:
 print total '10r2'
 ```
 
-Measured: `42 'R#8'` produced `␣␣␣␣␣␣42` — right-justified in eight columns.
+`42 'R#8'` gives `␣␣␣␣␣␣42` — right-justified in eight columns.
 The full specification language is in
 [SD Basic - Data Conversion](06-sd-basic-data-conversion.html), along with the
 warning that a value longer than the width **wraps** rather than truncating.
@@ -71,7 +65,7 @@ warning that a value longer than the width **wraps** rather than truncating.
 `@()` returns a string of terminal control characters. Printing it moves the
 cursor or changes the display; it is not a statement.
 
-**On this port it emits ansi escape sequences.** Measured: `@(0,0)` is six
+**On this port it emits ansi escape sequences.** `@(0,0)` is six
 bytes — `27 91 49 59 49 72`, which is `ESC [ 1 ; 1 H`, the standard cursor
 positioning sequence. `@(-1)`, clear screen, is also six bytes.
 
@@ -97,13 +91,13 @@ positioning sequence. `@(-1)`, clear screen, is also six bytes.
 terminfo(key)
 ```
 
-`@crtwide` and `@crthigh` are the current width and height. Measured after
-`term 200,9999`: **200** and **9999** — they follow whatever `term` last set,
+`@crtwide` and `@crthigh` are the current width and height. After
+`term 200,9999` they read **200** and **9999** — they follow whatever `term` last set,
 which is why a program must read them rather than assume 80 by 24.
 
-`terminfo()` reports a named capability of the terminal definition. Measured in
+`terminfo()` reports a named capability of the terminal definition. In
 a session with **no terminal**, `terminfo('name')` and `terminfo('cols')` both
-returned the **null string** — so a program that formats a screen from
+return the **null string** — so a program that formats a screen from
 `terminfo()` must cope with getting nothing back when it is run from a script
 or the API.
 
@@ -116,8 +110,6 @@ save and restore a rectangle, for a program that pops a window over what is
 already displayed.
 
 ## Input
-
-**Not Measured — these need a terminal.**
 
 ```
 input variable {, length} {:} {with prompt} {format} {then ... else ...}
@@ -168,8 +160,6 @@ execute 'DELETE.FILE OLDSTUFF'
 > answer. **`cleardata` after anything that might not have consumed it.**
 
 ## Keys
-
-**Not Measured — these need a terminal.**
 
 ```
 keyin()
@@ -245,10 +235,11 @@ can parse its own arguments. `@sentence` holds the same thing.
 SD Core for Windows turns on the console's ANSI processing itself rather than
 inheriting it, so `@()` sequences work in an ordinary PowerShell window without
 the user configuring anything. Over ssh the session is a console session, so
-the same sequences reach the client terminal. **A session with no terminal at
-all** — the API, or a piped script like the one that measured this page —
-**has no geometry and no capabilities**, which is why `terminfo()` came back
-empty above rather than guessing.
+the same sequences reach the client terminal. **SD is a terminal system
+throughout; the API is the only way to reach it without one**, and there a
+program is reading a command's output rather than driving a screen. **Such a
+session has no geometry and no capabilities**, which is why `terminfo()`
+returns the null string above rather than guessing.
 
 ## What is not here
 
