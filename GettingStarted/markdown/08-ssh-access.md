@@ -210,7 +210,7 @@ process opens the database under the invoking user's own token, so everyone who
 uses SD needs file access to the tree and can read another account's directory
 from outside SD. See [Security](12-security.html).
 
-## One measured caution about remote administration
+## One caution about remote administration, and it is not measured
 
 `LocalAccountTokenFilterPolicy` is not set by SD, so the Windows default UAC
 remote restriction applies: a local account logging on over the network gets a
