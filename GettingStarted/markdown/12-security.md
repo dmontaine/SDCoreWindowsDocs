@@ -44,6 +44,12 @@ Two different questions are asked in two different places, and both are wanted:
 A UAC-filtered token carries `Administrators` as *deny only*, so these give
 different answers for the same person, and conflating them is the easy mistake.
 
+**A third question is asked as well: *where did this session come from?*** Being
+an administrator and being elevated are no longer enough on their own — the
+session also has to have started on this computer. An administrator signing in
+from another machine is refused, over ssh and over the API alike, whichever way
+the first two questions are answered.
+
 **One property to accept consciously.** `Administrators` is machine-wide, so
 anyone in it for an unrelated reason — the machine's own administrator, a
 domain admin, an IT tool's service account — gets SDSYS. Linux sudoers is
@@ -199,12 +205,31 @@ opposite of the VOC tier lists, where a missing record means the *full* VOC —
 do not carry one convention across to the other.
 
 **2. An elevated session passes on its own**, whatever the list says, so an
-empty list cannot lock the machine's own administrator out. **An ssh session
-can never be elevated**, so somebody arriving that way needs a record even if
-they are an administrator.
+empty list cannot lock the machine's own administrator out.
 
-**3. None of the three is available over the API.** An API session is not
-treated as an administrator for any purpose.
+> **An ssh session *can* be elevated, and this page used to say it never
+> could.** Windows' OpenSSH runs as a system service and builds the logon token
+> itself, so a member of `Administrators` arriving over ssh is handed a **full**
+> token — not the filtered one a local sign-in would produce, and with nobody
+> asked to consent. That was measured rather than assumed, and it was the
+> opposite of what had been written here.
+>
+> It is why SD now refuses an administrator any session that did not come from
+> this computer. Over ssh **on this machine** an administrator is still
+> elevated, and still passes this rule without needing a record.
+
+**3. An API session is never treated as an administrator — which is not the
+same as having no way out to the machine.** An API session never holds
+administrator rights and cannot reach SDSYS. But this list is consulted **by
+user name**, and it is consulted whether or not a session is elevated: an
+account whose `os.users` record says `yes` gets `sh` and `OS.EXECUTE` over the
+API exactly as it would anywhere else.
+
+> **Every administrator has such a record**, written when the account is created
+> and refused to `modify.account os-off`. So an administrator's API session can
+> genuinely run operating-system commands on the server — which is why an
+> administrator is refused an API connection from any other computer. From this
+> machine it works, and that is deliberate.
 
 **4. Nothing in SD limits what you then do.** Once field 1 or field 2 says
 `yes`, SD is not standing between that person and the machine — **the boundary

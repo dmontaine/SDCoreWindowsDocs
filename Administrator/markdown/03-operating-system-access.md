@@ -173,15 +173,16 @@ names. **And the tier is not the permission** — an administrator account whose
 Windows login is not in `os.users`, and whose session is not elevated, has the
 verb and is refused by it. **Two gates, and both must pass.**
 
-## An SD administrator is a remote shell
+## An SD administrator is a shell on this machine
 
 State this plainly to anyone deciding who gets an administrator account:
 
-**An SD administrator can run operating-system commands on the server, as
-LocalSystem, from any machine that can reach the API port.**
+**An SD administrator can run operating-system commands on the server as
+LocalSystem — from this machine.** A sign-in from any other computer is
+refused, over ssh and over the API alike.
 
-Nothing here is a defect, and no single setting produces it. It follows from
-three rules that are each reasonable on their own:
+The local half is not a defect, and no single setting produces it. It follows
+from three rules that are each reasonable on their own:
 
 | | |
 |---|---|
@@ -189,17 +190,46 @@ three rules that are each reasonable on their own:
 | An administrator always has `OS.EXECUTE` | and that cannot be taken away either |
 | For a session that arrived over a socket, `os.users` is the authority | the session's own token is LocalSystem |
 
-Put together, they mean the administrator tier carries remote command execution
-on the machine. That was measured end to end over a remote API connection, with
-the operating system reporting `nt authority\system`.
+So an administrator account is, in effect, an operating-system shell on the
+server. That was measured end to end, with the operating system reporting
+`nt authority\system`.
 
-**Do not treat "the API only listens on loopback" as a mitigation.** The port is
-reachable from another machine over an ssh tunnel, so a reader who concludes
-that a shut firewall closes this has drawn the wrong conclusion. What limits it
-is who holds an administrator account and who holds a credential for one.
+### Why remote is shut
 
-The verify suite asserts this behaviour, so a future change that quietly
-withheld `OS.EXECUTE` from a socket session would show up as a failing test
+Those three rules would have made the administrator tier a shell for *anyone
+who could reach the port*, from anywhere. SD closes that at the door instead of
+weakening any of the three: **administration requires a session Windows can
+show a consent prompt on**, which means the console, or a remote-desktop or
+remote-control product installed as a service — not ssh and not the API.
+
+The refusal comes *after* the password has been checked, so it is a refusal
+rather than a silent drop, and it says what it is:
+
+> An administrator may not sign in to this machine from another one.
+
+Only the **tier** is refused. An ordinary or programmer account reaches the
+same machine over the same route and gets a session as before, which is worth
+knowing when you are diagnosing a connection that failed: if a non-administrator
+can get in, the network and the listener are fine.
+
+### The one route this does not close
+
+**An ssh tunnel ends on the server, so a connection forwarded through one
+arrives looking local, and is admitted.** SD sees the address the connection
+came from, and a tunnelled connection genuinely comes from this machine.
+
+That is a real limit and it is stated here rather than glossed over. Building
+such a tunnel still needs an ssh login to Windows in the first place, so it is
+not open to a stranger — but if your threat model includes an administrator who
+should not be administering remotely, close port forwarding in `sshd_config`
+rather than relying on this gate.
+
+What limits the rest of it is who holds an administrator account, who holds a
+credential for one, and who can reach the console.
+
+The verify suite asserts all of this — the local session working, the remote one
+refused, and an ordinary account admitted over that same remote route as the
+control — so a future change that quietly reopened it shows up as a failing test
 rather than as a page that had silently become false.
 
 ## The first logto out of the system account ends elevation

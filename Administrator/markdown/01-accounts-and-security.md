@@ -80,11 +80,25 @@ keyword. Omitting the tier gives a **standard** account.
 and `OS.EXECUTE`; see `modify.account` below, which has both and their `-off`
 forms.
 
-### The access model in three sentences
+### The access model in four sentences
 
 Administrators have API access and `OS.EXECUTE` access automatically.
 Programmers and standard users do not, unless it is given specifically.
 **API access does not give `OS.EXECUTE` access.**
+**And an administrator's ssh and API access stops at this machine.**
+
+The fourth sentence is not a grant and there is no keyword for it. An
+administrator keeps both routes permanently — they cannot be taken away — and
+neither reaches past this computer: a sign-in from anywhere else is refused
+after the password has been checked.
+
+> An administrator may not sign in to this machine from another one.
+
+Administration happens at the console, or through a remote desktop or
+remote-control product installed as a service, because those are the sessions
+Windows can show a consent prompt on. **Only the administrator tier is
+affected**; programmers and standard users reach the machine remotely on
+whatever routes they were given.
 
 The third sentence is the one a reader will otherwise get wrong, because the
 two grants look like one grant. They are not:

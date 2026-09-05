@@ -309,6 +309,16 @@ don is an administrator and always reaches the operating system
 **Downgrade the account first** if that is really what you want. The tier is
 the only thing about an administrator that `modify.account` will change.
 
+**But the routes are local only, and that is not something you set.** An
+administrator keeps ssh and the API for good, and both stop at this computer:
+a sign-in from anywhere else is refused, whatever the account record says.
+
+> An administrator may not sign in to this machine from another one.
+
+Administration happens at the console, or through a remote desktop or
+remote-control product installed as a service. Ordinary and programmer accounts
+are not affected — their routes work from other machines exactly as before.
+
 **`set.password` is now `modify.password`.** Same verb, same behaviour; the
 name changed because every account has a password from the moment it is made,
 so there is nothing to *set* for the first time.

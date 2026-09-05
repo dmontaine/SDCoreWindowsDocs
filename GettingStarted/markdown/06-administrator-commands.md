@@ -160,6 +160,17 @@ don is an administrator and always reaches the operating system
 An administrator has all three routes — ssh, the API and the operating system —
 as a rule. Downgrade the account first if that is really what you want.
 
+**All three are local only.** The grant cannot be taken away and it does not
+reach past this computer: an administrator signing in from another machine is
+refused, on ssh and on the API alike, after the password has been checked.
+
+> An administrator may not sign in to this machine from another one.
+
+This is not a setting and there is no keyword for it. Administration happens at
+the console, or through a remote desktop or remote-control product installed as
+a service. Ordinary and programmer accounts reach the machine remotely as
+before.
+
 ### Or edit the record by hand
 
 The record is ordinary data. From an **elevated** session, because the file is

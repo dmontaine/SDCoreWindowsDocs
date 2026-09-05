@@ -12,6 +12,16 @@ SD opens its API socket, and whether `sd` runs from any directory.
 | `remote.api` | decides whether SD opens its API socket, and who may reach it |
 | `append.sd.path` | puts SD's program directory on the Windows system PATH, or takes it off |
 
+> **None of these gives an administrator remote access, and no setting does.**
+> Opening ssh or the API to other computers opens it for ordinary and programmer
+> accounts. **An administrator account is refused a session from any machine but
+> this one**, over either route, after its password has been checked — so a
+> route you have just opened will still turn your own administrator account away
+> if you try it from your laptop. That is deliberate: administration needs a
+> session Windows can show a consent prompt on, which means the console, or a
+> remote desktop or remote-control product installed as a service. The operating
+> system access page covers why the tier is treated this way.
+
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,
 > it is named in words.

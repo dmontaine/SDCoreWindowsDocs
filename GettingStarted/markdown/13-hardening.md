@@ -108,6 +108,12 @@ end.** The tunnel ends on this machine, so the process that connects genuinely
 is `sshd`. What the line distinguishes is a client running *on* this machine
 from one arriving through a tunnel; **it cannot name a remote person.**
 
+> **This matters beyond the log.** SD refuses an administrator an API session
+> from another computer, and it decides that from the address the connection
+> came from. A tunnelled connection arrives from `127.0.0.1` because it really
+> does start here, so **it is admitted**. If that matters to you, turn port
+> forwarding off in `sshd_config`; no check inside SD can see through a tunnel.
+
 *"peer process not identified"* means the client had already gone by the time
 the connection was looked up. It is not an error and the connection proceeds
 normally.

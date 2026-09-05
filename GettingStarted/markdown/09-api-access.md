@@ -105,9 +105,26 @@ A caller must clear three gates, in this order:
 2. **Be a member of the `sdapi` group**, which an account joins only when you
    give it API access. `create.account user fred api` or `... both` does that;
    `ssh` or `none` does not.
-3. **Pass the account's own group check.**
+3. **If the account is an administrator, be connecting from this machine.**
+   An administrator is refused an API session from any other computer, however
+   good the password. Ordinary and programmer accounts are not affected.
+4. **Pass the account's own group check.**
 
-**Failed API logins are written to the audit trail**, with the reason. See
+Gate 3 catches only the administrator tier, and it is not a setting — there is
+no keyword that turns it off. An administrator always has API access and it
+always stops at this computer:
+
+> An administrator may not sign in to this machine from another one.
+
+**A local API client is unaffected**, which is the point: an application on the
+server connecting to `127.0.0.1` works as an administrator exactly as before.
+The reason the tier is treated this way is that an administrator's session can
+reach the operating system, so SD requires one Windows can show a consent prompt
+on — the console, or a remote desktop or remote-control product installed as a
+service. The Administrator set covers it in full.
+
+**Failed API logins are written to the audit trail**, with the reason — an
+administrator refused this way is recorded with the address it came from. See
 [Other hardening](13-hardening.html).
 
 ## A session is confined to its own account
