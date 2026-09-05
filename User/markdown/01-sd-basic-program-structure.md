@@ -94,7 +94,7 @@ copy, because there is no variable to write back to.
 catalogued(name)
 ```
 
-reports whether a name can be called. Measured: `catalogued('ZZNOSUCH')` is
+reports whether a name can be called. `catalogued('ZZNOSUCH')` is
 `0`. Use it before a `call @variable` whose name came from data, because an
 uncatalogued name is a runtime abort rather than a testable failure.
 
@@ -121,7 +121,7 @@ variable is an error only when the line is reached.
 
 ### `vartype()`
 
-Returns the internal type code. Measured:
+Returns the internal type code:
 
 | Value | Code | |
 |---|---|---|
@@ -189,7 +189,7 @@ dim m(3)
 mat m = 7          ;* every element becomes 7
 ```
 
-Measured: after `mat m = 7`, `m(1)`, `m(2)` and `m(3)` all read `7`.
+After `mat m = 7`, `m(1)`, `m(2)` and `m(3)` all read `7`.
 
 **A matrix has a zero element and it is not counted in the dimension.**
 `dim m(3)` gives `m(0)` through `m(3)`. `m(0)` is where `matparse` puts
@@ -209,7 +209,7 @@ inmat({matrix})
 | `matparse` | splits a string across the elements |
 | `inmat()` | after `matparse`, how many elements were filled |
 
-Measured, with `m` holding `7`, `7`, `7`:
+With `m` holding `7`, `7`, `7`:
 
 | | |
 |---|---|
@@ -221,7 +221,7 @@ Measured, with `m` holding `7`, `7`, `7`:
 > **The `using` clause of `matbuild` does not work, in either case.**
 > The documented syntax `matbuild var from mat using delimiter` compiles the
 > keyword as a **variable name** and the program aborts at run time with
-> *"Unassigned variable USING"*. Measured with both `using` and `USING`.
+> *"Unassigned variable USING"*, with both `using` and `USING`.
 >
 > **This is inherited, not introduced by this port** — the `st.matbuild` block
 > in `BCOMP` is byte-identical to the one in the upstream `sdb64` tree. **The

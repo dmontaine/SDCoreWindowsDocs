@@ -49,7 +49,7 @@ begin case
 end case
 ```
 
-**The first matching case runs and the rest are skipped** — measured: with two
+**The first matching case runs and the rest are skipped** — with two
 identical `case n = 2` branches, only the first executes. There is no
 fall-through and no `break`.
 
@@ -65,8 +65,6 @@ for variable = start to limit {step increment}
    statements
 next variable
 ```
-
-Measured:
 
 | Loop | Values taken |
 |---|---|
@@ -97,7 +95,7 @@ repeat
 it is false. Either may appear anywhere in the body, more than once, and a
 `loop` with neither runs until something in the body leaves it.
 
-Measured: `loop / k += 1 / r := k / while k < 3 / repeat` produces `1 2 3` —
+`loop / k += 1 / r := k / while k < 3 / repeat` produces `1 2 3` —
 the test happens where it is written, so the body before it always runs at
 least once.
 
@@ -132,8 +130,8 @@ on expression gosub label1, label2, label3
 Jumps to the *n*-th label, counting from 1.
 
 > **An out-of-range value does not fall through — it is clamped to the nearest
-> end.** This is the opposite of what most MultiValue documentation says, and
-> it was measured on this port with two labels:
+> end.** This is the opposite of what most MultiValue documentation says. On
+> this port, with two labels:
 >
 > | Expression | Where it went |
 > |---|---|
@@ -179,11 +177,11 @@ enter name {(arguments)}
 | `chain` | replaces the current program; **nothing comes back** |
 | `enter` | transfers to another program, also without return, but keeps the current level |
 
-Measured: `execute 'WHO' capturing cap` puts the command's output in `cap`
-rather than on the screen, one field per line — `dcount(cap, @fm)` was `1` for
+`execute 'WHO' capturing cap` puts the command's output in `cap`
+rather than on the screen, one field per line — `dcount(cap, @fm)` is `1` for
 a single-session `WHO`.
 
-**A command that does not exist is not an error you can catch.** Measured:
+**A command that does not exist is not an error you can catch.**
 `execute 'ZZNOSUCHVERB' capturing out` completes, and `@system.return.code`
 reads **-1**. The program carries on. **Test `@system.return.code` after any
 `execute` whose command name came from data.**
@@ -276,7 +274,7 @@ Windows**. A program using one will not compile.
 | `errmsg` | see below |
 
 **`errmsg` is in the compiler's statement table and still does not compile.**
-Measured: `errmsg 1000` is rejected with *"Unrecognised statement"*. The name
+`errmsg 1000` is rejected with *"Unrecognised statement"*. The name
 survives in `BCOMP`'s list but its opcode was removed, so the table is not a
 reliable guide for this one — **being listed as a statement does not mean a
 statement exists.**

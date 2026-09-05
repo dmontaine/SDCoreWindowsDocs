@@ -48,7 +48,7 @@ dcount(string, delimiter)
 | `count()` | how many times *substring* occurs |
 | `dcount()` | how many **fields** *delimiter* divides the string into — normally one more than `count()` |
 
-### Measured
+### The difference in practice
 
 | Expression | Result | |
 |---|---|---|
@@ -104,7 +104,7 @@ After a `field()` call, these give the positions **either side** of the field
 that was extracted: `col1()` is the position of the delimiter before it and
 `col2()` the position of the delimiter after it.
 
-Measured on `field('alpha,beta,gamma', ',', 2)`, which returns `beta`:
+For `field('alpha,beta,gamma', ',', 2)`, which returns `beta`:
 
 | | |
 |---|---|
@@ -200,7 +200,7 @@ The one-argument forms work on spaces:
 | `trimf()` | `a  b  ` — leading only |
 
 The three-argument form works on any character and takes a mode letter. **All
-nine were measured on `'xxaxxbxx'` trimming `x`:**
+nine, on `'xxaxxbxx'` trimming `x`:**
 
 | Mode | Meaning | Result |
 |---|---|---|
@@ -369,7 +369,7 @@ the quick|brown fox|jumps over|the lazy dog
 ```
 
 > **The two-argument and three-argument forms use different default
-> separators, which is not an obvious thing to guess.** Measured:
+> separators, which is not an obvious thing to guess.**
 >
 > | Call | Separator |
 > |---|---|
@@ -450,7 +450,7 @@ part of the string that matched a given element of the pattern.
 
 Elements are written one after another with no separator.
 
-### Measured
+### How the codes combine
 
 | Test | Result |
 |---|---|
@@ -469,7 +469,7 @@ Elements are written one after another with no separator.
 | `'a1b2' matches '0a0n'` | false |
 
 **A pattern may be a dynamic array, and the values are alternatives.**
-Measured: `'ab' matches ('2a' : @vm : '2n')` is **true** — the string need only
+`'ab' matches ('2a' : @vm : '2n')` is **true** — the string need only
 match one of them. This is how you accept several formats without writing the
 test three times:
 
@@ -540,7 +540,7 @@ way to narrow a search, not to decide a match.
 ## Applying a function to every element
 
 Most functions here have a partner ending in `s` that applies the same
-operation to every element of a dynamic array. Measured:
+operation to every element of a dynamic array:
 
 | | |
 |---|---|

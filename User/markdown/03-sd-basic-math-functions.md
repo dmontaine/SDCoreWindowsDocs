@@ -102,7 +102,7 @@ rdiv(dividend, divisor)
 | `idiv()` | **towards zero when both arguments are integers, downwards when either is floating point** — see the warning below |
 | `rdiv()` | divides and rounds to the **nearest** integer, with a half rounded **away from zero** |
 
-### Measured
+### The four side by side
 
 | Expression | Result | | Expression | Result |
 |---|---|---|---|---|
@@ -241,8 +241,8 @@ gives `0` through `9`, confirmed over 500 draws. A negative *limit* gives a
 negative result in the mirrored range: `rnd(-10)` returns `0` down to `-9`.
 
 `randomize` seeds the generator. With a *seed* the sequence repeats identically
-every run — measured: `randomize 42` followed by three `rnd(1000)` calls gave
-the same three numbers both times — which is what you want for a reproducible
+every run — `randomize 42` followed by three `rnd(1000)` calls gives
+the same three numbers every time — which is what you want for a reproducible
 test. With no argument it seeds from the clock, which is what you want in
 production.
 
@@ -276,7 +276,7 @@ minimum(array)
 | `maximum()` | the largest numeric element |
 | `minimum()` | the smallest numeric element |
 
-### Measured
+### Worked through
 
 With `a` holding `1`, `2`, `3` as values, and `b` holding a field of
 `10`ˢ`20` and `30`, where ˢ is a subvalue mark:
@@ -325,7 +325,7 @@ num(expr)
 
 Returns true if *expr* would be accepted as a number, false otherwise.
 
-### What it accepts, measured
+### What it accepts
 
 | Expression | Result | |
 |---|---|---|
@@ -453,7 +453,7 @@ Two floating-point values are treated as equal if they differ by less than the
 `FLTDIFF` configuration parameter, which defaults to a very small number
 (`0.0000000000291`).
 
-**This is why `0.1 + 0.2 = 0.3` is true in SD BASIC** — measured — where the
+**This is why `0.1 + 0.2 = 0.3` is true in SD BASIC**, where the
 same test is false in C, Java, Python and JavaScript. It is a deliberate
 convenience and not an accident of this port. `config('FLTDIFF')` reports the
 value in force.
