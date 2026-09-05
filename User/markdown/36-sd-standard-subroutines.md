@@ -1,129 +1,143 @@
 Title: SD Standard Subroutines
-Subtitle: The !-prefixed internal subroutines that ship with SD, what each does, and how to call them.
+Subtitle: The 42 catalogued names beginning with !, which of them an application may use, and how each is called.
 
-SD ships a set of catalogued subroutines whose names begin with `!`.
-They are part of the system — compiled into the pcode library and
-available to every account. They are called from SDBasic with `call`
-or from an I-type expression with `SUBR()`.
+SD ships forty-two catalogued routines whose names begin with `!`. They are in
+the global catalogue, so any account reaches them without cataloguing anything
+of its own.
 
-> ***These are internal subroutines.*** They exist to support the system
-> and the query processor. They are documented here because they are
-> callable, but they are not versioned as a public API. A program that
-> calls one should test the result and not assume a particular
-> internal behaviour.
+**Most exist to support SD itself and are not an interface for applications.**
+They are listed in full because a name in a stack trace, a `map` listing or an
+error message has to be findable, and because a handful are genuinely useful.
+Which is which is said plainly below rather than left for you to discover.
 
-## How to call them
+> These are not a versioned interface. A routine here can change between
+> releases in ways a documented function would not. If you call one, test what
+> it returns rather than assuming its shape holds.
 
-From SDBasic:
+## Some are functions and some are subroutines
 
-```
-call "!FTYPE", result, filename
-```
+Get this right first, because calling one the wrong way does not produce a
+helpful error.
 
-From an I-type expression:
-
-```
-SUBR("!FTYPE", DATA.NAME)
-```
-
-Arguments are passed by reference to `call`; `SUBR()` passes them by
-value. The subroutine sets its output argument and the caller reads it.
-
-## The subroutines
-
-### !FTYPE
+A **subroutine** is reached with `call`, and its results come back in its
+arguments:
 
 ```
-call "!FTYPE", result, filename
+call "!ERRTEXT", text, 3035
 ```
 
-Returns the file type of *filename*: `"D"` for a directory file, `"F"`
-for a dynamic file. Used by the `FTYPE` I-type in `voc.dic`.
-
-### !PARSER
+A **function** is declared with `deffun` and returns a value:
 
 ```
-call "!PARSER", result, sentence
+deffun ftype(path) calling "!FTYPE"
+kind = ftype(@path)
 ```
 
-Parses a TCL sentence into its components. Used internally by the
-command processor to break a typed line into verb, file name, selection
-clauses, sort keys and output fields.
+`SUBR()` calls a subroutine from an I-type expression in a dictionary.
 
-### !OCONV
+Nothing here is typed at the TCL prompt. These are called from SD BASIC.
 
-```
-call "!OCONV", result, value, conversion
-```
+## The ones an application may reasonably use
 
-Applies an output conversion code to a value. The same code as the
-`OCONV()` function, callable as a subroutine.
+### Paths and names
 
-### !ICONV
+| | |
+|---|---|
+| `!ABSPATH` | `abspath((dir), rel)` — resolve *rel* against *dir* and return an absolute path |
+| `!PATHTKN` | `pathtkn((path))` — split a path into its components |
+| `!FTYPE` | `ftype(path)` — what kind of file is at *path* |
+| `!VALID_OS_NAME` | `valid_os_name(name)` — is *name* usable as an operating system account name |
+| `!VALID_OS_PATH` | `valid_os_path(path)` — is *path* a well-formed host path |
+| `!VALID_SHELL_CMD` | `valid_shell_cmd(cmd)` — is *cmd* acceptable to hand to a shell |
 
-```
-call "!ICONV", result, value, conversion
-```
+The three validators are the ones SD's own administrative verbs use before
+handing a value to Windows. If you are building a command line or an account
+name from input, call them rather than reimplementing the rules.
 
-Applies an input conversion code to a value. The same code as the
-`ICONV()` function, callable as a subroutine.
+### Sessions and users
 
-### !SORT
+| | |
+|---|---|
+| `!USERNAME` | `username(userno)` — the name of the session with that user number |
+| `!USERNO` | `userno((name))` — the user number of a named session |
 
-```
-call "!SORT", result, array, order
-```
+### Errors, formatting and sorting
 
-Sorts a dynamic array. *order* is `"A"` for ascending, `"D"` for
-descending. Used by the query processor's `by` and `by.dsnd` clauses.
+| | |
+|---|---|
+| `!ERRTEXT` | `call "!ERRTEXT", expansion, errno` — the message text for a status code |
+| `!FORMAT` | `call "!FORMAT", in.rec, out.rec, default.file, indent.step, case.option, errors` — the source formatter behind the `format` verb |
+| `!SORT` | `call "!SORT", in.list, out.list, mode` — sort a list |
+| `!VOCREC` | `call "!VOCREC", rec, (id)` — build or check a VOC record |
 
-### !USERNAME
+`!ERRTEXT` is the useful one. A program that traps a status code and wants to
+log something a person can read should call it rather than keep its own table
+of numbers.
 
-```
-call "!USERNAME", result
-```
+### Selection lists on screen
 
-Returns the current user's name. The same value as `@user.name`.
+| | |
+|---|---|
+| `!PICK` | `call "!PICK", item, top.line, item.list, title, pick.pos` — a scrolling chooser |
+| `!PICKLST` | `call "!PICK.LIST", value, …` — the list variant |
 
-### !ERRTEXT
+Both need a real terminal. Neither does anything useful in a phantom, a
+scheduled job or an API session.
 
-```
-call "!ERRTEXT", result, errno
-```
+### Printing and program information
 
-Returns the text of a system error message, given its number. Used by
-error-handling routines that need to display or log the message for a
-status code.
+| | |
+|---|---|
+| `!PCL` | `pcl(key, arg1 … arg6)` — printer control sequences, variable arguments |
+| `!PROG_INFO` | `call "!PROG_INFO", obj_dir_path, obj_name, prog_name, prog_obj_sz, prog_comp_time, prog_comp_date, error_msg` |
 
-### !SCREEN
+### The command parser
 
-```
-call "!SCREEN", result, screen.name, data
-```
+| | |
+|---|---|
+| `!PARSER` | `call "!PARSER", key, type, string, keyword, voc.rec, quote.char` — variable arguments |
 
-Drives a screen form. Used by full-screen tools like `sp.view` and
-the editors. Not callable from a non-interactive context.
+`!PARSER` is the tokeniser SD's own verbs use to read their arguments, and the
+keys it takes are defined in `SYSCOM/PARSER.H`. It is the most useful of the
+internal routines and the one most likely to change.
 
-### !PCL
+## The internal ones
 
-```
-call "!PCL", result, data, mode
-```
+These exist for SD's own use. They are catalogued because SD's programs are
+ordinary compiled programs and reach them the same way anything else does.
 
-Generates PCL (Printer Control Language) output. Used by the printing
-system for printers that expect PCL.
+**Calling them from an application is not supported.** Several refuse a session
+that is not elevated or not administrative, and some change the state of the
+machine.
 
-## Subroutines that may not exist
+| | |
+|---|---|
+| `!ATVAR` `!SETVAR` | read and set the `@` variables |
+| `!GETPU` `!SETPU` | read and set per-user values |
+| `!CREATE_USER` `!DELETE_USER` `!SET_PASSWD` | the Windows account half of `create.account`, `delete.account` and `modify.password` |
+| `!CRED_SET` `!CRED_VERIFY` | write and check a credential in the credential store |
+| `!SD_GET_SALT` `!SD_KEY_FROM_PW` | the key derivation behind that credential |
+| `!EUID_SET` `!EUID_RESTORE` | the POSIX effective identity calls |
+| `!ELEVATE` | starts, uses and stops the elevated helper |
+| `!PS_SCRIPT` `!PS_SCRIPT_OUT` | run a PowerShell script through that helper, without and with its output |
+| `!IS_USER` `!IS_GROUP` `!IS_GRP_MEMBER` `!IS_SD_USER` `!OS_GROUP` | Windows account and group questions |
+| `!PROFILE_DIR` | `profile_dir(username)` — where a Windows profile lives |
+| `!SD_ADMIN_TIER` `!TIER_ALLOWS` | the account tier, and whether it permits something |
+| `!SDCLIENT` | the server side of the client API |
 
-Not every `!`-prefixed name that appears in upstream documentation is
-present in SD Core for Windows. If a subroutine has been removed or
-was never part of the GPL release, calling it will fail with a
-*Subroutine not found* error.
+## What is not here
 
-> ***Test before relying on any internal subroutine.*** The safe way to
-> discover what is catalogued is `map` in the account or `list.dict` on
-> the `gpl.bp` file in `sdsys`. If the name is not there, it is not
-> available.
+Documentation for other MultiValue systems describes `!`-prefixed routines SD
+Core for Windows does not have. Three a reader may come looking for:
+
+| | |
+|---|---|
+| `!OCONV` `!ICONV` | not catalogued. `oconv()` and `iconv()` are ordinary BASIC functions and do the same work |
+| `!SCREEN` | not catalogued, and there is no equivalent |
+
+**To settle the question for any name, use `map` in the account.** It lists what
+the catalogue holds. A name that is not there is not available, and calling it
+fails at run time rather than at compile time.
 
 ## See also
 

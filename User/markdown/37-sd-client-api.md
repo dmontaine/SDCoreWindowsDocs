@@ -11,20 +11,44 @@ program that talks to SD needs API access and may need nothing else.
 
 ## The library
 
+Four DLLs are installed. They are built from one source: each pair is the same
+code compiled twice under two output names, so the two files are not identical
+on disk but behave identically.
+
 | | |
 |---|---|
-| 64-bit | `sdclilib.dll` (also linked as `sdclient.dll`) |
-| 32-bit | `qmclilib.dll` (also linked as `qmclient.dll`) |
+| 64-bit | `sdclilib.dll` and `sdclient.dll` |
+| 32-bit | `qmclilib.dll` and `qmclient.dll` |
 
-Both names point to the same code — they are second links, not file
-copies. The `*clilib` names are what existing applications ask for; the
-`*client` names are for new work. An import library records the DLL
-name its symbols come from, so a renamed copy would send the application
-back to the original.
+The `*clilib` names are what existing applications ask for; the `*client` names
+are for new work. **Renaming one to the other does not work**: an import library
+records the DLL name its symbols come from, so an application built against
+`sdclilib` loads `sdclilib.dll` whatever you call the file on disk. That is why
+both names are built rather than one being a copy of the other.
 
-> ***THE ARCHITECTURE MUST MATCH THE APPLICATION, NOT THE MACHINE.*** A
-> 32-bit application on 64-bit Windows needs the 32-bit DLL. The 32-bit
-> build is a shipping deliverable, not a testing convenience.
+> ***The architecture must match the application, not the machine.*** A 32-bit
+> application on 64-bit Windows needs the 32-bit DLL. The 32-bit build is a
+> shipping deliverable rather than a testing convenience.
+
+### Where they are, and how to use them
+
+```
+C:\Program Files\SD\usr\clients\client64\     sdclilib.dll  sdclient.dll
+C:\Program Files\SD\usr\clients\client32\     qmclilib.dll  qmclient.dll
+```
+
+**Nothing is put on the system PATH for you.** Copy the DLL your application
+needs either **beside the application's own executable** or into
+`C:\Windows\System32`. Those are the two supported routes and either works.
+
+`usr\clients` holds the DLLs and nothing else — no import libraries and no
+headers travel with them. The header, `sdclilib.h`, reaches every installation
+anyway at `C:\ProgramData\SD\sdsys\syscom\sdclilib.h`.
+
+The 64-bit pair also appears in `C:\Program Files\SD\usr\bin`, beside `sd.exe`,
+and that copy is byte-identical to the one under `usr\clients`. It is the
+server's own, and it is not the copy you should be taking — with one exception,
+which is the next section.
 
 ## Connection
 
@@ -36,6 +60,24 @@ back to the original.
 > `SDConnectUDS` (Unix Domain Socket) appears in the header but is not
 > applicable on Windows. The Windows port supports local and TCP
 > connections only.
+
+### SDConnectLocal has a requirement the other does not
+
+`SDConnectLocal` starts a session by running `sd.exe`, and **it looks for
+`sd.exe` beside itself** — in the directory the loaded DLL came from, not on
+the PATH.
+
+So a copy of the DLL sitting next to your own application will not make a local
+connection: there is no `sd.exe` there. Two ways round it:
+
+| | |
+|---|---|
+| Load the copy in `usr\bin` | it is beside `sd.exe`, which is why that copy exists |
+| Use `SDConnect` instead | connect to `127.0.0.1` on port 4243 like any other client |
+
+`SDConnectLocal` sends no password at all. It takes the identity of the process
+that called it and checks that account's grants, so the account has to be one
+the calling Windows user may enter.
 
 **The login is SCRAM-SHA-256.** A client that sends a password in
 clear is refused. The server sets a puzzle only someone who knows the

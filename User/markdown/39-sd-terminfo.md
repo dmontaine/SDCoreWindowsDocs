@@ -1,14 +1,13 @@
 Title: SD Terminal Information (Terminfo)
-Subtitle: The terminfo database, the 63 definitions that ship, and where to get the compiler if you need one.
+Subtitle: The terminfo database, the 63 definitions that ship, and the compiler that ships with them.
 
-SD uses a terminfo database to know what byte sequences a terminal
-sends for each key and what sequences to emit for screen control —
-cursor movement, clear, colour, bold, underline.
+SD uses a terminfo database to know what byte sequences a terminal sends for
+each key, and what sequences to emit for screen control — cursor movement,
+clear, colour, bold, underline.
 
-> ***The terminfo compiler does not ship with SD Core.*** 99.9% of
-> users will use one of the provided terminal definitions. If you need
-> to compile a custom definition, see
-> [Compiling from source](#compiling-from-source) below.
+Most installations never touch it. The 63 shipped definitions cover the
+terminals in ordinary use, and `windows` works with any Windows console, cmd,
+PowerShell or Windows Terminal session.
 
 ## The default terminal
 
@@ -81,20 +80,41 @@ definitions in source form. You can read it to see what a terminal
 definition looks like, and you can use it as a template for a custom
 definition.
 
-## Compiling from source
+## Compiling a definition
 
-> ***The terminfo compiler is not part of SD Core for Windows.***
+**The terminfo compiler ships with SD.** `sdtic.exe` is in
+`C:\Program Files\SD\usr\bin`, beside `sd.exe`. Nothing needs building and
+nothing needs downloading.
 
-The source code for the compiler (`sdtic`) is in the SD source tree on
-GitHub. To compile a custom terminal definition:
+```
+sdtic {options} src...
+```
 
-1. Clone the SD source repository from GitHub
-2. Build the `sdtic` compiler from source
-3. Run `sdtic terminfo.src` to compile all definitions, or `sdtic
-   myterm.src` for a custom one
-4. Place the compiled file where SD can find it
+| | |
+|---|---|
+| `-d` | decompile a named terminal entry instead of compiling |
+| `-i` | display an index of terminal names |
+| `-p`*path* | use the terminfo library at *path* |
+| `-t`*name* | compile only *name*; may be repeated |
+| `-v` | verbose |
+| `-x` | do not overwrite entries that already exist |
 
-This is a low-priority task for the vast majority of users — the 63
-shipped definitions cover virtually every terminal in use. If your
-terminal is not listed, the `windows` definition works with any Windows
-console, cmd, PowerShell or Windows Terminal session.
+Without `-d` it compiles the source files you name. With `-d`, the argument is a
+terminal name to decompile rather than a file.
+
+Two things follow from `-d` that are worth knowing. It is how you read a shipped
+definition without hunting through `terminfo.src`, and it is how you produce a
+starting point for a variant of one:
+
+```
+sdtic -d vt220 > myterm.src
+```
+
+Edit that, then compile it back in. `-x` is the safe form while you are
+experimenting, because it refuses to overwrite a definition that already
+exists.
+
+The compiled definitions live under `C:\ProgramData\SD\sdsys\terminfo`, in
+single-letter directories by first letter. Writing there needs administrator
+rights, so run `sdtic` from an elevated prompt when you are adding a definition
+for the machine.
