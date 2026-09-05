@@ -181,8 +181,10 @@ apply to them.
 
 `modify.account fred both` changes it afterwards — and remember the keyword
 says what the access **is**, not what to add, so `modify.account fred api`
-takes ssh away. Administrators always have both. See
-[Account types](05-account-types.html).
+takes ssh away. **Administrators always have both, and it cannot be taken from
+them — but for an administrator both mean *from this machine only*.** See
+[Account types](05-account-types.html), and the section on remote
+administration below.
 
 **A suspended account is refused after the connection is made, not before.**
 `modify.account fred suspended` does not touch the `sdssh` group, so sshd still
@@ -210,14 +212,59 @@ process opens the database under the invoking user's own token, so everyone who
 uses SD needs file access to the tree and can read another account's directory
 from outside SD. See [Security](12-security.html).
 
-## One caution about remote administration, and it is not measured
+## An administrator cannot sign in from another machine
 
-`LocalAccountTokenFilterPolicy` is not set by SD, so the Windows default UAC
-remote restriction applies: a local account logging on over the network gets a
-**filtered** token. An SD administrator arriving over ssh may therefore be
-unable to elevate, and so unable to reach SDSYS remotely.
+**If your SD account is an ADMINISTRATOR account, SD refuses an ssh connection
+from another computer.** You will see:
 
-**Nobody gets extra access — the failure is that an administrator gets less.**
-It has not been measured, so do not rely on remote administration until you
-have tried it on your own machine. It may simply be the design: the console and
-Remote Desktop belong to administrators, and ssh is for everyone else.
+```
+An administrator may not sign in to this machine from another one.
+```
+
+and the connection ends. The same applies to the API.
+
+**ssh and the API still work for an administrator on this machine.** A loopback
+connection — `ssh you@localhost`, or an API client running on the same box — is
+admitted normally. It is *remote* that is refused, not ssh.
+
+**Nothing changes for ordinary accounts.** Standard and programmer accounts keep
+ssh from anywhere, exactly as before, and so does a Windows administrator whose
+SD account is an ordinary one. **It is the SD account tier that decides, not
+Windows group membership.**
+
+### Where administration happens
+
+- at this machine's own console, or
+- through a remote desktop or remote-control product **installed as a service**.
+
+A per-user install of a remote-control tool is not enough: it cannot display the
+Windows consent prompt, and the operator sees a frozen screen instead.
+
+### Why
+
+Administration needs a screen Windows can draw its consent prompt on. That
+prompt is what makes an elevation something a person agreed to, rather than
+something that merely happened. A connection from another machine has no such
+screen.
+
+**This page previously said the opposite, and the correction is worth stating
+plainly.** It described a Windows restriction that would leave an administrator
+over ssh with a *filtered* token — *"nobody gets extra access, the failure is
+that an administrator gets less"* — and admitted the claim had never been
+measured. **It was measured, and it was wrong in the dangerous direction.**
+OpenSSH runs as a system service and builds the sign-in token itself, so that
+filtering never applied to it: a Windows administrator arriving over ssh held
+**full** administrator rights, with nobody asked to consent to anything. That is
+the hole this refusal closes.
+
+### If you rely on remote administration today
+
+**It will stop working when you upgrade, and that is deliberate.** Use the
+console, or a service-installed remote desktop. If the account only needs
+ordinary, non-administrative work from another machine, ask an administrator to
+change its tier instead.
+
+**Scheduled tasks are affected too.** A task that runs unattended has no screen
+either, so one signing in as an administrator account is refused. Give it an
+ordinary account and list the command it runs in the SD system file
+`batch.jobs`.
