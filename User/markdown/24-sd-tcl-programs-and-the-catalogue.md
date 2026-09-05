@@ -31,7 +31,7 @@ WARNING: Final END statement is missing
 Compiled 1 program(s) with no errors
 ```
 
-***A WARNING IS NOT AN ERROR AND THE PROGRAM STILL RUNS.*** The line above is a
+**A warning is not an error and the program still runs.** The line above is a
 warning, the count says `0 error(s)`, and that program ran. **Read the count,
 not the presence of output.**
 
@@ -39,7 +39,7 @@ not the presence of output.**
 fatal error.
 
 **The object code goes into `bp.out`**, a separate file beside `bp`, one record
-per program. ***ITS NAME IS LOWER CASE EVEN WHEN THE SOURCE RECORD IS NOT*** —
+per program. **Its name is lower case even when the source record is not** —
 a source record `ZZPROG` compiles to an object record `zzprog`. That is this
 port's naming, and it is worth knowing before you go looking for the object by
 the name you typed.
@@ -91,8 +91,8 @@ itself.
 | **local** | a VOC entry in the account, so the name works only there |
 | **global** | `gcat` in the system account — **every account sees it** |
 
-***GLOBAL CATALOGUING REQUIRES ADMINISTRATOR PRIVILEGE, AND ON THIS PORT THAT
-MEANS AN ELEVATED SESSION.*** Without it you get *"Command requires
+**Global cataloguing requires administrator privilege, and on this port that
+means an elevated session.** Without it you get *"Command requires
 administrator privileges"*. **The same gate applies to an implicit global
 catalogue** — one chosen by a `*`, `!`, `_` or `$` prefix on the call name
 rather than by the `global` keyword — so the prefix is not a way round it.
@@ -183,8 +183,8 @@ is internal-only.
 
 ## The two that are not like the others
 
-**`generate`** builds `$include` token definitions from a dictionary. ***It is
-interactive*** — it asks for the token type, the prefix and several other
+**`generate`** builds `$include` token definitions from a dictionary. **It is
+interactive** — it asks for the token type, the prefix and several other
 things — so it cannot be driven from a script.
 
 **`debug`** runs a program under the debugger, taking the same arguments as
@@ -199,7 +199,7 @@ program in a phantom process"*. The debugger itself is covered in
 | **standard** | `format` `list.common` |
 | **programmer** | `basic` `catalog` `catalogue` `cd` `compile.dict` `debug` `delete.catalog` `delete.catalogue` `delete.common` `generate` `map` `run` |
 
-***A STANDARD ACCOUNT CAN RUN CATALOGUED PROGRAMS AND CANNOT MAKE THEM.*** That
+**A standard account can run catalogued programs and cannot make them.** That
 is the whole point of the split: an application is deployed by cataloguing it,
 and the people who use the application need none of the verbs on this page to
 run it.

@@ -49,7 +49,7 @@ programmer needs these to debug their own code.
 
 ### Editors
 
-***THERE ARE TWO, AND THEY BEHAVE IDENTICALLY.*** The verb chooses the editor
+**There are two, and they behave identically.** The verb chooses the editor
 and nothing else changes:
 
 | | |
@@ -63,7 +63,7 @@ micro bp myprog
 edit  dict customers name
 ```
 
-***`edit` USED TO BE A SECOND NAME FOR `ed`, AND IS NOT ANY MORE.*** If you
+**`edit` used to be a second name for `ed`, and is not any more.** If you
 have been typing it to get the line editor, you will now get a full screen.
 
 Either verb writes the record to a working copy, opens the editor on it, reads
@@ -75,7 +75,7 @@ Where a machine does not have one, the SD installer installs it; if that could
 not be done, the verb says so and names the command that installs it.
 `C:\ProgramData\SD\install-editors.log` records what the installer found.
 
-***ONLY `micro` HIGHLIGHTS SD BASIC.*** Microsoft Edit has no syntax
+**Only `micro` highlights SD basic.** Microsoft Edit has no syntax
 highlighting at all, which is the one real difference between the two verbs:
 
 | | |
@@ -113,11 +113,11 @@ text:
 | **Data records with multivalues** | fine — see the tokens below |
 | **Data records with subvalues** | fine — see the tokens below |
 
-***A FIELD IS A LINE AND THAT PART NEEDS NO EXPLANATION.*** SD writes the
+**A field is a line and that part needs no explanation.** SD writes the
 working copy with one field per line, so moving between fields is moving
 between lines.
 
-***A VALUE MARK IS NOT A LINE, AND NEITHER IS A SUBVALUE MARK.*** Both are
+**A value mark is not a line, and neither is a subvalue mark.** Both are
 control characters an editor cannot show, so each has a token you can type:
 
 | Type | To get |
@@ -141,7 +141,7 @@ RED~`BLUE~~GREEN
 
 is two values, the first of which has two subvalues.
 
-***A RECORD THAT CANNOT BE WRITTEN THIS WAY IS REFUSED, NOT MANGLED.*** Some
+**A record that cannot be written this way is refused, not mangled.** Some
 records would come back different from how they went in — one that already
 contains `~~` as data, for instance, or one with a `~` sitting immediately
 before a mark, where the tilde and the token run together. Before opening the
@@ -158,7 +158,7 @@ edit it, and recompiled with `cd` when you save — the same thing the old
 
 ### Give these verbs only to people you trust
 
-***AN EDITOR CAN WRITE ANYWHERE ITS USER CAN WRITE.*** It opens the record you
+**An editor can write anywhere its user can write.** It opens the record you
 named, but nothing stops the person then opening any other file on the machine
 that their Windows account may open — inside the SD data tree or outside it
 altogether. **That is not a hole in SD; it is what an editor is**, and it is
@@ -176,7 +176,7 @@ permissions.** See [Security](12-security.html).
 
 ### Both editors need `OS.EXECUTE` permission as well as the verb
 
-***HAVING THE VERB IS NOT ENOUGH.*** An editor runs outside SD, so reaching one
+**Having the verb is not enough.** An editor runs outside SD, so reaching one
 is reaching the operating system — and who may do that is **field 2 of your
 record in `os.users`**, the same field that governs `OS.EXECUTE` from inside a
 program. Two gates, and both have to pass:
@@ -210,7 +210,7 @@ An administrator grants it — see
 or a piped script has nowhere to draw a full screen, and is told that rather
 than being told about `os.users`.
 
-> ***WHAT AN EDITOR CAN REACH, and it is worth knowing before you grant it.***
+> **WHAT AN EDITOR CAN REACH, and it is worth knowing before you grant it.**
 > An editor can open any file the person running it is allowed to open, so both
 > verbs reach beyond SD's own files. Neither is a shell — neither editor can
 > run a command. That is what field 2 is deciding, and it is why the verb alone
@@ -222,7 +222,7 @@ than being told about `os.users`.
 editor: an ssh session reaches SD through a terminal like any other, and SD
 hands the editor that terminal rather than reading it through a pipe.
 
-***AN ssh SESSION CAN NEVER BE ELEVATED***, though, so an administrator
+**AN ssh SESSION CAN NEVER BE ELEVATED**, though, so an administrator
 arriving that way needs an `os.users` entry the same as anybody else — being an
 administrator is not enough on its own over ssh.
 
@@ -263,7 +263,7 @@ The removed full-screen editors are a different matter: `sed`,
 
 ## What the split does and does not do
 
-***IT IS A POSTURE, NOT A BOUNDARY.*** An administrator can copy any verb into
+**It is a posture, not a boundary.** An administrator can copy any verb into
 any account's VOC afterwards. A reduced VOC is where an account **starts**, not
 something SD enforces at run time.
 

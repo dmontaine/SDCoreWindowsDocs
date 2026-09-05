@@ -53,8 +53,8 @@ list.grants <account>
 
 All three need an elevated session.
 
-***A GRANT OR A REVOKE DOES NOT TAKE EFFECT UNTIL THE PERSON SIGNS OUT OF
-WINDOWS AND BACK IN.*** Entry to an account is Windows group membership, and
+**A grant or a revoke does not take effect until the person signs out of
+Windows and back in.** Entry to an account is Windows group membership, and
 Windows fixes that at logon. **Somebody you have just revoked keeps the account
 until they get a new token.** Both verbs print the reminder every time.
 
@@ -68,7 +68,7 @@ modify.password {<account>}
 password from the moment it is created, so there is nothing to *set* for the
 first time.
 
-***A PASSWORD CANNOT BE TYPED ON THE COMMAND LINE.*** **`modify.password`** refuses
+**A password cannot be typed on the command line.** **`modify.password`** refuses
 one given as an argument. A password on a command line is visible to any local
 user through Task Manager or `Get-CimInstance Win32_Process`, so SD prompts for
 it instead, masked.
@@ -85,7 +85,7 @@ listu / list.readu
 logout
 ```
 
-***`unlock` is the one to know about.*** It clears a record lock left behind by
+**`unlock` is the one to know about.** It clears a record lock left behind by
 a session that died holding one. Without it the only way to release such a lock
 is to stop and restart SD, which disconnects everybody.
 
@@ -117,7 +117,7 @@ set.date
 
 ## The shell escapes — `sh` and `!`
 
-***WHO MAY USE `sh` IS A LIST YOU KEEP, NOT A MATTER OF ELEVATION.***
+**Who may use `sh` is a list you keep, not a matter of elevation.**
 
 This is one of the larger behavioural changes in the port. In earlier builds of
 it **`sh`** required an elevated session — and **an ssh session can never be
@@ -145,7 +145,7 @@ modify.account fred os-off
 fields**, not four names for one state, so `sh-off` leaves `OS.EXECUTE` alone —
 and the verb prints the resulting record, both fields, every time.
 
-***AN ADMINISTRATOR-TIER ACCOUNT GETS BOTH FIELDS WITHOUT BEING ASKED***,
+**An administrator-tier account gets both fields without being asked**,
 including the account the installer makes for whoever installs SD. That is why
 an administrator reaches the editors and the shell from an ordinary,
 unelevated session.
@@ -192,7 +192,7 @@ stop inserting, then `fi` to file and exit. **Field 1 is `SH`, field 2 is
 **`don` is the Windows login name, not the SD account name.** They are usually
 the same; where they are not, this file wants the one the person signs in with.
 
-***THE CHANGE TAKES EFFECT ON THEIR NEXT COMMAND***, not at their next login —
+**The change takes effect on their next command**, not at their next login —
 the list is read when the shell or the editor is asked for.
 
 **To take it away, set the field to anything else or delete the record.**
@@ -203,7 +203,7 @@ Deleting the record removes both.
 | 1 | `SH` — a shell at the command prompt | `yes`, or anything else for no |
 | 2 | `OS.EX` — `OS.EXECUTE` from inside a program, **and the `edit` and `micro` editors** | `yes`, or anything else for no |
 
-***FIELD 2 IS WHAT LETS A PROGRAMMER USE THE FULL-SCREEN EDITORS.*** They run
+**Field 2 is what lets a programmer use the full-screen editors.** They run
 an editor outside SD, so they are reaching the operating system whatever the
 VOC tier says. A programmer with the verb and no `yes` in field 2 is told the
 command is not available and what to ask for — see
@@ -212,7 +212,7 @@ command is not available and what to ask for — see
 **A missing record, or a missing file, means no.** An installation that has
 never set `os.users` up denies both to ordinary accounts.
 
-***ONE CASE HAND-EDITING IS THE ONLY WAY OUT OF.*** An account promoted to
+**One case Hand-editing is the only way out of.** An account promoted to
 administrator gets both fields written; an account that was *adopted* over a
 Windows login which already had a record saying `no` **keeps that record**, and
 because the four keywords refuse an administrator, no verb can then change it.
@@ -243,7 +243,7 @@ as before.
 
 ### Three rules that go with it
 
-***ONLY AN ADMINISTRATOR CAN EDIT THE LIST.*** `os.users` is read-only to
+**Only an administrator can edit the list.** `os.users` is read-only to
 everybody else on disk, and **that ACL is the whole of what stops a user
 granting themselves a shell. Do not loosen those permissions.**
 

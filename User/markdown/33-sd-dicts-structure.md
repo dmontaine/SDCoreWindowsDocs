@@ -49,7 +49,7 @@ type `D` and the rest is a comment.
 | `PH` | phrase | a stored fragment substituted into a query command line |
 | `X` | text | miscellaneous data — not a field definition |
 
-***`A` AND `S` ARE THE PICK LAYOUT, NOT THE SD LAYOUT.*** They carry the
+**`A` and `S` are the Pick layout, not the SD layout.** They carry the
 same information as `D` but in different fields — field 3 holds the
 display name, field 7 the conversion, field 8 the correlative, field 9
 the justification, field 10 the width. SD supports them because
@@ -130,7 +130,7 @@ values are parallel. If `qty` and `price` are both multivalued and both
 carry association `LINE.ITEM`, the query processor prints them side by
 side: `qty` value 1 next to `price` value 1, and so on.
 
-***AN ASSOCIATION IS A NAME, NOT A STRUCTURE.*** The fields that share
+**An association is a name, not a structure.** The fields that share
 one are linked by having the same name in field 7, not by anything stored
 separately. There is no association record.
 
@@ -177,8 +177,8 @@ variable number of arguments.
 An I-type is compiled the first time it is used after it is written or
 edited. The compiled object is stored in field 16 onward of the same
 dictionary record, and a stamp in field 15 tells the query processor
-whether the object is current. ***Editing field 2 invalidates the
-object.*** The next query recompiles it. If the expression has a syntax
+whether the object is current. **Editing field 2 invalidates the
+object.** The next query recompiles it. If the expression has a syntax
 error, the query reports it and the field appears empty.
 
 ### The field 15 stamp
@@ -335,17 +335,17 @@ and every program that includes it picks up the change on recompile.
 
 ## What is not here
 
-***THERE IS NO VERB THAT LISTS DICTIONARY RECORDS BY TYPE.*** `DICT`
+**There is no verb that lists dictionary records by type.** `DICT`
 *file.name* displays the records, and `LIST DICT` *file.name* runs the
 query processor over them, but there is no `listd` or `listdict` verb.
 `ED DICT` *file* *name* edits one record; `DICT` *file* displays
 several.
 
-***`L`-TYPES ARE NOT IN A STOCK DICTIONARY.*** Type `L` is handled by
+**`L`-types are not in a stock dictionary.** Type `L` is handled by
 the query processor and there is no shipped example. It exists for
 applications that need cross-file joins in a query.
 
-***THE `C` TYPE IS RARE.*** Stock dictionaries use `D` for direct fields
+**The `C` type is rare.** Stock dictionaries use `D` for direct fields
 and `I` for computed ones. `C` exists for compatibility and is
 functionally a subset of `I` — use `I` for new computed fields.
 

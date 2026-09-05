@@ -37,7 +37,7 @@ load-bearing and the remaining thirty are not.**
 | `X` | text | miscellaneous data — not a command |
 | `D` | descriptor | a data descriptor, which is what dictionary records are |
 
-***`PQ` IS A VALID TYPE AND IS REFUSED.*** PROC was removed from this port
+**`PQ` is a valid type and is refused.** PROC was removed from this port
 (23 Aug 2026). A record of type `PQ` is reported as *"PROC is not
 supported"* rather than being dispatched, because the record itself is
 valid PROC and it is the interpreter that is gone.
@@ -147,7 +147,7 @@ dispatch type, and it is field 3 that marks the record as a verb.
 
 Field 4 carries dispatch options and **field 5 names a security subroutine**.
 If field 5 is present, that subroutine is called before the verb runs and
-can refuse it. ***None of the shipped verbs uses field 5*** — the tiering
+can refuse it. **None of the shipped verbs uses field 5** — the tiering
 in this port is done by giving or withholding the VOC record, not by a
 security subroutine — but the mechanism is there for a site that wants a
 verb guarded rather than absent.
@@ -167,7 +167,7 @@ Four records ship as a keyword **and** a verb in one: `break`, `count`,
 processor uses, and **fields 3 onward are a complete verb record**, which
 the command processor re-parses when the name is typed as a command.
 
-***THIS MATTERS FOR COUNTING WHAT AN ACCOUNT HAS.*** A tally of VOC
+**This matters for counting what an account has.** A tally of VOC
 records whose field 1 begins with `V` misses all four, and `count` is not
 a marginal verb. A standard account has **82** verbs, not 78.
 
@@ -286,7 +286,7 @@ A name is tried **as typed, then lower case, then upper case**. This is
 the change that lets a lower-case `voc`, `bp` and `newvoc` on disk
 coexist with code and habits that still type names in upper case.
 
-***ACCOUNT NAMES ARE THE DELIBERATE EXCEPTION.*** They are still folded
+**Account names are the deliberate exception.** They are still folded
 upward, which is what makes signing in case-insensitive.
 
 ### If the VOC has nothing, the catalogue is tried
@@ -328,7 +328,7 @@ changed, not the whole file. `TIER.OMIT.STANDARD` and
 `TIER.ADD.ADMINISTRATOR` in `NEWVOC` control what each account type
 receives.
 
-***THE TIER TEST IS THE ONE THIS RECORD EXISTS FOR.*** `update.accounts`
+**The tier test is the one this record exists for.** `update.accounts`
 on a standard account must not give back the verbs that were withheld
 when the account was created. A standard account starts with fewer verbs
 than an administrator account, and `update.accounts` preserves that
@@ -418,7 +418,7 @@ its tier omits.
 | **standard** | everything in `voc_template` plus everything in `NEWVOC`, less `TIER.OMIT.STANDARD` (42 names) |
 | **programmer** | standard plus the programmer verbs from `TIER.ADD.ADMINISTRATOR` |
 
-***THE TIER IS IN THE VOC, NOT IN THE VERB.*** A standard account does
+**The tier is in the VOC, not in the verb.** A standard account does
 not have `create.file` because the VOC record for it is not there, not
 because a security subroutine refuses it. The name is simply not
 recognised. This is the design: tiering is done by giving or withholding
@@ -437,20 +437,20 @@ to lower case on 19 Aug 2026. `VOC`, `NEWVOC`, `ACCOUNTS`, `MESSAGES`,
 
 ## What is not here
 
-***THERE IS NO VERB THAT EDITS THE VOC DIRECTLY.*** `ED` edits any file,
+**There is no verb that edits the VOC directly.** `ED` edits any file,
 and `ED VOC`*name* is how you edit a VOC record by hand. But there is no
 verb whose purpose is to create or modify VOC entries — `set.file` writes
 one kind, `.s` writes two, and everything else is done with `ED` or with
 `copy from voc`.
 
-***`PROC` IS REMOVED.*** A `PQ`-type record is refused by name. Nothing
+**`PROC` is removed.** A `PQ`-type record is refused by name. Nothing
 that ships is type `PQ`, so this can only be met in a VOC record somebody
 wrote.
 
-***`menu` RECORDS ARE DISPATCHED BUT NO MENU SHIPS.*** Type `M` is handled
+**`menu` records are dispatched but no menu ships.** Type `M` is handled
 and there is no shipped example to look at.
 
-***`EDIT` IS IN THE VOC BUT CANNOT RUN.*** Its type field reads
+**`EDIT` is in the VOC but cannot run.** Its type field reads
 `Verb - Full screen editor`, which is not `V`, so the command processor
 does not dispatch it. The record is there so that `EDIT` at the prompt
 prints *"Full screen editor is no longer supported"* rather than *"verb

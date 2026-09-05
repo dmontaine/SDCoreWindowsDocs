@@ -122,7 +122,7 @@ count voc with f1 like "V0X"
 140 record(s) counted
 ```
 
-> ***A PATTERN THAT IS NOT VALID SELECTS NOTHING AND DOES NOT COMPLAIN.***
+> **A pattern that is not valid selects nothing and does not complain.**
 > Writing that same query as `like "V]"` returns **0 record(s) counted** — not
 > an error, not a warning. **Always prove a pattern against a case you know
 > matches** before believing a small answer, and be especially careful of a
@@ -245,8 +245,8 @@ A sampled listing says so in its trailing line — `Sample of 3 record(s) listed
 rather than `3 record(s) listed` — so a partial report cannot be mistaken for a
 whole one.
 
-> ***`sample` TAKES THE FIRST RECORDS FOUND AND THEN SORTS THEM. IT IS NOT THE
-> FIRST *n* IN SORTED ORDER.*** Adding `sample 3` to the sorted listing above
+> **`sample` TAKES THE FIRST RECORDS FOUND AND THEN SORTS THEM. IT IS NOT THE
+> FIRST *n* IN SORTED ORDER.** Adding `sample 3` to the sorted listing above
 > returns `count`, `show`, `sort` — not `count`, `list`, `list.item`, which is
 > what the first three of that report actually are. **The sample is taken during
 > selection and the sort happens afterwards, on the sample.** Use it to see the

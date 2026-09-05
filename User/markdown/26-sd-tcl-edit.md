@@ -25,7 +25,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## Both editors are installed with SD
 
-***YOU DO NOT INSTALL ANYTHING.*** SD's installer checks for both editors and
+**You do not install anything.** SD's installer checks for both editors and
 installs whichever is missing, machine-wide, so every account SD creates can
 reach them. Microsoft Edit is usually already there — it is part of current
 Windows, at `C:\Windows\System32\edit.exe`.
@@ -52,7 +52,7 @@ rather than opening nothing and reporting the record unchanged.
 | **`Ctrl-P`** | go to file |
 | **`Alt-Z`** | toggle word wrap |
 
-***THE MENU BAR IS THE HELP.*** There is no help screen — the Help menu holds
+**The menu bar is the help.** There is no help screen — the Help menu holds
 only *About* — and there does not need to be one: **`F10`** or **`Alt`** and the
 menu's letter opens a menu, and every command is listed there **with its
 shortcut printed beside it**.
@@ -89,8 +89,8 @@ A **field** mark is a line break, so a text editor handles fields on its own.
 The other three marks are single control characters an editor would either draw
 as a stray glyph or drop, so each has a token you type instead.
 
-***EVERY TOKEN IS `~` AND ONE MORE CHARACTER, AND `~` IS THE ONLY ESCAPE
-CHARACTER.***
+**Every token is `~` and one more character, and `~` is the only escape
+character.**
 
 | | |
 |---|---|
@@ -135,7 +135,7 @@ An editor runs outside SD, so it needs operating-system permission that `ed`
 does not. It comes from a record in the system file `os.users` whose field 2
 reads `yes`, **and only an administrator can put one there.**
 
-***AN ADMINISTRATOR GETS ONE WITHOUT ASKING.*** An account created with the
+**An administrator gets one without asking.** An account created with the
 **ADMINISTRATOR** tier — which is the tier of the account SD's installer makes
 for whoever installs it — is written into `os.users` as it is created, with both
 fields `yes`. So an administrator reaches the operating system **without
@@ -156,7 +156,7 @@ They are four switches over two fields rather than four names for one state, so
 session**, as it always has — you elevate to grant somebody the right not to
 have to.
 
-***THE FOUR REFUSE AN ADMINISTRATOR, IN BOTH DIRECTIONS.*** An administrator
+**The four refuse an administrator, in both directions.** An administrator
 has all three routes — `ssh`, the API and the operating system — as a rule, and
 none of them is `modify.account`'s to change:
 
@@ -176,7 +176,7 @@ record and is refused until somebody grants it.
 An elevated session passes anyway, whatever the file says — otherwise an empty
 `os.users` would lock the machine's own administrator out.
 
-***AND A SESSION WITH NO TERMINAL IS REFUSED BEFORE ANYTHING IS WRITTEN*** — an
+**And a session with no terminal is refused before anything is written** — an
 API session, or a script driving SD down a pipe:
 
 ```

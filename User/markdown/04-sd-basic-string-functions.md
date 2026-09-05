@@ -20,8 +20,8 @@ here in lower case. In the tables, *italics* mark something you supply and
 Everything in SD is a string. There is no separate character type and no
 length declaration — a variable holds as much as you put in it.
 
-***THE MARK CHARACTERS ARE ORDINARY CHARACTERS TO EVERY FUNCTION ON THIS
-PAGE.*** `@fm`, `@vm` and `@sm` occupy one byte each and are counted, indexed,
+**The mark characters are ordinary characters to every function on this
+page.** `@fm`, `@vm` and `@sm` occupy one byte each and are counted, indexed,
 extracted and replaced like any other:
 
 ```
@@ -59,10 +59,10 @@ dcount(string, delimiter)
 | `dcount('a,b,c', ',')` | `3` | three fields |
 | `dcount('a,,c', ',')` | `3` | the empty middle field still counts |
 | `dcount('a', ',')` | `1` | no delimiter, one field |
-| `dcount('', ',')` | **`0`** | ***not 1*** |
+| `dcount('', ',')` | **`0`** | **not 1** |
 | `count('aaaa', 'aa')` | `2` | matches do not overlap |
 
-> ***`dcount()` OF AN EMPTY STRING IS ZERO, NOT ONE.*** Everywhere else an
+> **`dcount()` of an empty string is zero, not one.** Everywhere else an
 > empty string behaves like a single empty field, so `for i = 1 to dcount(x,
 > @fm)` is the correct idiom precisely **because** it does nothing when `x` is
 > empty. Code that assumes at least one field and indexes `field(x, ',', 1)`
@@ -141,8 +141,8 @@ string[start, length]
 | `s[0, 3]` | `abc` | a start below 1 is treated as 1 |
 | `s[-3, 2]` | `ab` | so is a negative start |
 
-***THE ONE-ARGUMENT FORM IS THE RIGHTMOST CHARACTERS, NOT THE CHARACTER AT
-THAT POSITION.***
+**The one-argument form is the rightmost characters, not the character at
+that position.**
 
 ```
 s[3]        ;* fgh - the last three characters of 'abcdefgh'
@@ -251,7 +251,7 @@ str(string, count)
 | `space()` | *count* spaces. `space(0)` is empty |
 | `str()` | *string* **repeated** *count* times |
 
-> ***`str()` REPEATS, IT DOES NOT PAD.*** `str('ab', 3)` is `ababab`, six
+> **`str()` repeats, it does not pad.** `str('ab', 3)` is `ababab`, six
 > characters, not `ab ` padded to three. To pad, concatenate `space()` and take
 > a substring, or use `fmt()` — see [SD Basic - Data Conversion](06-sd-basic-data-conversion.html). `str('ab', 0)`
 > is empty.
@@ -303,7 +303,7 @@ convert(from.characters, to.characters, string)
 convert from.characters to to.characters in variable
 ```
 
-***`change()` AND `swap()` ARE THE SAME FUNCTION*** — the compiler emits the
+**`change()` and `swap()` are the same function** — the compiler emits the
 same operation for both. Use whichever reads better; there is no behavioural
 difference to choose between.
 
@@ -329,9 +329,9 @@ same position of *to.characters*.
 | Expression | Result | |
 |---|---|---|
 | `convert('abc', 'xyz', 'aabbcc')` | `xxyyzz` | a → x, b → y, c → z |
-| `convert('abc', 'x', 'aabbcc')` | `xx` | ***b and c were deleted*** |
+| `convert('abc', 'x', 'aabbcc')` | `xx` | **b and c were deleted** |
 
-> ***A CHARACTER WITH NO OPPOSITE NUMBER IS REMOVED, NOT LEFT ALONE.*** If the
+> **A character with no opposite number is removed, not left alone.** If the
 > two lists are not the same length, every character in the excess of
 > *from.characters* is deleted from the string. This is the documented Pick
 > behaviour and it is almost never what someone writing
@@ -371,8 +371,8 @@ gives
 the quick|brown fox|jumps over|the lazy dog
 ```
 
-> ***THE TWO-ARGUMENT AND THREE-ARGUMENT FORMS USE DIFFERENT DEFAULT
-> SEPARATORS, WHICH IS NOT AN OBVIOUS THING TO GUESS.*** Measured:
+> **The two-argument and three-argument forms use different default
+> separators, which is not an obvious thing to guess.** Measured:
 >
 > | Call | Separator |
 > |---|---|
@@ -412,7 +412,7 @@ alpha(string)
 | `compare('a2', 'a10')` | `1` | plain text order: `2` after `1` |
 | `compare('a2', 'a10', 'r')` | `-1` | right-justified: the numbers compare as numbers |
 
-***THE `r` JUSTIFICATION IS HOW YOU SORT `item2` BEFORE `item10`.*** Without
+**The `r` justification is how you sort `item2` before `item10`.** Without
 it, embedded numbers compare character by character and `10` sorts before `9`.
 `l` is the explicit left-justified form and is the default.
 
@@ -443,11 +443,11 @@ part of the string that matched a given element of the pattern.
 
 | Element | Matches |
 |---|---|
-| *n***a** | exactly *n* alphabetic characters |
-| *n***n** | exactly *n* digits |
-| *n***x** | exactly *n* characters of any kind |
+| *n**a** | exactly *n* alphabetic characters |
+| *n**n** | exactly *n* digits |
+| *n**x** | exactly *n* characters of any kind |
 | **0a** · **0n** · **0x** | **any number, including none** |
-| *n*`-`*m***a** · *n*`-`*m***n** · *n*`-`*m***x** | between *n* and *m* characters |
+| *n*`-`*m**a** · *n*`-`*m**n** · *n*`-`*m**x** | between *n* and *m* characters |
 | `"literal"` | the quoted text, as it stands |
 | `~`*element* | anything the element would **not** match |
 
@@ -471,7 +471,7 @@ Elements are written one after another with no separator.
 | `'ab12' matches '0a0n'` | true |
 | `'a1b2' matches '0a0n'` | false |
 
-***A PATTERN MAY BE A DYNAMIC ARRAY, AND THE VALUES ARE ALTERNATIVES.***
+**A pattern may be a dynamic array, and the values are alternatives.**
 Measured: `'ab' matches ('2a' : @vm : '2n')` is **true** — the string need only
 match one of them. This is how you accept several formats without writing the
 test three times:
@@ -507,7 +507,7 @@ squote(expr)
 | `quote()` · `dquote()` | wrap in double quotes — `"a"` |
 | `squote()` | wrap in single quotes — `'a'` |
 
-***`quote()` AND `dquote()` ARE THE SAME FUNCTION*** — the compiler emits the
+**`quote()` and `dquote()` are the same function** — the compiler emits the
 same operation for both, so there is nothing to choose between them.
 
 For CSV output do not build quoting by hand: `csvdq()` and the CSV statements

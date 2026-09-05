@@ -15,7 +15,7 @@ here in lower case. In the tables, *italics* mark something you supply and
 
 ## Creating an index takes three steps, and skipping any of them is silent
 
-***THIS IS THE WHOLE OF THIS PAGE'S WARNING, SO IT IS FIRST.*** Each step
+**This is the whole of this page's warning, so it is first.** Each step
 reports success on its own, and a program that stops after the first or second
 gets an index that exists and finds nothing.
 
@@ -39,27 +39,27 @@ A dynamic file with three records, `TOWN` being field 2, holding `LONDON`,
 | | |
 |---|---|
 | `create.index ZZAK TOWN` | *"Added index for TOWN"*, `@system.return.code` **0** |
-| `indices(f)` on the **already-open** file variable | ***empty*** |
-| `fileinfo(f, 13)` on it | ***0 — no indexes*** |
+| `indices(f)` on the **already-open** file variable | **empty** |
+| `fileinfo(f, 13)` on it | **0 — no indexes** |
 | after `close f` and reopening | `indices(f2)` is `TOWN`, `fileinfo(f2, 13)` is `1` |
-| `selectindex 'TOWN', 'LONDON'` at that point | ***0 ids*** |
+| `selectindex 'TOWN', 'LONDON'` at that point | **0 ids** |
 | `build.index` **with the file still open** | *"Cannot gain exclusive access to file"*, `@system.return.code` **3021** |
 | `build.index` after `close` | *"Building index 'TOWN'... 3 records processed / Populating index..."*, `@system.return.code` **0** |
 | `selectindex 'TOWN', 'LONDON'` after reopening | **`C1` and `C3`** |
 
-> ***AN OPEN FILE VARIABLE NEVER LEARNS ABOUT A NEW INDEX.*** The handle
+> **An open file variable never learns about a new index.** The handle
 > carries the index list it had when it was opened. So a program that creates
 > an index and then uses it in the same run finds nothing, and neither
 > `indices()` nor `fileinfo()` gives it a hint — both report the state of the
 > handle, not of the file. **Close and reopen.**
 
-> ***AND `create.index` MAKES AN EMPTY INDEX.*** It records the definition; it
+> **And `create.index` makes an empty index.** It records the definition; it
 > does not walk the existing records. Until `build.index` runs, the index is
 > there, is reported by `indices()`, and matches nothing. A file that was
 > indexed before it had data does not need building; one indexed afterwards
 > always does.
 
-> ***`build.index` NEEDS EXCLUSIVE ACCESS AND YOUR OWN SESSION COUNTS.***
+> **`build.index` needs exclusive access and your own session counts.**
 > Measured: with the file open in the same program, it refused with
 > *"Cannot gain exclusive access to file"* and `@system.return.code` **3021**.
 > **Test that return code** — the message goes to the capture variable, not to
@@ -81,8 +81,8 @@ Index the fields you select on, not every field.
 selectindex index.name {, value} from file.variable {to list}
 ```
 
-***WITH AND WITHOUT A VALUE IT RETURNS COMPLETELY DIFFERENT THINGS, AND
-NEITHER FORM SAYS SO.*** Measured on the file above:
+**With and without a value it returns completely different things, and
+neither form says so.** Measured on the file above:
 
 | Call | What comes back |
 |---|---|
@@ -111,7 +111,7 @@ moves back.
 `setleft 'TOWN' from f`, a `selectright` returned **1 id** with `setting`
 holding **`LEEDS`** — the first value in order.
 
-> ***THESE FOUR TAKE NO `then` OR `else` CLAUSE.*** Writing one is a compile
+> **These four take no `then` or `else` clause.** Writing one is a compile
 > error — *"Unrecognised statement"* — because the parser expects `setting` or
 > `to` and finds a keyword it has no use for. To detect the end of the index,
 > read the select list they build: an empty one means there was nothing
@@ -157,7 +157,7 @@ These reach into the index directly rather than letting SD maintain it. They
 exist for the case an ordinary index cannot express — an index whose key is
 computed by a program rather than taken from a field.
 
-***THEY ARE NOT THE NORMAL ROUTE AND THEY WILL LET YOU CORRUPT AN INDEX.***
+**They are not the normal route and they will Let you corrupt an index.**
 Writing an index entry that does not match the record it points at produces a
 `selectindex` that returns ids whose records do not have the value you asked
 for. Nothing detects that except `build.index`, which rebuilds from the data

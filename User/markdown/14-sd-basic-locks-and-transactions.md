@@ -52,8 +52,8 @@ record — useful when you are about to create one.
 file variable every lock on that file, and with **no arguments at all** every
 lock the session holds.
 
-***A `write` OUTSIDE A TRANSACTION RELEASES THE LOCK; INSIDE ONE IT KEEPS
-IT.*** Measured, on the same record in the same program:
+**A `write` outside a transaction releases the lock; inside one it keeps
+it.** Measured, on the same record in the same program:
 
 | | `recordlocked()` after |
 |---|---|
@@ -83,7 +83,7 @@ a second session holding the lock:
 | **2** | **this** session holds an update lock |
 | **3** | **this** session holds a file lock |
 
-***AND `status()` AFTER IT IS THE OTHER SESSION'S USER NUMBER.*** This is not
+**And `status()` after it is the other session's user number.** This is not
 written down anywhere else and it is the only way to find out *who* is holding
 the record. Measured with the holder running as user 73 and the asker as user
 74:
@@ -115,8 +115,8 @@ end else
 end
 ```
 
-***WITHOUT A `locked` CLAUSE, A CONFLICTING READ WAITS — AND IT REALLY DOES
-WAIT.*** Measured across two sessions: the second session's plain `readu`
+**Without a `locked` clause, a conflicting read waits — and it really does
+wait.** Measured across two sessions: the second session's plain `readu`
 against a record the first was holding **blocked for 252 ms** and returned the
 instant the holder released it, with `recordlocked()` then reading `2`. It does
 not fail, it does not time out, and there is no message. SD retries every 250
@@ -135,7 +135,7 @@ Measured, with one session holding an update lock on `R1`:
 | `readu ... 'R2' locked` | succeeded — a different record is unaffected |
 | plain `readu ... 'R1'` | waited 252 ms, then got the lock |
 
-***A READ LOCK IS NOT A FREE PASS.*** `readl` was refused against another
+**A read lock is not a free pass.** `readl` was refused against another
 session's update lock, and `readu` was refused against another session's read
 lock. Two `readl` locks on the same record **do** coexist: measured, both
 sessions held one at once and each saw its own as `1`. When the second released
@@ -149,7 +149,7 @@ filelock file.variable {locked ...} {on error ...}
 fileunlock file.variable
 ```
 
-***`filelock` HAS NO `then` OR `else` CLAUSE, SO SUCCESS IS INVISIBLE.*** It
+**`filelock` has no `then` or `else` clause, so success is invisible.** It
 takes only `locked` and `on error`. If you need to know whether you got it, set
 a flag in the `locked` branch, or ask `recordlocked()` — a `3` means the file
 lock is yours:
@@ -176,10 +176,10 @@ Measured, with one session holding a file lock:
 | `recordlocked(f, 'R1')` from the other session | **-3**, `status()` the owner |
 | `recordlocked(f, 'R2')` | **-3** as well — **every** record, not the one you locked |
 | `readu ... locked` on any record | the **`locked`** branch |
-| a plain `read` | ***succeeded*** — `[beta]` came back normally |
+| a plain `read` | **succeeded** — `[beta]` came back normally |
 | one record already locked by somebody else | `filelock` took the **`locked`** branch |
 
-***A FILE LOCK STOPS LOCKING, NOT READING.*** That surprises people. Other
+**A file lock stops locking, not reading.** That surprises people. Other
 sessions can still read every record in the file while you hold it; what they
 cannot do is take a lock, and therefore cannot write.
 
@@ -194,7 +194,7 @@ There are **64** of them, numbered 0 to 63, and SD attaches no meaning to any
 of them. They are for serialising something that is not a record — a nightly
 report, a printer, an external file.
 
-***A `lock` WITH NO `else` CLAUSE RETRIES FOR EVER.*** The compiler generates
+**A `lock` with no `else` clause retries for ever.** The compiler generates
 one for you, and what it generates is `sleep 1` followed by a jump back to the
 `lock` — so a bare `lock 7` in a program whose lock somebody else holds is an
 infinite loop with a one second period and no output. Write the `else`.
@@ -215,7 +215,7 @@ the source rather than measured: the owner test is *"unowned or mine"*, and
 `unlock` clears the slot outright.
 
 `testlock()` would answer *"who owns lock n"* without taking it, and
-***it is not available to an ordinary program*** — see "What is not here"
+**it is not available to an ordinary program** — see "What is not here"
 below.
 
 ## Transactions
@@ -241,8 +241,8 @@ transaction abort
 Everything written between the start and the `commit` lands together or not at
 all.
 
-***INSIDE A TRANSACTION YOU MUST ALREADY HOLD THE LOCK ON EVERY RECORD YOU
-WRITE OR DELETE.*** This is the rule that catches everybody, and the error
+**Inside a transaction you must already hold the lock on every record you
+write or delete.** This is the rule that catches everybody, and the error
 message names the wrong thing entirely:
 
 ```
@@ -281,11 +281,11 @@ Measured, one transaction per row, each on its own record:
 |---|---|---|---|
 | `commit` then `end transaction` | **lands** | released | **+1** |
 | `rollback` | discarded | released | 0 |
-| ***`end transaction` with neither*** | ***discarded, silently*** | released | 0 |
+| **`end transaction` with neither** | **discarded, silently** | released | 0 |
 | `transaction commit` | **lands** | released | **+1** |
 | `transaction abort` | discarded | released | 0 |
 
-***FALLING OUT OF THE BOTTOM OF A TRANSACTION THROWS THE WORK AWAY.*** There is
+**Falling out of the bottom of a transaction throws the work away.** There is
 no implicit commit. A `return`, a `goto` or simply reaching `end transaction`
 without having executed a `commit` discards every write since the start, and
 nothing is printed. Measured: the record still read `base` afterwards.
@@ -304,7 +304,7 @@ made the record read `else` inside the transaction and reappear afterwards.
 `system(1007)` is reliable: it is a fresh number for each transaction and reads
 0 the moment one ends, either way.
 
-***`system(1008)` IS NOT, AND IT IS A DEFECT.*** The level is incremented when a
+**`system(1008)` is not, and it is a defect.** The level is incremented when a
 transaction starts and decremented only on the paths that end in a rollback, so
 **every committed transaction leaves the count one too high for the rest of the
 session.** Measured: the first transaction reported level 1, the fourth
@@ -314,14 +314,14 @@ upstream's, not this port's: `sdb64` carries the identical code.
 
 ### Do not nest transactions
 
-***A `commit` INSIDE A NESTED TRANSACTION ABANDONS THE OUTER ONE, AND THE OUTER
-WRITE IS LOST.*** Measured, with an outer transaction writing `R2` and an inner
+**A `commit` inside a Nested transaction abandons the outer one, and the outer
+write is lost.** Measured, with an outer transaction writing `R2` and an inner
 one writing `R3`:
 
 | | |
 |---|---|
 | the inner record `R3` | `inner` — landed |
-| the outer record `R2` | ***`base` — the write vanished*** |
+| the outer record `R2` | **`base` — the write vanished** |
 | `system(1007)` after the inner `commit` | **0** — the session is no longer in any transaction |
 
 Nothing is reported. The compiler generates `commit` as a jump past the
@@ -335,12 +335,12 @@ runs inside the caller's transaction, so it is bound by the same locking rule.
 
 ## What is not here
 
-***`testlock()` AND `getlocks()` ARE INTERNAL-ONLY AND AN ORDINARY PROGRAM
-CANNOT CALL THEM.*** They are in the compiler's internal intrinsic list, which
+**`testlock()` and `getlocks()` are internal-only and an ordinary program
+cannot call them.** They are in the compiler's internal intrinsic list, which
 only a program compiled with `$internal` in an administrator's `SDSYS` session
 may reach.
 
-***AND THE COMPILER DOES NOT SAY SO.*** Measured — `v = testlock(5)` in an
+**And the compiler does not say so.** Measured — `v = testlock(5)` in an
 ordinary account produces, at the **last line of the program**:
 
 ```

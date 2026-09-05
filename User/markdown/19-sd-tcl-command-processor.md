@@ -79,7 +79,7 @@ Four records that ship are a keyword **and** a verb in one record: `break`,
 processor uses, and **fields 3 onward are a complete verb record**, which the
 command processor re-parses when the name is typed as a command.
 
-***THIS MATTERS FOR COUNTING WHAT AN ACCOUNT HAS.*** A tally of VOC records
+**This matters for counting what an account has.** A tally of VOC records
 whose field 1 begins with `V` misses all four, and `count` is not a marginal
 verb. A standard account has **82** verbs, not 78.
 
@@ -165,7 +165,7 @@ dot, and `n` below is a stack position — 1 is the most recent.
 | **`.x`** *file* *id* | execute a sentence or paragraph held in any file, not just the VOC |
 | **`.?`** | print this list |
 
-***`n` DEFAULTS TO 1 EVERYWHERE, AND THE SPACES SHOWN ARE REQUIRED.*** `.d2`
+**`n` defaults to 1 everywhere, and the spaces shown are required.** `.d2`
 deletes the second stack line and `.d 2` looks for a VOC record called `2`.
 
 `.s` and `.r` together are the whole workflow: type the lines, then save them
@@ -179,8 +179,8 @@ record id are each folded as typed, then lower, then upper.
 **A dot command that is not one of these is not an error.** It is left alone and
 run as an ordinary command, so a verb whose name begins with a dot still works.
 
-> ***`.d` DOES NOT FIND A LOWER-CASE VOC RECORD TYPED IN UPPER CASE, AND `.l`
-> AND `.r` DO.*** `.l` and `.r` try the name as typed, then lower case, then
+> **`.d` does not find a lower-case VOC record typed in upper case, and `.l`
+> and `.r` do.** `.l` and `.r` try the name as typed, then lower case, then
 > upper case. `.d` tries only as typed and then upper case. A paragraph saved as
 > `daily` can be listed and recalled by typing `DAILY` and cannot be deleted by
 > typing `DAILY`. **Type the name in the case you saved it in and all three
@@ -265,7 +265,7 @@ show it.
 39 DON
 ```
 
-***AFTER A `logto` IT GROWS A THIRD PART, AND THAT IS THE USEFUL ONE:***
+**After a `logto` it grows a third part, and that is the useful one:**
 
 ```
 29 SDSYS from DON
@@ -276,7 +276,7 @@ your Windows account. So the short form means *I am still where I started* and
 the long form means *I have moved* — which makes `who` the quick way to find
 out whether a `logto` actually took effect.
 
-***`logto sdsys` REQUIRES AN ELEVATED WINDOWS SESSION IN THIS PORT.*** Entering
+**`logto sdsys` requires an elevated Windows session in this port.** Entering
 `SDSYS` is what confers administrator rights, so it is gated on the operating
 system rather than on an SD password, and the elevation obtained by one `logto`
 is deliberately not carried into the next one. `who` reports the account you are
@@ -284,19 +284,19 @@ in, which is the quick way to confirm a `logto` actually happened.
 
 ## What is not here
 
-***THERE IS NO ONLINE HELP AND `help` IS NOT A VERB.*** The command processor
+**There is no online help and `help` is not a verb.** The command processor
 still has internal verb 14 reserved for it and the routine is an empty stub —
 its body is commented out and it returns immediately. **No VOC record points at
 it**, in any account type, so the name is not even recognised. The F1 key at the
 command prompt reaches the same empty routine and therefore does nothing. **This
 documentation is the help system.**
 
-***`umask` IS IMPLEMENTED AND UNREACHABLE.*** Internal verb 35 is a working
+**`umask` is implemented and unreachable.** Internal verb 35 is a working
 routine that reports or sets the file-creation mask, and **no VOC record points
 at it either**. It cannot be typed. `umask()` from SD BASIC still works — see
 [SD Basic - System and Environment](16-sd-basic-system-and-environment.html).
 
-***PROC IS REMOVED.*** So are `sed` and `update.record`. A `PQ`-type VOC record
+**PROC is removed.** So are `sed` and `update.record`. A `PQ`-type VOC record
 is **refused by name** rather than being reported as a bad dispatch code,
 because the record itself is valid PROC and it is the interpreter that is gone.
 Nothing that ships is type `PQ`, so this can only be met in a VOC record
@@ -318,7 +318,7 @@ are administrator-only:
 have a verb does not have the VOC record for it — the name is simply not
 recognised rather than refused.
 
-***THE TWO `OS` VERBS ARE THE EXCEPTION AND ARE NOT DOCUMENTED HERE.*** `sh` and
+**The two `OS` verbs are the exception and are not documented here.** `sh` and
 `!` reach the Windows shell, are administrator-tier, and are gated a second time
 by a list of who may use them. They are in the **administrator documentation**,
 under *Operating System Access*, which is a separate set.

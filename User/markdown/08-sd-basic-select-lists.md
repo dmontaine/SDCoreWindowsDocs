@@ -19,7 +19,7 @@ There are **eleven** select lists, numbered `0` to `10`. List `0` is the
 default: every statement that takes a list number uses it when you do not say
 otherwise, and it is the one a query at the command line leaves behind.
 
-***A LIST IS SESSION STATE, NOT PROGRAM STATE.*** It survives the program that
+**A list is session state, not program state.** It survives the program that
 made it, and a program that leaves one behind changes what the next command
 does. **Clear a list you built for your own use** — see `clearselect` below.
 
@@ -50,7 +50,7 @@ Measured on a file holding two records:
 | `select f` then a `readnext` loop | `2` ids |
 | `formlist 'X' : @fm : 'Y' : @fm : 'Z' to 7` then a loop | `3` ids |
 
-***`sselect` SORTS AND `select` DOES NOT, AND `select` IS NOT IN ID ORDER.***
+**`sselect` sorts and `select` does not, and `select` is not in id order.**
 It returns ids in whatever order the file's hashing puts them, which changes as
 the file grows. **A report that must come out in order needs `sselect`**, or a
 query with a `by` clause; relying on `select` to be ordered produces output
@@ -82,7 +82,7 @@ The exploded form — `readnext id, vpos, spos` — is for lists built from a
 multivalued index, where the same id appears once per matching value and the
 extra variables say which value matched.
 
-***A `readnext` LOOP AND A `readu` INSIDE IT IS THE COMMONEST DEADLOCK.*** Two
+**A `readnext` loop and a `readu` inside it is the commonest deadlock.** Two
 sessions walking the same file in different orders will each hold a record the
 other wants. Use `sselect` so both walk in the same order, and give the `readu`
 a `locked` clause so at least one of them gives up rather than waiting — see
@@ -134,8 +134,8 @@ session.
 Measured: `savelist` of a two-id list followed by `getlist ... to 5` and a
 `readnext` loop on list 5 returned the same **2** ids.
 
-> ***`savelist` AND `getlist` REQUIRE A `then` OR `else` CLAUSE, AND THE
-> COMPILER'S COMPLAINT DOES NOT SAY SO.*** Written without one, the error is
+> **`savelist` and `getlist` require a `then` or `else` clause, and the
+> compiler's complaint does not say so.** Written without one, the error is
 > *"Expected THEN or ELSE"* reported against whatever follows — which reads
 > like a problem with the next statement. `else null` is enough:
 >
@@ -187,7 +187,7 @@ keep = trim(keep, @fm, 'T')          ;* see the warning below
 formlist keep to 3
 ```
 
-> ***`selectv` DOES NOT GIVE YOU A DYNAMIC ARRAY.*** It puts the list into a
+> **`selectv` does not give you a dynamic array.** It puts the list into a
 > variable of its own kind: measured, `vartype()` of a `selectv` target is
 > **11**, a select list. Concatenating it or calling `dcount()` on it fails
 > with *"Data cannot be converted to a string"*. **Read it with
@@ -195,7 +195,7 @@ formlist keep to 3
 > three ids. `selectv` is for passing a list to a subroutine, not for
 > inspecting one.
 
-> ***A TRAILING FIELD MARK BECOMES AN EXTRA, EMPTY ID.*** Measured: an array
+> **A trailing field mark becomes an extra, empty id.** Measured: an array
 > of three ids built with `keep := id : @fm` ends in a mark, and
 > `formlist keep to 3` produced **four** entries — the fourth being the null
 > string, which then reads a record that does not exist. **Strip the trailing

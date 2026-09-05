@@ -340,7 +340,7 @@ conversion `D2[DD/MM/YY]` turns `20899` into `29/08/26`. The format
 conversion makes the value readable, the format makes the column
 neat.
 
-> ***A FORMAT CANNOT CONVERT.*** If the format field begins with `D`,
+> **A format cannot convert.** If the format field begins with `D`,
 > it is a date conversion, not a format — see above. But a format that
 > begins with a digit, `L`, `R`, `T`, `C` or `U` is always a layout
 > specification and never transforms the data. If you need the data
@@ -411,7 +411,7 @@ hash of the source is stored in field 15. When a query opens the
 dictionary, it compares the hash to the current source — if they differ,
 the I-type is recompiled.
 
-***EDITING THE EXPRESSION INVALIDATES THE OBJECT.*** You do not need to
+**Editing the expression invalidates the object.** You do not need to
 do anything to trigger recompilation — the next query that reads the
 field does it. If the expression has a syntax error, the query reports
 it and the field appears empty.

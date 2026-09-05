@@ -17,7 +17,7 @@ transfers.
 file permissions, registers a service and assigns user rights. You can start
 the install from a normal console session — you will get an elevation prompt.
 
-***SD CANNOT BE INSTALLED SILENTLY.*** This is deliberate, not a missing
+**SD cannot be installed silently.** This is deliberate, not a missing
 feature. The installer asks questions whose answers cannot be defaulted safely
 — which kind of installation, whether to expose ports, and the password on the
 account it makes for you.
@@ -158,7 +158,7 @@ your edits survive both upgrade and removal.
 | the service | **String Database (SD)** |
 | ACLs | inheritance is broken on `C:\ProgramData\SD` and access granted narrowly. This is what makes the database private from the rest of the machine |
 
-***YOU MUST SIGN OUT AND BACK IN AFTER BEING ADDED TO `sdusers`.*** Windows
+**You must sign out and back in after being added to `sdusers`.** Windows
 group membership is carried in your logon token. Until you get a new one, you
 cannot read the data tree at all, and the symptom looks like a broken install.
 
@@ -172,7 +172,7 @@ ssh or through an API client. An installation offering neither is usable by
 nobody but you — which is a legitimate choice, and worth making knowingly. A
 local-only machine is served by `ssh localhost`, which needs no network.
 
-***IT IS SLOW AND IT LOOKS LIKE A HANG.*** `Add-WindowsCapability` hands off to
+**It is slow and it looks like a hang.** `Add-WindowsCapability` hands off to
 `TiWorker` and can work for minutes with nothing on screen. **Never kill it** —
 interrupting Windows servicing mid-flight is how the component store gets
 corrupted. It may also leave a reboot pending, which is real; SD itself needs
@@ -217,7 +217,7 @@ winget install -e --id Microsoft.Edit --scope machine
 winget install -e --id zyedidia.micro --scope machine
 ```
 
-***THE SCOPE IS NOT OPTIONAL.*** Without it winget installs into the profile of
+**The scope is not optional.** Without it winget installs into the profile of
 whoever ran it, and accounts SD creates cannot log in to Windows at all — so a
 per-user copy is one they can never reach.
 
@@ -314,8 +314,8 @@ directory if it is empty, so everything the running system created is invisible
 to it.
 
 **Removing the data is a separate, opt-in prompt** that defaults to keeping it,
-and says exactly what it destroys and where. ***A silent uninstall never
-deletes the database***, whatever the prompt would have offered.
+and says exactly what it destroys and where. **A silent uninstall never
+deletes the database**, whatever the prompt would have offered.
 
 **The uninstaller does not remove OpenSSH.** It may predate SD or be in use by
 something else. It does restore `sshd_config`, keeping the original as

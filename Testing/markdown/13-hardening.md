@@ -7,8 +7,8 @@ what it touches. The identity model and the file permissions are on
 
 ## The global catalogue
 
-***ADDING TO OR REMOVING FROM THE SYSTEM-WIDE CATALOGUE NOW REQUIRES
-ADMINISTRATOR RIGHTS, WHICHEVER WAY YOU ASK FOR IT.***
+**Adding to or removing from the system-wide catalogue now requires
+administrator rights, whichever way you ask for it.**
 
 **`catalog`** already required them for the spelled-out form,
 `catalog bp myprog global`. **It did not require them for the form most people
@@ -33,8 +33,8 @@ an ordinary user can no longer do is catalogue a program whose name starts with
 `*`, `!`, `_` or `$` — those characters mean *system-wide*. Name it without
 one.
 
-***TO CATALOGUE SYSTEM-WIDE YOU NEED AN ELEVATED SESSION, NOT JUST AN
-ADMINISTRATOR ACCOUNT.*** Start SD from an elevated window and `logto sdsys`.
+**To catalogue system-wide you need an elevated session, not just an
+administrator account.** Start SD from an elevated window and `logto sdsys`.
 Entering SDSYS from an ordinary window still gives you administrator rights
 *inside* SD, but **Windows itself now refuses the write** — so use the same
 elevated window you already need in order to recompile the system programs.
@@ -44,7 +44,7 @@ elevated window you already need in order to recompile the system programs.
 `<sysdir>\bin` holds the pcode library — the interpreter itself, which SD loads
 into shared memory at start-up and every session then runs.
 
-***UNTIL 23 Aug 2026 ANY MEMBER OF `sdusers` COULD WRITE TO IT***, so one SD
+**UNTIL 23 Aug 2026 ANY MEMBER OF `sdusers` COULD WRITE TO IT**, so one SD
 user could have replaced what everybody else's session executes, including an
 administrator's.
 
@@ -77,7 +77,7 @@ There are three, and they are not interchangeable.
 It records when a helper started for a session, each script it was asked to
 run, the exit code that came back, and when it stopped.
 
-***ONLY ADMINISTRATORS CAN READ OR WRITE IT.*** Ordinary SD users are not on
+**Only administrators can read or write it.** Ordinary SD users are not on
 its permissions at all. That is different from the audit trail, which SD users
 *can* add to because SD writes it as them; nothing unelevated ever writes this
 one.
@@ -100,7 +100,7 @@ account at the other end:
 API connection from 127.0.0.1:59314 - pid 11448, GITORLI\don
 ```
 
-***NOTHING IS REFUSED ON THE STRENGTH OF IT.*** This records who connected; it
+**Nothing is refused on the strength of it.** This records who connected; it
 does not decide who may. The API's own checks are unchanged.
 
 **A connection forwarded over ssh shows `sshd`, not the person at the far
@@ -120,7 +120,7 @@ never grew. Now that it writes per connection, it discards the oldest part of
 the log on reaching the `ERRLOG` size in `sd.conf`. **If you have set `ERRLOG`
 unusually large, consider what an entry per connection adds to it.**
 
-***AFTER THE LOG IS TRIMMED, ITS FIRST LINE MAY HAVE NO TIMESTAMP.*** An entry
+**After the log is trimmed, its first line may have no timestamp.** An entry
 is two lines — a timestamped header and the message indented below it — and
 trimming restarts the file at a **line**, not at an entry, so the first message
 can be left without its header. **This is not damage** and no entry after it is
@@ -141,7 +141,7 @@ You would have seen it as an invisible extra character at the end of every
 line: comparisons failing for no visible reason, a name that would not match, a
 trailing space that was not a space.
 
-***READING A CSV SAVED BY EXCEL IS THE CLEAREST CASE.*** The last column of
+**Reading a CSV saved by Excel is the clearest case.** The last column of
 every row picked up the stray character, because a comma ended the other
 columns and the line ending only ever touched the last one. `READCSV`,
 `READSEQ` and reading a directory file record are all corrected.
@@ -163,7 +163,7 @@ asks for CR+LF.**
 **Dynamic files are unaffected** — they are stored in SD's own format and are
 not readable by other programs.
 
-***EXISTING FILES ARE LEFT ALONE***, so a file can contain both endings. SD
+**Existing files are left alone**, so a file can contain both endings. SD
 reads either, so this is untidy rather than a problem.
 
 ## The terminal
@@ -171,7 +171,7 @@ reads either, so this is untidy rather than a problem.
 **The default terminal type is now `WINDOWS`.** `TERM` on its own should say
 `Device : windows`.
 
-***THE ARROW KEYS DID NOTHING in cmd, PowerShell or Windows Terminal*** on
+**THE ARROW KEYS DID NOTHING in cmd, PowerShell or Windows Terminal** on
 earlier builds. A terminal has two spellings for an arrow key: in its ordinary
 state it sends `ESC [ D` for Left, and the other spelling `ESC O D` only after
 the application asks it to switch — **which SD never does.** The `vt100`
@@ -182,7 +182,7 @@ The shipped `WINDOWS` definition is an exact copy of `LINUX`, which had this
 right all along — its name describes an operating system, but what matters is
 the byte protocol.
 
-***EXISTING ACCOUNTS KEEP THEIR OLD SETTING*** until their VOC is updated. An
+**Existing accounts keep their old setting** until their VOC is updated. An
 upgrade now does that for every account, and **`update.accounts`** does it on
 demand.
 Until then, `term windows` sets it for the session. **63 definitions ship,
@@ -201,7 +201,7 @@ definition that is not there.
 
 ### The page is 120 × 36, not 80 × 24
 
-***SD'S DEFAULT TERMINAL SIZE IS 120 COLUMNS BY 36 LINES.*** It is not a
+**SD's default terminal size is 120 columns by 36 lines.** It is not a
 cosmetic default: the shipped `@` dictionary records and the default `list`
 report layouts are formatted for 120 columns. **A console window narrower than
 that makes ordinary reports look wrapped or truncated**, which reads as a
@@ -223,7 +223,7 @@ environment variables if they are numeric, otherwise the terminfo entry's
 size and 120 × 36 is the fallback when nothing answers, which is the case for a
 phantom or a piped script.
 
-> ***`term default` RESTORES IT, AND IT PRINTS NOTHING WHEN IT DOES.*** It sets
+> **`term default` restores it, and it prints nothing when it does.** It sets
 > the same 120 × 36 the login path falls back to and returns silently, so run a
 > bare `term` after it to see the result. `term 120,36` does the same by hand.
 >
@@ -234,8 +234,8 @@ phantom or a piped script.
 
 ## Paths
 
-***A WINDOWS PATH TYPED AT THE COMMAND PROMPT IS NO LONGER CUT OFF AT THE FIRST
-BACKSLASH.*** Typing `C:\Data\Sales` was read as just `C:`, with the rest
+**A Windows PATH typed at the command prompt is no longer cut off at the first
+backslash.** Typing `C:\Data\Sales` was read as just `C:`, with the rest
 treated as a second, separate thing. `create.account other`, which is given a
 folder to put the account in, was the command most likely to show it — the
 account went to the wrong place, or the command failed for a reason that made
@@ -258,7 +258,7 @@ Earlier builds of this port had both the end of the installer and SD's own
 prompt say that without a password you could not use ssh or the API, and stop
 there. **That was true and easy to read as "some things will not work".**
 
-***IT IS STRONGER THAN THAT, AND BOTH NOW SAY SO:*** with no password the
+**It is stronger than that, and both now say so:** with no password the
 account can be used **only at that computer** — at the keyboard, or through
 Remote Desktop or similar remote-control software — **and only from a session
 run as administrator.**

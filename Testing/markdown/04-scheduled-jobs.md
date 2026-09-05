@@ -1,8 +1,8 @@
 Title: Scheduled jobs
 Subtitle: Running an SD command on a timer, and the permit list that decides which ones.
 
-***A SCHEDULED TASK CAN RUN AN SD COMMAND, AND ONLY THE COMMANDS AN
-ADMINISTRATOR HAS NAMED FOR IT.***
+**A scheduled task can run an SD command, and only the commands an
+administrator has named for it.**
 
 Typing a command after `sd` — `sd my.report` — needed a session started with
 *Run as administrator* in earlier builds of this port. A scheduled task does
@@ -19,7 +19,7 @@ There are two ways past that now:
 **Nothing changes for a session you type at.** Commands entered at the `:`
 prompt are unaffected, and so is plain `sd` with no command after it.
 
-***THERE IS NO PASSWORD ANYWHERE IN THIS.*** The job signs in as its own
+**There is no password anywhere in this.** The job signs in as its own
 Windows account and SD puts it in the matching SD account, exactly as it would
 for a person at a keyboard. Nothing has to store a credential for the job to
 use, and the job grants nobody anything — no other account is in its group.
@@ -39,7 +39,7 @@ line.
 and the two are usually the same. `sd -a<name>` cannot be used to reach
 somebody else's list: that form is refused unless the account is your own.
 
-***ANY ACCOUNT CAN BE GIVEN A LIST, WHATEVER ITS TIER*** — standard, programmer
+**Any account can be given a list, whatever its tier** — standard, programmer
 or administrator. The account type decides nothing here; the administrator's
 list does.
 
@@ -113,12 +113,12 @@ The task runs as a Windows account, and that account needs a matching SD
 account — that is the whole of the sign-in. There is no password to configure
 anywhere in SD for it.
 
-***DO NOT TICK "RUN WITH HIGHEST PRIVILEGES".*** It is not needed, and the
+**Do not tick "run with highest privileges".** It is not needed, and the
 whole point of `batch.jobs` is a job that runs without administrator rights. A
 task that is elevated passes the gate on elevation alone and never consults the
 list, so it would also be a job nobody had approved a command for.
 
-***WORTH REPORTING:*** accounts that **`create.account`** makes are denied
+**Worth reporting:** accounts that **`create.account`** makes are denied
 interactive logon at this machine on purpose, and whether Task Scheduler
 accepts one of them as the identity a task runs as has not been measured here.
 A Windows account you already had is the case the design was built around.

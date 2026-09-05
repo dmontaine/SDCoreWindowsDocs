@@ -5,7 +5,7 @@ Subtitle: Commands, file names, record ids and account names are lower case now 
 about it: BASIC source is free-form and usually written lower case, while file
 names, field names and account names were forced up.
 
-***WHAT YOU TYPE DOES NOT CHANGE.*** `LIST`, `list` and `List` all run the same
+**What you type does not change.** `LIST`, `list` and `List` all run the same
 verb, and so does every keyword — `with`, `by`, `no.page` and the rest.
 
 ## The lookup rule
@@ -59,7 +59,7 @@ casing.
 
 ## One correction worth reading
 
-***`LIST` AND `CT` USED TO DISAGREE ABOUT THE SAME NAME.*** `list voc $HOLD`
+**`LIST` and `CT` used to disagree about the same name.** `list voc $HOLD`
 answered *"'$HOLD' not found"* on the very record `ct voc $HOLD` had just shown
 you. `LIST`, `SORT`, `SELECT` and the rest of the query language now use the
 same as-typed → lower → upper order as everything else.
@@ -75,8 +75,8 @@ directory. **Existing accounts keep the names they already have.**
 
 ## Existing accounts are not touched
 
-***AN ACCOUNT CREATED BEFORE THIS KEEPS THE UPPER-CASE NAMES IN ITS VOC AND GOES
-ON WORKING. THERE IS NOTHING TO MIGRATE.*** An account you create now, or one
+**An account created before this keeps the upper-case names in its VOC and goes
+on working. there is nothing to migrate.** An account you create now, or one
 you refresh with **`update.accounts`**, gets the new spelling.
 
 Because SD only ever *adds* VOC records at an update, an old account will end
@@ -89,7 +89,7 @@ The installer creates an SD account for whoever authorises the install, and to
 do that it matches your Windows user name against SD's copy of it — which means
 changing both to the same case.
 
-***WINDOWS AND SD DID NOT CHANGE CASE THE SAME WAY EVERYWHERE.*** On a Turkish
+**Windows and SD did not change case the same way everywhere.** On a Turkish
 or Azeri system Windows turns `I` into a dotless `ı`, and SD does not. A user
 name containing that letter did not match itself, and the install finished
 **without giving you an SD account at all.**

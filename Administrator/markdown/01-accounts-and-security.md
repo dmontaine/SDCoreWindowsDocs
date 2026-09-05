@@ -6,7 +6,7 @@ may do with it.** They are the administrator's set, they are the smallest set
 on the machine, and almost all of them need more than the verb before they will
 do anything.
 
-> ***THIS DOCUMENT IS SEPARATE SO THAT IT CAN BE WITHHELD.*** Everything in the
+> **This document is separate so that it can be withheld.** Everything in the
 > administrator set describes verbs an ordinary account does not have and cannot
 > run. It is a complete set on its own and **links to nothing outside itself**,
 > so that handing somebody the user documentation without this never leaves them
@@ -19,7 +19,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## Read this before anything else: there are two gates, not one
 
-***HAVING THE VERB IS NOT HAVING THE RIGHT TO USE IT.***
+**Having the verb is not having the right to use it.**
 
 | | |
 |---|---|
@@ -41,7 +41,7 @@ Command requires administrator privileges
 `delete.account sdsys` would have been refused anyway — you cannot delete
 `SDSYS` — and it never got that far.
 
-***WHAT COUNTS AS ELEVATED IS A WINDOWS QUESTION AND IS FIXED WHEN SD STARTS.***
+**What counts as elevated is a Windows question and is fixed when SD starts.**
 The token a process gets is decided at process creation, so there is nothing
 you can type inside a running session to elevate it. **Start SD from an
 elevated terminal**, or accept the UAC prompt that `logto sdsys` raises. The
@@ -66,12 +66,12 @@ create.account other <name> <pathname> {no.query}
 | **`group`** | a shared workspace with no Windows account, reached only with `logto` |
 | **`other`** | an SD account over a directory you name |
 
-***ONE OF `ssh`, `api`, `both`, `none` IS REQUIRED FOR A USER ACCOUNT AND THERE
-IS NO DEFAULT.*** An account meant to be reached only with `logto` says `none`
+**One of `ssh`, `api`, `both`, `none` is required for a user account and there
+is no default.** An account meant to be reached only with `logto` says `none`
 and means it. An `administrator` account is given both routes and takes no
 keyword. Omitting the tier gives a **standard** account.
 
-> ***IT PROMPTS FOR A PASSWORD AND `no.query` DOES NOT SUPPRESS THAT.***
+> **It prompts for a password and `no.query` does not suppress that.**
 > `no.query` covers the confirmation, not the credential — a password is never
 > an argument anywhere in SD. **`create.account user` therefore cannot be
 > driven from a script**, and a group account, which has no password, can.
@@ -137,7 +137,7 @@ modify.account account add | delete  user.name
 one state**, and any of them can be reached from any other with no intermediate
 step. The account's VOC is rewritten there and then, not at its next login.
 
-***`suspended` DENIES ACCESS AND CHANGES NOTHING ELSE.*** The VOC is left as it
+**`suspended` denies access and changes nothing else.** The VOC is left as it
 is, no Windows group membership moves, and the tier it displaced is remembered
 so that the way back knows where the account is coming from. **There is no
 `resume` keyword** — coming back names the destination tier, and naming one on
@@ -145,7 +145,7 @@ a suspended account lifts the suspension into it.
 
 Three doors refuse a suspended account: signing in, `logto`, and the API.
 
-***LEAVING `administrator` TAKES THREE THINGS AWAY AND ONE MUST BE NAMED.***
+**Leaving `administrator` takes three things away and one must be named.**
 Windows `Administrators` membership and the operating-system access record go
 by themselves, because the account held them *because* it was an
 administrator. **ssh and the API were a rule and now have to be a choice**, so
@@ -160,7 +160,7 @@ the second form above is compulsory: `modify.account don programmer both`.
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE` and the screen editors |
 | **`add`** \| **`delete`** *user* | put a Windows user in, or out of, the account's group |
 
-***THE FIRST GROUP IS ABSOLUTE AND THE SECOND IS NOT.*** `ssh`/`api`/`both`/
+**The first group is absolute and the second is not.** `ssh`/`api`/`both`/
 `none` are four names for one state, so whatever is not named is withdrawn.
 `sh-on` and `os-on` are two independent switches over two separate settings, so
 **`sh-off` says nothing about `OS.EXECUTE`** and leaves it alone.
@@ -181,8 +181,8 @@ first. With one it changes somebody else's, which needs elevation and does not
 ask for the old password — an administrator resetting a forgotten password does
 not know it.
 
-***THE PASSWORD IS NEVER AN ARGUMENT, AND A TRAILING TOKEN IS REFUSED RATHER
-THAN IGNORED:***
+**The password is never an argument, and a trailing token is refused rather
+than ignored:**
 
 ```
 :modify.password don hunter2
@@ -207,8 +207,8 @@ list.grants account
 grant account              the same as list.grants
 ```
 
-***THE GRANT IS WINDOWS GROUP MEMBERSHIP AND NOTHING IS WRITTEN TO THE ACCOUNT
-RECORD.*** Every SD account has a Windows group — `sdu_`*name* for a user
+**The grant is Windows group membership and nothing is written to the account
+record.** Every SD account has a Windows group — `sdu_`*name* for a user
 account, `sdg_`*name* for a group account — and entry to the account **is**
 membership of that group. These three verbs edit that group and read it back.
 
@@ -224,7 +224,7 @@ membership of that group. These three verbs edit that group and read it back.
 creating the account put them there — but hiding it would make the listing
 disagree with the Windows group it is reporting.
 
-***A SUCCESSFUL `grant` OR `revoke` WRITES AN AUDIT RECORD*** to SD's audit
+**A successful `grant` or `revoke` writes an audit record** to SD's audit
 trail, stamped with the user and process that did it. The identity is stamped
 by SD and is not passed in, so a caller cannot get it wrong or forge it.
 Windows records the group change in its own security log as well, and the two
@@ -256,7 +256,7 @@ Cleaned $savedlists
 | **`$hold`** | reports sent to the hold file instead of a printer |
 | **`$savedlists`** | saved select lists |
 
-***NOTHING ELSE IS TOUCHED*** — no data file, no program, no dictionary. A como
+**Nothing else is touched** — no data file, no program, no dictionary. A como
 capture that is currently running is left alone and says so: *$COMO not cleaned
 - COMO file active*.
 
@@ -415,8 +415,8 @@ locks, how many open files is this machine set up for*.
 | *Not a recognised private configuration parameter name* | the name is not one that can be set per-session |
 | *Invalid value for this parameter* | it is, and the value is not |
 
-***`config param value` SETS A PRIVATE, SESSION-LOCAL VALUE AND NOT THE
-MACHINE'S.*** The machine's settings live in SD's configuration file and are
+**`config param value` sets a private, session-local value and not the
+machine's.** The machine's settings live in SD's configuration file and are
 read when SD starts. This form overrides one for the session you are in, which
 is the right tool for trying a value before writing it down and the wrong one
 for changing an installation.
@@ -440,7 +440,7 @@ anything `iconv(…, 'D')` accepts will do, and anything it does not is refused:
 | *Date required* | `set.date` with nothing after it |
 | *Invalid date format* | the argument is not a date SD can read |
 
-***THERE IS NO CONFIRMATION AND NO UNDO.*** It is described here from source
+**There is no confirmation and no undo.** It is described here from source
 rather than shown running, because demonstrating it would move the clock of the
 machine the documentation was measured on. **On Windows, changing the system
 date is itself a privileged operation**, so a session that has the verb may
@@ -462,7 +462,7 @@ its profile. **One confirmation covers all of it**, and the wording is decided
 before the question is asked, so it never offers to remove a Windows account it
 is not going to.
 
-***IT WILL NOT DELETE A WINDOWS ACCOUNT SD DID NOT CREATE.*** The account is
+**It will not delete a Windows account SD did not create.** The account is
 left in place and it says so.
 
 **Three refusals come before the confirmation**, so none of them can be reached
@@ -479,7 +479,7 @@ here because reaching them takes an elevated session, and an unelevated one is
 refused by the privilege gate first — which is itself the fourth refusal, and
 the one most people meet.)*
 
-> ***THE CONFIRMATION IS UNCONDITIONAL AND NO KEYWORD SUPPRESSES IT.*** There
+> **The confirmation is unconditional and no keyword suppresses it.** There
 > is no `no.query` on this verb. **Never send `delete.account` down a pipe** —
 > the prompt will eat the commands that follow it as its answers, and the
 > session will then wait for ever.
@@ -494,7 +494,7 @@ none of these names at all.
 | **needs elevation as well** | `create.account` `modify.account` `modify.password` (for another account) `delete.account` `grant` `revoke` `list.grants` |
 | **the verb is enough** | `clean.account` `update.accounts` `config` |
 
-***`list.grants` NEEDS ELEVATION EVEN THOUGH IT ONLY READS.*** It answers *who
+**`list.grants` needs elevation even though it only reads.** It answers *who
 may enter this account*, which is worth knowing before you have it, and the
 gate is at the top of the program the three grant verbs share.
 

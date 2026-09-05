@@ -21,8 +21,8 @@ here in lower case. In the tables, *italics* mark something you supply and
 basic bp MYPROG debugging
 ```
 
-***THE `debugging` KEYWORD IS WHAT MAKES EVERY OTHER THING ON THIS PAGE
-POSSIBLE.*** Without it the compiler emits no per-line debug information, and
+**The `debugging` keyword is what makes every other thing on this page
+possible.** Without it the compiler emits no per-line debug information, and
 the debugger has nothing to stop on. Measured, three ways:
 
 | | |
@@ -124,7 +124,7 @@ String (9 bytes): "some text"
 String (5 bytes): "first"
 ```
 
-***THE TYPE IS PART OF THE ANSWER, AND IT IS OFTEN THE ANSWER.*** `Integer: 41`
+**The type is part of the answer, and it is often the answer.** `Integer: 41`
 and `String (2 bytes): "41"` are different bugs, and so are `Integer: 1` and
 `Float: 1.500000`. Measured on the rest of the shapes:
 
@@ -225,7 +225,7 @@ w m          stop when M changes
 uw           stop watching
 ```
 
-***A WATCH IS THE ONE THING THAT FINDS "WHO IS SETTING THIS".*** Measured — a
+**A watch is the one thing that finds "who is setting this".** Measured — a
 watch set at line 4 and then `r`:
 
 ```
@@ -267,14 +267,14 @@ program can ask the same question without the debugger:
 
 ## It is a line-mode debugger here, and that is not a limitation of your terminal
 
-***ON THIS PORT THE DEBUGGER NEVER DRAWS A FULL SCREEN.*** Its own test is
+**On this port the debugger never draws a full screen.** Its own test is
 `terminfo('sreg')`, and `sreg` — *save screen region* — is a capability of SD's
 own client terminals, not of a console. Measured, in a session on the shipped
 `windows` terminal type:
 
 | | |
 |---|---|
-| `terminfo('sreg')` | ***0 characters*** |
+| `terminfo('sreg')` | **0 characters** |
 | `terminfo('cup')` | 16 characters |
 | `terminfo('clear')` | 6 characters |
 
@@ -296,7 +296,7 @@ Read out of an account's own VOC:
 | `debugging` | a `K` keyword, 53 | the compiler keyword |
 | `pdebug` | a `V` verb, `CA $PDEBUG` | the phantom debugger |
 
-***`debug` AND `pdebug` ARE NOT IN A STANDARD ACCOUNT.*** Both are on the
+**`debug` and `pdebug` are not in a standard account.** Both are on the
 installer's `TIER.OMIT.STANDARD` list, so an account created at the standard
 tier has neither verb. `debugging` is a keyword rather than a verb and is
 unaffected — but with no `debug` verb, the `debug` **statement** is the only
@@ -304,10 +304,10 @@ way in on such an account.
 
 ## What is not here
 
-***`trace` IS GONE.*** It was removed from the compiler in July 2024. Measured
+**`trace` is gone.** It was removed from the compiler in July 2024. Measured
 in an ordinary account: *"Unrecognised statement"*.
 
-***THE PROGRAMMATIC DEBUG STATEMENTS ARE RESTRICTED.*** `debug.on`,
+**The programmatic debug statements are restricted.** `debug.on`,
 `debug.off`, `debug.set`, `breakpoint` and `watch` are internal-only, and all
 five measured as *"Unrecognised statement"* in an ordinary account. They are
 what the debugger itself is built from. **`debug` — the plain statement — is

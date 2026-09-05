@@ -32,8 +32,8 @@ else statements
 `open` looks the name up in the account's VOC. `openpath` takes an operating
 system path and bypasses the VOC entirely.
 
-***THE `else` BRANCH IS WHERE A MISSING FILE ARRIVES, AND IT IS NOT
-OPTIONAL.*** A program that omits it does not compile. Never leave it empty:
+**The `else` branch is where a missing file arrives, and it is not
+optional.** A program that omits it does not compile. Never leave it empty:
 
 ```
 open 'CUSTOMERS' to f.cust else
@@ -70,11 +70,11 @@ Measured on a record holding `alpha` and `beta|gamma`:
 | `read got from f, 'NOSUCH'` | **`else` branch** |
 | `readv fv from f, 'R1', 2` | `beta\|gamma` |
 
-***A MISSING RECORD IS THE `else` BRANCH, NOT AN ERROR.*** And `status()` after
+**A missing record is the `else` branch, not an error.** And `status()` after
 one reads **3006**, which is how you tell "no such record" from a real failure
 such as a permission problem.
 
-***`matread` PUTS EVERYTHING PAST THE END OF THE MATRIX INTO ELEMENT ZERO.***
+**`matread` puts everything past the end of the matrix into element zero.**
 Measured: a three-field record read into `dim mm(2)` gives `mm(1)` = `f1`,
 `mm(2)` = `f2` and **`mm(0)` = `f3`**. Nothing is lost and nothing is reported.
 
@@ -131,7 +131,7 @@ recordlocked(file.variable, record.id)
 reports the state. Measured: after `readu`, `recordlocked(f, 'R1')` is **2**;
 an unlocked record reads **0**; after `release f, 'R1'` it is **0** again.
 
-***THE `locked` CLAUSE IS THE ONLY WAY NOT TO WAIT.*** Without it, a `readu`
+**The `locked` clause is the only way not to wait.** Without it, a `readu`
 against a record another session holds **blocks until that session lets go**.
 With it, control goes to the `locked` branch immediately:
 
@@ -154,7 +154,7 @@ one.**
 of 64 numbered general-purpose semaphores — used to serialise something that is
 not a record at all, such as a report run.
 
-***THE REST OF THIS IS ITS OWN PAGE.*** What the other session sees, what every
+**The rest of this is its own page.** What the other session sees, what every
 `recordlocked()` code means, how to find out **who** holds a lock, and how long
 a wait actually is, are all in [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) — measured
 with two sessions running at once, which is the only way any of it can be.
@@ -177,8 +177,8 @@ none of it does. `rollback` discards the lot.
 ends. That is what makes the transaction safe and also what makes a long one
 expensive — keep the span short, and never wait for user input inside one.
 
-***AND INSIDE A TRANSACTION YOU MUST ALREADY HOLD THE LOCK ON EVERY RECORD YOU
-WRITE.*** The same `write` that works outside one fails inside it with
+**And inside a transaction you must already hold the lock on every record you
+write.** The same `write` that works outside one fails inside it with
 *"Error 3023 (o/s 0) writing record (Possible full disk?)"*, which is a lock
 error wearing a disk error's message. [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) has
 the measurements, along with what `commit`, `rollback` and simply reaching
@@ -209,7 +209,7 @@ Measured on a newly created dynamic file:
 File types: `1` SH, **`3` DH — an ordinary dynamic file**, `4` directory, `5`
 sequential.
 
-> ***THE PATH COMES BACK IN POSIX FORM, NOT AS A WINDOWS PATH.*** Measured:
+> **The PATH comes back in POSIX form, not as a Windows path.** Measured:
 > `/cygdrive/c/ProgramData/...`, not `C:\ProgramData\...`. **Handing that
 > string to a Windows program does not work** — Windows reads it as a
 > drive-relative path and either fails silently or reports that the parent
@@ -217,7 +217,7 @@ sequential.
 > stopped the full-screen editors working the first time they were built for
 > this port.
 >
-> ***AND THE CONVERSION FUNCTION IS NOT AVAILABLE TO AN ORDINARY PROGRAM.***
+> **And the conversion function is not available to an ordinary program.**
 > The kernel can convert such a path, and `kernel()` is an internal-only
 > intrinsic — measured, a `kernel(...)` call in a user account does not
 > compile, and the compiler's complaint is *"Matrix KERNEL is not referenced in

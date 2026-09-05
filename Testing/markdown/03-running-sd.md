@@ -1,7 +1,7 @@
 Title: Running SD
 Subtitle: The service, starting and stopping, and what to do when the last shutdown was not a clean one.
 
-***SD IS A WINDOWS SERVICE AND IT IS ALREADY RUNNING.*** Nobody types
+**SD is a Windows service and it is already running.** Nobody types
 `sd -start` any more.
 
 | | |
@@ -36,25 +36,25 @@ sd -start
 outlives the daemon — so both could report success while doing nothing. Four
 things changed, and each is a state you may hit while testing.
 
-***"SD is already started" IS NOW ONLY SAID WHEN THE DAEMON REALLY IS
-RUNNING***, and it tells you the process id — the Windows one, the number Task
+**"SD is already started" IS NOW ONLY SAID WHEN THE DAEMON REALLY IS
+RUNNING**, and it tells you the process id — the Windows one, the number Task
 Manager and `Stop-Process` use.
 
-***IF THE SEGMENT IS THERE BUT THE DAEMON IS NOT — what a killed or crashed SD
-leaves behind — `sd -start` says so and tells you to run `sd -stop` first.***
+**IF THE SEGMENT IS THERE BUT THE DAEMON IS NOT — what a killed or crashed SD
+leaves behind — `sd -start` says so and tells you to run `sd -stop` first.**
 It used to say *"SD is already started"* and do nothing, **leaving the system
 unusable while the command that would fix it reported success.**
 
 It does **not** clear the wreckage for you: that would end any sessions still
 attached to the segment. **The count of those is printed so you can decide.**
 
-***`sd -stop` NOW CHECKS THAT THE DAEMON ACTUALLY STOPPED.*** A daemon started
+**`sd -stop` now checks that the daemon actually stopped.** A daemon started
 from an elevated session cannot be stopped from an ordinary one — Windows
 refuses the signal — and that used to be silent, leaving a daemon running
 against a segment nothing else could see. You now get a warning naming the
 process id and the command to stop it with.
 
-> ***KNOWN LIMIT.*** If the segment has already gone, `sd -stop` has nowhere
+> **Known limit.** If the segment has already gone, `sd -stop` has nowhere
 > left to read the daemon's process id from and cannot report on it at all.
 > Check by hand:
 >
@@ -65,8 +65,8 @@ process id and the command to stop it with.
 ## After an unclean shutdown
 
 If SD is stopped abruptly — the power goes, or the process is killed — it
-leaves a shared memory segment behind. ***ON WINDOWS THAT SURVIVES A REBOOT,
-WHERE ON LINUX IT WOULD NOT.***
+leaves a shared memory segment behind. **On Windows that survives a reboot,
+where on Linux it would not.**
 
 **Earlier builds of this port refused to start on the next boot** and said
 *"Run sd -stop to clear it"*, so **the machine came up with SD unavailable to
@@ -82,7 +82,7 @@ Discarding the shared segment left by the previous boot -
 SD did not shut down cleanly.
 ```
 
-***THIS CHANGES NOTHING WHILE THE MACHINE IS RUNNING.*** A segment belonging to
+**This changes nothing while the machine is running.** A segment belonging to
 a live SD is still never touched, and `sd -start` still refuses to disturb a
 system that is already up.
 
@@ -112,7 +112,7 @@ sd --version        report the version
 sd --help           this summary
 ```
 
-***THREE OF THESE BEHAVE DIFFERENTLY FROM WHAT YOU MAY EXPECT.***
+**Three of these behave differently from what you may expect.**
 
 **`sd -a<name>` is refused unless `<name>` is your own account.** An
 administrator no longer opens somebody else's account without ever being in
@@ -126,7 +126,7 @@ administrator's list does. That is what makes scheduled jobs possible without
 handing them administrator rights — see
 [Scheduled jobs](04-scheduled-jobs.html).
 
-***`sd <command>` RUNS AND EXITS, AND IS NEVER ASKED TO SET A PASSWORD.*** Nor
+**`sd <command>` runs and exits, and is never asked to set a password.** Nor
 is any session with no terminal — a scheduled task, or a piped script. **Only
 an interactive `sd` with no command after it still asks**, and then only of an
 administrator account that has no password yet.
@@ -148,7 +148,7 @@ because nothing had gone wrong from SD's side.
 | Error log | `C:\ProgramData\SD\sdsys\errlog` |
 | Elevation helper log | `C:\ProgramData\SD\sd-elevate.log` |
 
-***DO NOT MOVE THE BINARIES.*** `usr\bin` is load-bearing: shipping
+**Do not move the binaries.** `usr\bin` is load-bearing: shipping
 `msys-2.0.dll` beside the executable relocates the POSIX root to the DLL's
 directory minus two components, and only that depth puts `/` on
 `C:\Program Files\SD\`.

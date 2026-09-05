@@ -40,7 +40,7 @@ relying on that.
 There are also compound assignment operators — `+=`, `-=`, `*=`, `/=` and `:=`
 for concatenation — so `total += n` is `total = total + n`.
 
-***THERE IS NO INTEGER-DIVIDE OPERATOR.*** `/` always divides fully:
+**There is no integer-divide operator.** `/` always divides fully:
 
 ```
 print 7 / 2        ;* prints 3.5
@@ -65,8 +65,8 @@ evaluated before the expression around it.
 | 6 | `<` `>` `=` `#` `<=` `>=` `<>` `matches`, and their word forms `lt` `gt` `eq` `ne` `le` `ge` |
 | 7 | `and` `&` `or` `!` |
 
-> ***`and` AND `or` HAVE THE SAME PRECEDENCE, WHICH IS NOT WHAT MOST LANGUAGES
-> DO.*** They are applied left to right as they are met, so `a or b and c` is
+> **`and` and `or` have the same precedence, which is not what most languages
+> do.** They are applied left to right as they are met, so `a or b and c` is
 > `(a or b) and c` — not `a or (b and c)`. **Parenthesise any condition that
 > mixes them.** This has been true since OpenQM and is not a change made by
 > this port, but it surprises people arriving from C, Python or SQL, where
@@ -114,8 +114,8 @@ rdiv(dividend, divisor)
 | `idiv(7, 2)` | `3` | | `rdiv(-5, 2)` | `-3` |
 | `idiv(-7, 2)` | `-3` | | | |
 
-> ***`idiv()` CHANGES ITS ROUNDING WHEN A FLOATING-POINT NUMBER IS INVOLVED,
-> AND NOTHING IN THE CALL SHOWS IT.*** With two integers it truncates towards
+> **`idiv()` changes its rounding when a floating-point number is involved,
+> and nothing in the call shows it.** With two integers it truncates towards
 > zero; if either argument is floating point it takes the floor, which for a
 > negative result is a different number:
 >
@@ -217,7 +217,7 @@ cos(expr)     acos(expr)
 tan(expr)     atan(expr)
 ```
 
-> ***THE ARGUMENTS AND RESULTS ARE IN DEGREES, NOT RADIANS.*** This catches
+> **The arguments and results are in degrees, not radians.** This catches
 > people out constantly, because almost every other language's maths library
 > uses radians. There is no radian variant.
 
@@ -290,7 +290,7 @@ With `a` holding `1`, `2`, `3` as values, and `b` holding a field of
 | `maximum(a)` | `3` |
 | `minimum(a)` | `1` |
 
-> ***ALL FOUR SILENTLY SKIP ANYTHING THAT IS NOT A NUMBER.*** With `1`, `two`,
+> **All four silently skip anything that is not a number.** With `1`, `two`,
 > `3` in an array, `sum()` returns `4` and `maximum()` returns `3`. Nothing is
 > reported. **If a non-numeric element means your data is wrong, you have to
 > test for it yourself** — walk the array with `num()` before summing.
@@ -334,7 +334,7 @@ Returns true if *expr* would be accepted as a number, false otherwise.
 | `num('12.5')` | true | |
 | `num('.5')` | true | a leading decimal point is fine |
 | `num('+3')` | true | a leading sign is fine |
-| `num('')` | **true** | ***the null string is numeric*** |
+| `num('')` | **true** | **the null string is numeric** |
 | `num(' 12')` | false | no leading space |
 | `num('12 ')` | false | no trailing space |
 | `num('3-')` | false | a trailing sign is not accepted |
@@ -342,8 +342,8 @@ Returns true if *expr* would be accepted as a number, false otherwise.
 | `num('123456789012345')` | true | 15 digits before the point |
 | `num('1234567890123456')` | false | 16 is too many |
 
-> ***`num('')` IS TRUE, AND IT IS THE SINGLE MOST COMMON SOURCE OF A WRONG
-> ANSWER FROM THIS FUNCTION.*** An empty field passes the test and then
+> **`num('')` is true, and it is the single most common source of a wrong
+> answer from this function.** An empty field passes the test and then
 > evaluates as zero, so a validation written as `if num(value) then ...`
 > accepts a blank. **Test for the null string first:**
 >
@@ -382,7 +382,7 @@ bitnot(expr)              shift(expr, distance)
 | `bittest()` | true if the given bit is set. `bittest(8, 3)` is true, `bittest(8, 2)` is false |
 | `shift()` | shifts the bits. **A negative distance shifts left, a positive distance shifts right** |
 
-***BITS ARE NUMBERED FROM ZERO, AND ZERO IS THE LEAST SIGNIFICANT BIT.*** So
+**Bits are numbered from zero, and zero is the least significant bit.** So
 bit 3 has the value 8, and bit 31 is the sign bit. **There is no range check on
 the bit number** — a value outside 0 to 31 gives an unpredictable result rather
 than an error, so validate it yourself if it is calculated.
@@ -405,7 +405,7 @@ changes when the data changes — `checksum('hello')` is `1199` and
 `checksum('hellp')` is `1200` — which makes it useful for spotting that a
 record has been altered since you last read it.
 
-> ***IT IS NOT A CRYPTOGRAPHIC HASH AND MUST NOT BE USED AS ONE.*** It is a
+> **It is not a cryptographic hash and must not be used as one.** It is a
 > rotate-and-exclusive-or over the bytes, and it is straightforward to
 > construct a different string with the same result. It will not detect
 > deliberate tampering, and it must never be used to store or compare a
@@ -437,7 +437,7 @@ to the nearest end rather than refused.
 | `1 / 3` after `precision 0` | `0` |
 | `1 / 3` after `precision 20` | `0.33333333333333` — clamped to 14, not refused |
 
-> ***PRECISION IS PER PROGRAM AND IT DOES NOT TRAVEL WITH A CALL.*** Every
+> **Precision is per program and it does not travel with a call.** Every
 > program starts at 4, including one you `call`, and setting it in a caller has
 > no effect inside the subroutine. It is restored to the caller's value when the
 > subroutine returns. **A subroutine that formats numbers must set its own
@@ -454,7 +454,7 @@ Two floating-point values are treated as equal if they differ by less than the
 `FLTDIFF` configuration parameter, which defaults to a very small number
 (`0.0000000000291`).
 
-***THIS IS WHY `0.1 + 0.2 = 0.3` IS TRUE IN SD BASIC*** — measured — where the
+**This is why `0.1 + 0.2 = 0.3` is true in SD BASIC** — measured — where the
 same test is false in C, Java, Python and JavaScript. It is a deliberate
 convenience and not an accident of this port. `config('FLTDIFF')` reports the
 value in force.

@@ -7,27 +7,27 @@ SD Core for Windows is a version of SD, with elements found in the main SD
 version and in ScarletDME. ScarletDME was a fork of the original GPL release of
 OpenQM 2.6.6.
 
-***THAT LINEAGE MATTERS WHEN YOU GO LOOKING FOR DOCUMENTATION.*** Not all the
+**That lineage matters when you go looking for documentation.** Not all the
 features of the **commercial** OpenQM 2.6.6 were in the GPL release, and **no
 documentation specific to the GPL version was ever released**. So even the
 OpenQM documents are not authoritative here.
 
 **The OpenQM 2.6.6 documents can be used as a reference**, but SD Core has
 additions, changes and deletions — of features, of structure, of security and
-of commands. ***These pages cover those changes.***
+of commands. **These pages cover those changes.**
 
 If you have used OpenQM, or SD on Linux, much of SD Core will still be
 familiar: the same data model, the same query processor, the same BASIC.
 
 ## What "used to" means in these pages
 
-These pages describe changes, so ***used to***, ***no longer*** and ***now***
+These pages describe changes, so **used to**, **no longer** and **now**
 run all through them. **The comparison is against the code this version was
 made from** — SD on Linux, and ScarletDME and OpenQM 2.6.6 behind it.
 
-***IT NEVER MEANS AN EARLIER RELEASE OF SD CORE FOR WINDOWS***, because this is
+**It never means an earlier release of SD Core for Windows**, because this is
 the first one. Some of the changes are Windows-only and have no Linux original
-to differ from; those say ***earlier builds of this port*** instead, so the two
+to differ from; those say **earlier builds of this port** instead, so the two
 are never confused.
 
 ## The pages
@@ -39,7 +39,7 @@ first time; after that they stand alone.
 |---|---|---|
 | **00** | Start here | this page — what the set is and what it leaves out |
 | **01** | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
-| **02** | ***[Your first thirty minutes](02-first-run.html)*** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
+| **02** | **[Your first thirty minutes](02-first-run.html)** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
 | **03** | [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
 | **04** | [Scheduled jobs](04-scheduled-jobs.html) | Running an SD command on a timer, and the permit list that decides which ones |
 | **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator, Suspended and Group — what each one is, how to make one, and how to change it afterwards |
@@ -96,7 +96,7 @@ differently from OpenQM and is not described here**, and **anything in these
 pages that turns out not to be true of the build you are running**. The second
 is as valuable as the first.
 
-***QUOTE THE VERSION AS `W1.0-0`*** — the string in the header bar of every
+**Quote the version as `W1.0-0`** — the string in the header bar of every
 page here, in the installer's file name, and in what `sd --version` reports.
 The bare `1.0-0` is the same release; the `W` says it is the Windows one, and
 that is the part worth keeping in a report.

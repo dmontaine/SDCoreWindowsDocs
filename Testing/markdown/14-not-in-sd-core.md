@@ -29,7 +29,7 @@ gone as *programs*; the capability is not.
 
 `modify` is received by **no account of any tier**.
 
-> ***`micro` WAS ON THIS PAGE AND HAS COME OFF IT — UNDER ITS OWN NAME.*** It
+> **`micro` was on this page and has come off it — under its own name.** It
 > was removed on 17 Aug 2026 because it launched an external editor, which is a
 > way out of SD onto the machine underneath it. That was reversed on
 > 26 Aug 2026, and there are now **two** full-screen editors, **`edit`** and
@@ -51,7 +51,7 @@ commands.
 supported instead of running.** Your `PQ` records are left alone — it is the
 interpreter that has gone, not the records.
 
-***DO NOT CONFUSE PROC WITH THE QUERY PROCESSOR.*** `LIST`, `COUNT`, `SELECT`
+**Do not confuse PROC with the query processor.** `LIST`, `COUNT`, `SELECT`
 and `SORT` are unaffected. They are a different thing despite the similar name.
 
 ## SDNet — remote file access
@@ -68,7 +68,7 @@ obscured with a simple letter substitution that is not encryption, and the
 session ran over port 4245. There was also no way to switch the feature off —
 the `NETFILES` setting was read at start-up and then never consulted.
 
-***THE API IS NOT AFFECTED.*** `SDClient` and the remote API are a separate
+**The API is not affected.** `SDClient` and the remote API are a separate
 mechanism and are unchanged. See [API access](09-api-access.html).
 
 **`NETFILES` is still accepted in `sd.conf`** and does nothing, so an existing
@@ -76,7 +76,7 @@ configuration file will not stop SD starting.
 
 ## Virtual file systems
 
-***SD HAS NEVER BEEN ABLE TO OPEN A VIRTUAL FILE SYSTEM.*** Nothing in the
+**SD has never been able to open a virtual file system.** Nothing in the
 file-opening code ever recognised a `VFS:` pathname. What the language carried
 was the *outline* of one, and none of it could be reached: a VOC F-pointer
 written as `VFS:something` was reported as a virtual file system, passed the
@@ -98,8 +98,8 @@ ER$VFS.NGLBL     SYSCOM ERR.H
 `FTYPE` no longer returns `VFS` for a `VFS:` pathname. **Error numbers 3038,
 3039 and 3040 are retired and will not be given a new meaning.**
 
-***IF ONE OF YOUR PROGRAMS REFERS TO ANY OF THESE, it was testing for a state
-SD could not reach, and the test can be deleted.***
+**IF ONE OF YOUR PROGRAMS REFERS TO ANY OF THESE, it was testing for a state
+SD could not reach, and the test can be deleted.**
 
 Two unreachable pieces went with it: `_EXTENDLIST`, installed into the SDSYS
 `GPL.BP` file and loaded at every start-up although nothing ever called it; and
@@ -142,7 +142,7 @@ is the TCL verb that encrypted a field in place, and **nothing replaces that**.
 | `umask` | removed from every tier. It controls POSIX file-mode bits, which Windows does not use for security |
 | Field 4 of an `ACCOUNTS` record | the list of accounts allowed in. **`list.grants`** answers that question now |
 
-***ACCOUNTS ALREADY CREATED WITH `RDPACCOUNT` KEEP THEIR WINDOWS SIGN-IN.***
+**Accounts already created with `RDPACCOUNT` keep their Windows sign-in.**
 Nothing goes round and takes it back, because SD did not record which accounts
 they were. If you have any, either delete and recreate them, or add them to the
 restricted group by hand:
@@ -160,7 +160,7 @@ net localgroup sdsshonly <name> /add
 catalogued `PCL` routine are both still there. What has gone is a second, older
 copy of the source sitting in `BP`.
 
-***SD NOW SHIPS NOTHING INTO THE SDSYS BP FILE.*** It is created empty and is
+**SD now ships nothing into the SDSYS bp file.** It is created empty and is
 yours — and because of that, **`bp` and its compiled objects are now preserved
 when you upgrade**, alongside your accounts and the rest of your own data.
 
@@ -169,7 +169,7 @@ when you upgrade**, alongside your accounts and the rest of your own data.
 These are not removals. They are stated here because a tester will otherwise
 assume they exist.
 
-***MULTI-USER ACCESS OVER REMOTE DESKTOP IS NOT SUPPORTED.*** It follows from
+**Multi-user access over remote Desktop is not supported.** It follows from
 the access model and is settled. One Windows setting covers Remote Desktop and
 the physical keyboard together, so allowing one allows the other. A verb that
 lifted the restriction was built and deleted the next day for exactly that
@@ -177,19 +177,19 @@ reason. If you want it, you want Windows Server, RDP client access licences and
 probably a commercial product built for it. See
 [ssh access](08-ssh-access.html).
 
-***SD CANNOT BE INSTALLED SILENTLY.*** `/SILENT` and `/VERYSILENT` are refused,
+**SD cannot be installed silently.** `/SILENT` and `/VERYSILENT` are refused,
 with a message saying why, and there is no switch to override it. Installing
 ends by asking for a password and a silent install has nobody to ask — it used
 to finish with **no password on any account** and say nothing about it.
 Unattended deployment is not supported.
 
-***scp AND sftp DO NOT WORK INBOUND ONCE SD HAS CONFIGURED THE ssh SERVER***,
+**scp AND sftp DO NOT WORK INBOUND ONCE SD HAS CONFIGURED THE ssh SERVER**,
 for anybody, administrators included. This is the accepted cost of putting
 every ssh session straight into SD. **Pull files rather than pushing them** —
 see [ssh access](08-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound).
 A machine with no ssh server is unaffected, because SD has configured nothing.
 
-***THE CLEARTEXT API LOGIN IS GONE***, and a client that still sends a password
+**The cleartext API login is gone**, and a client that still sends a password
 in clear is refused outright. See [API access](09-api-access.html).
 
 ## Linux-only mechanisms

@@ -64,7 +64,7 @@ New record
 ----:
 ```
 
-***A FILE NAME IS TRIED AS TYPED, THEN LOWER CASE, THEN UPPER.*** A file that
+**A file name is tried as typed, then lower case, then upper.** A file that
 matches none of the three stops the verb before the editor starts:
 
 ```
@@ -136,17 +136,17 @@ before the current line rather than after it.
 | **`T`** | to the top — *before* line 1, so `I` inserts at 1 |
 | **`B`** | to the last line |
 | *`n`* | to line *n* |
-| **`+`***n*, **`-`***n* | *n* lines forward or back |
-| **`G`***n*, **`PO`***n* | to line *n*, the long ways round |
+| **`+`**n*, **`-`**n* | *n* lines forward or back |
+| **`G`**n*, **`PO`**n* | to line *n*, the long ways round |
 | **`G<`**, **`G>`** | to the first or last line of the block |
 
 ### Looking
 
 | | |
 |---|---|
-| **`P`***n* | display *n* lines from the current line |
+| **`P`**n* | display *n* lines from the current line |
 | **`PL`**{**`-`**}*n* | *n* lines relative to the current line |
-| **`PP`***n* | *n* lines centred on the current line |
+| **`PP`**n* | *n* lines centred on the current line |
 | **`PB`** | the block |
 | **`L`** *string* | the next line **containing** *string* |
 | **`F`**{*col*} *string* | the next line with *string* **at** column *col*, default 1 |
@@ -154,8 +154,8 @@ before the current line rather than after it.
 | **`COL`** | a column ruler |
 | **`?`** | where you are and what is set |
 
-***`P` LEAVES THE CURRENT LINE AT THE LAST LINE IT PRINTED, AND THAT IS WHAT
-THE NEXT COMMAND ACTS ON.*** It is the one thing on this page that catches
+**`P` leaves the current line at the last line it printed, and that is what
+the next command acts on.** It is the one thing on this page that catches
 people, because "display" does not sound like a move. Measured — `P20` on a
 three-line record, then `DE`, and it was **line 3** that went:
 
@@ -194,9 +194,9 @@ and `F` insensitive, `CASE ON` puts it back.
 | **`I`** {*text*}, **`IB`** {*text*} | insert after, insert before |
 | **`R`** *text* | replace the current line |
 | **`A`** {*text*} | append to the end of the current line |
-| **`C/`***old***`/`***new***`/`{*n*}{**`G`**}{**`B`**} | change *old* to *new* in *n* lines. `G` every occurrence, `B` over the block |
-| **`R/`***old***`/`***new***`/`… | the same, without moving |
-| **`D`***n*, **`DE`***n* | delete *n* lines from the current one |
+| **`C/`**old**`/`**new**`/`{*n*}{**`G`**}{**`B`**} | change *old* to *new* in *n* lines. `G` every occurrence, `B` over the block |
+| **`R/`**old**`/`**new**`/`… | the same, without moving |
+| **`D`**n*, **`DE`**n* | delete *n* lines from the current one |
 | **`DUP`** {*n*} | duplicate the current line |
 | **`CAT`** {*string*} | join the next line onto this one |
 | **`FORMAT`** | re-indent BASIC source |
@@ -267,7 +267,7 @@ with `I NAME^253Smith^253Jones`.
 'zzed' filed in bp
 ```
 
-***`Q` ASKS ONLY IF YOU CHANGED SOMETHING***, and it asks on the same line:
+**`Q` asks only If you changed something**, and it asks on the same line:
 
 ```
 ----: Q
@@ -277,8 +277,8 @@ Record changed - OK to quit? Y
 Anything but `Y` and you are still in the editor. On an unchanged record `Q`
 says nothing at all and returns to TCL.
 
-> ***`SAVE` AND `FI` WITH A DIFFERENT FILE OR RECORD NAME ASK BEFORE THEY
-> OVERWRITE***, and so do `FD` and `DELETE`. Written back to their own record
+> **`SAVE` and `FI` with a different file or record name ask before they
+> overwrite**, and so do `FD` and `DELETE`. Written back to their own record
 > they ask nothing at all, which is what lets `ed` be driven from a script.
 
 ### `XEQ` runs a TCL command without leaving the editor
@@ -294,7 +294,7 @@ bp zzed
 3: end
 ```
 
-***AND WHAT IT SHOWED THERE WAS THE FILED RECORD, NOT THE ONE ON THE SCREEN.***
+**And what it showed there was the filed record, not the one on the screen.**
 The buffer at that moment read *"a temporary record"* — the change had not been
 filed. `XEQ` runs outside the editor and sees the file, which is the answer you
 want from `basic` and the wrong one from `ct`.
@@ -341,7 +341,7 @@ bp zzed
 'zzed' filed in bp
 ```
 
-***FIELD 1 IS A MARKER, NOT A COMMAND. IT MUST BEGIN WITH `E`*** — `ED` is the
+**Field 1 is a marker, not a command. it must begin with `E`** — `ED` is the
 usual thing to write — and `ed` refuses a record that does not with *"Record is
 not a prestored edit sequence"*. Nothing was run for it above, and the
 line numbers in error messages count it: an unrecognised command in **field 2**
@@ -350,7 +350,7 @@ is reported as line 2.
 `PAUSE` inside a sequence stops it and `.XR` resumes, `.XK` abandons it;
 `LOOP` repeats from a given line.
 
-> ***A PRESTORED SEQUENCE IS NOT AN UNATTENDED MECHANISM.*** Measured: one bad
+> **A prestored sequence is not an unattended mechanism.** Measured: one bad
 > command **abandons the rest of the sequence and then asks a question**, and
 > the answer is read from wherever the session's input comes from.
 >

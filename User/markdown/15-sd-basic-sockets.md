@@ -43,7 +43,7 @@ inc = accept.socket.connection(srv, 2000)
 
 Flags `0` is TCP, stream. `0x00010000` selects UDP and `0x00020000` ICMP.
 
-***BOTH FAIL BY RETURNING ZERO, NOT BY TAKING AN `else` BRANCH*** — they are
+**Both fail by returning zero, not by taking an `else` branch** — they are
 functions, and there is no `then`/`else` on them. Test with
 `socket.info(`*s*`, 0)`, which is the one key that is safe to ask about a
 non-socket:
@@ -79,7 +79,7 @@ you are polling for a service to come up.
 | `6` | keep-alive? | `0` |
 | `7` | family: **1** IPv4, **2** IPv6 | `1` |
 
-***KEY 2 MEANS TWO DIFFERENT THINGS AND THE DIFFERENCE IS EASY TO MISS.*** On
+**Key 2 means two different things and the difference is easy to miss.** On
 the socket you dialled out with it is **the port you dialled**; on a socket you
 accepted it is **the far end's ephemeral port**:
 
@@ -99,8 +99,8 @@ d = read.socket(inc, 100, 0, 2000)
 `write.socket` returned **11** for eleven bytes. `read.socket` returned the
 eleven bytes.
 
-***THE TIMEOUT ON A READ DOES NOTHING UNLESS THE SOCKET IS BLOCKING, AND NO
-SOCKET STARTS OUT BLOCKING.*** This is the trap on this page. Measured on a
+**The timeout on a read does nothing unless the socket is blocking, and no
+socket starts out blocking.** This is the trap on this page. Measured on a
 socket with nothing sent to it:
 
 | the call | waited | returned |
@@ -166,8 +166,8 @@ call reported success. **Fixed 26 Aug 2026 and re-measured**:
 close.socket cli
 ```
 
-***THERE ARE TWO ANSWERS, NOT ONE, AND WHICH YOU GET DEPENDS ON WHICH END
-CLOSED.*** Both were measured, in the same session:
+**There are two answers, not one, and which you get depends on which end
+closed.** Both were measured, in the same session:
 
 | what closed | reading the other end gives |
 |---|---|
@@ -195,15 +195,15 @@ addr = server.addr('localhost')
 | | |
 |---|---|
 | `server.addr('127.0.0.1')` | `127.0.0.1` |
-| `server.addr('localhost')` | ***`::1`*** |
+| `server.addr('localhost')` | **`::1`** |
 
-***`localhost` RESOLVES TO THE IPv6 ADDRESS ON THIS PLATFORM.*** A program that
+**`localhost` RESOLVES TO THE IPv6 ADDRESS ON THIS PLATFORM.** A program that
 resolves `localhost` and then dials the answer is dialling IPv6, while
 `create.server.socket('127.0.0.1', ...)` is listening on IPv4 — measured family
 **1** — and the two do not meet. **Use `127.0.0.1` on both sides, or `::1` on
 both sides, and do not resolve a name to get there.**
 
-***AND A NAME THAT DOES NOT RESOLVE BLOCKS.*** `server.addr()` calls the
+**And a name that does not resolve blocks.** `server.addr()` calls the
 operating system resolver with no timeout of its own. Measured: a call for a
 name that cannot resolve had still not returned after **45 seconds** and the
 session had to be abandoned. There is no way to bound it from BASIC. **Do not

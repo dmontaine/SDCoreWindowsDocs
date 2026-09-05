@@ -1,7 +1,7 @@
 Title: SD Basic - Modern Program Structure
 Subtitle: Scope, local subroutines and functions, class modules and objects — writing SD BASIC the way you would write anything else.
 
-***SD BASIC HAS SCOPE AND IT HAS OBJECTS.*** A routine can have variables of its
+**SD BASIC has scope and it has objects.** A routine can have variables of its
 own that nothing else can see; a class module can hold state, expose methods and
 properties, construct and destruct itself, and inherit from another class. None
 of it is a bolt-on and none of it is new — it is simply not what most MultiValue
@@ -35,8 +35,8 @@ local function name {(arguments)}
 end
 ```
 
-***BUT A LOCAL ROUTINE IS NOT A CLOSED SCOPE, AND ASSUMING IT IS WILL CATCH
-YOU.*** It can still see every variable in the main program. What it gets that a
+**But a local routine is not a closed scope, and assuming it is will catch
+you.** It can still see every variable in the main program. What it gets that a
 `gosub` label does not is the ability to declare names that **do not leak back**
 — its arguments, and anything it declares `private`.
 
@@ -64,7 +64,7 @@ have never been set.
 
 ### Calling them: two different forms, and neither is `call`
 
-***A LOCAL SUBROUTINE IS REACHED WITH `gosub`, NOT `call`.***
+**A local subroutine is reached with `gosub`, not `call`.**
 
 ```
 gosub tally(3, 4, answer)
@@ -78,7 +78,7 @@ and then fails at run time:
 /cygdrive/c/ProgramData/SD/user_accounts/don/BP.OUT/zzobj
 ```
 
-***A LOCAL FUNCTION MUST BE DECLARED BEFORE IT IS USED.***
+**A local function must be declared before it is used.**
 
 ```
 deffun doubled(n) local
@@ -99,7 +99,7 @@ unambiguous on its own.
 
 ### The `return` is not optional
 
-***A LOCAL ROUTINE THAT FALLS INTO ITS OWN `end` STOPS THE PROGRAM.*** The
+**A local routine that falls into its own `end` stops the program.** The
 compiler emits `end` there as a stop, not a return, so there is **no error
 message and no further output** — and any object still in scope runs its
 destructor on the way out, which makes it look like a clean finish.
@@ -202,7 +202,7 @@ ZZMATH.OWNER=owner<mixed case name>
 ZZMATH.LABEL.AFTER.SET=mixed case name
 ```
 
-***A PROPERTY IS ONE NAME WITH TWO ROUTINES BEHIND IT.*** `o->owner` on the
+**A property is one name with two routines behind it.** `o->owner` on the
 right of an assignment runs `get owner`; on the left it runs `set owner(value)`.
 To the caller it reads exactly like a variable, which is the point — the class
 can validate, transform or compute without the caller knowing.
@@ -242,7 +242,7 @@ ZZMATH.AFTER.UNLOAD
 | **destruction runs in reverse** | `ZZCLS` then `ZZBASE` |
 | **releasing the variable is what fires it** | `o = ''`, and the two destructors ran between the lines either side of it |
 
-***THAT IS THE ONE THING A COMMON BLOCK CANNOT GIVE YOU.*** A file left open, a
+**That is the one thing a common block cannot give you.** A file left open, a
 lock held, a socket connected — a destructor closes it when the last reference
 goes, whatever route the program took to get there. SD's own client library uses
 exactly this: `destroy.object` in `SDCLIENT` disconnects the session if one is
@@ -299,8 +299,8 @@ to be an object already, so it is what you test with before anything else.
 
 ## Where SD itself does this
 
-***THE CLAIM THAT NOTHING USES THIS IS WRONG, AND IT IS WORTH KNOWING WHAT
-DOES.***
+**The claim that nothing uses this is wrong, and it is worth knowing what
+does.**
 
 | | |
 |---|---|

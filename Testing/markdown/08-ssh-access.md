@@ -1,7 +1,7 @@
 Title: ssh access
 Subtitle: How people reach SD on this machine, why it is ssh, and the one thing it costs you.
 
-***ACCOUNTS SD CREATES CANNOT LOG IN TO WINDOWS AT THIS MACHINE.*** They are
+**Accounts SD creates cannot log in to Windows at this machine.** They are
 denied the physical console and Remote Desktop, deliberately and by group
 membership. Local terminal access belongs to administrators, who have ordinary
 Windows accounts.
@@ -24,12 +24,12 @@ everything else about running SD Core on Windows.
 | ssh | if granted | yes |
 | API | if granted | yes |
 
-***"DENIED THE CONSOLE" IS ABOUT LOGGING IN TO WINDOWS, NOT ABOUT REACHING
-SD.*** An account with `api` and no `ssh` is a perfectly normal thing to
+**"Denied the console" is about logging in to Windows, not about reaching
+sd.** An account with `api` and no `ssh` is a perfectly normal thing to
 create — a person using a custom GUI client that talks to SD does not need a
 terminal session at all.
 
-***MULTI-USER ACCESS OVER REMOTE DESKTOP IS NOT SUPPORTED.*** This is not an
+**Multi-user access over remote Desktop is not supported.** This is not an
 oversight and not a gap to be filled later. One Windows setting covers Remote
 Desktop and the physical keyboard together, so an account allowed to use RDP
 could also walk up to the machine and log in — which was never the intention. A
@@ -55,7 +55,7 @@ Two Windows user rights, applied **to a group, once** — not per account:
 Both are on the group `sdsshonly`, and **`create.account`** joins every
 non-administrator account to it.
 
-***NETWORK LOGON IS NOT DENIED, AND MUST NOT BE.*** Win32-OpenSSH
+**Network logon is not denied, and must not be.** Win32-OpenSSH
 authenticates with a network logon — cleartext network logon for passwords, S4U
 for public keys — so denying it would lock out the very access this exists to
 preserve. **This is the trap in the design and it is the one thing to get
@@ -76,8 +76,8 @@ rule is about the route in, not about who took it.
 
 ### The cost: scp and sftp stop working inbound
 
-***NO FILE CAN BE PUSHED TO THIS MACHINE OVER ssh, BY ANYBODY, ADMINISTRATORS
-INCLUDED.*** The command is forced, so there is no file-transfer subsystem left
+**NO FILE CAN BE PUSHED TO THIS MACHINE OVER ssh, BY ANYBODY, ADMINISTRATORS
+INCLUDED.** The command is forced, so there is no file-transfer subsystem left
 to run. This is deliberate and is the accepted cost of the above.
 
 **The cost is INBOUND ONLY, and that is the whole of the answer.**
@@ -85,7 +85,7 @@ to run. This is deliberate and is the accepted cost of the above.
 WinSCP or `scp` running **on** this machine, connecting outward, makes it the
 *client*, and `sshd_config` is not consulted at all.
 
-***SO COPY FILES BY PULLING THEM, NOT PUSHING THEM.*** Sit at the machine or
+**So copy files by Pulling them, not pushing them.** Sit at the machine or
 connect with Remote Desktop — both untouched, because administrators are never
 put in `sdsshonly` — and fetch what you need from there. Outbound connections
 are not firewalled.
@@ -105,7 +105,7 @@ Remote Desktop.
 `AllowGroups` in `sshd_config` is the second layer: the deny rights stop local
 logon, `AllowGroups` decides who may connect.
 
-***THE "Limit ssh" CHECKBOX IS GONE. IT IS NOW A STATEMENT.*** SD limits ssh to
+**THE "Limit ssh" CHECKBOX IS GONE. IT IS NOW A STATEMENT.** SD limits ssh to
 SD users and administrators and puts every ssh session straight into SD. It had
 been ticked by default for some time and was not really meant to be turned off,
 so presenting it as a checkbox suggested a choice that was not one. It is
@@ -141,7 +141,7 @@ it is left alone.
 **Port 22 is closed to other computers unless you tick the box during
 installation.** The rule is scoped to `127.0.0.1,::1` otherwise.
 
-> ***IF YOU INSTALLED A BUILD BEFORE 25 Aug 2026, CHECK THIS.*** The narrowing
+> **IF YOU INSTALLED A BUILD BEFORE 25 Aug 2026, CHECK THIS.** The narrowing
 > step failed **every single time it ran**, leaving port 22 open to the local
 > network even when the box was unticked. The installer's closing page said so:
 > *"Setting who may reach ssh FAILED, and Windows' own default is in force —
@@ -174,7 +174,7 @@ keywords is required:
 | `create.account user fred both` | either |
 | `create.account user fred none` | neither — reachable only with **`logto`** from another session |
 
-***AN `api` ACCOUNT NEVER TOUCHES ANY OF THIS.*** No ssh session, no
+**An `api` account never touches any of this.** No ssh session, no
 `ForceCommand`, no port 22. If your testers are running a GUI client against
 SD, that is the account shape they want, and the ssh configuration on this page
 is irrelevant to them.
@@ -184,7 +184,7 @@ says what the access **is**, not what to add, so `modify.account fred api`
 takes ssh away. Administrators always have both. See
 [Account types](05-account-types.html).
 
-***A SUSPENDED ACCOUNT IS REFUSED AFTER THE CONNECTION IS MADE, NOT BEFORE.***
+**A suspended account is refused after the connection is made, not before.**
 `modify.account fred suspended` does not touch the `sdssh` group, so sshd still
 accepts Fred's connection and SD still starts — and then refuses him:
 

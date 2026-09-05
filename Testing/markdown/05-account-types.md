@@ -7,7 +7,7 @@ and the tier decides what verbs its VOC contains.** There is a fourth tier,
 **suspended**, which is not a capability at all — it denies entry. Group
 accounts are a different thing again: a shared place, not a person.
 
-***THE TIER IS NO LONGER FIXED AT CREATION.*** **`modify.account`** moves an
+**The tier is no longer fixed at creation.** **`modify.account`** moves an
 account between all four, in either direction, and rebuilds its VOC to match at
 once. See [Changing an account afterwards](#changing-an-account-afterwards).
 
@@ -75,7 +75,7 @@ the same reason.
 Account and grant administration, system-wide state, and the shell escapes. See
 [Administrator commands](06-administrator-commands.html).
 
-> ***NONE OF THE THREE IS A WALL.*** An administrator can copy any verb into
+> **None of the three is a wall.** An administrator can copy any verb into
 > any account's VOC afterwards. **The reduced VOC is the posture an account
 > starts in, not a boundary anything enforces.** The boundaries that are
 > enforced are the operating system's file permissions, the ssh confinement,
@@ -97,18 +97,18 @@ The API wording is deliberately the same one it gives for an account that does
 not exist and for one you are not granted, so the API cannot be used to find
 out which accounts exist or what state they are in.
 
-***IT TAKES NOTHING AWAY, WHICH IS WHY LIFTING IT IS FREE.*** The VOC is left
+**It takes nothing away, which is why lifting it is free.** The VOC is left
 exactly as it is, no Windows group membership moves, and the tier it displaced
 is remembered — so bringing the account back puts it exactly where it was, with
 nothing for you to write down. Suspending is not a substitute for deleting: it
 is reversible on purpose.
 
-***AN ELEVATED ADMINISTRATOR CAN STILL `logto` INTO A SUSPENDED ACCOUNT.***
+**An elevated administrator can still `logto` into a suspended account.**
 That is deliberate — looking at a suspended account is the usual reason to have
 one, and anybody elevated could lift the suspension anyway. **What a suspension
 denies is the account's own user.**
 
-> ***AND A SUSPENDED ADMINISTRATOR IS STILL A WINDOWS ADMINISTRATOR.*** SD
+> **And a suspended administrator is still a Windows administrator.** SD
 > refuses them; Windows does not. They keep their `Administrators` membership
 > and their `os.users` record, so they can still elevate on the machine and
 > still reach any account they could reach before. **If you are suspending an
@@ -128,7 +128,7 @@ create.account other <name> <pathname> {no.query}
 
 ### One of `ssh`, `api`, `both`, `none` is required
 
-***THERE IS NO DEFAULT, ON PURPOSE.*** An account that should only ever be
+**There is no default, on purpose.** An account that should only ever be
 reached with **`logto`** says `none` and means it. The old silent behaviour — ssh
 yes, API no — could not tell that apart from somebody who had not thought about
 it.
@@ -148,7 +148,7 @@ accounts take none of this: they have no Windows account.
 | Writes the tier to `ACCOUNTS` field 5 | so `LOGIN` cannot undo it at the next update |
 | Prompts for a password | in SD, masked; it never goes on a command line |
 
-***A USER ACCOUNT CANNOT BE CREATED WITHOUT A PASSWORD.*** Refusing the prompt
+**A user account cannot be created without a password.** Refusing the prompt
 creates nothing at all. Previously it left an account you could not sign in to.
 
 **Elevation is not optional.** Creating a Windows account needs an elevated
@@ -189,8 +189,8 @@ list.grants <account>
 
 All three need an elevated session, and say so rather than failing obscurely.
 
-***READ THIS TWICE, BECAUSE IT IS THE MOST CONFUSING PART OF HOW SD CONTROLS
-ACCESS.*** Entry to an account is membership of the Windows group named in the
+**Read this twice, because it is the most confusing part of how SD controls
+access.** Entry to an account is membership of the Windows group named in the
 account's record, and **Windows fixes group membership when you sign in**. So:
 
 - a grant does not reach the person until they sign out of Windows and back in;
@@ -207,7 +207,7 @@ it is reporting.
 > been removed, and `list accounts` no longer shows a *Granted to* column.
 > **`list.grants`** answers that question now.
 
-> ***`list accounts` SHOWS THE TIER, AND ITS COLUMNS HAVE CHANGED.*** The
+> **`list accounts` shows the tier, and its columns have changed.** The
 > default is `Account`, `Pathname`, `Description`, `Tier`. The Windows group
 > came out to make room: it is always `sdu_` or `sdg_` followed by the account
 > name, so it told you nothing the id did not. Both are still there by name —
@@ -231,7 +231,7 @@ All of them need an elevated session.
 
 ### The tier
 
-***THE TIER MOVES IN EITHER DIRECTION AND NEEDS NO INTERMEDIATE STEP.*** An
+**The tier moves in either direction and needs no intermediate step.** An
 account can go programmer, standard, suspended and back to any of them
 directly. Naming a tier on a suspended account lifts the suspension into that
 tier — **there is no `resume` keyword**; coming back always says where to.
@@ -245,7 +245,7 @@ Account FRED is now STANDARD
 VOC: 0 records added, 42 removed, 0 left alone
 ```
 
-***"LEFT ALONE" IS THE COUNT TO READ.*** A record is only removed if it is
+**"Left alone" is the count to read.** A record is only removed if it is
 still exactly what SD put there. **Anything you or the account's owner has
 edited is counted and kept** — it is somebody's work under a verb's name rather
 than the verb, and a downgrade will not destroy it.
@@ -276,7 +276,7 @@ person behind it to put in a Windows group.
 
 ### The remote routes
 
-***THE KEYWORD SAYS WHAT THE ACCESS IS, NOT WHAT TO ADD.*** So
+**The keyword says what the access is, not what to add.** So
 
 ```
 modify.account fred api
@@ -319,7 +319,7 @@ so there is nothing to *set* for the first time.
 names exactly what will go, including the Windows account when there is one to
 remove.
 
-***IT WILL NOT DELETE A WINDOWS ACCOUNT SD DID NOT CREATE.*** The question uses
+**It will not delete a Windows account SD did not create.** The question uses
 shorter wording in that case rather than promising something it will not do.
 
 ## Two things that catch people out

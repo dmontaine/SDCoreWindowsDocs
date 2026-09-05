@@ -33,7 +33,7 @@ count voc
 2 record(s) counted
 ```
 
-***THAT IS THE POINT OF SELECT LISTS AND IT IS ALSO THE TRAP.*** A list you
+**That is the point of select lists and it is also the trap.** A list you
 built and forgot about silently narrows the next thing you do, and nothing
 about the answer says so — `2 record(s) counted` is not obviously wrong. **A
 surprisingly small answer is very often a leftover list.**
@@ -91,7 +91,7 @@ Cleared all numbered select lists
 It is how you follow a reference from one file into another: select the orders,
 `qselect` the customer number, and the list you are left with is customers.
 
-> ***`qselect` DOES NOT TELL YOU WHICH LIST IT FILLED.*** Its completion message
+> **`qselect` does not tell you which list it filled.** Its completion message
 > ends after the words *select list* with no number:
 > `14 record(s) selected to select list`. **The list is there** — it is list 0
 > unless you gave `to` *n*. `select` and `nselect` both print the number
@@ -113,7 +113,7 @@ select voc with dispatch = "IN" to 4
 45 record(s) selected to list 4
 ```
 
-***A LIST IN 1 TO 10 DOES NOT AFFECT THE NEXT COMMAND.*** Only list 0 does. That
+**A list in 1 to 10 does not affect the next command.** Only list 0 does. That
 is what makes the numbered lists a safe scratch area, and it is why the prompt
 above stayed `:` rather than becoming `::`.
 
@@ -157,8 +157,8 @@ duplicates.
 
 ## Combining two lists
 
-***THERE ARE TWO SETS OF VERBS AND THEY TAKE DIFFERENT THINGS. THIS IS THE
-EASIEST MISTAKE ON THE PAGE.***
+**There are two sets of verbs and they take different things. this is the
+easiest mistake on the page.**
 
 | | takes | |
 |---|---|---|

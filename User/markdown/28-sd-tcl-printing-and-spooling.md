@@ -30,7 +30,7 @@ Unit Width Depth Tmgn Bmgn Mode Options
 | **Mode** | what the unit does with the output |
 | **Options** | everything else that has been set on the unit |
 
-***THE DEPTH IS 66 AND THE TERMINAL IS NOT 66 LINES.*** Unit 0's page is a
+**The depth is 66 and the terminal is not 66 lines.** Unit 0's page is a
 printed page, not your screen — it is the size a report is paginated to when it
 goes to a printer. The screen's own size is **`term`**, which is a different
 setting on a different page:
@@ -49,7 +49,7 @@ The positional arguments are all optional — `setptr 1,,,,,3` sets only the mod
 of unit 1 — and **`nodefault`** keeps the values you did not name rather than
 resetting them.
 
-> ***`setptr` ASKS BEFORE IT CHANGES A UNIT, AND `brief` IS HOW YOU STOP IT.***
+> **`setptr` asks before it changes a unit, and `brief` is how you stop it.**
 > That confirmation is a prompt, so a `setptr` inside a phantom, a script or an
 > API session **hangs waiting for an answer nobody is there to give**. Give it
 > `brief` in anything that is not a person at a keyboard.
@@ -83,7 +83,7 @@ printer {unit} keep.open | close
 printer {unit} reset                    back to the defaults
 ```
 
-***`printer` DOES THE SAME JOB AS `setptr` AND DOES NOT ASK FIRST.*** That is
+**`printer` does the same job as `setptr` and does not ask first.** That is
 the reason to know it exists: `setptr` confirms before it changes a unit unless
 you remember `brief`, and `printer` has no confirmation at all. **It is the form
 to use from a phantom, a script or an API session.**
@@ -209,7 +209,7 @@ File name required
 
 **`sp.view`** shows the records in `$hold` and offers to print them.
 
-***IT IS A FULL-SCREEN FORM AND CANNOT BE DRIVEN DOWN A PIPE.*** It asks for a
+**It is a full-screen form and cannot be driven down a pipe.** It asks for a
 printer number, then whether to print, then a confirmation — three prompts, so a
 script that runs it stops and waits. Like the screen editors, it wants a person
 at a terminal. Everything on this page except `sp.view` can be scripted.
@@ -252,7 +252,7 @@ $como zzcomo
 6: 
 ```
 
-***IT CAPTURES THE PROMPTS AND THE ECHOES, NOT JUST THE OUTPUT.*** The record is
+**It captures the prompts and the echoes, not just the output.** The record is
 a transcript of the session, which is what makes it useful for showing somebody
 what you did — and it means a COMO of a long run is larger than the output
 alone. **`como off` is captured too**, as the last thing before the file closes.

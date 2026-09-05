@@ -6,7 +6,7 @@ shorter name. **They are the only way out of SD to the operating system from
 TCL**, and who may use them is decided by a file in the system account rather
 than by an account's tier.
 
-> ***THIS DOCUMENT IS SEPARATE SO THAT IT CAN BE WITHHELD.*** It links to
+> **This document is separate so that it can be withheld.** It links to
 > nothing outside the administrator set. Where a user-set page is worth naming,
 > it is named in words.
 
@@ -32,7 +32,7 @@ hello-from-the-shell
 via-the-bang-form
 ```
 
-***NEVER TYPE `sh` WITH NOTHING AFTER IT IN A SCRIPT.*** The configured shell
+**Never type `sh` with nothing after it in a script.** The configured shell
 for the bare form is interactive — `config` reports it as
 
 ```
@@ -56,7 +56,7 @@ At line:1 char:12
 The token '&&' is not a valid statement separator in this version.
 ```
 
-***`&&` AND `||` DO NOT EXIST THERE.*** Nor do the ternary, null-coalescing or
+**`&&` and `||` do not exist there.** Nor do the ternary, null-coalescing or
 null-conditional operators. Chain with `;`, and test with `if ($?) { … }`.
 
 **Pipes and redirection do work**, for an account that is on the list:
@@ -95,7 +95,7 @@ will be refused, wherever it is called from.
 
 ## Who is allowed: `os.users`
 
-***THE PERMISSION IS A RECORD IN A FILE IN THE SYSTEM ACCOUNT, NOT A TIER.***
+**The permission is a record in a file in the system account, not a tier.**
 `sdsys/os.users` holds one record per person:
 
 | | |
@@ -108,7 +108,7 @@ Anything other than `yes` means no, and **a missing file or a missing record
 means no**. That is the opposite of the tier lists, where a missing record means
 the full set — do not carry the convention across.
 
-***IT IS KEYED TO `@logname`, THE PERSON, NOT THE ACCOUNT.*** The permission
+**It is keyed to `@logname`, the person, not the account.** The permission
 therefore does not change when somebody `logto`s somewhere else. That is
 deliberate: the question *may this person reach the operating system* has one
 answer per person, and an account they can enter should not be able to change
@@ -123,7 +123,7 @@ the record for an administrator account as it creates it**, with both fields
 two fields afterwards. Hand-editing remains the only route for the case those
 keywords refuse.
 
-> ***THE FILE'S ACL IS THE WHOLE OF THE PROTECTION.*** `os.users` is read-only
+> **The file's ACL is the whole of the protection.** `os.users` is read-only
 > to `sdusers` on disk, which is what stops somebody adding their own name to
 > the list from inside their own account. The command processor reads it in the
 > user's own process. **Without that ACL this control is decoration** — if you
@@ -146,7 +146,7 @@ don is not permitted to use the operating system shell
 
 is message 10053, and it names the person rather than the account.
 
-***THE MIDDLE ROW IS THE ONE PEOPLE MISREAD.*** An elevated session that is not
+**The middle row is the one people misread.** An elevated session that is not
 on the list keeps a restricted shell: it may run a command, but not one
 containing shell metacharacters. **Being on the list is what buys a real
 shell** — pipes, redirection and chaining are most of what a programmer wants
@@ -155,7 +155,7 @@ Elevation on its own does not lift it.
 
 ## What this does not gate
 
-***A PROGRAM'S `OS.EXECUTE` IS NOT ON THIS PATH.*** `OS.EXECUTE` from SD BASIC
+**A program's `OS.EXECUTE` is not on this path.** `OS.EXECUTE` from SD BASIC
 compiles to a different opcode and is governed by field **2** of the same
 record, not by field 1 and not by the metacharacter test. So the two halves are
 set independently, and `sh-off` deliberately leaves `OS.EXECUTE` alone.
@@ -169,7 +169,7 @@ because that runs the TCL verb.
 ## Who has these verbs
 
 `sh` and `!` are administrator-tier, so an ordinary account does not have the
-names. ***AND THE TIER IS NOT THE PERMISSION*** — an administrator account whose
+names. **And the tier is not the permission** — an administrator account whose
 Windows login is not in `os.users`, and whose session is not elevated, has the
 verb and is refused by it. **Two gates, and both must pass.**
 

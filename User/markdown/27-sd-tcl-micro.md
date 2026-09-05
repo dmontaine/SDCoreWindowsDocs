@@ -11,8 +11,8 @@ programming:
 
 | | |
 |---|---|
-| ***it highlights SD BASIC*** | statements, reserved words, intrinsics, strings and comments, from rules SD generates out of the compiler's own tables and ships |
-| ***it has a command bar and a help screen*** | so everything it can do is reachable and readable without leaving the editor |
+| **it highlights SD BASIC** | statements, reserved words, intrinsics, strings and comments, from rules SD generates out of the compiler's own tables and ships |
+| **it has a command bar and a help screen** | so everything it can do is reachable and readable without leaving the editor |
 
 It also has multiple files open at once, split windows, a plugin system and
 rebindable keys. **If you only want to change one line in a record**, `edit` is
@@ -28,7 +28,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## Both editors are installed with SD
 
-***YOU DO NOT INSTALL ANYTHING.*** SD's installer checks for both editors and
+**You do not install anything.** SD's installer checks for both editors and
 installs whichever is missing, machine-wide, so every account SD creates can
 reach them.
 
@@ -62,7 +62,7 @@ the answer to everything not on this page.
 Function keys work too, for anyone who prefers them: **`F1`** help, **`F2`**
 save, **`F3`** or **`F7`** find, **`F4`** or **`F10`** quit.
 
-> ***`Ctrl-Q` CLOSES THE FILE RATHER THAN THE EDITOR.*** With one record open —
+> **`Ctrl-Q` closes the file rather than the editor.** With one record open —
 > which is how SD starts it — that is the same thing. With a second file opened
 > by hand it is not, and micro stays up until the last one is closed.
 
@@ -79,7 +79,7 @@ commands, and the two worth knowing on the first day are:
 
 ## Saving is broken for an ordinary account in W1.0-0
 
-> ***`micro` DRAWS, EDITS AND HIGHLIGHTS CORRECTLY AND THEN CANNOT SAVE***,
+> **`micro` draws, edits and highlights correctly and then cannot save**,
 > unless the session is elevated:
 >
 > ```
@@ -95,14 +95,14 @@ commands, and the two worth knowing on the first day are:
 > micro has to write to and an ordinary account may not. Measured 27 Aug 2026;
 > it is recorded as a release blocker in the project's fix lists.
 >
-> ***UNTIL IT IS FIXED, USE `ed` FOR ANYTHING YOU INTEND TO SAVE.*** It runs
+> **Until it is fixed, use `ed` for anything you intend to save.** It runs
 > inside SD, needs no external editor and no operating-system access, and is
 > documented on [SD TCL - The ed Line Editor](25-sd-tcl-ed.html). `micro` is
 > still useful for reading a record with syntax highlighting.
 
 ## Highlighting SD BASIC
 
-***SD SHIPS THE RULES AND POINTS micro AT THEM.*** They are generated from the
+**SD SHIPS THE RULES AND POINTS micro AT THEM.** They are generated from the
 BASIC compiler's own tables rather than typed by hand, so the list of
 statements, reserved words and intrinsics is the one the compiler actually
 accepts.
@@ -134,8 +134,8 @@ ed, the line editor, works anywhere.
 ## Marks, and how to type one
 
 A **field** mark is a line break, so micro handles fields on its own. The other
-three have a token you type instead. ***EVERY TOKEN IS `~` AND ONE MORE
-CHARACTER, AND `~` IS THE ONLY ESCAPE CHARACTER.***
+three have a token you type instead. **Every token is `~` and one more
+character, and `~` is the only escape character.**
 
 | | |
 |---|---|

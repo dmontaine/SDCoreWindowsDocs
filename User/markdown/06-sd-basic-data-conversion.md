@@ -28,7 +28,7 @@ oconv(expression, conversion)
 
 `iconvs()` and `oconvs()` do the same to every element of a dynamic array.
 
-***A FAILED `iconv()` RETURNS THE NULL STRING AND SETS `status()`.*** Measured:
+**A failed `iconv()` returns the null string and sets `status()`.** Measured:
 `iconv('nonsense', 'D')` returns empty and `status()` afterwards is **1**.
 
 ```
@@ -49,7 +49,7 @@ iconv(text, 'D')
 oconv(daynumber, 'D{n}{separator}{format}')
 ```
 
-***DAY ZERO IS 31 DECEMBER 1967.*** Measured: `oconv(0, 'D4/')` is
+**Day zero is 31 December 1967.** Measured: `oconv(0, 'D4/')` is
 `12/31/1967`. Dates before that are negative. `26 AUG 2026` is day **21423**.
 
 | Conversion | Result for day 21423 |
@@ -66,7 +66,7 @@ oconv(daynumber, 'D{n}{separator}{format}')
 The digit after `D` is how many digits of year to show; the character after
 that is the separator.
 
-> ***THE DEFAULT ORDER IS MONTH, DAY, YEAR.*** Measured: `D2/` gives
+> **The default order is month, day, year.** Measured: `D2/` gives
 > `08/26/26` for the 26th of August. **`E` puts it in day-month-year order** —
 > measured, `D2/E` gives `26/08/26` and `D4/E` gives `26/08/2026`. A site that
 > expects day-first must say `E` on **every** conversion; a report that mixes
@@ -115,7 +115,7 @@ integer and the displayed one has decimals.
 | `oconv(1234567, 'MD0,')` | `1,234,567` |
 | `oconv(-42, 'MD2')` | `-0.42` |
 
-> ***`MD2` DIVIDES BY 100 — IT DOES NOT ROUND TO TWO PLACES.*** Measured:
+> **`MD2` divides by 100 — it does not round to two places.** Measured:
 > `oconv(-42, 'MD2')` is `-0.42`, not `-42.00`. It is for money held as whole
 > pence or cents. **To show two decimals of a value that is already scaled, use
 > `fmt()`** with a `2` after the justification.
@@ -158,13 +158,13 @@ The specification is a width, a justification, and optional extras.
 |---|---|
 | `fmt('ab', '10L')` | `ab␣␣␣␣␣␣␣␣` — left, padded to 10 |
 | `fmt('ab', '10R')` | `␣␣␣␣␣␣␣␣ab` — right |
-| `fmt('ab', '10*R')` | `********ab` — padded with `*` |
+| `fmt('ab', '10*R')` | `******ab` — padded with `*` |
 | `fmt(1234.5, '12R2')` | `␣␣␣␣␣1234.50` — two decimals, right |
 
 The character before the justification letter is the fill character; a digit
 after it is the number of decimal places.
 
-> ***A VALUE LONGER THAN THE WIDTH IS WRAPPED, NOT TRUNCATED.*** Measured:
+> **A value longer than the width is wrapped, not truncated.** Measured:
 > `fmt('abcdefgh', '4L')` returns `abcd` and `efgh` separated by a **text
 > mark**, not `abcd`. A field written straight to a screen or a file therefore
 > gains a stray character rather than being cut short. **To truncate, take a
@@ -179,8 +179,8 @@ value, with nothing between them**:
 print total '10r2'
 ```
 
-Measured: with `t` holding `1234.5`, `t '10R2'` gives `␣␣␣1234.50`. ***THERE IS
-NO `fmt` KEYWORD IN THIS FORM*** — writing `t fmt '10R2'` compiles `fmt` as a
+Measured: with `t` holding `1234.5`, `t '10R2'` gives `␣␣␣1234.50`. **There is
+no `fmt` keyword in this form** — writing `t fmt '10R2'` compiles `fmt` as a
 variable name and aborts at run time with *"Unassigned variable FMT"*. The
 qualifier is recognised by juxtaposition alone, which is why it is allowed only
 where an expression cannot be followed by something else.

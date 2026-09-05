@@ -24,7 +24,7 @@ printcsv {on print.unit} value1, value2, ... {:}
 [SD Basic - Sequential Files](10-sd-basic-sequential-files.html) for opening
 one. `printcsv` sends the same thing to the terminal or a print unit.
 
-***THE QUOTING IS DONE FOR YOU, AND IT IS CONFORMANT.*** Measured — three
+**The quoting is done for you, and it is conformant.** Measured — three
 values, one containing a comma and one containing quotes:
 
 ```
@@ -74,7 +74,7 @@ quotes restored.
 
 `readcsv`'s `else` branch is end of file, as `readseq`'s is.
 
-***THE NUMBER OF VARIABLES IS FIXED AT COMPILE TIME AND THE DATA IS NOT.***
+**The number of variables is fixed at compile time and the data is not.**
 A row with more fields than you named loses the extras silently; one with fewer
 leaves the trailing variables empty, which is indistinguishable from a row that
 genuinely had empty fields. If the width varies, use `csvdq()` below and count
@@ -87,7 +87,7 @@ csvdq(line {, delimiter})
 dparse.csv line, delimiter, variable1, variable2, ...
 ```
 
-***`csvdq()` IS A DE-QUOTER, NOT A QUOTER. THE NAME READS THE OTHER WAY.***
+**`csvdq()` is a de-quoter, not a quoter. the name reads the other way.**
 It takes one CSV line and returns its fields separated by **field marks**,
 honouring the quoting. Measured:
 

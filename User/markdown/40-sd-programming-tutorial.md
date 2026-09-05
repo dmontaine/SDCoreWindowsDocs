@@ -6,8 +6,8 @@ page covers one subject and every statement on it. Here we put them
 together into programs that do something, and each program builds on
 the one before.
 
-***Every program on this page compiles and runs on SD Core for Windows
-W1.0-0.*** The output shown is what SD printed. If you type the program
+**Every program on this page compiles and runs on SD Core for Windows
+W1.0-0.** The output shown is what SD printed. If you type the program
 in, compile it and run it, you will see the same thing.
 
 The reference pages are linked at the end of each section. Read them
@@ -71,7 +71,7 @@ terminal. The string is in single quotes; double quotes work too, but
 single quotes are what the rest of the documentation uses and what SD's
 own source uses.
 
-> ***`program` IS OPTIONAL.*** A source record with no declaration is a
+> **`program` is optional.** A source record with no declaration is a
 > program. But every program on this page has one, because naming the
 > program is how you know what it is when it is catalogued and called
 > from another program.
@@ -155,7 +155,7 @@ expression and returns a value. SDBasic has a full set of math
 functions: `abs`, `int`, `sqrt`, `sin`, `cos`, `tan`, `ln`, `exp`,
 `pwr`, and more. The full list is in [SD Basic - Math Functions](03-sd-basic-math-functions.html).
 
-> ***THE REDUNDANT-LOOKING TYPE-FORCING IDIOM.*** Because conversion
+> **The redundant-looking type-forcing idiom.** Because conversion
 > happens on use, not on assignment, a string of digits used in a tight
 > loop converts on every iteration. SDBasic programs often contain
 > apparently redundant statements that force the conversion once:

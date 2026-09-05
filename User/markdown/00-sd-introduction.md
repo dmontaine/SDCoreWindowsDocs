@@ -68,7 +68,7 @@ account or your group membership has not taken effect yet. If it
 answers *not registered for SD use*, you are not in the `sdusers`
 group.
 
-> ***YOU MUST SIGN OUT AND BACK IN AFTER BEING ADDED TO `sdusers`.***
+> **You must sign out and back in after being added to `sdusers`.**
 > Windows fixes group membership when you sign in. Until you get a new
 > logon token you cannot read the data tree at all, and the symptom
 > looks like a broken install.
@@ -133,7 +133,7 @@ You will get a UAC consent prompt unless the session is already
 elevated. That is the gate — there is no SDSYS password, and there is
 deliberately no second shared secret held by every administrator.
 
-> ***IF YOU ARE OVER ssh, THIS MAY NOT WORK.*** A UAC prompt has no
+> **IF YOU ARE OVER ssh, THIS MAY NOT WORK.** A UAC prompt has no
 > interactive desktop there. Start an elevated terminal at the machine
 > instead.
 

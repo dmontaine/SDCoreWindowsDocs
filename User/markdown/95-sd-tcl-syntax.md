@@ -16,7 +16,7 @@ folds case, so any of this may be typed in either case.
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where they were measured against a running system.
 
-***THE TIER COLUMN IS THE VOC, NOT AN OPINION.*** It is read from
+**The tier column is the VOC, not an opinion.** It is read from
 `TIER.OMIT.STANDARD` and `TIER.ADD.ADMINISTRATOR`, the same two lists
 the account-creation code uses, so it cannot drift from what an account
 actually gets. **A verb your account does not have is not refused — the

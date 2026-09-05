@@ -6,7 +6,7 @@ These are the verbs for looking at the machine as a whole and intervening in it:
 away.** Every one of them is administrator-tier, and the ones that act on
 somebody else need an elevated session on top of that.
 
-> ***THIS DOCUMENT IS SEPARATE SO THAT IT CAN BE WITHHELD.*** It links to
+> **This document is separate so that it can be withheld.** It links to
 > nothing outside the administrator set. Where a user-set page is worth naming,
 > it is named in words.
 
@@ -53,12 +53,12 @@ listu {no.page} {lptr {n}}
 | **`Origin`** | where the session came from |
 | **`Username`** | the **Windows** account the session runs as, not the SD account it is in |
 
-***`Username` IS THE COLUMN THAT MATTERS FOR PERMISSION.*** Almost every control
+**`Username` is the column that matters for permission.** Almost every control
 on this page is keyed to the Windows identity, not to the SD account — so two
 sessions showing different accounts but the same username are, as far as
 `logout` is concerned, the same person's.
 
-***`Origin` IS BLANK FOR A LOCAL SESSION AND THAT IS NOT A FAULT.*** It reports
+**`Origin` is blank for a local session and that is not a fault.** It reports
 an address or a device name, and a console or piped session has neither. It
 reads `Phantom` for a phantom, an IP address for a network client, and
 `SDNet`/`SDVbSrvr` with the address for the two server connection types.
@@ -74,7 +74,7 @@ logout n {n …}          end another session, by user number
 logout all              end every session but this one
 ```
 
-***`logout` WITH NO ARGUMENT ENDS YOUR OWN SESSION.*** It is `quit` under
+**`logout` with no argument ends your own session.** It is `quit` under
 another name, which is worth knowing before typing it intending to list
 something.
 
@@ -97,7 +97,7 @@ account. It leaves your own session alone.
 outside SD, or lost with a terminal — there is nothing to signal, and the entry
 stays with **`(logout pending)`** beside it.
 
-***THE ENTRY MATTERS BECAUSE IT HOLDS A SLOT AND AN EXCLUSIVE-ACCESS CLAIM.***
+**The entry matters because it holds a slot and an exclusive-access claim.**
 `NUMUSERS` counts it, and any verb that wants a file to itself — `build.index`
 is the usual one — is refused while it is there. **Recovery is not another
 `logout`:**
@@ -108,7 +108,7 @@ sd -cleanup
 
 run elevated, and a restart of the SD service if that does not take it.
 
-***CONFIRM THE SESSION IS ACTUALLY DEAD BEFORE CLEARING IT.*** `pstat` *n*
+**Confirm the session is actually dead before clearing it.** `pstat` *n*
 answers *(Not responding)* for a session with nothing behind it — it asks the
 process and waits about four seconds — and that is the difference between a dead
 entry and a busy one. `pstat` is a programmer verb and is documented in the user
@@ -153,7 +153,7 @@ User File Path........................... Type Id..............................
           _accounts/don/ZZLK31A
 ```
 
-***THE PATH IS THE POSIX ONE AND THAT IS NOT A DISPLAY FAULT.*** SD holds file
+**The PATH is the POSIX one and that is not a display fault.** SD holds file
 paths internally in `/cygdrive/c/...` form on this port. It names the same place
 as `C:\ProgramData\SD\...`.
 
@@ -167,7 +167,7 @@ Record lock limit (NUMLOCKS) = 100, Current = 0, Peak = 2
 There are no active file, read or update locks held by any user
 ```
 
-***`Peak` IS THE ONE TO WATCH.*** `Current` describes this instant, which is
+**`Peak` is the one to watch.** `Current` describes this instant, which is
 rarely the instant that mattered. A peak near the limit is how you find out
 `NUMLOCKS` needs raising **before** a program fails with the lock table full.
 `config` reports the configured limit.
@@ -224,7 +224,7 @@ Set task lock 5
 Task lock already owned by this process
 ```
 
-***WITHOUT `no.wait` IT WAITS FOR EVER.*** It prints *Waiting for task lock to
+**Without `no.wait` it waits for ever.** It prints *Waiting for task lock to
 become available* once, then retries every two seconds until it gets it — right
 for a job that must run, wrong for anything unattended. **`no.wait` turns the
 wait into a refusal** (*Task lock is already in use*), which a script can act on.
@@ -257,8 +257,8 @@ unlock file n {user n} filelock
 unlock tasklock n {n …}
 ```
 
-***THIS IS THE ONLY VERB THAT TAKES SOMEBODY ELSE'S LOCK, AND IT NEEDS AN
-ELEVATED SESSION*** — having the verb is not enough:
+**This is the only verb that takes somebody else's lock, and it needs an
+elevated session** — having the verb is not enough:
 
 ```
 :unlock
@@ -282,7 +282,7 @@ accounts.
 user number must be specified* — so there is no `unlock` that means *everything
 on the machine*.
 
-> ***UNLOCKING IS NOT FREE AND SD CANNOT MAKE IT SO.*** A lock is a promise its
+> **Unlocking is not free and SD cannot make it so.** A lock is a promise its
 > holder is relying on. Forcing one open while its owner is alive lets two
 > sessions write the same record and tells neither. **Establish that the holder
 > is dead first** — `pstat` on the user number, `listu` for *(logout pending)* —
@@ -293,7 +293,7 @@ on the machine*.
 **Task locks are released when a session ends normally.** They are not part of
 any file, so nothing has to be written back.
 
-> ***`sd -cleanup` DOES NOT GIVE THEM BACK, AND THAT IS A DEFECT.*** It releases
+> **`sd -cleanup` does not give them back, and that is a defect.** It releases
 > a dead session's record locks and file locks and leaves its task locks held,
 > by a user number nothing is behind, until SD itself is restarted.
 > `list.locks` shows the number with an owner and `clear.locks` refuses it
@@ -311,7 +311,7 @@ not have the names at all.
 | **the verb is enough** | `listu` `list.readu` `list.locks` `lock` `clear.locks` |
 | **needs elevation as well** | `unlock`, and `logout` against another Windows account's session |
 
-***THE SPLIT IS BETWEEN LOOKING AND INTERVENING.*** Seeing who is on the machine
+**The split is between looking and intervening.** Seeing who is on the machine
 and what they hold is an administrator's ordinary business. Taking a session or
 a lock away from somebody else asks for the elevated token as well.
 

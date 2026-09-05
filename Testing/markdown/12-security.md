@@ -7,8 +7,8 @@ that look like bugs are consequences of it.
 
 ## Signing in asks for no password
 
-***THE OPERATING SYSTEM HAS ALREADY AUTHENTICATED YOU. SD ASKS WINDOWS WHO YOU
-ARE.***
+**The operating system has already authenticated you. SD asks Windows who you
+are.**
 
 | | |
 |---|---|
@@ -30,8 +30,8 @@ it walked into a prompt it could never be given input for. See
 
 ## Being an administrator
 
-***IF YOU CAN LOG IN TO WINDOWS AS AN ADMINISTRATOR, YOU ARE AN ADMINISTRATOR
-OF SD.*** The person who installs SD is an SD administrator without any further
+**If you can log in to Windows as an administrator, you are an administrator
+of sd.** The person who installs SD is an SD administrator without any further
 step.
 
 Two different questions are asked in two different places, and both are wanted:
@@ -44,7 +44,7 @@ Two different questions are asked in two different places, and both are wanted:
 A UAC-filtered token carries `Administrators` as *deny only*, so these give
 different answers for the same person, and conflating them is the easy mistake.
 
-***ONE PROPERTY TO ACCEPT CONSCIOUSLY.*** `Administrators` is machine-wide, so
+**One property to accept consciously.** `Administrators` is machine-wide, so
 anyone in it for an unrelated reason — the machine's own administrator, a
 domain admin, an IT tool's service account — gets SDSYS. Linux sudoers is
 machine-wide too, so this is parity rather than a Windows weakness, but it
@@ -58,7 +58,7 @@ remember: the VOC and every Windows group membership are left exactly as they
 are, and the tier it displaced is recorded, so naming a tier brings the account
 back where it was.
 
-***UNDERSTAND WHAT IT IS AND IS NOT, BECAUSE THE NAME OVERSELLS IT.***
+**Understand what it is and is not, because the name oversells it.**
 
 | | |
 |---|---|
@@ -71,14 +71,14 @@ keeps their `os.users` record, and can still elevate on this machine.** An
 elevated session can also still **`logto`** into a suspended account, which is
 deliberate — that is how you look at one.
 
-***IF YOU ARE SUSPENDING AN ACCOUNT TO CONTAIN SOMEBODY RATHER THAN TO PARK IT,
-DISABLE THE WINDOWS ACCOUNT TOO.*** Everything on this page rests on Windows
+**If you are Suspending an account to contain somebody rather than to park it,
+disable the Windows account too.** Everything on this page rests on Windows
 identity; a control that does not touch Windows cannot be the whole answer.
 
 ## Understand what the security position rests on
 
-***NOTHING IN SD CHECKS A SECRET AT CONSOLE OR ssh LOGIN. ACCESS IS ENTIRELY
-OPERATING-SYSTEM GROUP MEMBERSHIP.***
+**NOTHING IN SD CHECKS A SECRET AT CONSOLE OR ssh LOGIN. ACCESS IS ENTIRELY
+OPERATING-SYSTEM GROUP MEMBERSHIP.**
 
 That is not a weakening. Every SD process opens the database directly, in your
 own process, under your own token. There is no data server standing between
@@ -103,8 +103,8 @@ Windows default is world-readable and snooping needs no privilege at all. The
 installer **breaks inheritance first** and grants narrowly: SYSTEM,
 `Administrators` and `sdusers`.
 
-***THIS IS THE STEP THAT MAKES THE DATA PRIVATE, AND NOTHING AT RUN TIME
-SUBSTITUTES FOR IT.***
+**This is the step that makes the data private, and nothing at run time
+Substitutes for it.**
 
 ### Your account directory is locked to you
 
@@ -141,12 +141,12 @@ session first, across fifteen commands including the spooler, saved lists and a
 phantom. The commands that *do* write them are already administrator commands
 and are unaffected.
 
-***`sdsys\$ipc` IS DELIBERATELY UNCHANGED.*** Every session writes to it, and
+**`sdsys\$ipc` is deliberately unchanged.** Every session writes to it, and
 it is how a **`phantom`** is given its command.
 
 The global catalogue and the pcode library are locked the same way.
 
-> ***AN EXISTING INSTALLATION IS NOT CHANGED BY AN UPGRADE***, because the
+> **An existing installation is not changed by an upgrade**, because the
 > installer never overwrites a data area that is already there. To apply it to
 > one you already have, run this once per path from an elevated prompt:
 >
@@ -156,8 +156,8 @@ The global catalogue and the pcode library are locked the same way.
 
 ### The credential file
 
-***ON INSTALLS MADE BEFORE 17 Aug 2026, EVERY SD USER COULD WRITE THE FILE SD
-KEEPS ACCOUNT PASSWORDS IN.*** No password is stored there — SD keeps a
+**ON INSTALLS MADE BEFORE 17 Aug 2026, EVERY SD USER COULD WRITE THE FILE SD
+KEEPS ACCOUNT PASSWORDS IN.** No password is stored there — SD keeps a
 scrambled verifier that cannot be turned back into a password — but **being
 able to replace one was enough**: a user could put in a verifier for a password
 of their own choosing and sign in as somebody else, including through the API.
@@ -173,13 +173,13 @@ was called. **Nothing in the install looked wrong.**
 icacls "C:\ProgramData\SD\sdsys\$CRED"
 ```
 
-If that prints permissions, the file is still open. ***If it says "Access is
-denied", it is protected — which is what you want.***
+If that prints permissions, the file is still open. **If it says "Access is
+denied", it is protected — which is what you want.**
 
 ## Reaching the operating system from inside SD
 
-***THERE ARE THREE WAYS OUT OF SD ONTO THE MACHINE, AND ALL THREE ARE ON ONE
-LIST.***
+**There are three ways out of SD onto the machine, and all three are on one
+list.**
 
 | | What it is | Governed by |
 |---|---|---|
@@ -199,8 +199,8 @@ opposite of the VOC tier lists, where a missing record means the *full* VOC —
 do not carry one convention across to the other.
 
 **2. An elevated session passes on its own**, whatever the list says, so an
-empty list cannot lock the machine's own administrator out. ***An ssh session
-can never be elevated***, so somebody arriving that way needs a record even if
+empty list cannot lock the machine's own administrator out. **An ssh session
+can never be elevated**, so somebody arriving that way needs a record even if
 they are an administrator.
 
 **3. None of the three is available over the API.** An API session is not
@@ -212,7 +212,7 @@ from that point on is their own Windows account's permissions**, and nothing
 else. A listed person gets a real shell, with pipes and redirection; an editor
 can open any file they are allowed to open, in the data tree or outside it.
 
-> ***SO FIELD 1 AND FIELD 2 ARE STATEMENTS OF TRUST IN A PERSON.*** They are
+> **So field 1 and field 2 are statements of trust in a person.** They are
 > not a convenience to be handed out because somebody asked for a full-screen
 > editor. Grant them on the same basis you would grant a shell account on the
 > machine, because that is close to what you are granting.
@@ -235,7 +235,7 @@ consequence was the serious one: **another SD user could replace the script
 between SD writing it and SD running it, and their version would run with full
 administrator privilege.**
 
-***IF `PSTMP` IS MISSING, SD REFUSES THE PRIVILEGED WORK*** rather than falling
+**If `PSTMP` is missing, SD refuses the privileged work** rather than falling
 back to the old location. You see the command fail rather than quietly running
 unprotected.
 
@@ -249,7 +249,7 @@ date, time and the Windows user it belonged to.
 2026-08-16 11:42:07 user=don uid=1 pid=8624 LOGTO account=SDSYS
 ```
 
-***THE REFUSALS ARE THE INTERESTING HALF.*** An entry saying somebody who is
+**The refusals are the interesting half.** An entry saying somebody who is
 not an administrator asked for SDSYS by name, or asked for an account they have
 not been granted, is the thing worth seeing. **Failed API logins are recorded
 too, with the reason.**
@@ -274,8 +274,8 @@ constrain somebody who owns the machine.
 
 ## What is still not true
 
-***SD USERS ARE NOT ISOLATED FROM EACH OTHER'S DATA AT THE FILE LEVEL, BEYOND
-THE PER-ACCOUNT DIRECTORY LOCK.*** Everyone who uses SD needs file access to
+**SD users are not isolated from each other's data at the file level, beyond
+the Per-account directory lock.** Everyone who uses SD needs file access to
 the tree, because their own process does the I/O. Anyone deploying SD for ten
 people over ssh should be told that plainly.
 

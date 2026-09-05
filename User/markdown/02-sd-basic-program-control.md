@@ -27,13 +27,13 @@ The single-line and block forms can be mixed — `then` on one line and `end
 else` opening a block is legal — but a block that starts on one line must end
 with `end` before the `else`.
 
-***AN EMPTY BRANCH STILL NEEDS A STATEMENT.*** Use `null`:
+**An empty branch still needs a statement.** Use `null`:
 
 ```
 read rec from f, id then null else stop 'missing'
 ```
 
-> ***`and` AND `or` HAVE THE SAME PRECEDENCE AND ARE APPLIED LEFT TO RIGHT.***
+> **`and` and `or` have the same precedence and are applied left to right.**
 > `a or b and c` means `(a or b) and c`, not `a or (b and c)`. This is not what
 > C, Python, Java or SQL do, and it is the single most common way a condition
 > in ported code changes meaning. **Parenthesise anything that mixes them.**
@@ -77,7 +77,7 @@ Measured:
 | `for i = 1 to 2 step 0.5` | `1 1.5 2` |
 | `for i = 3 to 1` | **none — the body never runs** |
 
-***THE LIMIT IS TESTED BEFORE THE FIRST PASS***, so a loop whose start is
+**The limit is tested before the first pass**, so a loop whose start is
 already past its limit does nothing rather than running once. A fractional
 `step` is allowed, but a fractional step that cannot represent the limit
 exactly may stop one iteration early — count with integers and scale if it
@@ -134,8 +134,8 @@ on expression gosub label1, label2, label3
 
 Jumps to the *n*-th label, counting from 1.
 
-> ***AN OUT-OF-RANGE VALUE DOES NOT FALL THROUGH — IT IS CLAMPED TO THE NEAREST
-> END.*** This is the opposite of what most MultiValue documentation says, and
+> **An out-of-range value does not fall through — it is clamped to the nearest
+> end.** This is the opposite of what most MultiValue documentation says, and
 > it was measured on this port with two labels:
 >
 > | Expression | Where it went |
@@ -186,7 +186,7 @@ Measured: `execute 'WHO' capturing cap` puts the command's output in `cap`
 rather than on the screen, one field per line — `dcount(cap, @fm)` was `1` for
 a single-session `WHO`.
 
-***A COMMAND THAT DOES NOT EXIST IS NOT AN ERROR YOU CAN CATCH.*** Measured:
+**A command that does not exist is not an error you can catch.** Measured:
 `execute 'ZZNOSUCHVERB' capturing out` completes, and `@system.return.code`
 reads **-1**. The program carries on. **Test `@system.return.code` after any
 `execute` whose command name came from data.**
@@ -258,7 +258,7 @@ remark text
 empty. `rem`, `remark` and a leading `*` are comments; so is anything after
 `;*` on a line.
 
-***`rem` IS ALSO A FUNCTION.*** `rem(a, b)` is the remainder — see
+**`rem` is also a function.** `rem(a, b)` is the remainder — see
 [SD Basic - Math Functions](03-sd-basic-math-functions.html). The compiler tells them apart by the bracket: a
 `rem` immediately followed by `(` is the function, anything else is a comment.
 **`rem (a + b) is wrong` is a comment**, and `x = rem (a, b)` is a syntax
@@ -278,7 +278,7 @@ Windows**. A program using one will not compile.
 | `trace` | |
 | `errmsg` | see below |
 
-***`errmsg` IS IN THE COMPILER'S STATEMENT TABLE AND STILL DOES NOT COMPILE.***
+**`errmsg` is in the compiler's statement table and still does not compile.**
 Measured: `errmsg 1000` is rejected with *"Unrecognised statement"*. The name
 survives in `BCOMP`'s list but its opcode was removed, so the table is not a
 reliable guide for this one — **being listed as a statement does not mean a

@@ -16,8 +16,8 @@ build**:
 | 64-bit | `sdclilib.dll` · `sdclient.dll` | new work, and existing SD applications |
 | 32-bit | `qmclilib.dll` · `qmclient.dll` | QM applications, and **mvDeveloper** |
 
-***THE `*clilib` NAMES ARE WHAT EXISTING APPLICATIONS ASK FOR AND THEY NEVER
-MOVE.*** `qmclilib.dll` in particular is the original QMClient library name —
+**The `*clilib` names are what existing applications ask for and they never
+move.** `qmclilib.dll` in particular is the original QMClient library name —
 it is **how an unmodified QM application finds its client at all**, so it is a
 name rather than a label and it is not going to be renamed.
 
@@ -32,7 +32,7 @@ The `*client` names are for new work and are what the installers put on `PATH`.
 `sd4windows\sdb_ai\sd64\gplsrc\sdclilib` is the single source of truth. The
 32-bit build points straight at it.
 
-***THERE IS DELIBERATELY NO SECOND COPY.*** An earlier build of this port had a
+**There is deliberately no second copy.** An earlier build of this port had a
 middle hop, and it let the 32-bit DLL go stale and **ship without SCRAM** —
 sending passwords in clear against a server that no longer accepted them. The
 hop was removed.
@@ -49,7 +49,7 @@ reads as a wrong password.
 | A 32-bit application | `qmclient.dll`, or `qmclilib.dll` if it already asks for that name |
 | **mvDeveloper** | `qmclilib.dll`, 32-bit — and see the warning below |
 
-***THE ARCHITECTURE MUST MATCH THE APPLICATION, NOT THE MACHINE.*** A 32-bit
+**The architecture must match the application, not the machine.** A 32-bit
 application on 64-bit Windows needs the 32-bit DLL. **The 32-bit build is a
 shipping deliverable, not a testing convenience.**
 
@@ -58,7 +58,7 @@ shipping deliverable, not a testing convenience.**
 **mvDeveloper is free, and is a 32-bit application** —
 <https://www.brianleach.co.uk/mvDeveloper>.
 
-***IT LOADS ITS OWN COPY OF THE CLIENT***, from:
+**It loads its own copy of the client**, from:
 
 ```
 C:\Program Files (x86)\BLC\mvDeveloper\qmclilib.dll
@@ -68,20 +68,20 @@ That is **beside the executable, and Windows searches an executable's own
 directory before `PATH`** — so no installer entry and no `PATH` change will
 ever update it. It has to be replaced by hand.
 
-***THIS IS THE MOST LIKELY WAY TO TEST AN OLD CLIENT WITHOUT REALISING IT.***
+**This is the most likely way to test an old client without realising it.**
 If mvDeveloper cannot log in after an upgrade, check that file's date before
 anything else.
 
 ## The library must match the release
 
-***THE CLEARTEXT API LOGIN IS GONE.*** A client that still sends a password in
+**The cleartext API login is gone.** A client that still sends a password in
 clear is refused with *"Cleartext login is no longer supported; this server
 requires SCRAM authentication"*.
 
 Two things to do, and the second is the one people miss:
 
 1. Use a client library from this release or later.
-2. ***Run `modify.password` again for every account that uses the API.*** The
+2. **Run `modify.password` again for every account that uses the API.** The
    stored credentials changed shape and the old ones cannot be converted — the
    password was never kept anywhere, by design, so there is nothing to convert
    them from.
@@ -126,8 +126,8 @@ server at all.
 
 ## How the clients will be published
 
-***THERE WILL BE A CLIENT INSTALLER OF ITS OWN, AND IT WILL CARRY MORE THAN THE
-DLLs.***
+**THERE WILL BE A CLIENT INSTALLER OF ITS OWN, AND IT WILL CARRY MORE THAN THE
+DLLs.**
 
 | | |
 |---|---|
@@ -135,7 +135,7 @@ DLLs.***
 | Not in it | source code of any kind |
 | Where the source is | GitHub only. The installer creates a `docs` subdirectory, and the references to the repositories are in there |
 
-***THAT INSTALLER IS NOT WHAT W1.0-0 SHIPS.*** It is a change to the installer
+**That installer is not what w1.0-0 ships.** It is a change to the installer
 and it has not been made yet. What exists today is what the section above
 describes: each client repository builds its own DLL and carries its own Inno
 installer, and no built DLL is committed to any of them.

@@ -21,7 +21,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## What is not on this page
 
-***SEEING OTHER PEOPLE'S SESSIONS, AND ENDING THEM, ARE ADMINISTRATOR VERBS.***
+**Seeing other people's sessions, and ending them, are administrator verbs.**
 `listu` lists every session on the machine and `logout` *n* ends one, and
 neither is in an ordinary account's VOC. They are documented in the
 **administrator documentation**, under *Sessions and Locks*, which is a
@@ -88,7 +88,7 @@ processor started. **`level 3` adds an indented line under each frame** for the
 to the target and waits for the answer, for up to four seconds. A session that
 never answers gets that line.
 
-***THAT IS THE CHEAPEST WAY TO FIND A DEAD SESSION.*** A session killed from
+**That is the cheapest way to find a dead session.** A session killed from
 outside SD keeps its entry in the user table and its slot is still counted;
 `pstat` is what tells you nothing is behind the entry. User 12 in both listings
 above is one of those. **Clearing it is an administrator's job** — reporting the
@@ -126,8 +126,8 @@ never started.
 | *Phantom processes cannot be started within a transaction* | inside `begin transaction` |
 | *Failed to create phantom process* | the operating system would not create the process |
 
-> ***A PHANTOM CANNOT BE STARTED FROM A SCRIPTED SESSION, AND THIS IS THE ONE
-> TO KNOW.*** When SD is fed commands down a pipe, the phantom child inherits
+> **A phantom cannot be started from a scripted session, and this is the one
+> to know.** When SD is fed commands down a pipe, the phantom child inherits
 > that pipe. The job then never completes — not even after the parent session
 > has exited — and the only way out is to kill the process, which leaves an
 > entry in the user table that needs an elevated `sd -cleanup` to clear.
@@ -140,7 +140,7 @@ Windows scheduled task that starts SD, and that is a different subject.
 
 ### What a phantom does not inherit
 
-***A PHANTOM IS A NEW SD PROCESS, NOT A BRANCH OF YOURS.*** It is started with
+**A phantom is a new SD process, not a branch of yours.** It is started with
 `fork` and `exec` and goes through login of its own, so **nothing your session
 holds in memory reaches it** — no `@`-variables, no unnamed common, no open
 files, no active select list. **The command string is the only thing passed**,
@@ -165,7 +165,7 @@ some, it prints a user number, the start time and the command for each:
 User  Started            Command
 ```
 
-***IT REPORTS ONLY YOUR OWN CHILDREN.*** It is not a system-wide view and it is
+**It reports only your own children.** It is not a system-wide view and it is
 not `listu` — a phantom somebody else started does not appear, and neither does
 one your session started before you `logto`'d somewhere else. The register it
 reads is keyed by the parent's user number.
@@ -217,7 +217,7 @@ It refuses inside a phantom or an API session — *Phantom debugger can only be
 executed from an interactive session* — because it needs a terminal to draw the
 debugger on.
 
-> ***DO NOT SEND `pdebug` DOWN A PIPE.*** It polls the keyboard while it waits,
+> **Do not send `pdebug` down a pipe.** It polls the keyboard while it waits,
 > and in a piped session the input stream is the script, so it consumes the
 > commands that have not run yet. Together with the phantom it starts, that is
 > two ways for one verb to hang a scripted session. **It is described here from
@@ -233,7 +233,7 @@ The debugger itself — the commands it takes once it is attached — is in
 | **standard** | `status` |
 | **programmer** | `phantom` `pstat` `pdebug` `pdump` |
 
-***THE ONLY ONE EVERY ACCOUNT HAS IS `status`***, and it reports nothing but
+**The only one every account has is `status`**, and it reports nothing but
 that account's own phantoms. The rest are programmer verbs: making a background
 process, and looking at one.
 

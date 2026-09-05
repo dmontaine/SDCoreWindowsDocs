@@ -49,7 +49,7 @@ These live inside the program that uses them rather than in the catalogue, and
 they can declare `private` variables of their own — which is how you get a
 routine whose working variables do not collide with the rest of the program.
 
-***THEY ARE NOT CALLED THE WAY EXTERNAL ONES ARE.*** A local subroutine is
+**They are not called the way external ones are.** A local subroutine is
 reached with `gosub name(…)` and not `call`; a local function must be declared
 with `deffun … local` before it is used; and both need an explicit `return`,
 because falling into the closing `end` stops the program. All of that, with the
@@ -83,7 +83,7 @@ subr(name {, argument, ...})
 | `call @variable` | the name is taken from the variable at run time |
 | `subr()` | the function form — use it where you want the result in an expression |
 
-***ARGUMENTS ARE PASSED BY REFERENCE, NOT BY VALUE.*** A subroutine that
+**Arguments are passed by reference, not by value.** A subroutine that
 assigns to one of its parameters changes the caller's variable. That is how a
 subroutine returns anything at all, and it is also how a subroutine that uses a
 parameter as scratch space quietly corrupts its caller's data. **If you do not
@@ -162,7 +162,7 @@ equate esc to char(27)
 equate cust.name to record<3>
 ```
 
-***AN `equate` IS A SUBSTITUTION, NOT A VARIABLE.*** You cannot assign to one,
+**An `equate` is a substitution, not a variable.** You cannot assign to one,
 and it is replaced wherever the name appears. `equate cust.name to record<3>`
 means `cust.name` reads field 3 of whatever `record` holds at that moment.
 
@@ -194,7 +194,7 @@ mat m = 7          ;* every element becomes 7
 
 Measured: after `mat m = 7`, `m(1)`, `m(2)` and `m(3)` all read `7`.
 
-***A MATRIX HAS A ZERO ELEMENT AND IT IS NOT COUNTED IN THE DIMENSION.***
+**A matrix has a zero element and it is not counted in the dimension.**
 `dim m(3)` gives `m(0)` through `m(3)`. `m(0)` is where `matparse` puts
 anything left over, and it is easy to forget it exists.
 
@@ -221,7 +221,7 @@ Measured, with `m` holding `7`, `7`, `7`:
 | `matparse m from 'x' : @vm : 'y' : @vm : 'z', @vm` then `m(1)`…`m(3)` | `x y z` |
 | `inmat()` after that | `3` |
 
-> ***THE `using` CLAUSE OF `matbuild` DOES NOT WORK, IN EITHER CASE.***
+> **The `using` clause of `matbuild` does not work, in either case.**
 > The documented syntax `matbuild var from mat using delimiter` compiles the
 > keyword as a **variable name** and the program aborts at run time with
 > *"Unassigned variable USING"*. Measured with both `using` and `USING`.
@@ -247,8 +247,8 @@ that declare the same block. An **unnamed** common block — `common // a, b, c`
 — belongs to the program run and is cleared when it ends; a **named** one
 persists for the session.
 
-***`//` IS THE UNNAMED COMMON MARKER, WHICH IS WHY IT IS NOT AN INTEGER-DIVIDE
-OPERATOR.*** See [SD Basic - Math Functions](03-sd-basic-math-functions.html).
+**`//` is the unnamed common marker, which is why it is not an integer-divide
+operator.** See [SD Basic - Math Functions](03-sd-basic-math-functions.html).
 
 `clearcommon` sets every unnamed common variable to zero. `delete.common`
 discards a named block entirely, which is the only way to reclaim it within a
@@ -282,7 +282,7 @@ o->method(args)
 o->property = value
 ```
 
-***SD'S OWN CLIENT LIBRARY IS A CLASS MODULE.*** `gpl.bp/SDCLIENT` is 1,040
+**SD's own client library is a class module.** `gpl.bp/SDCLIENT` is 1,040
 lines with 33 members and both lifecycle hooks — connecting to another SD server
 from BASIC means instantiating it. *(An earlier version of this page said
 nothing in SD used class modules. That was wrong.)*

@@ -37,7 +37,7 @@ a = 'f1' : @fm : 'v1' : @vm : 'v2' : @fm : 'f3'
 
 gives `f1^v1|v2^f3` — three fields, the second of which holds two values.
 
-***THE MARKS ARE ORDINARY CHARACTERS AND THEY ARE COUNTED.*** Measured:
+**The marks are ordinary characters and they are counted.** Measured:
 `len(a)` is `11` for the array above — eight data characters and three marks.
 Everything in [SD Basic - String Functions](04-sd-basic-string-functions.html) sees them.
 
@@ -68,7 +68,7 @@ The angle-bracket form and `extract()` are the same operation.
 | `extract(a, 2, 1)` | `v1` |
 | `a<9>` | *empty* |
 
-***READING PAST THE END IS NOT AN ERROR.*** `a<9>` on a three-field array
+**Reading past the end is not an error.** `a<9>` on a three-field array
 returns the null string, exactly as a genuinely empty field would. **There is
 no way to tell "field 9 is empty" from "there is no field 9"** — use
 `dcount()` if the difference matters.
@@ -96,8 +96,8 @@ delete(array, field {, value {, subvalue}})
 The assignment form is what almost all code uses. `replace()` and `insert()`
 exist for when you need the result as an expression rather than assigned back.
 
-> ***`replace()` AND `insert()` COUNT THEIR ARGUMENTS GREEDILY, AND THE SHORT
-> FORMS NEED A SEMICOLON.*** `replace(a, 2, 2, 'R')` **does not compile** — the
+> **`replace()` and `insert()` count their arguments greedily, and the short
+> forms need a semicolon.** `replace(a, 2, 2, 'R')` **does not compile** — the
 > parser takes `2` as the value, `'R'` as the subvalue, and then demands the
 > replacement string it never got. Either give all five arguments, or separate
 > the final one with a semicolon. Measured:
@@ -118,7 +118,7 @@ A subscript of `-1` appends:
 | `b<-1> = 'APP'` | `f1^v1\|v2^f3^APP` — a new field at the end |
 | `b<2,-1> = 'AV'` | `f1^v1\|v2\|AV^f3` — a new value in field 2 |
 
-***WRITING PAST THE END PADS WITH EMPTY FIELDS RATHER THAN FAILING.***
+**Writing past the end pads with empty fields rather than failing.**
 Measured: `insert(a, 9, 0, 0, 'FAR')` on a three-field array gives
 `f1^v1|v2^f3^^^^^^FAR` — five empty fields appear to fill the gap. A loop with
 an off-by-one index therefore grows the record silently instead of raising
@@ -150,8 +150,8 @@ locate(expression, array, field {, value {, subvalue}})
 one, `setting` receives **the position where it would be inserted** to keep the
 order — which is what makes it the standard way to add to a sorted list.
 
-***THE NUMBER OF SUBSCRIPTS CHOOSES THE LEVEL SEARCHED. THIS IS THE THING
-PEOPLE GET WRONG.*** Measured, with `vals` holding `apple|cherry|damson` as
+**The number of subscripts chooses the level searched. this is the thing
+people get wrong.** Measured, with `vals` holding `apple|cherry|damson` as
 three values in one field:
 
 | Statement | Result |
@@ -202,7 +202,7 @@ Measured on `apple|cherry|damson`:
 | `'banana' by 'al'` | `2` |
 | `'zebra' by 'al'` | `4` |
 
-***AND THE JUSTIFICATION IS NOT A DETAIL.*** Measured on the values `2`, `10`,
+**And the justification is not a detail.** Measured on the values `2`, `10`,
 `30`, looking for `9`:
 
 | | Insert at |
@@ -244,7 +244,7 @@ remove variable from array setting delimiter
 followed it. It is much faster than repeated `extract()` on a long record,
 because it does not rescan from the start each time.
 
-***THE DELIMITER CODE IS THE MARK'S LEVEL, AND ZERO MEANS THE END.*** Measured
+**The delimiter code is the mark's level, and zero means the end.** Measured
 on `p^q|r\s`:
 
 | Code | Meaning |
@@ -263,7 +263,7 @@ while mark
 repeat
 ```
 
-***`remove` CONSUMES THE VARIABLE IT READS.*** Work on a copy — `s = record` —
+**`remove` consumes the variable it reads.** Work on a copy — `s = record` —
 or the record is gone by the end of the loop. The functions that follow depend
 on an internal pointer into that variable:
 
@@ -331,7 +331,7 @@ reuse(expression)
 ```
 
 Makes a single value behave as though it repeated for every element of the
-other operand. ***WITHOUT IT, ARITHMETIC ONLY REACHES THE FIRST ELEMENT.***
+other operand. **Without it, arithmetic only reaches the first element.**
 Measured:
 
 | Expression | Result |
@@ -350,8 +350,8 @@ the operation to every element instead of to the whole string:
 `trims()`, `trimbs()`, `trimfs()`, `indexs()`, `soundexs()`, `spaces()`,
 `strs()`, `fmts()`, `iconvs()`, `oconvs()`, `folds()`, `cats()`.
 
-***WHEN TWO ARRAYS ARE DIFFERENT LENGTHS, THE SHORTER IS TREATED AS EMPTY, NOT
-TRUNCATED.*** Measured with `1|2|3` and `10|20`:
+**When two Arrays are different lengths, the shorter is treated as empty, not
+truncated.** Measured with `1|2|3` and `10|20`:
 
 | Call | Result | |
 |---|---|---|

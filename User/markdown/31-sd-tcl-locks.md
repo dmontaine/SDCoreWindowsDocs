@@ -1,8 +1,8 @@
 Title: SD TCL - Locks
 Subtitle: The two kinds of lock, giving back the ones your session holds, and what you cannot do without an administrator.
 
-***THERE ARE TWO UNRELATED THINGS CALLED A LOCK, AND KNOWING WHICH IS WHICH IS
-MOST OF WHAT THIS PAGE HAS TO SAY.*** They do not interact, and the names do not
+**There are two unrelated things called a lock, and knowing which is which is
+most of what this page has to say.** They do not interact, and the names do not
 make that obvious.
 
 | | |
@@ -20,7 +20,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## Only one lock verb is in an ordinary account
 
-***INSPECTING LOCKS AND FORCING THEM OPEN ARE ADMINISTRATOR VERBS.***
+**Inspecting locks and forcing them open are administrator verbs.**
 `list.readu`, `list.locks`, `lock`, `clear.locks` and `unlock` are not in a
 standard or programmer account's VOC, so the names are not recognised at all.
 They are in the **administrator documentation**, under *Sessions and Locks*,
@@ -53,7 +53,7 @@ Record id required
 everything* at the prompt. `release filelock` *name* gives back a file lock,
 which has no id to give.
 
-***A `write` OUTSIDE A TRANSACTION ALREADY RELEASES THE RECORD LOCK***, so
+**A `write` outside a transaction already releases the record lock**, so
 `release` at the prompt is for the case where a program took a lock and ended
 without writing — usually because you stopped it — and for a file lock, which
 nothing releases implicitly.
@@ -69,7 +69,7 @@ sequence is:
 | 2 | `status` and `pstat`, on [SD TCL - Processes and Phantoms](30-sd-tcl-processes-and-phantoms.html), to see whether the program you think is holding it is still alive |
 | 3 | if it is not yours, **report the file and record to an administrator** — they can list who holds it and force it open |
 
-***A DEAD SESSION'S DATABASE LOCKS ARE NOT RELEASED.*** A session killed from
+**A dead session's database locks are not released.** A session killed from
 outside SD keeps both its user-table entry and its record and file locks, so
 everything wanting that record waits for a process that is not there. **Nothing
 an ordinary account can type will clear that**, and guessing at it wastes time —
@@ -87,7 +87,7 @@ BASIC `lock` and `unlock` statements, which any account may compile and run.
 That is the route to reach for; the TCL verbs exist for an administrator
 inspecting or clearing the table by hand.
 
-> ***A TASK LOCK HELD BY A KILLED SESSION IS NOT GIVEN BACK BY `sd -cleanup`.***
+> **A task lock held by a killed session is not given back by `sd -cleanup`.**
 > It stays held, by a user number nothing is behind, until SD itself is
 > restarted — a defect, and it is recorded in the project's fix lists. If a job
 > guarded by a task lock will not start again after a crash, that is the first
@@ -100,7 +100,7 @@ inspecting or clearing the table by hand.
 | **standard** | `release` |
 | **administrator** | `list.readu` `list.locks` `lock` `clear.locks` `unlock` |
 
-***THE SPLIT IS BETWEEN YOUR LOCKS AND EVERYBODY'S.*** Giving back what you hold
+**The split is between your locks and everybody's.** Giving back what you hold
 is something any session may do. Looking at the machine's lock table, taking a
 numbered flag, or forcing another session's lock open are all administrator
 verbs, and `unlock` needs an elevated session on top of that.

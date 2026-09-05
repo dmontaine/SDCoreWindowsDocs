@@ -47,7 +47,7 @@ system(key)
 | `31` | licence number | `0` |
 | `42` | IP address | *empty* |
 | `91` | **is this Windows?** | `1` |
-| `1006` | Windows NT style? | ***`0`*** |
+| `1006` | Windows NT style? | **`0`** |
 | `1009` | endian — 0 little | `0` |
 | `1010` | platform name | `Windows` |
 | `1012` | SD version | `W1.0-0` |
@@ -56,7 +56,7 @@ system(key)
 | `1017` | port number of a tcp connection | `0` |
 | `1028` | system id | `1028` |
 
-***TWO OF THOSE THREE ANSWER CORRECTLY AND ONE DOES NOT.*** `system(91)` reads
+**Two of those three answer correctly and one does not.** `system(91)` reads
 `1` and `system(1010)` reads `Windows`. **`system(1006)`, "Windows NT style?",
 reads `0`** — it is the one to leave alone. **Ask `system(91)` whether this is
 Windows**; it is the key this port sets deliberately for that purpose.
@@ -70,7 +70,7 @@ Windows**; it is the key this port sets deliberately for that purpose.
 | `1011` | the configuration file | `C:/ProgramData/SD/sd.conf` |
 | `1024` | the directory SD was started in | `/cygdrive/c/Users/dmont/OneDrive/Documents` |
 
-***THREE DIFFERENT SPELLINGS OF A WINDOWS PATH COME OUT OF ONE FUNCTION.*** A
+**Three different spellings of a Windows PATH come out of one function.** A
 backslash path, a POSIX `/cygdrive/` path, and a forward-slash path with a
 drive letter. `@sdsys` agrees with key 32 and `@path` — the account directory —
 is in the POSIX form.
@@ -79,8 +79,8 @@ is in the POSIX form.
 reads it as drive-relative and either fails silently or complains that the
 parent directory does not exist. This is not theoretical: it is what stopped
 the full-screen editors working the first time they were built for this port.
-There is a conversion function in the kernel and ***an ordinary program cannot
-call it*** — see "What is not here". **Take the path from configuration rather
+There is a conversion function in the kernel and **an ordinary program cannot
+call it** — see "What is not here". **Take the path from configuration rather
 than from `system()` if a Windows program is going to see it.**
 
 ### Lists and structures
@@ -89,7 +89,7 @@ than from `system()` if a Windows program is going to see it.**
 |---|---|---|
 | `1002` | the call stack | field per level: `path`, then `offset` and line pairs. Measured: `.../BP.OUT/ZZMATH` at line 41, then `$CPROC` |
 | `1003` | open files | field per file, `unit` and path. **`$ipc` is always one of them** |
-| `1025` | environment variables | ***two fields***: field 1 every name, field 2 every value, value-mark separated |
+| `1025` | environment variables | **two fields**: field 1 every name, field 2 every value, value-mark separated |
 
 `system(1025)` measured **2** fields with 79 names in the first — it is not a
 list of `NAME=value` pairs.
@@ -135,13 +135,13 @@ conversion codes.
 env(name)
 ```
 
-***`env()` IS CASE SENSITIVE AND A WRONG CASE LOOKS EXACTLY LIKE A MISSING
-VARIABLE.*** Measured:
+**`env()` is case sensitive and a wrong case looks exactly like a missing
+variable.** Measured:
 
 | | |
 |---|---|
 | `env('PATH')` | 926 characters |
-| `env('path')` | ***0 characters*** |
+| `env('path')` | **0 characters** |
 | `env('ProgramData')` | `C:\ProgramData` |
 | `env('NOSUCHVAR')` | empty |
 
@@ -168,8 +168,8 @@ Measured on a stock installation:
 | `config('SORTMEM')` | `4096` |
 | `config('SPOOLER')` | empty |
 
-***THE NAME IS CASE SENSITIVE AND AT MOST EIGHT CHARACTERS. BOTH FAILURES NOW
-LOOK THE SAME***, which is the point — a name that is too long is a name that
+**The name is case sensitive and at most eight characters. both failures now
+look the same**, which is the point — a name that is too long is a name that
 does not exist, and a caller cannot tell the two apart. Both measured:
 
 | | |
@@ -201,7 +201,7 @@ in. Measured:
 | `sysmsg(99999)` | `[99999] Message not found` |
 | `sysmsg(1)` | `[1] Message not found` |
 
-***A MESSAGE NUMBER IS NOT A `status()` CODE.*** They are separate numbering
+**A message number is not a `status()` code.** They are separate numbering
 schemes that overlap. `status()` **3006** is *record not found*; `sysmsg(3006)`
 is `Modes: `. Do not render a status code by passing it to `sysmsg()`.
 
@@ -246,9 +246,9 @@ checksum(string)
 | `checksum('abc')` | `291` |
 | `checksum('ACB')` | `448` |
 | `checksum('')` | `0` |
-| `checksum('A' : @fm : 'B')` | ***`-325`*** |
+| `checksum('A' : @fm : 'B')` | **`-325`** |
 
-It is case sensitive and order sensitive, and ***it can be negative***, so a
+It is case sensitive and order sensitive, and **it can be negative**, so a
 program that stores it needs a signed field. It is a change detector, not a
 digest: it is short, and it is not a security primitive.
 
@@ -261,7 +261,7 @@ sddecrypt(data, key, encoding)
 
 Three arguments. The encoding is `201` for hex or `202` for base64.
 
-***A PASSPHRASE IS NOT A KEY, AND AN ORDINARY PROGRAM CANNOT MAKE ONE.***
+**A passphrase is not a key, and an ordinary program cannot make one.**
 Measured: `sdencrypt('The quick brown fox', 'secretkey', 202)` returned
 **nothing** and set `status()` to **10204**, a key length error. The key has to
 be an encoded 256-bit key, and the function that derives one from a password is
@@ -299,7 +299,7 @@ the command line that started the program: `RUN BP ZZMATH`.
 | `@path` | `/cygdrive/c/ProgramData/SD/user_accounts/don` |
 | `@sdsys` | `C:\ProgramData\SD\sdsys` |
 | `@user.no` | `67`, the same as `system(18)` |
-| `@tty` | ***empty in a piped session*** |
+| `@tty` | **empty in a piped session** |
 | `@system.return.code` | `1` |
 | `@user.return.code` | `0` |
 | `@crtwide` / `@crthigh` | `200` / `9999` — whatever `TERM` last set |
@@ -316,8 +316,8 @@ ends.
 os.execute command {capturing variable}
 ```
 
-***IT IS GATED PER ACCOUNT, AND A REFUSAL ABORTS THE PROGRAM RATHER THAN
-SETTING A STATUS.*** Measured in an ordinary account:
+**It is gated per account, and a refusal aborts the program rather than
+setting a status.** Measured in an ordinary account:
 
 ```
 don is not permitted to use OS.EXECUTE at line 10 of .../BP.OUT/ZZMATH
@@ -345,8 +345,8 @@ it looks like a result.
 
 ## What is not here
 
-***A WHOLE FAMILY OF FUNCTIONS IS INTERNAL-ONLY, AND THE COMPILER'S COMPLAINT
-NAMES SOMETHING ELSE ENTIRELY.*** Measured — this program, in an ordinary
+**A whole family of functions is internal-only, and the compiler's complaint
+names something else entirely.** Measured — this program, in an ordinary
 account:
 
 ```
@@ -381,13 +381,13 @@ this page put in front of it. They are reachable only from a program compiled
 with `$internal`, which additionally requires an administrator in the `SDSYS`
 account.
 
-***AND SOME STATEMENTS ARE RESTRICTED THE SAME WAY.*** Measured as
+**And some statements are restricted the same way.** Measured as
 *"Unrecognised statement"* in an ordinary account: `set.modes`, `reset.modes`,
 `remove.token`, `release.lock`, `como`, `quit`, `keyboard.input`, `writepkt`,
 and the whole debugging family — `debug.on`, `debug.off`, `debug.set`,
 `breakpoint` and `watch`.
 
-***`errmsg` IS IN THE COMPILER'S STATEMENT TABLE AND DOES NOT EXIST.*** It
+**`errmsg` is in the compiler's statement table and does not exist.** It
 compiles to *"Unrecognised statement"* for everybody. Its opcode was removed in
 July 2024 and the name was left behind in the table. **Being in the table is
 not evidence a statement exists.**

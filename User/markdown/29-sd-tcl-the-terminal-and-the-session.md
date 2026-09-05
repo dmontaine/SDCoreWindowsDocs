@@ -45,7 +45,7 @@ The depth stayed at 9999 because only the width was given.
 
 ### SD's default page is 120 × 36
 
-***NOT 80 × 24.*** SD's default terminal size is **120 columns by 36 lines**,
+**Not 80 × 24.** SD's default terminal size is **120 columns by 36 lines**,
 and it is not a cosmetic choice: the shipped `@` dictionary records and the
 default `list` report layouts are formatted for that width. A report that looks
 wrapped or truncated on a narrow window is usually the window, not the report.
@@ -63,7 +63,7 @@ if it is smaller. So an ssh session or a console window normally gets its real
 size, and **120 × 36 is what SD falls back to when nothing else answers** — a
 phantom, a piped script, a service.
 
-> ***`term default` PUTS THAT PAIR BACK, AND IT PRINTS NOTHING WHEN IT DOES.***
+> **`term default` puts that pair back, and it prints nothing when it does.**
 > The verb sets the same 120 × 36 the login path falls back to, then returns
 > without a message — so the way to see that it worked is a bare `term` after
 > it, not the command itself:
@@ -95,7 +95,7 @@ Binary mode (server to client): Off
 Telnet negotiation: Off
 ```
 
-***`pterm` WITH NO KEYWORD PRINTS NOTHING.*** It is not a display verb that has
+**`pterm` with no keyword prints nothing.** It is not a display verb that has
 gone quiet — it takes a keyword and `display` is one of them. The full set:
 
 | | |
@@ -114,7 +114,7 @@ gone quiet — it takes a keyword and `display` is one of them. The full set:
 **Input `CR`, output `CRLF` is the shipped setting** and it matches what SD
 writes to everything else externally readable on this port.
 
-***`pterm break off` DISABLES THE BREAK KEY FOR THE SESSION.*** It is the right
+**`pterm break off` disables the break key for the session.** It is the right
 thing before a job that must not be interrupted and the wrong thing to leave
 set, because it is also how you stop a runaway program.
 
@@ -129,7 +129,7 @@ hush expression
 **`hush on` discards output entirely** — it does not redirect it, and nothing is
 kept. With no argument it toggles.
 
-***IT SUPPRESSES THE COMMAND ECHO AS WELL AS THE OUTPUT***, which is more
+**It suppresses the command echo as well as the output**, which is more
 thorough than people expect. In the measurement below, `who` was typed **twice**
 — once inside the silence and once after it — and the transcript contains one:
 
@@ -166,14 +166,14 @@ clearprompts    clear.prompts
 **`clearprompts`** discards the inline prompt and response text a previous
 command left behind. Neither prints anything.
 
-***EACH HAS TWO SPELLINGS AND THEY ARE THE SAME VERB.*** `clear.input` and
+**Each has two spellings and they are the same verb.** `clear.input` and
 `clear.prompts` are separate VOC records pointing at the same internal verb
 number as the run-together forms, which is the pattern described on
 [SD TCL - The Command Processor](19-sd-tcl-command-processor.html). Use
 whichever reads better; nothing distinguishes them.
 
-> ***NEITHER CAN BE DEMONSTRATED DOWN A PIPE, AND `clearinput` SHOULD NOT BE
-> SENT DOWN ONE AT ALL.*** In a piped session the input stream *is* the script,
+> **Neither can be demonstrated down a pipe, and `clearinput` should not be
+> sent down one at all.** In a piped session the input stream *is* the script,
 > so discarding unread input discards the commands that have not run yet —
 > including the `off` that would have ended the session. **A run that did this
 > hung, was killed, and left a session in the user table that only an elevated
@@ -221,7 +221,7 @@ That is one `who` under `echo off` and one after `echo on`. **The first has no
 `echo on` produced no line of its own either, because the echo it restores does
 not apply to the command that restores it.
 
-***IT IS NOT `hush`, AND CONFUSING THE TWO WASTES TIME.*** `echo` decides
+**It is not `hush`, and confusing the two wastes time.** `echo` decides
 whether your **input** is shown back; `hush` decides whether SD's **output** is
 shown at all. A session that has gone completely silent has `hush on` set; one
 where the commands vanish but the answers still appear has `echo off`.
@@ -244,7 +244,7 @@ time internal           seconds since midnight
 Thursday, 27 August 2026  02:10pm
 ```
 
-***`date` PRINTS THE TIME AND `time` PRINTS THE DATE.*** Both print both, in
+**`date` prints the time and `time` prints the date.** Both print both, in
 different formats and a different order, and neither name says so. `date` is
 the long spelled-out form and `time` is the short one.
 
@@ -320,7 +320,7 @@ is a stamped, attributed entry in the system error log:
    page 28 measurement
 ```
 
-***THE USER NUMBER, THE PROCESS ID AND THE ACCOUNT NAME ARE ADDED FOR YOU***, so
+**The user number, the process id and the account name are added for you**, so
 a message does not need to say who wrote it. The log is
 `C:\ProgramData\SD\sdsys\errlog`, shared by every session, which makes `logmsg`
 the right way for a phantom or a scheduled job to report something a person will

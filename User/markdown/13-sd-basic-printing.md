@@ -53,7 +53,7 @@ printer reset
 | **close** | finish the job and release the unit |
 | **reset** | put every unit back to its default |
 
-***THE UNIT NUMBER GOES AFTER `on`, NOT FIRST.*** `printer file on 1 'REPORTS',
+**The unit number goes after `on`, not first.** `printer file on 1 'REPORTS',
 'DAILY'` is right; `printer file 1, 'REPORTS', 'DAILY'` is a compile error,
 because the parser reads the `1` as the file name and then wants a comma it
 does not find.
@@ -74,7 +74,7 @@ produced a record of **4 lines**, the first of which was **`REPORT PAGE 1`** —
 the heading, with `'PL'` replaced by the page number, followed by the two data
 lines and the blank the heading leaves under itself.
 
-***`printer close` IS WHAT ACTUALLY WRITES THE FILE.*** Until it runs the
+**`printer close` is what actually writes the file.** Until it runs the
 output is buffered in the unit. A program that ends without closing its units
 gets them closed for it, but a program that opens a second job on the same unit
 without closing the first merges the two.
@@ -112,7 +112,7 @@ heading on 1 "SALES BY REGION 'L' 'D' 'C' PAGE 'PL'"
 
 `page` forces a break, optionally resetting the number.
 
-> ***A HEADING IS PER PRINT UNIT AND IT PERSISTS.*** It stays set until it is
+> **A heading is per print unit and it persists.** It stays set until it is
 > changed or the unit is reset, including after the program that set it has
 > finished. A program that sets a heading on unit 0 and exits leaves the next
 > thing the user does wearing that heading. **`printer reset` on the way out**,
@@ -152,7 +152,7 @@ reports or sets a spooler-level setting. **Not every key is valid for every
 call** — measured, `printer.setting(0, 0, 0)` fails with *"Unrecognised printer
 setting key"*, because key 0 belongs to `getpu`, not to it.
 
-***THE WIDTH AND LENGTH ARE THE UNIT'S, NOT THE TERMINAL'S.*** Unit 0 reported
+**The width and length are the unit's, not the terminal's.** Unit 0 reported
 80 by 66 in a session whose terminal had been set to 200 by 9999 — see
 `@crtwide` in
 [SD Basic - Terminal Input and Output](12-sd-basic-terminal-input-and-output.html).

@@ -14,7 +14,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 ## Use `make.index`
 
-***THAT IS THE WHOLE OF THIS PAGE'S ADVICE.*** `create.index` and `build.index`
+**That is the whole of this page's advice.** `create.index` and `build.index`
 are two halves of what `make.index` does in one command, and **the half that is
 easy to miss is the second one**:
 
@@ -74,7 +74,7 @@ Index name...... En Type Nulls S/M Fmt Field/Expression
 F1                N  D    Yes   S   L  1
 ```
 
-***THE `En` COLUMN IS THE ONE TO READ. `N` MEANS THE INDEX IS NOT ENABLED*** —
+**The `En` column is the one to read. `N` means the index is not enabled** —
 it exists, it is listed, and it will not find anything. After `build.index` the
 same line reads `Y`:
 
@@ -95,8 +95,8 @@ build.index zzak f1
 Cannot gain exclusive access to file
 ```
 
-***THAT IS WHAT YOU GET IF ANYTHING HAS THE FILE OPEN — INCLUDING THE COMMAND
-YOU JUST TYPED.*** Measured: `create.index` followed by `build.index` **in the
+**That is what you get If anything has the file open — including the command
+you just typed.** Measured: `create.index` followed by `build.index` **in the
 same session** fails this way every time, because `create.index` left the file
 open. From a fresh session it succeeds:
 
@@ -109,7 +109,7 @@ Populating index...
 **`make.index` does not have this problem**, which is the practical reason to
 prefer it.
 
-> ***A SESSION THAT WAS KILLED RATHER THAN LOGGED OUT ALSO HOLDS THE FILE.***
+> **A session that was killed rather than logged out also holds the file.**
 > Its entry stays in the user table, `listu` still lists it, and `build.index`
 > is refused with the message above until it is cleared. If a build is refused
 > and you are certain nothing is using the file, run `listu` before looking for
@@ -183,8 +183,8 @@ Deleted index F2
 `all` removes every index on the file. Naming them individually also works —
 with one catch:
 
-> ***`delete.index` MATCHES THE INDEX NAME EXACTLY, AND INDEX NAMES ARE HELD IN
-> UPPER CASE.*** `delete.index zzak f1` answers *"Unrecognised index name
+> **`delete.index` matches the index name exactly, and index names are held in
+> upper case.** `delete.index zzak f1` answers *"Unrecognised index name
 > (f1)"* — on a file where `list.index zzak f1` had just found the index and
 > printed it. **`list.index` folds case and `delete.index` does not**, so a name
 > that lists perfectly well may still refuse to delete. Use **`all`**, or type

@@ -26,7 +26,7 @@ records the DLL name its symbols come from, so an application built against
 `sdclilib` loads `sdclilib.dll` whatever you call the file on disk. That is why
 both names are built rather than one being a copy of the other.
 
-> ***The architecture must match the application, not the machine.*** A 32-bit
+> **The architecture must match the application, not the machine.** A 32-bit
 > application on 64-bit Windows needs the 32-bit DLL. The 32-bit build is a
 > shipping deliverable rather than a testing convenience.
 
@@ -85,7 +85,7 @@ password can answer, and the password itself is never sent in any
 form. The server also proves itself to the client — another program
 that grabbed the port before SD started cannot pretend to be SD.
 
-> ***Run `modify.password` again for every account that uses the API***
+> **Run `modify.password` again for every account that uses the API**
 > after upgrading. The stored credentials changed shape and the old
 > ones cannot be converted — the password was never kept anywhere, by
 > design.

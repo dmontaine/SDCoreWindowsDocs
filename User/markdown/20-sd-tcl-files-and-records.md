@@ -29,7 +29,7 @@ directory files — which is why you can open a BASIC program in Notepad and why
 can act on either take `dict` in front of the file name; with no `dict` they
 mean the data portion.
 
-***THE SHIPPED FILE NAMES ARE LOWER CASE ON DISK IN THIS PORT.*** `voc`, `bp`,
+**The shipped file names are lower case on disk in this port.** `voc`, `bp`,
 `newvoc`, `accounts`, `messages` and the rest were renamed. NTFS matches without
 being asked, so this changes nothing about what you can type — but it is what
 you will see in Explorer and in the path text SD reports back.
@@ -80,7 +80,7 @@ The parameters are the `create.file` ones, plus `immediate` to do the work now
 rather than lazily, and `dynamic` or `directory` to change the file's kind.
 `default` puts the settings back.
 
-***TWO OF THEM RESTRUCTURE THE WHOLE FILE.*** Changing `group.size` or `version`
+**Two of them restructure the whole file.** Changing `group.size` or `version`
 requires a full restructure; the rest take effect without one. Plan for the time
 and the disk on a large file.
 
@@ -111,7 +111,7 @@ fstat reset                  clear the global counters
 fstat                        the periodic global summary
 ```
 
-***`fstat` ONLY WORKS ON DYNAMIC FILES.*** A directory file named on the command
+**`fstat` only works on dynamic files.** A directory file named on the command
 line gets a warning; one arriving through a select list is skipped silently.
 Where a file name is taken, a select list or several names may be given instead.
 
@@ -150,7 +150,7 @@ is, and the data stays where it is.
 upper case before the register is read. If it is not there you get *Account name
 '…' is not in register* and nothing is written.
 
-> ***READ WHAT `set.file` PRINTS, NOT JUST WHETHER IT PRINTED.*** Its refusals
+> **Read what `set.file` prints, not just whether it printed.** Its refusals
 > echo the names you passed in, so a script that checks its output for the
 > pointer name it asked for will find that name in the refusal as well as in the
 > success. Check for the success wording, and treat *not in register* and *not
@@ -202,7 +202,7 @@ A comma may be used instead of `to`. `rename` is the same verb under the other
 name. `@system.return.code` is `0` on success and `-1` if the arguments were
 wrong.
 
-***`cname` ON A FILE RENAMES THE VOC RECORD TOO***, which is the point — the
+**`cname` on a file renames the VOC record too**, which is the point — the
 name you type and the name on disk stay together.
 
 ## Seeing what is actually in a record

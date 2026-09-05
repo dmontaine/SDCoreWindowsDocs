@@ -32,7 +32,7 @@ involved:
 | `crt` | **always** goes to the terminal, even while `printer on` is in force |
 | `display` | a synonym for `crt` |
 
-***THAT IS THE WHOLE REASON `crt` EXISTS.*** A report that prints its output
+**That is the whole reason `crt` exists.** A report that prints its output
 and shows progress on screen uses `print` for the report and `crt` for the
 progress; using `print` for both puts "Processing record 400..." in the middle
 of the printed report.
@@ -71,7 +71,7 @@ warning that a value longer than the width **wraps** rather than truncating.
 `@()` returns a string of terminal control characters. Printing it moves the
 cursor or changes the display; it is not a statement.
 
-***ON THIS PORT IT EMITS ANSI ESCAPE SEQUENCES.*** Measured: `@(0,0)` is six
+**On this port it emits ansi escape sequences.** Measured: `@(0,0)` is six
 bytes — `27 91 49 59 49 72`, which is `ESC [ 1 ; 1 H`, the standard cursor
 positioning sequence. `@(-1)`, clear screen, is also six bytes.
 
@@ -117,7 +117,7 @@ already displayed.
 
 ## Input
 
-***NOT MEASURED — THESE NEED A TERMINAL.***
+**Not Measured — these need a terminal.**
 
 ```
 input variable {, length} {:} {with prompt} {format} {then ... else ...}
@@ -138,7 +138,7 @@ returns as soon as that many characters arrive, without waiting for Enter.
 | **upcase** | fold what is typed to upper case |
 | **timeout** *n* | give up after *n* seconds and take the `else` branch |
 
-***`hidden` IS THE ONLY CORRECT WAY TO READ A PASSWORD.*** Turning the echo off
+**`hidden` is the only correct way to read a password.** Turning the echo off
 by hand with `echo off` leaves it off if the program aborts between the two
 statements, and the user then types blind at the command prompt.
 
@@ -163,13 +163,13 @@ data 'Y'
 execute 'DELETE.FILE OLDSTUFF'
 ```
 
-> ***A `data` VALUE THAT IS NOT CONSUMED STAYS STACKED.*** The next `input`
+> **A `data` value that is not consumed stays stacked.** The next `input`
 > anywhere in the session takes it — including a prompt the user was meant to
 > answer. **`cleardata` after anything that might not have consumed it.**
 
 ## Keys
 
-***NOT MEASURED — THESE NEED A TERMINAL.***
+**Not Measured — these need a terminal.**
 
 ```
 keyin()

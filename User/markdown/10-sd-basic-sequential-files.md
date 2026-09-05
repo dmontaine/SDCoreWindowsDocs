@@ -31,7 +31,7 @@ whose records are ordinary files in a folder. The one-name form takes an
 operating system path and reaches anything on the machine the account is
 allowed to read.
 
-***THE `then` AND `else` BRANCHES DO NOT MEAN SUCCESS AND FAILURE.***
+**The `then` and `else` branches do not mean success and failure.**
 
 | | |
 |---|---|
@@ -94,7 +94,7 @@ weofseq file.variable
 | `writeblk` | write bytes with no terminator added |
 | `weofseq` | truncate the file at the current position |
 
-***`writeseq` DOES NOT FLUSH.*** A program that writes a log and then aborts
+**`writeseq` does not flush.** A program that writes a log and then aborts
 can lose the tail. `writeseqf` costs a disk write per line, which is why it is
 a separate statement — use it for anything that has to survive a crash, and
 `writeseq` plus a `flush` at the end for bulk output.
@@ -104,7 +104,7 @@ the beginning, and truncating there discards everything.
 
 ### The line terminator is CRLF
 
-***MEASURED, BYTE BY BYTE.*** Two lines written with `writeseq` and read back
+**Measured, byte by byte.** Two lines written with `writeseq` and read back
 with `readblk`:
 
 | | |
