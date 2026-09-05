@@ -201,9 +201,8 @@ So the `else` branch tells you who has it, exactly as the record lock enquiry
 does.
 
 **Taking a lock you already hold succeeds, and a task lock is not a counter** —
-one `unlock` releases it however many times you locked it. That is read from
-the source rather than measured: the owner test is *"unowned or mine"*, and
-`unlock` clears the slot outright.
+one `unlock` releases it however many times you locked it. The ownership test
+is *"unowned or mine"*, and `unlock` clears the slot outright.
 
 `testlock()` would answer *"who owns lock n"* without taking it, and
 **it is not available to an ordinary program** — see "What is not here"

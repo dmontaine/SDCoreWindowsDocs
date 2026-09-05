@@ -391,10 +391,10 @@ compiles to *"Unrecognised statement"* for everybody. Its opcode was removed in
 July 2024 and the name was left behind in the table. **Being in the table is
 not evidence a statement exists.**
 
-**`sendmail`, `chgphant()` and `ccall()` compile for an ordinary account and
-were not exercised.** `sendmail` needs a mail relay to be configured, `chgphant`
-needs a phantom, and `ccall` needs a C function registered into the executable.
-Nothing on this page depends on them.
+**`sendmail`, `chgphant()` and `ccall()` compile for an ordinary account**, and
+each needs something outside SD before it can do anything: `sendmail` a mail
+relay, `chgphant` a phantom to change, and `ccall` a C function registered into
+the executable. Nothing on this page depends on them.
 
 **`procread` and `procwrite`** belong to the PROC language rather than to BASIC
 and are only meaningful inside one.

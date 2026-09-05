@@ -254,9 +254,8 @@ protocol packet and is not a general socket write.
 **No TLS.** There is nothing in SD BASIC that speaks HTTPS; a socket carries
 whatever bytes you put on it. Anything encrypted has to terminate outside SD.
 
-**UDP and ICMP have flag values and were not exercised.** The whole of this page
-is TCP; the `0x00010000` and `0x00020000` flags are named because they are in
-the compiler, not because they were measured.
+**The whole of this page is TCP.** `0x00010000` and `0x00020000` are the UDP
+and ICMP flag values.
 
 **A server that serves more than one client at a time** needs something to do
 the waiting, and SD BASIC has no `select` over several sockets. The shape that

@@ -218,9 +218,9 @@ than being told about `os.users`.
 
 ### Over ssh
 
-**Both should work over an ssh session**, which is the point of a terminal
-editor: an ssh session reaches SD through a terminal like any other, and SD
-hands the editor that terminal rather than reading it through a pipe.
+**A terminal editor is the point of an ssh session.** An ssh session reaches SD
+through a terminal like any other, and SD hands the editor that terminal rather
+than reading it through a pipe.
 
 **AN ssh SESSION CAN NEVER BE ELEVATED**, though, so an administrator
 arriving that way needs an `os.users` entry the same as anybody else — being an

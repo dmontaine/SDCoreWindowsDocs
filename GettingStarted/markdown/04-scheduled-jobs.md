@@ -118,10 +118,10 @@ whole point of `batch.jobs` is a job that runs without administrator rights. A
 task that is elevated passes the gate on elevation alone and never consults the
 list, so it would also be a job nobody had approved a command for.
 
-**Worth reporting:** accounts that **`create.account`** makes are denied
-interactive logon at this machine on purpose, and whether Task Scheduler
-accepts one of them as the identity a task runs as has not been measured here.
-A Windows account you already had is the case the design was built around.
+**Use a Windows account you already had** — that is the case the design was
+built around. Accounts that **`create.account`** makes are denied interactive
+logon at this machine on purpose, which Task Scheduler may or may not accept as
+the identity a task runs as.
 
 ## When it refuses
 

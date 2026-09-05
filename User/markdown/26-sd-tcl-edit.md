@@ -19,9 +19,10 @@ SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
 marks a word typed as it stands; braces mark an optional part.
 
-> **The keys below are Microsoft Edit's own**, read from the source of the
-> version SD checks for — **1.2.1**, which is what ships in current Windows.
-> The SD half of the page was measured on SD Core for Windows W1.0-0.
+> **The keys below are Microsoft Edit's own**, for the version SD checks for —
+> **1.2.1**, which is what ships in current Windows. SD installs that editor
+> and calls it; it does not implement it, so where a binding differs the editor
+> is right.
 
 ## Both editors are installed with SD
 
