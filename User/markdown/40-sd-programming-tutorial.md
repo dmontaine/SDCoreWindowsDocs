@@ -291,7 +291,8 @@ program list.customers
    print 'id' : ' ' : 'name' : ' ' : 'city'
    print '---' : ' ' : '----' : ' ' : '----'
 
-   loop while readnext(id) from 1 do
+   loop
+      readnext id from 1 else exit
       read rec from f.cust, id then
          print id : ' ' : rec<1> : ' ' : rec<3>
       end
@@ -312,10 +313,15 @@ id name city
 1002 Widget Corp Shelbyville
 ```
 
-`select` builds a list of every record id in the file. `readnext`
-reads one id at a time from the list. The `loop while readnext(id)
-from 1 do ... repeat` is the standard pattern for walking a select
-list — it ends when `readnext` has nothing left.
+`select` builds a list of every record id in the file. `readnext` reads one id
+at a time from the list.
+
+**`readnext` is a statement, not a function**, and its `else` branch is what
+ends the loop — it fires when the list is exhausted. `loop` / `readnext … else
+exit` / `repeat` is the standard pattern for walking a select list. Writing it
+as `readnext(id)` does not fail helpfully: the compiler reads an unknown
+function call as a matrix reference and complains that `READNEXT` is not
+referenced in a `dim` statement.
 
 `clearselect 1` clears list 1 when the program is done. A select list
 is **session state**: it survives the program that made it. Clearing
@@ -328,8 +334,7 @@ arguments and returns values through them. You write it as its own
 source record and compile it:
 
 ```
-program get.field
-   subroutine get.field(result, file.var, id, field.no)
+subroutine get.field(result, file.var, id, field.no)
    read rec from file.var, id then
       result = rec<field.no>
    end else
@@ -381,13 +386,12 @@ A function is like a subroutine, but it returns a value in an
 expression rather than through an argument:
 
 ```
-program fmt.phone
-   function fmt.phone(number)
-      if len(number) = 7 then
-         fmt.phone = number[1,3] : '-' : number[4,3]
-      end else
-         fmt.phone = number
-      end
+function fmt.phone(number)
+   if len(number) = 7 then
+      fmt.phone = number[1,3] : '-' : number[4,3]
+   end else
+      fmt.phone = number
+   end
 end
 ```
 
@@ -396,15 +400,22 @@ basic bp fmt.phone
 ```
 
 A function assigns its return value to **its own name**. That is the
-`fmt.phone = ...` line — it is not a variable called `fmt.phone`, it
-is the function saying what to return.
+`fmt.phone = ...` line — it is not a variable called `fmt.phone`, it is the
+function saying what to return.
+
+**A caller has to declare it with `deffun` before using it.** Without that
+line, the compiler has no way to know `fmt.phone(raw)` is a call rather than a
+matrix reference, and says so in those terms: *Matrix FMT.PHONE is not
+referenced in a DIM statement*. Subroutines called with `call` need no
+declaration; functions do.
 
 ```
 program test.fmt.phone
+   deffun fmt.phone(number) calling 'FMT.PHONE'
    open 'customers' to f.cust else stop 'no file'
    read rec from f.cust, '1001' then
       raw = rec<2>
-      print 'raw    : ' : raw
+      print 'raw      : ' : raw
       print 'formatted: ' : fmt.phone(raw)
    end
 end
@@ -442,7 +453,7 @@ program safe.write
    rec = name : @fm : '' : @fm : ''
 
    write rec on f.cust, id on error
-      print 'write failed: ' : @system.error.text
+      print 'write failed, status ' : status()
       stop
    end
    print 'saved'
@@ -465,8 +476,21 @@ The `then`/`else` on `write` is about the record — but `write` has no
 `then`/`else`, because writing always succeeds unless something is
 broken. The `on error` is where that broken-something arrives.
 
-`@system.error.text` is a system variable that holds the last error
-message. It is the same one the API's `SDError()` returns.
+**`status()` carries the code**, and it is what to read inside an `on error`
+block. Read it on the line you care about rather than three lines later: the
+next operation that sets a status overwrites it.
+
+There is no system variable holding the error *text*. To turn a code into a
+sentence, call the catalogued subroutine `!ERRTEXT`:
+
+```
+   call "!ERRTEXT", message, status()
+   print 'write failed: ' : message
+```
+
+`@system.return.code` is a different thing and is worth not confusing with
+this one: it carries the result of the last `execute`d command, not of the last
+file operation.
 
 ## 10. Putting it together: a small application
 
@@ -519,7 +543,8 @@ list.all:
    print 'id' : ' ' : 'name' : ' ' : 'city'
    print '---' : ' ' : '----' : ' ' : '----'
 
-   loop while readnext(id) from 2 do
+   loop
+      readnext id from 2 else exit
       read rec from f.cust, id then
          print id : ' ' : rec<1> : ' ' : rec<3>
          cnt += 1
@@ -543,7 +568,7 @@ add.one:
 
    rec = name : @fm : phone : @fm : city
    write rec on f.cust, id on error
-      print 'write failed: ' : @system.error.text
+      print 'write failed, status ' : status()
       return
    end
    print 'saved'
@@ -574,7 +599,7 @@ delete.one:
    end
 
    delete f.cust, id on error
-      print 'delete failed: ' : @system.error.text
+      print 'delete failed, status ' : status()
       return
    end
    print 'deleted'
