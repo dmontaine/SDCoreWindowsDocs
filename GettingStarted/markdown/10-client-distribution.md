@@ -115,16 +115,6 @@ clear, and the identity it runs as is on [API access](09-api-access.html).
 pairs together with the server. **No built DLL is committed**, so a clone
 builds — the same no-binaries rule the whole repository follows.
 
-> **This changed on 4 September 2026 and earlier versions of this page said
-> otherwise.** The clients used to live in two repositories of their own, each
-> building its own DLL and carrying its own Inno installer. They were retired
-> because keeping a mirror in step by hand had gone wrong in the worst
-> available way: the 32-bit client was built from a copy that had not been
-> updated in over two weeks and **shipped sending passwords in clear**, with
-> nothing in either project able to notice. One source that cannot diverge
-> beats a check that reports divergence. **If you are looking for
-> `winsdclilib` or `sdclilib32`, that is why you cannot find them.**
-
 ### Where the built clients are after an install
 
 The server installer places them under `C:\Program Files\SD`:
@@ -136,13 +126,6 @@ The server installer places them under `C:\Program Files\SD`:
 | `usr\bin\` | **both** DLL pairs again, beside `sd.exe`. That directory is on `PATH`, so it is where a 32-bit utility finds its client at run time |
 
 **The C headers are not shipped yet.** Take them from the repository.
-
-> **A note on how the 32-bit client is built, because it constrains changes to
-> it:** the DLL must stay a **single self-contained file that can be copied
-> next to an application** — hence static linking of the compiler runtime, and
-> hence a preference for Windows' own `bcrypt.dll` and `crypt32.dll` over
-> third-party crypto libraries. Any change to the client has to keep working in
-> a 32-bit process.
 
 > **A note on how the 32-bit client is built, because it constrains changes to
 > it:** the DLL must stay a **single self-contained file that can be copied
