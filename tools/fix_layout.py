@@ -5,7 +5,8 @@ Fix all rendered HTML pages:
 2. Widen the page layout - increase max-widths significantly
 3. Make the pagenav visible and prominent
 
-Works on all HTML files in Testing/html, User/html, Administrator/html, Technical/html.
+Works on all HTML files in GettingStarted/html, User/html, Administrator/html.
+The set list is SETS below; keep this line in step with it.
 """
 
 import os
