@@ -249,6 +249,34 @@ no sense from what you had typed.
 
 Forward slashes always worked and still do. **Both are now read the same way.**
 
+## PowerShell execution policy — leave it alone
+
+This is a hardening page, so it is worth saying plainly: **tightening your
+PowerShell execution policy does not break SD, and loosening it does not help
+SD.** Set it to whatever your own security policy wants.
+
+SD does a lot of its Windows-side work — `logto sdsys`, `append.sd.path`,
+`remote.api`, `remote.ssh` and the editor verbs — by running a small
+PowerShell script that the installer put in `C:\Program Files\SD`. Each one is
+launched with `-ExecutionPolicy Bypass` **on that single command line**, which
+applies to that one process and that one script. It does not change the
+machine, and it does not affect any other script you or anyone else runs.
+
+**If you loosened the policy to get SD working, put it back.** That was needed
+on builds before 5 September 2026, where those commands failed with *"running
+scripts is disabled on this system"*. It is fixed. The `sh` verb still gives
+you a PowerShell prompt under your machine's own policy — SD lifts the
+restriction only for the scripts it installed itself, never for a shell you
+type into.
+
+**The one case that does stop SD is Group Policy.** A policy that sets the
+execution policy outranks anything a program can pass on a command line. Run
+`Get-ExecutionPolicy -List`: if `MachinePolicy` or `UserPolicy` reads
+`Restricted` or `AllSigned`, SD's administrative commands will fail and only
+your Windows administrator can change it. `Undefined`, `RemoteSigned`,
+`Unrestricted` or `Bypass` on those two rows are all fine. **The Installed
+Scripts page in the Administrator set has the detail.**
+
 ## Running SD
 
 | | |

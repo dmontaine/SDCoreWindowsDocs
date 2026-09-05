@@ -28,6 +28,66 @@ about `cycle.ps1`, `assert-current.ps1` or a `verify-` script and cannot find
 it, that is why: they compare an install against the source tree it was built
 from, and they are destructive.
 
+## PowerShell execution policy — you do not need to change it
+
+Windows will not run a PowerShell script unless its **execution policy**
+allows it. On Windows desktop editions the default is `Restricted`, which
+allows no script at all; on Windows Server it is `RemoteSigned`, which allows
+a script written on the machine itself.
+
+**SD does not depend on that setting, and you should leave it alone.** Every
+one of the thirty-seven scripts is launched with an explicit
+`-ExecutionPolicy Bypass` on its own command line — by the installer, by the
+SD service, and by the SD verbs that call one. That switch applies to **that
+one PowerShell process, for that one script**. It changes nothing on the
+machine and nothing about any other script.
+
+**What happens if you change it anyway:**
+
+| what you do | what happens to SD |
+|---|---|
+| **Tighten it** to `Restricted` or `AllSigned`, for the machine or for your own account | **Nothing. SD carries on working.** The switch SD passes takes precedence over both of those settings |
+| **Loosen it** to `RemoteSigned`, `Unrestricted` or `Bypass` | **Nothing — and you have gained nothing.** SD was already unaffected. You have made the machine more permissive for every *other* script on it, which is a real cost for no benefit |
+| **Set it through Group Policy** | ***THIS ONE STOPS SD.*** See below |
+
+**So if you loosened the policy to get SD working, you can put it back.** That
+was needed on builds before 5 September 2026, where SD's own commands failed
+with *"running scripts is disabled on this system"*. It is fixed, and the
+workaround is no longer doing anything for you.
+
+**One thing it does not cover.** The `sh` verb opens an ordinary PowerShell
+prompt for you, and that prompt gets **no** such switch — it runs under
+whatever policy your machine sets. That is deliberate: SD lifts the
+restriction for the scripts it installed itself, and never for a shell you
+type into.
+
+### Group Policy is the exception, and it is the one to know about
+
+A **Group Policy** setting — *Turn on Script Execution*, under
+`Computer Configuration` or `User Configuration` → `Administrative Templates`
+→ `Windows Components` → `Windows PowerShell` — **outranks the switch SD
+passes.** Group Policy sits above the per-process setting in PowerShell's
+order of precedence, so on a machine where a policy sets the execution policy,
+SD cannot override it.
+
+**On a domain-joined or otherwise managed machine, check this before
+installing.** In an ordinary PowerShell prompt:
+
+```
+Get-ExecutionPolicy -List
+```
+
+If the `MachinePolicy` or `UserPolicy` row says anything other than
+`Undefined`, a policy is in force. **`RemoteSigned`, `Unrestricted` or
+`Bypass` there is fine** — SD's scripts are written on the machine by the
+installer, not downloaded. **A policy of `Restricted` or `AllSigned` will stop
+SD's administrative commands**, and the symptom is the *"running scripts is
+disabled on this system"* message from `logto sdsys`, `append.sd.path`,
+`remote.api`, `remote.ssh` or an editor verb. **That needs your Windows
+administrator to relax the policy.** SD has no way around it, deliberately: a
+program that could defeat Group Policy would be a worse thing to have
+installed than an inconvenience.
+
 ## The exit codes are a convention
 
 Every script prints what it did and then exits on the same three-value
