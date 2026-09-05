@@ -77,10 +77,10 @@ directory. **Existing accounts keep the names they already have.**
 
 ***AN ACCOUNT CREATED BEFORE THIS KEEPS THE UPPER-CASE NAMES IN ITS VOC AND GOES
 ON WORKING. THERE IS NOTHING TO MIGRATE.*** An account you create now, or one
-you refresh with **`update.account`**, gets the new spelling.
+you refresh with **`update.accounts`**, gets the new spelling.
 
 Because SD only ever *adds* VOC records at an update, an old account will end
-up holding both spellings after **`update.account`**. That is harmless — they
+up holding both spellings after **`update.accounts`**. That is harmless — they
 dispatch to the same programs.
 
 ## The Turkish and Azeri fix

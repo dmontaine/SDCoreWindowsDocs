@@ -87,8 +87,10 @@ powershell -File "C:\Program Files\SD\api-firewall.ps1" -Restrict
 `C:\ProgramData\SD\sd.conf` and restart SD. With no `APIPORT` set, SD creates
 no socket at all — "no API" is a real state, not just a firewall rule.
 
-> ***A STAND-ALONE INSTALLATION HAS NO API.*** Its `sd.conf` is written with no
-> `APIPORT` line, so nothing listens and there is no firewall rule to open.
+> ***DECLINING THE API AT INSTALL TIME LEAVES NO LISTENER AT ALL.*** The
+> installer writes an `sd.conf` with no `APIPORT` line, so nothing listens and
+> there is no firewall rule to open. The API box is unticked by default.
+> `remote.api on` puts a listener back.
 
 > ***`APILOGIN` IS NOT AN OFF SWITCH.*** It decides whether the API demands a
 > password. `APILOGIN=0` is the **weaker** setting, not the safer one. Do not

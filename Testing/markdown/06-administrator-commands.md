@@ -22,7 +22,7 @@ modify.account  <name> <standard | programmer | administrator | suspended>
 modify.account  <name> <ssh|api|both|none>
 modify.account  <name> <sh-on | sh-off | os-on | os-off>
 modify.account  add <group> <user>
-update.account
+update.accounts {all}
 clean.account
 ```
 
@@ -35,12 +35,12 @@ repeating here:
   `modify.account fred api` takes ssh away. The tier keyword works the same way.
 - **The tier can be changed after creation**, in either direction, and the VOC
   is rebuilt at once. `suspended` is a fourth tier that denies entry.
-- **`update.account` only ever adds VOC records**, never removes them —
+- **`update.accounts` only ever adds VOC records**, never removes them —
   `modify.account <tier>` is the only thing that removes one.
 - **Nothing here changes an administrator's access.** ssh, the API and the
   operating system are all a rule for that tier; downgrade the account first.
 
-**`clean.account`** tidies an account's workspace. **`update.account`** is the one you
+**`clean.account`** tidies an account's workspace. **`update.accounts`** is the one you
 run in each account after upgrading SD.
 
 ## Grants
@@ -265,7 +265,7 @@ treated as an administrator for any purpose.
 
 ## The full list of the 20
 
-**`create.account`** · **`delete.account`** · **`modify.account`** · **`update.account`** ·
+**`create.account`** · **`delete.account`** · **`modify.account`** · **`update.accounts`** ·
 **`clean.account`** · **`grant`** · **`revoke`** · **`list.grants`** · **`unlock`** ·
 **`modify.password`** · **`config`** · **`listu`** · **`list.readu`** ·
 **`list.locks`** · **`clear.locks`** · **`lock`** · **`logout`** · **`set.date`** · **`sh`** · `!`
@@ -275,7 +275,7 @@ treated as an administrator for any purpose.
 > **`sh`**, `!`, **`clean.account`** and `umask`. They are no longer copied into any
 > account's VOC; administrators receive them from `VOC_TEMPLATE` instead. **A
 > programmer or standard account created before that update keeps whichever of
-> them it had**, because **`update.account`** never removes a record.
+> them it had**, because **`update.accounts`** never removes a record.
 
 > **`umask` was removed from every tier.** It controls POSIX file-mode bits,
 > which Windows does not use for security — all file access runs through the

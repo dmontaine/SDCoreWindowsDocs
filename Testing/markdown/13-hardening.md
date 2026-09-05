@@ -182,8 +182,9 @@ The shipped `WINDOWS` definition is an exact copy of `LINUX`, which had this
 right all along — its name describes an operating system, but what matters is
 the byte protocol.
 
-***EXISTING ACCOUNTS KEEP THEIR OLD SETTING*** until their VOC is updated, by
-answering `Y` to *"Update VOC to new release?"* or running **`update.account`**.
+***EXISTING ACCOUNTS KEEP THEIR OLD SETTING*** until their VOC is updated. An
+upgrade now does that for every account, and **`update.accounts`** does it on
+demand.
 Until then, `term windows` sets it for the session. **63 definitions ship,
 compiling to 100 terminal names** — the extra names are variants such as
 `vt100-w` and `vt220-at` — so `term wyse60` still works.

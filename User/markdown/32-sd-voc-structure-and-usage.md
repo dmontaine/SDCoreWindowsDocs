@@ -315,10 +315,10 @@ name is, and the data stays where it is.
 upper case before the register is read. If it is not there you get
 *Account name '...' is not in register* and nothing is written.
 
-### update.account — refresh from NEWVOC
+### update.accounts — refresh from NEWVOC
 
 ```
-update.account
+update.accounts
 ```
 
 Re-runs `LOGIN`'s `update.voc` paragraph, which copies any changed
@@ -328,10 +328,10 @@ changed, not the whole file. `TIER.OMIT.STANDARD` and
 `TIER.ADD.ADMINISTRATOR` in `NEWVOC` control what each account type
 receives.
 
-***THE TIER TEST IS THE ONE THIS RECORD EXISTS FOR.*** `update.account`
+***THE TIER TEST IS THE ONE THIS RECORD EXISTS FOR.*** `update.accounts`
 on a standard account must not give back the verbs that were withheld
 when the account was created. A standard account starts with fewer verbs
-than an administrator account, and `update.account` preserves that
+than an administrator account, and `update.accounts` preserves that
 difference.
 
 ### copy — copy records into the VOC

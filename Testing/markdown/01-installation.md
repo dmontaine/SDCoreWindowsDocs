@@ -44,38 +44,82 @@ ssh is one of only two ways they reach the machine — and SD configures the ssh
 server so those sessions land inside SD and cannot reach a command prompt. **SD
 can only promise that about a server it installed and configured itself.**
 
-> This check runs on a stand-alone installation too, even though a stand-alone
-> installation never touches ssh. That is a known wrinkle rather than an
-> oversight — the check runs before the wizard exists, so it cannot yet know
-> which kind you are about to choose.
+## What you are asked
 
-## The two kinds of installation
+There is one kind of installation. What varies is how the machine can be
+reached afterwards, and that is three tick boxes on one page.
 
-You are asked on a new page just after the welcome page, and only on a **first**
-install. Upgrading keeps whatever the computer already is.
+The boxes appear only on a **first** install. An upgrade shows no tasks page at
+all: the machine already carries the answers, and every one of these settings
+has a command that changes it afterwards.
 
-| | Full | Stand-alone |
+### 1. System integration
+
+| | Default |
+|---|---|
+| Add SD Core to the system PATH, so `sd` runs from any directory | **ticked** |
+
+Changed afterwards with `append.sd.path on` or `off`.
+
+### 2. The ssh server
+
+**Installing an ssh server is optional, and the box is not ticked.** It
+downloads from Windows Update and can take several minutes — up to about an
+hour on a slow machine or connection — which is why it is offered rather than
+done.
+
+What you see depends on what the machine already has:
+
+| Machine | Boxes | Defaults |
 |---|---|---|
-| Who it is for | more than one person, or a program connecting to SD | one person at one computer, learning or trying code out |
-| ssh server | installed if absent, and configured | **not installed, and nothing about ssh is changed** |
-| Network port | API on 4243, local only unless you tick otherwise | **none — SD listens on nothing** |
-| `create.account user` | works | **refused, and says why** |
-| `create.account group` | works | works |
-| scp / sftp | stop working, for everyone | **go on working** |
+| No ssh server | *Install the OpenSSH server*, and indented under it *Let other computers connect* | both unticked |
+| Server present, firewall shut | *Let other computers connect* | unticked |
+| Server present, firewall open | *Let other computers connect* | **ticked** |
 
-***NOTHING ELSE IS CUT DOWN.*** Same SD Core for Windows, same language, same
-database, same commands. What a stand-alone installation lacks is the ways in
-from somewhere else.
+The second box is a child of the first, so Windows greys it out until the
+parent is ticked. You cannot ask for remote ssh access without an ssh server.
 
-**Why `create.account user` is refused on a stand-alone install** rather than
-quietly making something useless: the Windows account it would create is denied
-the console and Remote Desktop because it is meant to arrive over ssh. With no
-ssh server, it could sign in nowhere at all. You get a warning and no account
-is made.
+The last row matters on a machine that already uses ssh: the box shows the
+**current** firewall scope, so leaving it alone changes nothing in either
+direction. `OpenSSH-Server-In-TCP` is Windows' own shared rule and not SD's, so
+defaulting it to unticked and applying that would silently loopback-lock the
+ssh a site already relies on.
 
-**To change your mind — stand-alone to full, or the other way — you must
-uninstall and install again.** Nothing inside SD converts one into the
-other.
+Changed afterwards with `ssh.server install` or `remove`, and `remote.ssh on`
+or `off`.
+
+### 3. The API
+
+| | Default |
+|---|---|
+| Provide the SD Core API (port 4243) | **unticked** |
+| Let other computers on your network reach it | **unticked** |
+
+**The API is off unless you ask for it.** Decline it and SD is installed with a
+configuration carrying no `APIPORT` line, so no socket is opened at all — not a
+listener behind a closed firewall, but no listener.
+
+Again the second box is a child of the first. The pair appears only when there
+is no existing configuration file to read the answer from.
+
+Changed afterwards with `remote.api on`, `local` or `off`.
+
+### An installation with neither is a supported choice
+
+Leaving every remote box unticked gives a working SD that nothing outside the
+machine can reach. That is a real deployment rather than a degraded one.
+
+**Be aware of what it means for accounts.** Accounts SD creates are denied the
+Windows console and Remote Desktop, so they reach SD over ssh or over the API
+and nothing else — including at this keyboard, where an ssh account arrives by
+`ssh localhost`. With no ssh server on the machine, `create.account … ssh` and
+`… both` are refused, because the account could sign in nowhere. `api` and
+`none` still work, and `none` is meaningful: an application account reached only
+by `logto`.
+
+The refusal is tested against the machine when you type the command, not
+against a decision recorded at install time. Install an ssh server later and
+`create.account … ssh` simply starts working.
 
 ## What lands where
 
@@ -120,11 +164,13 @@ cannot read the data tree at all, and the symptom looks like a broken install.
 
 ## OpenSSH
 
-**On a full installation an OpenSSH server is always installed if the machine
-does not have one.** It is not optional. Accounts SD creates cannot log in to
-Windows, so they reach the machine over ssh or through an API client — and an
-install with neither is one nobody but you can use. A local-only machine is
-served by `ssh localhost`, which needs no network.
+**The OpenSSH server is installed only if you ask for it**, and the box is not
+ticked. This section covers what happens when you do ask.
+
+Accounts SD creates cannot log in to Windows, so they reach the machine over
+ssh or through an API client. An installation offering neither is usable by
+nobody but you — which is a legitimate choice, and worth making knowingly. A
+local-only machine is served by `ssh localhost`, which needs no network.
 
 ***IT IS SLOW AND IT LOOKS LIKE A HANG.*** `Add-WindowsCapability` hands off to
 `TiWorker` and can work for minutes with nothing on screen. **Never kill it** —
@@ -175,16 +221,29 @@ winget install -e --id zyedidia.micro --scope machine
 whoever ran it, and accounts SD creates cannot log in to Windows at all — so a
 per-user copy is one they can never reach.
 
-## Remote access
+## Changing any of it afterwards
 
-**Remote access is off unless you ask for it.** Two tick boxes, both unticked:
+Every choice on the tasks page has a verb that changes it later, and that is
+why an upgrade does not ask again. All four need an elevated administrator
+session, and all four report when given no keyword:
 
 | | |
 |---|---|
-| ssh from other computers | otherwise the firewall rule is scoped to `127.0.0.1,::1` |
-| API from other computers | otherwise port 4243 is reachable from this computer only |
+| `ssh.server install` \| `remove` | add or remove the OpenSSH server |
+| `remote.ssh on` \| `off` | who may reach it |
+| `remote.api on` \| `local` \| `off` | whether SD opens its API socket, and who may reach it |
+| `append.sd.path on` \| `off` | whether `sd` runs from any directory |
 
-To open the API afterwards, from an elevated prompt:
+They are covered in the SD Core for Windows administrator documentation, under
+*Remote access and the machine*.
+
+`remote.api on` and `off` change whether SD opens a socket at all, which it
+decides at start-up, so they offer to restart SD — and that restart ends every
+session including the one that asked. `local` and `on` differ only in the
+firewall and take effect at once.
+
+The underlying scripts are still on the machine and can be run directly if you
+prefer, from an elevated prompt:
 
 ```
 powershell -File "C:\Program Files\SD\api-firewall.ps1" -Open
@@ -223,12 +282,27 @@ ships and leaves alone any you added. If that step cannot run, the installer
 says so at the end rather than finishing quietly, and `upgrade-dicts.log` in
 `C:\ProgramData\SD` says what happened.
 
-***ONE THING YOU STILL DO YOURSELF: run `update.account` in each account after
-upgrading***, to bring that account's VOC up to date with the new release.
+**Every account's VOC is brought up to date for you.** The installer runs
+`update.accounts all`, which walks every registered account, so a command this
+release adds can be typed in accounts that already existed. This did not happen
+before W1.0-0: an upgrade replaced the shipped files and no existing account —
+including the system account — ever gained a new verb.
 
-> **SD only ever adds records to a VOC at an update, never removes them.** An
-> account created before a verb was withdrawn keeps it. That is why
-> **`update.account`** cannot be relied on to take something away.
+To refresh one account by hand afterwards, `update.accounts` in that account
+updates it and offers the rest.
+
+Two limits are worth knowing before you rely on it.
+
+> **SD only ever adds records to a VOC, never removes them.** An account created
+> before a verb was withdrawn keeps it. `update.accounts` cannot be relied on to
+> take something away.
+
+> **A record you have customised can be held back on purpose.** Put `[locked]`
+> in field 1 after the type code and the upgrade leaves that record alone,
+> naming it in a message so you know what was withheld — and therefore which
+> corrections this release made that you have not taken. Verbs are the
+> exception: a locked verb is updated anyway, and you are told which. The
+> administrator documentation covers it under *Accounts and security*.
 
 ## Uninstalling
 

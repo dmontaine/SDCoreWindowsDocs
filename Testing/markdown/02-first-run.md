@@ -54,7 +54,7 @@ term
 **If `term` says something else and your arrow keys do not work**, run
 `term windows` for this session and see
 [Other hardening](13-hardening.html#the-terminal). An account created before
-the `WINDOWS` definition shipped keeps its old setting until **`update.account`**.
+the `WINDOWS` definition shipped keeps its old setting until **`update.accounts`**.
 
 ***`term` ALSO REPORTS THE PAGE SIZE, AND SD'S DEFAULT IS 120 × 36 — NOT
 80 × 24.*** The shipped dictionaries and the default `list` layouts are
@@ -183,7 +183,7 @@ off
 3. **A standard account.** Create one without `programmer` and confirm it can
    run your application but not edit it.
 4. **An upgrade.** Install over the top and check your data survived and
-   **`update.account`** brought the VOC forward.
+   **`update.accounts`** brought the VOC forward.
 
 ## When something goes wrong
 

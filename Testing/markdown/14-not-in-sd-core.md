@@ -183,11 +183,11 @@ ends by asking for a password and a silent install has nobody to ask — it used
 to finish with **no password on any account** and say nothing about it.
 Unattended deployment is not supported.
 
-***scp AND sftp DO NOT WORK INTO A FULL INSTALLATION***, for anybody,
-administrators included. This is the accepted cost of putting every ssh session
-straight into SD. **Pull files rather than pushing them** — see
-[ssh access](08-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound). A
-stand-alone installation is unaffected.
+***scp AND sftp DO NOT WORK INBOUND ONCE SD HAS CONFIGURED THE ssh SERVER***,
+for anybody, administrators included. This is the accepted cost of putting
+every ssh session straight into SD. **Pull files rather than pushing them** —
+see [ssh access](08-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound).
+A machine with no ssh server is unaffected, because SD has configured nothing.
 
 ***THE CLEARTEXT API LOGIN IS GONE***, and a client that still sends a password
 in clear is refused outright. See [API access](09-api-access.html).

@@ -156,22 +156,28 @@ token, and an ordinary SD session has a filtered one. Account creation works
 from the installer and from an elevated terminal, and not from a normal
 session.
 
-**`create.account user` is refused on a stand-alone installation**, with a
-warning saying why. See [Installing SD Core](01-installation.html#the-two-kinds-of-installation).
+**`create.account user … ssh` and `… both` are refused when the machine has no
+ssh server**, with a warning saying why: the account would be denied the
+console and Remote Desktop and have no ssh to arrive on, so it could sign in
+nowhere. `api` and `none` still work. The test is made against the machine when
+you type the command, so installing an ssh server later makes `ssh` start
+working. See [Installing SD Core](01-installation.html#what-you-are-asked).
 
 ## Group accounts
 
 A group account is a shared workspace with **no Windows account and no sign-in
-of its own**. It is how you keep separate work separate, and it is the only
-kind of extra account a stand-alone installation can have.
+of its own**. It is how you keep separate work separate, and it is the one kind
+of account that needs no way in from outside — which makes it the only extra
+account available on a machine with no ssh server and no API.
 
 ```
 create.account group payroll
 modify.account add payroll fred
 ```
 
-Reach it with `logto payroll`, or through an F pointer. On a stand-alone
-installation, **`logto`** into a group account from a session run as administrator.
+Reach it with `logto payroll`, or through an F pointer. On a machine with no
+remote access at all, **`logto`** into a group account from a session run as
+administrator.
 
 ## Sharing a user account
 
@@ -318,13 +324,13 @@ shorter wording in that case rather than promising something it will not do.
 
 ## Two things that catch people out
 
-**1. `update.account` never takes a verb away.** SD only ever *adds* records to
+**1. `update.accounts` never takes a verb away.** SD only ever *adds* records to
 a VOC at an update. An account created before a verb was withdrawn keeps it, and
-running **`update.account`** will not remove it.
+running **`update.accounts`** will not remove it.
 
 **`modify.account <tier>` is the one that does remove them**, and it is the only
 thing that ever will. If you need a verb gone from an account, change the tier;
-`update.account` will not undo it afterwards either, because the tier is
+`update.accounts` will not undo it afterwards either, because the tier is
 recorded and every update applies it.
 
 **2. `sdusers` membership needs a fresh logon.** Same reason as grants. After
