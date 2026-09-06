@@ -112,7 +112,23 @@ foreach ($s in $sources) {
         '--no-first-run',
         '--no-default-browser-check',
         ('--user-data-dir=' + (& $q $profile)),
-        '--print-to-pdf-no-header',
+        # ***THIS SWITCH USED TO BE --print-to-pdf-no-header AND IT DID
+        # NOTHING.***  Measured on Edge 152.0.4191.62, 5 Sep 2026: the same page
+        # printed with that switch and with NO switch at all came out at exactly
+        # 193,113 bytes both times, while --no-pdf-header-footer gave 163,942.
+        # So every PDF this project has shipped carried Edge's own furniture on
+        # every sheet - the date and the document title across the top, the
+        # file:///C:/Users/... URL across the bottom - and the script had a
+        # switch in it that said otherwise.  THE OWNER SPOTTED IT FROM THE PDF:
+        # "This can replace the file location text at the left side of the
+        # footer."
+        #
+        # WHAT GOES WITH IT: the page numbers.  Edge's furniture is all or
+        # nothing from the command line; keeping "3/4" while dropping the URL
+        # would mean driving the browser over the DevTools protocol rather than
+        # the CLI.  The copyright tag line at the foot of each document is what
+        # replaces it.
+        '--no-pdf-header-footer',
         ('--print-to-pdf=' + (& $q $pdf)),
         (& $q $s.FullName)
     )

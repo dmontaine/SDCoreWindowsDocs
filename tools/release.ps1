@@ -123,12 +123,24 @@ if ($toHtml.Count -gt 0) {
     if ($LASTEXITCODE -ne 0) { Write-Error ("mkdoc.py exited " + $LASTEXITCODE) }
 }
 
+# THE PDF IS COMPARED AGAINST THE MARKDOWN, NOT AGAINST THE HTML, and README.md
+# already said so about the hand check while this script did the opposite:
+# "Re-rendering the HTML touches every file's mtime, so comparing those two
+# reports the whole set as stale and tells you nothing."
+#
+# IT WAS WORSE THAN WASTEFUL HERE, because add_nav.py runs at the END of this
+# script and rewrites every HTML file to insert the prev/next bars.  So the HTML
+# was ALWAYS newer than the PDF by the time the next release looked, every run
+# re-printed all 83 pages, and - the part that matters - each of those reprints
+# was taken from HTML THAT ALREADY HAD THE NAV BARS IN IT.  The bars stayed out
+# of the PDFs only because mkdoc.py's stylesheet hides .pagenav in @media print.
+# That rule is the belt; this is the braces it was supposed to be backing up.
 $toPdf = @()
 foreach ($s in $sources) {
     $stem = [IO.Path]::GetFileNameWithoutExtension($s.Name)
     $html = Join-Path $htmlDir ($stem + '.html')
     if (-not (Test-Path -LiteralPath $html)) { Write-Error ("no HTML for " + $s.Name) }
-    if ($Force -or (Needs (Join-Path $pdfDir ($stem + '.pdf')) (Get-Item -LiteralPath $html))) {
+    if ($Force -or (Needs (Join-Path $pdfDir ($stem + '.pdf')) $s)) {
         $toPdf += $html
     }
 }

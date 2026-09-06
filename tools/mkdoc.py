@@ -37,6 +37,7 @@
 import argparse
 import html
 import os
+import re
 import sys
 
 try:
@@ -233,9 +234,12 @@ blockquote {
 blockquote p:last-child { margin-bottom: 0; }
 blockquote code { background: var(--bg); }
 
+/* The tag line.  The gap above it is the second of the owner's "two blank
+   lines", written the same way as the one under the page header so the two
+   cannot drift apart. */
 footer {
-  margin: 0;
-  padding: 1.25rem 0 1rem;
+  margin: calc(2 * 1.5em) 0 0;
+  padding: 1rem 0;
   border-top: 1px solid var(--rule);
   color: var(--ink-faint);
   font-size: 0.82rem;
@@ -289,19 +293,23 @@ footer {
   .pagenav .pn-up { flex: 1 1 100%; }
 }
 
-/* --- title page ---------------------------------------------------------
-   On screen it is the top of the page and reads as a cover; in print it is
-   page 1 on its own.  It carries the two things the Markdown supplies - the
-   title and the subtitle - and the copyright and licence, which come from
-   mkdoc.py so that every document says the same thing. */
+/* --- the page header -----------------------------------------------------
+   The product line, the title and the subtitle.  It used to carry the
+   copyright and licence too and be a page of its own; both went on
+   5 September 2026 - see the comment above TITLEPAGE for the instruction.
+
+   THE GAP BELOW IT IS THE "two blank lines" THE OWNER ASKED FOR, and it is
+   written as a multiple of the body line-height rather than a round number of
+   rems so that it stays two blank lines if the type size changes.  The same
+   figure separates the body from the footer. */
 
 .titlepage {
   /* The grid-column span that used to be here went with the grid.  .page is a
-     plain block now that the sidebar has gone, so the cover simply sits at the
-     top of the sheet. */
+     plain block now that the sidebar has gone, so the header simply sits at
+     the top of the sheet. */
   max-width: 40rem;
-  margin: 0 auto 3rem;
-  padding: 2.5rem 0 2.5rem;
+  margin: 0 auto calc(2 * 1.5em);
+  padding: 2.5rem 0 1.25rem;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -334,24 +342,34 @@ footer {
   font-size: 1.08rem;
   line-height: 1.5;
   color: var(--ink-soft);
-  margin: 0 0 2.4rem;
+  margin: 0;
   max-width: 34rem;
 }
 
-.titlepage dl.tp-meta {
+/* --- the licence block, on one page per set ------------------------------
+   Same markup the title page used to carry.  It is rendered into whichever
+   page holds the <!--LICENCE-BLOCK--> marker - 00a-copyright-and-licence in
+   each set - and nowhere else. */
+
+.licenceblock {
+  max-width: 40rem;
+  margin: 0 0 2rem;
+}
+
+.licenceblock dl.tp-meta {
   margin: 0 0 2.2rem;
   padding: 1.1rem 0;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
 
-.titlepage dl.tp-meta > div {
+.licenceblock dl.tp-meta > div {
   display: flex;
   gap: 1rem;
   padding: 0.28rem 0;
 }
 
-.titlepage dl.tp-meta dt {
+.licenceblock dl.tp-meta dt {
   flex: 0 0 9.5rem;
   font-size: 0.8rem;
   letter-spacing: 0.06em;
@@ -360,28 +378,30 @@ footer {
   padding-top: 0.15rem;
 }
 
-.titlepage dl.tp-meta dd {
+.licenceblock dl.tp-meta dd {
   margin: 0;
   flex: 1;
 }
 
-.titlepage .tp-licence p {
-  font-size: 0.9rem;
+.licenceblock .tp-licence p {
+  font-size: 0.94rem;
   line-height: 1.55;
   color: var(--ink-soft);
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.9rem;
   max-width: 36rem;
 }
 
-.titlepage .tp-url {
+.licenceblock .tp-url {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.86em;
-  word-break: break-all;
+  /* "break-all" broke it after "htt".  This only breaks when the line really
+     cannot hold the URL, which on a 40rem measure it can. */
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 34rem) {
-  .titlepage dl.tp-meta > div { display: block; }
-  .titlepage dl.tp-meta dt { margin-bottom: 0.1rem; }
+  .licenceblock dl.tp-meta > div { display: block; }
+  .licenceblock dl.tp-meta dt { margin-bottom: 0.1rem; }
 }
 
 /* --- print -------------------------------------------------------------
@@ -416,30 +436,62 @@ footer {
   .pagenav { display: none; }
 
   a { text-decoration: none; }
-  h2 { break-after: avoid; page-break-after: avoid; }
-  h3, h4 { break-after: avoid; page-break-after: avoid; }
-  pre, table, blockquote { break-inside: avoid; page-break-inside: avoid; }
+
+  /* --- WHAT MUST NOT BE LEFT ALONE AT A PAGE BREAK ----------------------
+     Owner, 5 September 2026, pointing at a sheet that began with a rule and
+     nothing else: "also try to avoid situations like in the screen shot where
+     one line, in this case a horizontal rule, is on the following page".
+
+     THE RULE WAS AN h2's border-top, AND break-after:avoid COULD NOT HELP.
+     That property keeps a heading with what FOLLOWS it; the break here fell
+     INSIDE the heading's own box, between its border-top plus padding and its
+     text, so the border printed at the top of the next sheet and the words
+     went further down.  break-inside is the one that forbids that, and it has
+     to be on the headings themselves. */
+  h1, h2, h3, h4 {
+    break-inside: avoid; page-break-inside: avoid;
+    break-after: avoid;  page-break-after: avoid;
+  }
+  /* And the same defect one line at a time: a lone first or last line of a
+     paragraph stranded across the break. */
+  p, li, dd, dt { orphans: 3; widows: 3; }
+  ul, ol, dl { break-before: avoid; page-break-before: avoid; }
+
+  pre, blockquote { break-inside: avoid; page-break-inside: avoid; }
+
+  /* ***A TABLE IS ALLOWED TO SPAN A PAGE AND A ROW IS NOT.***  "break-inside:
+     avoid" used to be on the table too, and with headings now unbreakable as
+     well it produced the opposite of the defect it was there for: a heading
+     and its table would not fit in what was left of a sheet, so BOTH moved on
+     and left half a page blank.  These are reference tables of thirty rows;
+     flowing across a break is what they are supposed to do.  The header row
+     repeats at the top of each sheet the table continues onto, so a reader who
+     turns the page still knows what the columns are. */
+  table { break-inside: auto; page-break-inside: auto; }
+  thead { display: table-header-group; }
+  tr    { break-inside: avoid; page-break-inside: avoid; }
+
   pre, code { border-color: #ccc; }
   th { border-bottom: 1.5pt solid #000; }
   td, th { border-bottom: 0.5pt solid #999; }
-  footer { border-top: 0.5pt solid #999; padding: 0.5rem 0; }
+  footer { border-top: 0.5pt solid #999; padding: 0.5rem 0 0; }
 
-  /* THE TITLE PAGE IS PAGE 1 AND NOTHING ELSE IS ON IT.  Both spellings are
-     given because the modern "break-after" is not honoured by every engine
-     that prints, and the legacy "page-break-after" is what actually fires in
-     Chromium's print path today. */
+  /* THE PAGE HEADER IS NO LONGER A SHEET OF ITS OWN.  It used to be, and
+     break-after:page is what did it; with the licence block gone it is three
+     lines, and three lines on an otherwise empty sheet is a gap rather than a
+     cover.  The two-line space below it is kept - the em is now the printed
+     one, which is the reason it is written as a multiple of line-height. */
   .titlepage {
     max-width: none;
-    margin: 0;
-    padding: 0 0 1rem;
-    border-bottom: 0;
-    break-after: page;
-    page-break-after: always;
+    margin: 0 0 calc(2 * 1.45em);
+    padding: 0 0 0.8rem;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
-  .titlepage h1.tp-title { font-size: 26pt; margin-top: 2.5cm; }
-  .titlepage .tp-subtitle { font-size: 12pt; }
-  .titlepage dl.tp-meta { border-color: #999; }
-  .titlepage .tp-licence p { font-size: 9.5pt; }
+  .titlepage h1.tp-title { font-size: 22pt; }
+  .titlepage .tp-subtitle { font-size: 11pt; }
+  .licenceblock dl.tp-meta { border-color: #999; }
+  .licenceblock .tp-licence p { font-size: 9.5pt; }
 }
 '''
 
@@ -448,15 +500,37 @@ footer {
 # The title page.
 #
 # WHY IT IS GENERATED HERE RATHER THAN WRITTEN INTO EACH MARKDOWN FILE.  There
-# are seventeen documents in the User set alone.  A copyright line pasted into
-# each one is seventeen places to update when the year, the licence or the
-# release changes, and seventeen chances for one of them to say something
+# are fifty-three documents in the User set alone.  A copyright line pasted into
+# each one is fifty-three places to update when the year, the licence or the
+# release changes, and fifty-three chances for one of them to say something
 # different from the rest.  The Markdown supplies the two things that differ
 # per document - Title and Subtitle - and everything else comes from here.
 #
-# IT IS A REAL FIRST PAGE IN THE PDF.  The print stylesheet breaks after it,
-# so browser-to-PDF puts the content on page 2 rather than running the cover
-# into the first heading.
+# ***THE LICENCE BLOCK CAME OFF EVERY PAGE ON 5 September 2026.  OWNER, LOOKING
+# AT A PDF:*** "You can remove this header (shown in the pdf) from every page.
+# It should be available once for each set of documents: user, administrator and
+# getting started.  After that a tag line at the bottom of each page should
+# contain the copyright notices and the license name."
+#
+# So a page's own header is now the product line, the title and the subtitle,
+# and nothing else; the copyright and the licence NAME are the footer tag line
+# on every page; and the full block - the metadata table and the three-paragraph
+# summary with the licence URL - is rendered ONCE PER SET, into whichever page
+# carries the <!--LICENCE-BLOCK--> marker.  That is
+# 00a-copyright-and-licence.md in each of the three sets.
+#
+# ***IT IS STILL GENERATED, WHICH IS THE WHOLE POINT.***  Writing the block into
+# three markdown files instead of one template would be three places to update
+# rather than fifty-three, which is better and is still wrong.  The marker keeps
+# one copy of the words here and lets the set decide where it appears.
+# add_nav.py asserts that EXACTLY ONE page per set carries it, so it can neither
+# go missing nor appear twice.
+#
+# THE COVER IS NO LONGER A PAGE OF ITS OWN.  It used to break after itself so
+# that browser-to-PDF gave a real page 1.  With the licence block gone it is
+# three lines, and a whole sheet holding three lines is not a cover, it is a
+# gap.  It now sits at the top of the first page with the two-line gap below it
+# that the same instruction asked for.
 # ---------------------------------------------------------------------------
 
 COPYRIGHT = 'Copyright © 2026 Donald Montaine'
@@ -485,6 +559,15 @@ TITLEPAGE = '''<section class="titlepage">
 <p class="tp-product">@PRODUCT@ <span>@VERSION@</span></p>
 <h1 class="tp-title">@TITLE@</h1>
 @TP_SUBTITLE@
+</section>
+'''
+
+# The marker a page puts in its Markdown to ask for the full block.  It is an
+# HTML comment so that it is invisible if anything ever renders the Markdown
+# without mkdoc, and greppable so "which page has it" is one command.
+LICENCE_MARKER = '<!--LICENCE-BLOCK-->'
+
+LICENCE_BLOCK = '''<section class="licenceblock">
 <dl class="tp-meta">
 <div><dt>Released with</dt><dd>@PRODUCT@ @VERSION@</dd></div>
 <div><dt>Copyright</dt><dd>@COPYRIGHT@</dd></div>
@@ -517,6 +600,11 @@ TITLEPAGE = '''<section class="titlepage">
 # THE FOOTER IS INSIDE .page NOW.  It used to sit outside, so on screen it was
 # a strip below the sheet - and add_nav inserts the bottom bar before
 # </footer>, which would have put the page controls off the paper.
+#
+# ***THE FOOTER IS THE TAG LINE THE OWNER ASKED FOR, AND "Generated from
+# <file>.md" HAS GONE FROM IT.***  It is the only place the copyright and the
+# licence name now appear on an ordinary page, so it carries both and nothing
+# else.  The source file name was the one thing on it a reader could not use.
 
 PAGE = '''<!DOCTYPE html>
 <html lang="en">
@@ -534,7 +622,7 @@ PAGE = '''<!DOCTYPE html>
 @BODY@
 </main>
 <!--PAGENAV-BOTTOM-->
-<footer>@PRODUCT@ @VERSION@. @COPYRIGHT@. Licensed under @LICENCE_NAME@. Generated from @SOURCE@.</footer>
+<footer>@PRODUCT@ @VERSION@ &middot; @COPYRIGHT@ &middot; Licensed under @LICENCE_NAME@</footer>
 </div>
 </body>
 </html>
@@ -582,10 +670,27 @@ def build(path, out_dir, product, version):
     if subtitle:
         sub_html = '<p class="tp-subtitle">%s</p>' % html.escape(subtitle)
 
-    titlepage = (TITLEPAGE
-                 .replace('@TP_SUBTITLE@', sub_html)
+    titlepage = TITLEPAGE.replace('@TP_SUBTITLE@', sub_html)
+
+    # THE MARKER SURVIVES THE MARKDOWN CONVERTER AS AN HTML COMMENT, and it is
+    # matched against the RENDERED body rather than the source so that a marker
+    # the converter swallowed - inside a code fence, say - is not counted.
+    wants_licence = LICENCE_MARKER in body
+    if wants_licence:
+        # SUBSTITUTED HERE, NOT LEFT TO THE PAGE CHAIN BELOW.  The chain
+        # replaces @BODY@ LAST, so any @PLACEHOLDER@ arriving inside the body
+        # had already missed its turn: the first render of the licence page
+        # printed "@PRODUCT@ @VERSION@" and "@COPYRIGHT@" to the screen.  The
+        # block is completed before it goes anywhere near the body, so it no
+        # longer depends on the order of a list of .replace() calls.
+        block = (LICENCE_BLOCK
                  .replace('@LICENCE_SUMMARY@',
-                          '\n'.join('<p>%s</p>' % s for s in LICENCE_SUMMARY)))
+                          '\n'.join('<p>%s</p>' % s for s in LICENCE_SUMMARY))
+                 .replace('@PRODUCT@', html.escape(product))
+                 .replace('@VERSION@', html.escape(version))
+                 .replace('@COPYRIGHT@', COPYRIGHT)
+                 .replace('@LICENCE_NAME@', LICENCE_NAME))
+        body = body.replace(LICENCE_MARKER, block)
 
     page = (PAGE
             .replace('@CSS@', CSS)
@@ -602,9 +707,29 @@ def build(path, out_dir, product, version):
     # and a template typo would drop it silently - the page would still render.
     if 'class="titlepage"' not in page:
         raise RuntimeError('%s rendered without a title page' % path)
-    if COPYRIGHT not in page or LICENCE_URL not in page:
-        raise RuntimeError('%s rendered without the copyright or licence'
-                           % path)
+
+    # EVERY page carries the copyright and the licence NAME, in the footer tag
+    # line.  Only the page that asked for the block carries the licence URL, and
+    # it must - a licence page with no link to the licence is the one failure
+    # this whole arrangement could produce quietly.
+    if COPYRIGHT not in page or LICENCE_NAME not in page:
+        raise RuntimeError('%s rendered without the copyright or the licence '
+                           'name in its footer' % path)
+    if wants_licence and LICENCE_URL not in page:
+        raise RuntimeError('%s asked for the licence block and rendered '
+                           'without the licence URL' % path)
+
+    # ***NO @PLACEHOLDER@ MAY SURVIVE, AND THIS IS THE CLASS FIX RATHER THAN
+    # THE ONE ABOVE.***  Fixing the licence block's own substitution repairs
+    # that block; this catches the next template that is expanded in the wrong
+    # order, or a placeholder added to a template and not to the chain.  An
+    # unsubstituted @NAME@ renders as visible text and nothing else looks at
+    # it - the licence page shipped "@COPYRIGHT@" past two content assertions
+    # that both passed, because the real copyright was in the footer.
+    left = sorted(set(re.findall(r'@[A-Z][A-Z0-9_]*@', page)))
+    if left:
+        raise RuntimeError('%s rendered with unsubstituted placeholder(s): %s'
+                           % (path, ' '.join(left)))
     # The same argument for the marker add_nav.py needs: a page without it gets
     # no top bar and looks exactly like a page that has one and did not need it.
     for marker in ('<!--PAGENAV-TOP-->', '<!--PAGENAV-BOTTOM-->'):
@@ -658,6 +783,9 @@ def main():
                                           args.version)
         sys.stdout.write('mkdoc: wrote %s  "%s"  %d bytes, %d anchors\n'
                          % (out, title, size, anchors))
+        with open(out, 'r', encoding='utf-8') as f:
+            if 'class="licenceblock"' in f.read():
+                sys.stdout.write('mkdoc:       ^ carries the licence block\n')
 
     sys.stdout.write('mkdoc: %d page(s).\n' % len(sources))
     return 0

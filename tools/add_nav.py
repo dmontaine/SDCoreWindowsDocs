@@ -274,6 +274,21 @@ def add_navigation(set_name, pages):
     reader had scrolled past."""
     html_dir = os.path.join(DOCS_ROOT, set_name, "html")
 
+    # A NEW MARKDOWN PAGE HAS NO HTML UNTIL ITS OWN SET IS RENDERED, and this
+    # script runs over every set while release.ps1 renders one.  So adding a
+    # page to set B and releasing set A used to end in a bare FileNotFoundError
+    # out of get_title, six frames deep, naming a path and not the cure.
+    missing = [p for p in pages
+               if not os.path.exists(os.path.join(html_dir, p + ".html"))]
+    if missing:
+        raise SystemExit(
+            'add_nav: %s has %d markdown page(s) with no HTML: %s\n'
+            '         render that set first:  python tools/mkdoc.py --in %s '
+            '--out %s'
+            % (set_name, len(missing), ', '.join(missing),
+               os.path.join(set_name, 'markdown'),
+               os.path.join(set_name, 'html')))
+
     titles = {}
     for i, page in enumerate(pages):
         titles[i] = get_title(os.path.join(html_dir, page + ".html"))
@@ -320,6 +335,35 @@ def add_navigation(set_name, pages):
 
     print(f"  {set_name}: top and bottom bars on {done} page(s)"
           f"{f', {already} already had them' if already else ''}")
+
+
+# ── Exactly one licence block per set ─────────────────────────
+
+def check_licence_block(set_name, pages):
+    """One page per set carries the copyright and licence in full - no more.
+
+    OWNER, 5 September 2026: the block comes off every page and is "available
+    once for each set of documents".  Once is a number, so it is checked.
+
+    THIS IS THE GUARD FOR A FAILURE NOTHING ELSE CAN SEE.  mkdoc.py can only
+    say whether the ONE page it is rendering asked for the block; whether a set
+    ends up with a copy - or with two - is a question about the set, and
+    add_nav is the only thing that looks at a whole set.  A set that lost its
+    licence page would render clean, link clean and ship."""
+    html_dir = os.path.join(DOCS_ROOT, set_name, "html")
+    carriers = []
+    for page in pages:
+        with open(os.path.join(html_dir, page + ".html"), 'r',
+                  encoding='utf-8') as f:
+            if 'class="licenceblock"' in f.read():
+                carriers.append(page)
+
+    if len(carriers) != 1:
+        raise SystemExit(
+            'add_nav: %s has %d page(s) carrying the licence block and must '
+            'have exactly 1%s' % (set_name, len(carriers),
+                                  (' - ' + ', '.join(carriers)) if carriers else ''))
+    print(f"  {set_name}: licence block on {carriers[0]}, and on no other page")
 
 
 # ── Create set index pages ────────────────────────────────────
@@ -490,6 +534,10 @@ def check_and_fix_links(set_name, pages):
 print("Adding prev/next navigation...")
 for set_name, info in SETS.items():
     add_navigation(set_name, info["pages"])
+
+print("\nChecking the licence block...")
+for set_name, info in SETS.items():
+    check_licence_block(set_name, info["pages"])
 
 print("\nCreating set index pages...")
 for set_name, info in SETS.items():

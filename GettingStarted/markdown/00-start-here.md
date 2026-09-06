@@ -32,7 +32,7 @@ are never confused.
 
 ## The pages
 
-**There are eighteen, and they are numbered.** Read them in numerical order the
+**There are nineteen, and they are numbered.** Read them in numerical order the
 first time; after that they stand alone.
 
 **A number with a letter after it is the second half of a long page**, split so
@@ -42,6 +42,7 @@ so on. Nothing was renumbered when they were split.
 | | | |
 |---|---|---|
 | **00** | Start here | this page — what the set is and what it leaves out |
+| **00a** | [Copyright and licence](00a-copyright-and-licence.html) | The copyright and the licence for this set, in full and in one place |
 | **01** | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, and the choices it offers |
 | **01a** | [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) | Installing a new release over an existing one, and taking SD off the machine |
 | **02** | **[Your first thirty minutes](02-first-run.html)** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
