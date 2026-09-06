@@ -428,7 +428,7 @@ def create_set_index(set_name, set_desc, pages):
 </tbody>
 </table>
 </main>
-<footer>{PRODUCT} {VERSION}. Copyright &copy; 2026 Donald Montaine. Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</footer>
+<footer>{PRODUCT} {VERSION} &middot; &copy; Donald Montaine &middot; License: CC BY-SA</footer>
 </div>
 </body>
 </html>
@@ -482,7 +482,7 @@ def create_master_index():
 <p>Copyright &copy; 2026 Donald Montaine.</p>
 </div>
 </main>
-<footer>{PRODUCT} {VERSION}. Copyright &copy; 2026 Donald Montaine. Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</footer>
+<footer>{PRODUCT} {VERSION} &middot; &copy; Donald Montaine &middot; License: CC BY-SA</footer>
 </div>
 </body>
 </html>

@@ -292,18 +292,65 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "broken link(s) - the zip was NOT written"
 }
 
+# --- THE BOUND SET: one PDF, page numbers, and a bookmark tree -------------
+# Owner's ruling, 6 Sep 2026: "merge per set".  The release ships PDF only, and
+# 86 separate PDFs is not a document - no continuous numbering, no outline, no
+# search across a set, and 53 files to keep for the User guide alone.
+#
+# IT GOES IN ITS OWN DIRECTORY, AND THAT IS NOT TIDINESS.  The orphan check at
+# the top of this script refuses any .pdf in pdf\ whose stem is not a markdown
+# source, so a merged book dropped in beside the per-page PDFs would be
+# reported as an orphan and refuse the whole set - the same way html\index.html
+# had to be exempted by name during the W1.0-0 audit.  book\ sidesteps both
+# that check and the staleness walk, which are per-page by design.
+#
+# AFTER add_nav ON PURPOSE.  mkbook.py strips the prev/next bars either way,
+# but running last means the book is assembled from exactly the HTML that
+# shipped, rather than from an intermediate state.
+$bookDir = Join-Path $setDir 'book'
+if (-not (Test-Path -LiteralPath $bookDir)) {
+    Say ("creating    " + $bookDir + "   (generated, not in the repository)")
+    $null = New-Item -ItemType Directory -Path $bookDir -Force
+}
+$bookHtml = Join-Path $bookDir ($Set + '.html')
+$bookPdf  = Join-Path $bookDir ("SD-Core-for-Windows-" + $Version + "-" + $Set + ".pdf")
+
+$mkbook = Join-Path $tools 'mkbook.py'
+Say ("python " + $mkbook + " --set " + $Set)
+& python $mkbook --set $Set --out $bookHtml --product 'SD Core for Windows' `
+                 --version $Version 2>&1 | ForEach-Object { Write-Output ("  " + $_) }
+if ($LASTEXITCODE -ne 0) { Write-Error "mkbook.py failed - the zip was NOT written" }
+
+& (Join-Path $tools 'mkbookpdf.ps1') -In $bookHtml -Out $bookPdf `
+    -FooterText ('SD Core for Windows ' + $Version) |
+    ForEach-Object { Write-Output ("  " + $_) }
+
+# VERIFY, DO NOT ASSUME - and do not rest it on the exit code alone.  A script
+# invoked with "&" reports through $LASTEXITCODE, which is easy to read from
+# the wrong statement; the file either exists at a plausible size or it does
+# not.  PROJECT_STATUS.md records an exit code being trusted here before.
+if (-not (Test-Path -LiteralPath $bookPdf)) {
+    Write-Error "the bound $Set PDF was not written - the zip was NOT written"
+}
+$bookInfo = Get-Item -LiteralPath $bookPdf
+Say ("book        " + $bookPdf)
+Say ("book bytes  " + $bookInfo.Length)
+if ($bookInfo.Length -lt 20000) {
+    Write-Error "the bound $Set PDF is too small to be the set - the zip was NOT written"
+}
+
 if ($NoZip) { Say 'no zip written (-NoZip)'; exit 0 }
 
 # --- the deliverable -------------------------------------------------------
 $zip = Join-Path $OutDir ("SD-Core-for-Windows-" + $Version + "-" + $Set + "-docs.zip")
 if (Test-Path -LiteralPath $zip) { Remove-Item -LiteralPath $zip -Force }
 
-Compress-Archive -Path @($pdfDir, $htmlDir) -DestinationPath $zip
+Compress-Archive -Path @($pdfDir, $htmlDir, $bookDir) -DestinationPath $zip
 $item = Get-Item -LiteralPath $zip
 $sha  = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash
 
 Say ("zip         " + $item.FullName)
 Say ("size        " + $item.Length + " bytes")
 Say ("sha256      " + $sha)
-Say ("contents    " + $sources.Count + " page(s), html and pdf")
+Say ("contents    " + $sources.Count + " page(s), html and pdf, plus the bound set")
 exit 0

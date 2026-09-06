@@ -395,7 +395,18 @@ footer {
   line-height: 1.55;
   color: var(--ink-soft);
   margin: 0 0 0.9rem;
-  max-width: 36rem;
+  /* 06 Sep 26 - ***FULL WIDTH, LIKE EVERYTHING ELSE ON THE PAGE.***  Owner, on
+     the merged set: "the description of the license on that page is not full
+     width and causes several unneeded lines".  This was "max-width: 36rem"
+     against a body measure of about 45rem, so the licence summary wrapped
+     early and ran several lines longer than it needed to, next to paragraphs
+     that did not.
+     THIS IS THE .titlepage DEFECT AGAIN, one block along - that one was
+     "max-width: 40rem; margin: 0 auto", a centred measure left over from the
+     two-column layout, and it was corrected to none for the same reason.  A
+     narrower measure reads better in isolation and reads WRONG beside text
+     that is not narrowed. */
+  max-width: none;
 }
 
 .licenceblock .tp-url {
@@ -464,7 +475,18 @@ footer {
   p, li, dd, dt { orphans: 3; widows: 3; }
   ul, ol, dl { break-before: avoid; page-break-before: avoid; }
 
-  pre, blockquote { break-inside: avoid; page-break-inside: avoid; }
+  /* 06 Sep 26 - ***A LONG CODE BLOCK IS ALLOWED TO SPAN A PAGE, FOR THE SAME
+     REASON THE TABLE ABOVE IS.***  Owner, on the merged Administrator set:
+     "page 3 has an orphan and most the page is blank".  This is the table
+     defect exactly, one element along: headings are unbreakable AND glued to
+     what follows them, so an h2 with a tall pre under it could not fit in what
+     was left of a sheet and BOTH moved on, leaving the rest of that page
+     empty and whatever preceded them stranded.
+     A listing that flows across a break is normal in a printed manual; half a
+     blank sheet is not.  blockquote KEEPS the rule - they are a few lines, so
+     they always fit somewhere and splitting one reads worse than moving it. */
+  pre { break-inside: auto; page-break-inside: auto; }
+  blockquote { break-inside: avoid; page-break-inside: avoid; }
 
   /* ***A TABLE IS ALLOWED TO SPAN A PAGE AND A ROW IS NOT.***  "break-inside:
      avoid" used to be on the table too, and with headings now unbreakable as
@@ -544,6 +566,20 @@ COPYRIGHT = 'Copyright © 2026 Donald Montaine'
 
 LICENCE_NAME = ('Creative Commons Attribution-ShareAlike 4.0 International '
                 '(CC BY-SA 4.0)')
+
+# 06 Sep 26 - THE SHORT FORMS, FOR THE PER-PAGE WEB FOOTER ONLY.  Owner's
+# ruling.  The footer is a tag line repeated on every page and the full licence
+# title is clutter there.  THE GRANT IS UNAFFECTED: the full name still appears
+# in the two places that actually make it - the licence block's "Licence" row
+# below, and 00a-copyright-and-licence, which is a whole page and one per set.
+#
+# THE MERGED PDF DOES NOT USE THIS FOOTER AT ALL.  One PDF per set carries the
+# copyright once in its front matter and a running footer drawn by printToPDF's
+# footerTemplate, where the page numbers live - so the two deliverables stopped
+# competing over one string.  This one belongs to the WEB page, where each page
+# stands alone and a reader may arrive on it from a search engine.
+COPYRIGHT_SHORT = '&copy; Donald Montaine'
+LICENCE_SHORT   = 'CC BY-SA'
 
 LICENCE_URL = 'https://creativecommons.org/licenses/by-sa/4.0/'
 
@@ -629,7 +665,7 @@ PAGE = '''<!DOCTYPE html>
 @BODY@
 </main>
 <!--PAGENAV-BOTTOM-->
-<footer>@PRODUCT@ @VERSION@ &middot; @COPYRIGHT@ &middot; Licensed under @LICENCE_NAME@</footer>
+<footer>@PRODUCT@ @VERSION@ &middot; @COPYRIGHT_SHORT@ &middot; License: @LICENCE_SHORT@</footer>
 </div>
 </body>
 </html>
@@ -705,7 +741,9 @@ def build(path, out_dir, product, version):
             .replace('@PRODUCT@', html.escape(product))
             .replace('@VERSION@', html.escape(version))
             .replace('@TITLE@', html.escape(title))
+            .replace('@COPYRIGHT_SHORT@', COPYRIGHT_SHORT)
             .replace('@COPYRIGHT@', COPYRIGHT)
+            .replace('@LICENCE_SHORT@', LICENCE_SHORT)
             .replace('@LICENCE_NAME@', LICENCE_NAME)
             .replace('@BODY@', body)
             .replace('@SOURCE@', html.escape(os.path.basename(path))))
@@ -715,13 +753,23 @@ def build(path, out_dir, product, version):
     if 'class="titlepage"' not in page:
         raise RuntimeError('%s rendered without a title page' % path)
 
-    # EVERY page carries the copyright and the licence NAME, in the footer tag
-    # line.  Only the page that asked for the block carries the licence URL, and
-    # it must - a licence page with no link to the licence is the one failure
-    # this whole arrangement could produce quietly.
-    if COPYRIGHT not in page or LICENCE_NAME not in page:
+    # EVERY page carries the copyright and the licence, in the footer tag line.
+    # Only the page that asked for the block carries the licence URL, and it
+    # must - a licence page with no link to the licence is the one failure this
+    # whole arrangement could produce quietly.
+    #
+    # 06 Sep 26 - THE SHORT FORMS ARE WHAT THE FOOTER HOLDS NOW, so this tests
+    # those.  It used to require COPYRIGHT and LICENCE_NAME, and it CAUGHT THE
+    # SHORTENING THE MOMENT IT LANDED - which is the guard doing its job, not a
+    # nuisance: its own comment above says a template typo would drop the footer
+    # silently.  The full LICENCE_NAME is still asserted below, on the one page
+    # that makes the grant, which is where it now has to appear.
+    if COPYRIGHT_SHORT not in page or LICENCE_SHORT not in page:
         raise RuntimeError('%s rendered without the copyright or the licence '
-                           'name in its footer' % path)
+                           'in its footer' % path)
+    if wants_licence and LICENCE_NAME not in page:
+        raise RuntimeError('%s asked for the licence block and rendered '
+                           'without the full licence name' % path)
     if wants_licence and LICENCE_URL not in page:
         raise RuntimeError('%s asked for the licence block and rendered '
                            'without the licence URL' % path)

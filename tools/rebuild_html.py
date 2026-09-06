@@ -553,7 +553,7 @@ def build_page_html(title, subtitle, body_html, set_key, filename, prev_link, ne
 <p class="set-link"><a href="index.html">&larr; Set index</a></p>
 </main>
 </div>
-<footer>{PRODUCT} {VERSION}. {COPYRIGHT}. Licensed under {LICENCE}. Generated from <a href="../markdown/{basename}">{basename}</a>.</footer>
+<footer>{PRODUCT} {VERSION} &middot; &copy; Donald Montaine &middot; License: CC BY-SA &middot; Generated from <a href="../markdown/{basename}">{basename}</a></footer>
 </body>
 </html>
 """
@@ -614,7 +614,7 @@ def build_set_index(set_key, config, page_list):
 <p style="margin-top:1.5rem"><a href="../../index.html">&larr; All documentation sets</a></p>
 </main>
 </div>
-<footer>{PRODUCT} {VERSION}. {COPYRIGHT}. Licensed under {LICENCE}.</footer>
+<footer>{PRODUCT} {VERSION} &middot; &copy; Donald Montaine &middot; License: CC BY-SA</footer>
 </body>
 </html>
 """
