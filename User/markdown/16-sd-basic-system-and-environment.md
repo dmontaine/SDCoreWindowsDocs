@@ -22,7 +22,7 @@ system(key)
 
 ### The session
 
-| Key | | Measured |
+| Key | | Value |
 |---|---|---|
 | `7` | terminal type | `windows` |
 | `9` | CPU time used, ms | `45` |
@@ -41,7 +41,7 @@ system(key)
 
 ### The machine
 
-| Key | | Measured |
+| Key | | Value |
 |---|---|---|
 | `31` | licence number | `0` |
 | `42` | IP address | *empty* |
@@ -62,7 +62,7 @@ Windows**; it is the key this port sets deliberately for that purpose.
 
 ### Paths, and they are not all in the same form
 
-| Key | | Measured |
+| Key | | Value |
 |---|---|---|
 | `32` | the `sdsys` directory | `C:\ProgramData\SD\sdsys` |
 | `38` | the temporary directory | `/cygdrive/c/WINDOWS/TEMP` |
@@ -86,22 +86,22 @@ than from `system()` if a Windows program is going to see it.**
 
 | Key | | |
 |---|---|---|
-| `1002` | the call stack | field per level: `path`, then `offset` and line pairs. Measured: `.../BP.OUT/ZZMATH` at line 41, then `$CPROC` |
+| `1002` | the call stack | field per level: `path`, then `offset` and line pairs — `.../BP.OUT/ZZMATH` at line 41, then `$CPROC` |
 | `1003` | open files | field per file, `unit` and path. **`$ipc` is always one of them** |
 | `1025` | environment variables | **two fields**: field 1 every name, field 2 every value, value-mark separated |
 
-`system(1025)` measured **2** fields with 79 names in the first — it is not a
+`system(1025)` returns **2** fields, every name in the first — it is not a
 list of `NAME=value` pairs.
 
 ### Time
 
 | Key | | |
 |---|---|---|
-| `1005` | internal time | `date() * 86400 + time()` — measured, the difference was **0** |
+| `1005` | internal time | `date() * 86400 + time()` — the difference is **0** |
 | `1020` | milliseconds since midnight | `9587454` |
 
-`system(1020)` is the one to time something with. Measured against a lock wait
-it gave 252 ms where `time()` would have given 0.
+`system(1020)` is the one to time something with: against a lock wait it gives
+252 ms where `time()` gives 0.
 
 ## DATE, TIME and TIMEDATE
 
@@ -109,7 +109,7 @@ it gave 252 ms where `time()` would have given 0.
 date()      time()      timedate()
 ```
 
-Measured together at one instant:
+Taken together at one instant:
 
 | | |
 |---|---|
@@ -135,7 +135,7 @@ env(name)
 ```
 
 **`env()` is case sensitive and a wrong case looks exactly like a missing
-variable.** Measured:
+variable.**
 
 | | |
 |---|---|
@@ -155,7 +155,7 @@ only because that is exactly how Windows spells it. **Get the spelling from
 config(name)
 ```
 
-Measured on a stock installation:
+On a stock installation:
 
 | | |
 |---|---|
@@ -169,7 +169,7 @@ Measured on a stock installation:
 
 **The name is case sensitive and at most eight characters. both failures now
 look the same**, which is the point — a name that is too long is a name that
-does not exist, and a caller cannot tell the two apart. Both measured:
+does not exist, and a caller cannot tell the two apart:
 
 | | |
 |---|---|
@@ -178,10 +178,8 @@ does not exist, and a caller cannot tell the two apart. Both measured:
 
 **Keep every `config()` name to eight characters and upper case.**
 
-*(A name over eight characters aborted the caller in earlier builds of this
-port — *"Data cannot be converted to a string"* — because the length was
-rejected before the result variable had been given a value. **Fixed 26 Aug 2026
-and re-measured**: neither call aborts.)*
+Neither call aborts the caller: a name that is too long comes back empty with
+a status, the same as a name that does not exist.
 
 ## SYSMSG()
 
@@ -190,7 +188,7 @@ sysmsg(number {, substitution ...})
 ```
 
 Returns the text of one of SD's own messages, with `%s` substitutions filled
-in. Measured:
+in.
 
 | | |
 |---|---|
@@ -218,7 +216,7 @@ document set was captured that way.
 `os.error()` carries the operating system's own error number from the last call
 that made one, and is `0` when nothing has failed.
 
-Codes met while measuring this document set:
+Codes worth knowing:
 
 | | |
 |---|---|
@@ -228,7 +226,7 @@ Codes met while measuring this document set:
 | `1011` | timeout |
 | `3001` | subfile not found |
 | `3006` | record not found |
-| `3007` | **no VOC record** — measured from a failed `open` of a name that is not in the VOC |
+| `3007` | **no VOC record** — from a failed `open` of a name that is not in the VOC |
 | `3021` | cannot gain exclusive access to a file |
 | `3023` | write or delete with no lock held |
 | `7005` / `7012` / `7013` | socket: cannot connect / cannot bind / closed |
@@ -261,8 +259,8 @@ sddecrypt(data, key, encoding)
 Three arguments. The encoding is `201` for hex or `202` for base64.
 
 **A passphrase is not a key, and an ordinary program cannot make one.**
-Measured: `sdencrypt('The quick brown fox', 'secretkey', 202)` returned
-**nothing** and set `status()` to **10204**, a key length error. The key has to
+`sdencrypt('The quick brown fox', 'secretkey', 202)` returns **nothing** and
+sets `status()` to **10204**, a key length error. The key has to
 be an encoded 256-bit key, and the function that derives one from a password is
 `sdext()`, which is internal-only. **From an ordinary account these two
 functions have no usable key**, and there is no way in.
@@ -274,7 +272,7 @@ umask(n)
 ```
 
 Sets the file creation mask and returns the **previous** value. A negative
-argument asks without setting. Measured:
+argument asks without setting:
 
 | call | returned | mask afterwards |
 |---|---|---|
@@ -288,10 +286,10 @@ and pass it back.
 
 ## SENTENCE() and the @variables
 
-`sentence()` and `@sentence` are the same thing — measured identical. Both hold
+`sentence()` and `@sentence` are the same thing. Both hold
 the command line that started the program: `RUN BP ZZMATH`.
 
-| | Measured |
+| | Value |
 |---|---|
 | `@who` | `DON` — **upper case** |
 | `@logname`, `@user` | `don` — **lower case** |
@@ -316,7 +314,7 @@ os.execute command {capturing variable}
 ```
 
 **It is gated per account, and a refusal aborts the program rather than
-setting a status.** Measured in an ordinary account:
+setting a status.** In an ordinary account:
 
 ```
 don is not permitted to use OS.EXECUTE at line 10 of .../BP.OUT/ZZMATH
@@ -337,16 +335,14 @@ do about it.
 logmsg text
 ```
 
-Writes a line to SD's error log. It has no return value and nothing to test.
-Measured as reached and returning normally; **what `status()` says afterwards
-is whatever the previous statement left there**, which is worth knowing because
-it looks like a result.
+Writes a line to SD's error log. It has no return value, and **what `status()`
+says afterwards is whatever the previous statement left there** — worth knowing
+because it looks like a result.
 
 ## What is not here
 
 **A whole family of functions is internal-only, and the compiler's complaint
-names something else entirely.** Measured — this program, in an ordinary
-account:
+names something else entirely.** This program, in an ordinary account:
 
 ```
       v1 = kernel(28, 0)
@@ -373,14 +369,14 @@ gives a different but equally misleading answer — `sdext(101, 'pw', 'salt')`
 is *"Right bracket not found where expected"*, because a matrix takes at most
 two subscripts.
 
-Measured as internal-only: `kernel()` — and therefore the Windows path
-conversion — `ospath()`, `option()`, `pterm()`, `sdext()`, `testlock()` and
-`getlocks()`. The compiler's list is longer than that; those seven are the ones
-this page put in front of it. They are reachable only from a program compiled
+Internal-only: `kernel()` — and therefore the Windows path conversion —
+`ospath()`, `option()`, `pterm()`, `sdext()`, `testlock()` and `getlocks()`.
+The compiler's list is longer than that; those seven are the ones this page
+put in front of it. They are reachable only from a program compiled
 with `$internal`, which additionally requires an administrator in the `SDSYS`
 account.
 
-**And some statements are restricted the same way.** Measured as
+**And some statements are restricted the same way.** These are
 *"Unrecognised statement"* in an ordinary account: `set.modes`, `reset.modes`,
 `remove.token`, `release.lock`, `como`, `quit`, `keyboard.input`, `writepkt`,
 and the whole debugging family — `debug.on`, `debug.off`, `debug.set`,

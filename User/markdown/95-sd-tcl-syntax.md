@@ -14,7 +14,7 @@ folds case, so any of this may be typed in either case.
 > the verb records in `newvoc` plus the ones an administrator account
 > adds, which is **147** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
-> subject documents, where they were measured against a running system.
+> subject documents, where each verb is described in full.
 
 **The tier column is the VOC, not an opinion.** It is read from
 `TIER.OMIT.STANDARD` and `TIER.ADD.ADMINISTRATOR`, the same two lists

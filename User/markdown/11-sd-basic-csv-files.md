@@ -20,14 +20,14 @@ printcsv {on print.unit} value1, value2, ... {:}
 [SD Basic - Sequential Files](10-sd-basic-sequential-files.html) for opening
 one. `printcsv` sends the same thing to the terminal or a print unit.
 
-**The quoting is done for you, and it is conformant.** Measured — three
-values, one containing a comma and one containing quotes:
+**The quoting is done for you, and it is conformant.** For three values, one
+containing a comma and one containing quotes:
 
 ```
 writecsv 'a', 'b,c', 'say "hi"' to f
 ```
 
-produced, byte for byte:
+the file receives, byte for byte:
 
 ```
 a,"b,c","say ""hi"""
@@ -56,8 +56,8 @@ matreadcsv matrix from file.variable then ... else ...
 | `inputcsv` | the same, from the terminal |
 | `matreadcsv` | one line into a dimensioned matrix, one field per element |
 
-Measured: the line written above, read back with
-`readcsv from f to v1, v2, v3`, gave exactly
+The line written above, read back with `readcsv from f to v1, v2, v3`, gives
+exactly
 
 | | |
 |---|---|
@@ -85,7 +85,7 @@ dparse.csv line, delimiter, variable1, variable2, ...
 
 **`csvdq()` is a de-quoter, not a quoter. the name reads the other way.**
 It takes one CSV line and returns its fields separated by **field marks**,
-honouring the quoting. Measured:
+honouring the quoting:
 
 | Call | Result |
 |---|---|
@@ -109,8 +109,8 @@ next i
 `writecsv` or `printcsv`, which do it as part of writing.
 
 `dparse.csv` does the same split but assigns straight into named variables.
-Measured: `dparse.csv 'x,"y,z",w', ',', p1, p2, p3` gave `x`, `y,z` and `w` —
-the quoted comma correctly kept inside the second field.
+`dparse.csv 'x,"y,z",w', ',', p1, p2, p3` gives `x`, `y,z` and `w` — the
+quoted comma correctly kept inside the second field.
 
 ## The separator
 
@@ -125,7 +125,7 @@ the decimal separator.
 
 ## Line endings
 
-CSV written by SD ends each line with **CRLF**, measured in
+CSV written by SD ends each line with **CRLF** — see
 [SD Basic - Sequential Files](10-sd-basic-sequential-files.html). That is what
 RFC 4180 specifies and what Windows tools expect. Reading accepts either.
 

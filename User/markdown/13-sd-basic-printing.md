@@ -54,7 +54,7 @@ printer reset
 because the parser reads the `1` as the file name and then wants a comma it
 does not find.
 
-### Measured, end to end
+### A print job end to end
 
 ```
 printer file on 1 'ZZOUT', 'REPORT'
@@ -66,7 +66,7 @@ printer close on 1
 printer off
 ```
 
-produced a record of **4 lines**, the first of which was **`REPORT PAGE 1`** —
+writes a record of **4 lines**, the first of which is **`REPORT PAGE 1`** —
 the heading, with `'PL'` replaced by the page number, followed by the two data
 lines and the blank the heading leaves under itself.
 
@@ -122,7 +122,7 @@ setpu key, print.unit, value
 printer.setting(key, print.unit, value)
 ```
 
-Measured on unit 0 in a fresh session:
+For unit 0 in a fresh session:
 
 | Key | Meaning | Value |
 |---|---|---|
@@ -145,11 +145,11 @@ Other keys worth knowing:
 
 `setpu` changes a setting; `printer.setting()` takes **three** arguments and
 reports or sets a spooler-level setting. **Not every key is valid for every
-call** — measured, `printer.setting(0, 0, 0)` fails with *"Unrecognised printer
-setting key"*, because key 0 belongs to `getpu`, not to it.
+call** — `printer.setting(0, 0, 0)` fails with *"Unrecognised printer setting
+key"*, because key 0 belongs to `getpu`, not to it.
 
-**The width and length are the unit's, not the terminal's.** Unit 0 reported
-80 by 66 in a session whose terminal had been set to 200 by 9999 — see
+**The width and length are the unit's, not the terminal's.** Unit 0 reports
+80 by 66 in a session whose terminal has been set to 200 by 9999 — see
 `@crtwide` in
 [SD Basic - Terminal Input and Output](12-sd-basic-terminal-input-and-output.html).
 A report that lays itself out from `getpu` and a screen that lays itself out

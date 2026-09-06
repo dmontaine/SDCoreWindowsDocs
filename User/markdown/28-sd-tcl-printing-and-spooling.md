@@ -130,8 +130,8 @@ been set:**
 
 `setptr display` shows none of this; it is a table of numbers.
 
-Setting and putting back, measured in one session — the two `query` reports are
-cut to the lines that moved:
+Setting and putting back in one session — the two `query` reports are cut to
+the lines that moved:
 
 ```
 :printer 1 width 132 lines 60
@@ -225,8 +225,7 @@ como off
 ```
 
 **`como` writes everything the session displays into a record** in the `$como`
-file, which it creates in the account the first time you use it. Measured end to
-end:
+file, which it creates in the account the first time you use it. End to end:
 
 ```
 :como on zzcomo

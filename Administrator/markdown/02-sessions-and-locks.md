@@ -249,7 +249,7 @@ it held any or not.
 | *Released task lock n* | it was yours and it is now free |
 | *Task lock n is held by another process* | **`clear.locks` will not take it** |
 | *Task lock n is not held by any process* | it was already free |
-| *Task lock number must be in range 0 to 63* | measured with `clear.locks 99` |
+| *Task lock number must be in range 0 to 63* | from `clear.locks 99` |
 
 ## Forcing a lock open: `unlock`
 

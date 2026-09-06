@@ -59,7 +59,7 @@ checked exactly: a key of any other length is refused.
 ### Why field encryption is not available
 
 A passphrase is not a key, and this is where a reader will otherwise lose a
-day. Measured on W1.0-0:
+day. On W1.0-0:
 
 ```
 sdencrypt('The quick brown fox', 'secretkey', 202)

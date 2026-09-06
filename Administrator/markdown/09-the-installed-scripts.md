@@ -48,7 +48,7 @@ machine and nothing about any other script.
 |---|---|
 | **Tighten it** to `Restricted` or `AllSigned`, for the machine or for your own account | **Nothing. SD carries on working.** The switch SD passes takes precedence over both of those settings |
 | **Loosen it** to `RemoteSigned`, `Unrestricted` or `Bypass` | **Nothing — and you have gained nothing.** SD was already unaffected. You have made the machine more permissive for every *other* script on it, which is a real cost for no benefit |
-| **Set it through Group Policy** | ***THIS ONE STOPS SD.*** See below |
+| **Set it through Group Policy** | **This one stops SD.** See below |
 
 **So if you loosened the policy to get SD working, you can put it back.** That
 was needed on builds before 5 September 2026, where SD's own commands failed

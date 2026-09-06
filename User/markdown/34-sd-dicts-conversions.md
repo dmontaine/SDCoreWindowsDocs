@@ -128,7 +128,7 @@ MCL       MCU       MCC       MCT
 | `MCL` | convert to lower case |
 | `MCU` | convert to upper case |
 | `MCC` | capitalise each word |
-| `MCT` | title case — the first letter of every word. Measured: `hello there world` becomes `Hello There World` |
+| `MCT` | title case — the first letter of every word: `hello there world` becomes `Hello There World` |
 
 ### Radix conversion — MX, MO, MCD, MCX
 

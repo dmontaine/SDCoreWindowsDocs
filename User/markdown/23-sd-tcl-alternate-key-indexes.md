@@ -96,8 +96,8 @@ Cannot gain exclusive access to file
 ```
 
 **That is what you get If anything has the file open — including the command
-you just typed.** Measured: `create.index` followed by `build.index` **in the
-same session** fails this way every time, because `create.index` left the file
+you just typed.** `create.index` followed by `build.index` **in the same
+session** fails this way every time, because `create.index` leaves the file
 open. From a fresh session it succeeds:
 
 ```
@@ -166,8 +166,8 @@ Once built, an index maintains itself: ordinary writes and deletes keep it
 current with no further action. Reading an index from a program — `selectindex`,
 `indices()` — is in
 [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html),
-which also has the measured detail on why **an already-open file variable never
-learns about a new index**.
+which also has the detail on why **an already-open file variable never learns
+about a new index**.
 
 ## Removing an index
 

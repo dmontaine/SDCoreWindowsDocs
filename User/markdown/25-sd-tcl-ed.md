@@ -156,8 +156,8 @@ before the current line rather than after it.
 
 **`P` leaves the current line at the last line it printed, and that is what
 the next command acts on.** It is the one thing on this page that catches
-people, because "display" does not sound like a move. Measured — `P20` on a
-three-line record, then `DE`, and it was **line 3** that went:
+people, because "display" does not sound like a move. `P20` on a three-line
+record, then `DE`, and it is **line 3** that goes:
 
 ```
 ----: P20
@@ -350,8 +350,8 @@ is reported as line 2.
 `PAUSE` inside a sequence stops it and `.XR` resumes, `.XK` abandons it;
 `LOOP` repeats from a given line.
 
-> **A prestored sequence is not an unattended mechanism.** Measured: one bad
-> command **abandons the rest of the sequence and then asks a question**, and
+> **A prestored sequence is not an unattended mechanism.** One bad command
+> **abandons the rest of the sequence and then asks a question**, and
 > the answer is read from wherever the session's input comes from.
 >
 > ```

@@ -26,7 +26,7 @@ marks a word typed as it stands; braces mark an optional part.
 | **the tier** | decides whether the account's VOC has the verb at all. Only an `administrator` account has these names; in any other account they are not recognised |
 | **elevation** | decides whether the verb does anything. Almost every verb here begins by testing it, and stops if the session is not elevated |
 
-Measured, in an administrator account, from an ordinary unelevated session:
+In an administrator account, from an ordinary unelevated session:
 
 ```
 :list.grants don
@@ -120,9 +120,9 @@ Neither can be taken away from an administrator. `modify.account` refuses
 Granting `os-on` to a non-administrator is a larger decision than it looks.
 
 **That account reaches the operating system over the API as well as locally** —
-and over the API the session's process token is LocalSystem. Measured on a
-programmer-tier account over a remote API connection: the operating system
-reported the session as `nt authority\system`.
+and over the API the session's process token is LocalSystem. On a
+programmer-tier account over a remote API connection, the operating system
+reports the session as `nt authority\system`.
 
 This is accepted behaviour rather than a defect, and it follows from the way
 SD's listener creates a session. It is stated here because it is not something
@@ -455,9 +455,9 @@ anything `iconv(…, 'D')` accepts will do, and anything it does not is refused:
 | *Invalid date format* | the argument is not a date SD can read |
 
 **There is no confirmation and no undo.** It is described here from source
-rather than shown running, because demonstrating it would move the clock of the
-machine the documentation was measured on. **On Windows, changing the system
-date is itself a privileged operation**, so a session that has the verb may
+rather than shown running, because demonstrating it would move the clock of
+whatever machine it ran on. **On Windows, changing the system date is itself a
+privileged operation**, so a session that has the verb may
 still be refused by the operating system underneath it.
 
 **Moving a live machine's date backwards is not a neutral act**: file

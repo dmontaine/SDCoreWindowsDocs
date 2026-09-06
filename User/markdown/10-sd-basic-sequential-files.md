@@ -59,9 +59,9 @@ readblk variable from file.variable, bytes then ... else ...
 | `readseq` | one line, **without** its terminator |
 | `readblk` | a fixed number of bytes, terminators included |
 
-`readseq`'s `else` branch is end of file. Measured: three lines written and
-read back gave `3` and the first as `line one`, and `status()` at end of file
-read **3006** — the same code a missing record gives in
+`readseq`'s `else` branch is end of file. Three lines written and read back
+give `3` and the first as `line one`, and `status()` at end of file is
+**3006** — the same code a missing record gives in
 [SD Basic - File Handling](07-sd-basic-file-handling.html).
 
 ```
@@ -99,8 +99,7 @@ the beginning, and truncating there discards everything.
 
 ### The line terminator is CRLF
 
-**Measured, byte by byte.** Two lines written with `writeseq` and read back
-with `readblk`:
+Two lines written with `writeseq` and read back with `readblk`, byte by byte:
 
 | | |
 |---|---|
@@ -128,9 +127,8 @@ seek file.variable {, offset {, relative.to}}
 | `1` | from the current position |
 | `2` | from the end |
 
-Measured: `seek sq, 0, 0` followed by `readseq` returned the first line;
-`seek sq, 5, 0` followed by `readblk sq, 4` returned the four bytes from
-offset 5.
+`seek sq, 0, 0` followed by `readseq` returns the first line; `seek sq, 5, 0`
+followed by `readblk sq, 4` returns the four bytes from offset 5.
 
 `seek` with no offset returns to the start. Mixing `seek` with `readseq` is
 safe, but an offset that lands in the middle of a CRLF gives a `readseq` that
@@ -160,9 +158,9 @@ ordinary file it does nothing useful.
 status variable from file.variable then ... else ...
 ```
 
-Fills *variable* with the operating system's view of the file. Measured: **21
-fields** — size, timestamps, permissions and the rest, in the order the C
-library reports them.
+Fills *variable* with the operating system's view of the file: **21 fields** —
+size, timestamps, permissions and the rest, in the order the C library reports
+them.
 
 `fileinfo(file.variable, 5)` reports a sequential file's type as **5**, and
 key `1006` gives the current position.

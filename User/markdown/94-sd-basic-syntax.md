@@ -17,7 +17,7 @@ either case.
 > positional against the name list and carries each name in a comment; the
 > script asserts the two agree before it uses either. The shapes that a count
 > cannot express — every statement, and about twenty functions — come from
-> documents 01 to 17, where they were measured.
+> documents 01 to 17, where each one is described in full.
 
 **What is not here, and where it went.** Everything on this card is something
 an application may use. Names that an ordinary program **cannot** compile are

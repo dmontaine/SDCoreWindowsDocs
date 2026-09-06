@@ -22,7 +22,7 @@ basic bp MYPROG debugging
 
 **The `debugging` keyword is what makes every other thing on this page
 possible.** Without it the compiler emits no per-line debug information, and
-the debugger has nothing to stop on. Measured, three ways:
+the debugger has nothing to stop on. It shows in three ways:
 
 | | |
 |---|---|
@@ -44,7 +44,7 @@ program.
 debug bp MYPROG          ;* the verb: stop on the FIRST line
 ```
 
-Measured — the verb stopped before line 1 had run:
+The verb stops before line 1 has run:
 
 ```
 :DEBUG BP ZZDBG
@@ -57,8 +57,7 @@ Measured — the verb stopped before line 1 had run:
       debug                ;* the statement: stop where you put it
 ```
 
-Measured — the statement stops on the **next** line, the one that has not run
-yet:
+The statement stops on the **next** line, the one that has not run yet:
 
 ```
 ZZDBG.START
@@ -110,7 +109,7 @@ UnWatch         Cancel Watch action
 /name
 ```
 
-A slash and the name. Measured, on three kinds of variable:
+A slash and the name, on three kinds of variable:
 
 ```
 >/N
@@ -125,7 +124,7 @@ String (5 bytes): "first"
 
 **The type is part of the answer, and it is often the answer.** `Integer: 41`
 and `String (2 bytes): "41"` are different bugs, and so are `Integer: 1` and
-`Float: 1.500000`. Measured on the rest of the shapes:
+`Float: 1.500000`. The rest of the shapes:
 
 | | |
 |---|---|
@@ -138,15 +137,15 @@ is yours and has no value yet, and *"Variable not defined"* means you have
 mistyped the name.
 
 A matrix element takes its subscripts: `/ARR(1)` for one dimension,
-`/ARR(2,3)` for two. `/` on its own repeats the last variable you looked at —
-measured, it printed the same `String (4 bytes): "text"` again.
+`/ARR(2,3)` for two. `/` on its own repeats the last variable you looked at,
+printing the same answer again.
 
 ```
 set name = value
 ```
 
-changes it. Measured — `SET N = 100` then `/N` gave `Integer: 100`, and the
-program carried on with the new value.
+changes it. `SET N = 100` then `/N` gives `Integer: 100`, and the program
+carries on with the new value.
 
 `dump var path` writes a variable to an operating system file, which is the way
 to look at something too long for the screen.
@@ -155,8 +154,8 @@ to look at something too long for the screen.
 
 | | |
 |---|---|
-| `s` | one line. Measured: the debugger prints the next line, `5:  crt 'ZZDBG.N=' : n` |
-| `s `*n* | *n* lines. Measured: `s 3` from line 4 landed on line **7** |
+| `s` | one line — the debugger prints the next one, `5:  crt 'ZZDBG.N=' : n` |
+| `s `*n* | *n* lines — `s 3` from line 4 lands on line **7** |
 | `s .`*n* | *n* debug elements — finer than a line |
 | `r` | run on |
 | `r `*n* | run on until line *n* |
@@ -164,9 +163,9 @@ to look at something too long for the screen.
 | `ex` | run to the end of this subroutine |
 | `ep` | run to the end of this program |
 | `stop` | stop the program |
-| `q` | abort. Measured: prints `ABORT : Debugging terminated` |
+| `q` | abort — prints `ABORT : Debugging terminated` |
 
-A measured `s` in the middle of an assignment sequence:
+An `s` in the middle of an assignment sequence:
 
 ```
 >/N
@@ -190,7 +189,7 @@ clr 9        clear that one
 clr          clear all of them
 ```
 
-Measured — `brk 9` then `r`:
+`brk 9` then `r`:
 
 ```
 >BRK 9
@@ -199,7 +198,7 @@ Measured — `brk 9` then `r`:
  9:       crt 'ZZDBG.N=' : n : ' M=' : m : ' K=' : k
 ```
 
-`src` shows you the line numbers to aim at. Measured, `src 1,4`:
+`src` shows you the line numbers to aim at. `src 1,4`:
 
 ```
 >SRC 1,4
@@ -224,8 +223,8 @@ w m          stop when M changes
 uw           stop watching
 ```
 
-**A watch is the one thing that finds "who is setting this".** Measured — a
-watch set at line 4 and then `r`:
+**A watch is the one thing that finds "who is setting this".** A watch set at
+line 4, then `r`:
 
 ```
 >W M
@@ -248,7 +247,7 @@ There is **one** watch at a time; `w` on another variable replaces it.
 stack
 ```
 
-Measured, from inside a program run from the command prompt:
+From inside a program run from the command prompt:
 
 ```
 >STACK
@@ -262,14 +261,14 @@ program can ask the same question without the debugger:
 | | |
 |---|---|
 | `system(1002)` | the call stack as a dynamic array — one field per level |
-| `system(1029)` | internal subroutine depth. Measured `0` at the top and `1` inside a `gosub` |
+| `system(1029)` | internal subroutine depth — `0` at the top, `1` inside a `gosub` |
 
 ## It is a line-mode debugger here, and that is not a limitation of your terminal
 
 **On this port the debugger never draws a full screen.** Its own test is
 `terminfo('sreg')`, and `sreg` — *save screen region* — is a capability of SD's
-own client terminals, not of a console. Measured, in a session on the shipped
-`windows` terminal type:
+own client terminals, not of a console. In a session on the shipped `windows`
+terminal type:
 
 | | |
 |---|---|
@@ -281,7 +280,7 @@ So cursor addressing is there and the region capability is not, and the
 debugger takes its line-oriented path. **Nothing is lost** — every command
 works, as the transcripts on this page show — and there is a real gain: because
 it is line-oriented it can be **driven from a script**. A whole debugging
-session can be fed down a pipe, which is how this page was measured.
+session can be fed down a pipe.
 
 `@tty` reads empty in a piped session, and the debugger works there anyway.
 
@@ -303,12 +302,12 @@ way in on such an account.
 
 ## What is not here
 
-**`trace` is gone.** It was removed from the compiler in July 2024. Measured
-in an ordinary account: *"Unrecognised statement"*.
+**`trace` is gone.** It was removed from the compiler in July 2024. In an
+ordinary account it is *"Unrecognised statement"*.
 
 **The programmatic debug statements are restricted.** `debug.on`,
 `debug.off`, `debug.set`, `breakpoint` and `watch` are internal-only, and all
-five measured as *"Unrecognised statement"* in an ordinary account. They are
+five are *"Unrecognised statement"* in an ordinary account. They are
 what the debugger itself is built from. **`debug` — the plain statement — is
 not restricted**, and it is the one you want.
 

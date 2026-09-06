@@ -24,7 +24,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 > **The keys below are micro's own**, read from the default bindings and the
 > help text inside the executable SD installs — **micro 2.0.15**. The SD half of
-> the page was measured on SD Core for Windows W1.0-0.
+> the page describes SD Core for Windows W1.0-0.
 
 ## Both editors are installed with SD
 
@@ -92,8 +92,8 @@ commands, and the two worth knowing on the first day are:
 >
 > **It is not a permission problem with your file or your account.** SD points
 > micro's configuration directory at a folder under `C:\Program Files`, which
-> micro has to write to and an ordinary account may not. Measured 27 Aug 2026;
-> it is recorded as a release blocker in the project's fix lists.
+> micro has to write to and an ordinary account may not. It is recorded as a
+> release blocker in the project's fix lists.
 >
 > **Until it is fixed, use `ed` for anything you intend to save.** It runs
 > inside SD, needs no external editor and no operating-system access, and is

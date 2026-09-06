@@ -191,7 +191,7 @@ from three rules that are each reasonable on their own:
 | For a session that arrived over a socket, `os.users` is the authority | the session's own token is LocalSystem |
 
 So an administrator account is, in effect, an operating-system shell on the
-server. That was measured end to end, with the operating system reporting
+server, and the operating system reports such a session as
 `nt authority\system`.
 
 ### Why remote is shut

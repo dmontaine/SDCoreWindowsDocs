@@ -64,8 +64,8 @@ and the address in hexadecimal.
 | **`level 2`** | the **internal subroutine** stack — where each `gosub` will return to |
 | **`level 3`** | both |
 
-Measured from inside a running program, which is where the levels are worth
-having — at the prompt there is nothing on the stack but `pstat` itself:
+From inside a running program, which is where the levels are worth having —
+at the prompt there is nothing on the stack but `pstat` itself:
 
 ```
 User Detail

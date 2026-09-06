@@ -130,8 +130,8 @@ hush expression
 kept. With no argument it toggles.
 
 **It suppresses the command echo as well as the output**, which is more
-thorough than people expect. In the measurement below, `who` was typed **twice**
-— once inside the silence and once after it — and the transcript contains one:
+thorough than people expect. Below, `who` is typed **twice** — once inside the
+silence and once after it — and the transcript contains one:
 
 ```
 :hush on
@@ -177,8 +177,7 @@ whichever reads better; nothing distinguishes them.
 > so discarding unread input discards the commands that have not run yet —
 > including the `off` that would have ended the session. **A run that did this
 > hung, was killed, and left a session in the user table that only an elevated
-> `sd -cleanup` could clear.** The listings on this page were measured with both
-> verbs removed from the batch. They are for a person at a terminal.
+> `sd -cleanup` could clear.** Both verbs are for a person at a terminal.
 
 ## The inactivity timer
 
@@ -317,7 +316,7 @@ is a stamped, attributed entry in the system error log:
 
 ```
 27 Aug 26 13:13:31 User 11 (pid 1786, don):
-   page 28 measurement
+   nightly run finished
 ```
 
 **The user number, the process id and the account name are added for you**, so

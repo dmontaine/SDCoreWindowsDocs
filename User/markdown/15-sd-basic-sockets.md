@@ -54,7 +54,7 @@ if socket.info(srv, 0) = 0 then
 end
 ```
 
-Measured failures:
+How a connection fails:
 
 | | |
 |---|---|
@@ -66,7 +66,7 @@ you are polling for a service to come up.
 
 ## What SOCKET.INFO tells you
 
-| Key | Meaning | Measured |
+| Key | Meaning | Value |
 |---|---|---|
 | `0` | is this a socket at all? | `1` |
 | `1` | kind: **1** server, **2** incoming, **3** outgoing | see below |
@@ -98,8 +98,8 @@ d = read.socket(inc, 100, 0, 2000)
 eleven bytes.
 
 **The timeout on a read does nothing unless the socket is blocking, and no
-socket starts out blocking.** This is the trap on this page. Measured on a
-socket with nothing sent to it:
+socket starts out blocking.** This is the trap on this page. On a socket with
+nothing sent to it:
 
 | the call | waited | returned |
 |---|---|---|
@@ -114,8 +114,8 @@ allowed to wait, or call `set.socket.mode(`*s*`, 4, 1)` once after opening.
 
 **This is exactly the bug that passes its own tests.** On loopback, and in any
 test where the reply is already sitting in the buffer, a non-blocking read
-returns the data immediately and everything looks right — measured, **0 ms and
-five bytes**. Over a real network the reply arrives a few milliseconds later
+returns the data immediately and everything looks right — **0 ms and five
+bytes**. Over a real network the reply arrives a few milliseconds later
 and the same code returns nothing.
 
 `status()` is **1011**, timeout, for both "nothing yet" and "waited and gave
@@ -123,7 +123,7 @@ up". It does not distinguish them.
 
 ### TCP is a stream, not a message
 
-Measured — ten bytes were written and read back in two pieces:
+Ten bytes written and read back in two pieces:
 
 | | |
 |---|---|
@@ -146,17 +146,15 @@ can go down a socket and come back as itself.
 
 ## SET.SOCKET.MODE
 
-| Key | | Measured |
+| Key | | What it does |
 |---|---|---|
 | `4` | blocking | set 0 → reads 0; set 1 → reads 1 |
 | `5` | disable Nagle | set 1 → reads 1 |
 | `6` | keep-alive | set 0 → reads 0; set 1 → reads 1 |
 | anything else | | returns **0**, `status()` **1006** |
 
-*(Key 6 could not be turned off in earlier builds of this port — the value you
-passed was discarded, keep-alive was enabled whatever you asked for, and the
-call reported success. **Fixed 26 Aug 2026 and re-measured**:
-`set.socket.mode(s, 6, 0)` returns `1` and `socket.info(s, 6)` then reads `0`.)*
+Key 6 can be turned off as well as on: `set.socket.mode(s, 6, 0)` returns `1`
+and `socket.info(s, 6)` then reads `0`.
 
 ## When the far end goes away
 
@@ -165,7 +163,7 @@ close.socket cli
 ```
 
 **There are two answers, not one, and which you get depends on which end
-closed.** Both were measured, in the same session:
+closed.** In the same session:
 
 | what closed | reading the other end gives |
 |---|---|
@@ -175,9 +173,9 @@ closed.** Both were measured, in the same session:
 7013 is `ER_SKT_CLOSED` — `recv()` returned zero, an orderly shutdown. 1008 is
 `ER_FAILED` — `recv()` returned an error, and `os.error()` carries the
 operating system's code. **A read loop must treat both as the end of the
-conversation.** Testing only for 7013 is a loop that spins: measured, exactly
-that guard ran its full 21 iterations against a closed socket and came back
-with nothing every time.
+conversation.** Testing only for 7013 is a loop that spins: that guard runs
+its full iteration count against a closed socket and comes back with nothing
+every time.
 
 Neither is 1011. An idle socket gives 1011 and may still have something to say.
 
@@ -197,14 +195,15 @@ addr = server.addr('localhost')
 
 **`localhost` RESOLVES TO THE IPv6 ADDRESS ON THIS PLATFORM.** A program that
 resolves `localhost` and then dials the answer is dialling IPv6, while
-`create.server.socket('127.0.0.1', ...)` is listening on IPv4 — measured family
-**1** — and the two do not meet. **Use `127.0.0.1` on both sides, or `::1` on
+`create.server.socket('127.0.0.1', ...)` is listening on IPv4 — family **1** —
+and the two do not meet. **Use `127.0.0.1` on both sides, or `::1` on
 both sides, and do not resolve a name to get there.**
 
 **And a name that does not resolve blocks.** `server.addr()` calls the
-operating system resolver with no timeout of its own. Measured: a call for a
-name that cannot resolve had still not returned after **45 seconds** and the
-session had to be abandoned. There is no way to bound it from BASIC. **Do not
+operating system resolver with no timeout of its own. A call for a name that
+cannot resolve can still be waiting after **45 seconds**, with no way to
+abandon it short of abandoning the session. There is no way to bound it from
+BASIC. **Do not
 put `server.addr()` on a path where a user is waiting**, and prefer a
 configured address to a name.
 
@@ -235,11 +234,11 @@ repeat
 close.socket skt
 ```
 
-Measured: `PON`, `G one` and a newline were sent as three separate writes and
-the loop came back with **one** chunk containing `PONG one` and the terminator
-at position 9, `status()` **0**. The `chunks > 20` arm is not decoration —
-with the far end closed, the same loop guarded only by `s = 7013` ran all
-twenty-one iterations, because that end reported **1008**.
+Send `PON`, `G one` and a newline as three separate writes and the loop comes
+back with **one** chunk containing `PONG one`, the terminator at position 9 and
+`status()` **0**. The `chunks > 20` arm is not decoration — with the far end
+closed, the same loop guarded only by `s = 7013` runs every one of its
+iterations, because that end reports **1008**.
 
 **The terminator is yours, not TCP's.** Three writes arrived as one read here
 and could just as easily arrive as three; the only reason the loop knows it is
@@ -247,8 +246,8 @@ finished is the newline it went looking for.
 
 ## What is not here
 
-**`writepkt` is a restricted statement** — internal programs only. Measured, in
-an ordinary account it is *"Unrecognised statement"*. It writes an SDClient
+**`writepkt` is a restricted statement** — internal programs only. In an
+ordinary account it is *"Unrecognised statement"*. It writes an SDClient
 protocol packet and is not a general socket write.
 
 **No TLS.** There is nothing in SD BASIC that speaks HTTPS; a socket carries

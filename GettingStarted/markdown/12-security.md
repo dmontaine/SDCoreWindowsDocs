@@ -142,10 +142,9 @@ sdsys\bp          sdsys\cat         SD's own programs
 sd.conf           the configuration read at start-up
 ```
 
-**Nothing an ordinary user does needs to write them** — measured on a real
-session first, across fifteen commands including the spooler, saved lists and a
-phantom. The commands that *do* write them are already administrator commands
-and are unaffected.
+**Nothing an ordinary user does needs to write them** — not the spooler, not
+saved lists, not a phantom. The commands that *do* write them are already
+administrator commands and are unaffected.
 
 **`sdsys\$ipc` is deliberately unchanged.** Every session writes to it, and
 it is how a **`phantom`** is given its command.
@@ -207,12 +206,10 @@ do not carry one convention across to the other.
 **2. An elevated session passes on its own**, whatever the list says, so an
 empty list cannot lock the machine's own administrator out.
 
-> **An ssh session *can* be elevated, and this page used to say it never
-> could.** Windows' OpenSSH runs as a system service and builds the logon token
-> itself, so a member of `Administrators` arriving over ssh is handed a **full**
-> token — not the filtered one a local sign-in would produce, and with nobody
-> asked to consent. That was measured rather than assumed, and it was the
-> opposite of what had been written here.
+> **An ssh session *can* be elevated.** Windows' OpenSSH runs as a system
+> service and builds the logon token itself, so a member of `Administrators`
+> arriving over ssh is handed a **full** token — not the filtered one a local
+> sign-in would produce, and with nobody asked to consent.
 >
 > It is why SD now refuses an administrator any session that did not come from
 > this computer. Over ssh **on this machine** an administrator is still

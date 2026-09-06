@@ -41,8 +41,8 @@ you.** It can still see every variable in the main program. What it gets that a
 `gosub` label does not is the ability to declare names that **do not leak back**
 — its arguments, and anything it declares `private`.
 
-Measured, in one program. A local subroutine took an argument `a` and declared
-`private working`; the main program then asked what it could see:
+In one program: a local subroutine takes an argument `a` and declares
+`private working`, and the main program then asks what it can see:
 
 ```
 ZZMATH.LOCAL.SEES.MAIN=assigned(shared.probe)=1
@@ -105,9 +105,9 @@ compiler emits `end` there as a stop, not a return, so there is **no error
 message and no further output** — and any object still in scope runs its
 destructor on the way out, which makes it look like a clean finish.
 
-That was measured by leaving the `return` out: the program printed everything up
-to the call, nothing after it, and exited zero. **Every one of the five local
-subroutines in SD's own `DEBUG` program carries an explicit `return`.**
+Leave the `return` out and the program prints everything up to the call,
+nothing after it, and exits zero. **Every one of the five local subroutines in
+SD's own `DEBUG` program carries an explicit `return`.**
 
 ### `deffun` does more than declare
 
@@ -190,9 +190,9 @@ of member. This is the part most worth having in front of you:
 | `o->owner` | runs the **`get`** routine for that property |
 | `o->owner = 'MIXED Case Name'` | runs the **`set`** routine for it |
 
-All six, measured on one instance. `deposit` was called twice with 40 and 2;
-`total` multiplies by its argument; the `set owner` routine lower-cases what it
-is given into the public variable `label`, and `get owner` wraps it:
+All six on one instance, with `deposit` called twice with 40 and 2. `total`
+multiplies by its argument; the `set owner` routine lower-cases what it is
+given into the public variable `label`, and `get owner` wraps it:
 
 ```
 ZZMATH.TOTAL.X1=42
@@ -219,7 +219,7 @@ can validate, transform or compute without the caller knowing.
 not a member at all. `private` is genuine encapsulation, not a convention.
 
 The way to expose one is to write a public routine that returns it, which is
-what `reveal()` does in the measured class.
+what `reveal()` does in the class above.
 
 ## Construction and destruction
 
@@ -256,7 +256,7 @@ class derived inherits base
 ```
 
 The base class's public members become the derived class's, and the derived
-class may override them. Measured on a class inheriting `ZZBASE`:
+class may override them. For a class inheriting `ZZBASE`:
 
 ```
 ZZMATH.WHOAMI=ZZCLS

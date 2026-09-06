@@ -247,15 +247,12 @@ prompt is what makes an elevation something a person agreed to, rather than
 something that merely happened. A connection from another machine has no such
 screen.
 
-**This page previously said the opposite, and the correction is worth stating
-plainly.** It described a Windows restriction that would leave an administrator
-over ssh with a *filtered* token — *"nobody gets extra access, the failure is
-that an administrator gets less"* — and admitted the claim had never been
-measured. **It was measured, and it was wrong in the dangerous direction.**
-OpenSSH runs as a system service and builds the sign-in token itself, so that
-filtering never applied to it: a Windows administrator arriving over ssh held
-**full** administrator rights, with nobody asked to consent to anything. That is
-the hole this refusal closes.
+**And the token an ssh session carries is not a filtered one.** OpenSSH runs
+as a system service and builds the sign-in token itself, so the filtering that
+applies to an ordinary local sign-in never applies to it. Without this refusal
+a Windows administrator arriving over ssh would hold **full** administrator
+rights, with nobody asked to consent to anything. That is the hole this refusal
+closes.
 
 ### If you rely on remote administration today
 
