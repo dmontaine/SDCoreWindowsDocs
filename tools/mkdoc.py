@@ -304,11 +304,17 @@ footer {
    figure separates the body from the footer. */
 
 .titlepage {
-  /* The grid-column span that used to be here went with the grid.  .page is a
-     plain block now that the sidebar has gone, so the header simply sits at
-     the top of the sheet. */
-  max-width: 40rem;
-  margin: 0 auto calc(2 * 1.5em);
+  /* ***IT IS THE SAME WIDTH AS THE BODY, AND IT WAS NOT.***  This block was
+     "max-width: 40rem; margin: 0 auto" - a centred cover, which is what it was
+     when .page was a two-column grid with a sidebar beside it.  In a single
+     column it just left the title, the subtitle and the rule under them inset
+     by 86px from the text below, and the owner saw it on the User set's first
+     page: 640px against the body's 726px, so the longest title in the set
+     wrapped to two lines while the paragraphs beneath it ran wider.  Eight of
+     the fifty-three wrapped that way.  Nothing here is a cover any more, so
+     nothing here gets its own measure. */
+  max-width: none;
+  margin: 0 0 calc(2 * 1.5em);
   padding: 2.5rem 0 1.25rem;
   border-bottom: 1px solid var(--rule);
 }
@@ -343,7 +349,6 @@ footer {
   line-height: 1.5;
   color: var(--ink-soft);
   margin: 0;
-  max-width: 34rem;
 }
 
 /* --- the licence block, on one page per set ------------------------------
@@ -351,8 +356,10 @@ footer {
    page holds the <!--LICENCE-BLOCK--> marker - 00a-copyright-and-licence in
    each set - and nowhere else. */
 
+/* Body width, for the same reason as .titlepage above: it sits among ordinary
+   paragraphs and a block indented from them reads as a mistake. */
 .licenceblock {
-  max-width: 40rem;
+  max-width: none;
   margin: 0 0 2rem;
 }
 
