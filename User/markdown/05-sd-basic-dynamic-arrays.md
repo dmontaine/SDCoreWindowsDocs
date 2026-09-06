@@ -35,7 +35,7 @@ a = 'f1' : @fm : 'v1' : @vm : 'v2' : @fm : 'f3'
 
 gives `f1^v1|v2^f3` — three fields, the second of which holds two values.
 
-**The marks are ordinary characters and they are counted.** Measured:
+**The marks are ordinary characters and they are counted.**
 `len(a)` is `11` for the array above — eight data characters and three marks.
 Everything in [SD Basic - String Functions](04-sd-basic-string-functions.html) sees them.
 
@@ -43,8 +43,8 @@ Everything in [SD Basic - String Functions](04-sd-basic-string-functions.html) s
 dcount(string, delimiter)
 ```
 
-counts the pieces a delimiter divides a string into. Measured on the array
-above: `dcount(a, @fm)` is `3`, and `dcount(a<2>, @vm)` is `2`.
+counts the pieces a delimiter divides a string into. On the array
+above, `dcount(a, @fm)` is `3` and `dcount(a<2>, @vm)` is `2`.
 
 > **`dcount()` of an empty string is `0`, not `1`.** That is what makes
 > `for i = 1 to dcount(rec, @fm)` correct — an empty record does nothing.
@@ -98,7 +98,7 @@ exist for when you need the result as an expression rather than assigned back.
 > forms need a semicolon.** `replace(a, 2, 2, 'R')` **does not compile** — the
 > parser takes `2` as the value, `'R'` as the subvalue, and then demands the
 > replacement string it never got. Either give all five arguments, or separate
-> the final one with a semicolon. Measured:
+> the final one with a semicolon.
 >
 > | Call | Result |
 > |---|---|
@@ -117,7 +117,7 @@ A subscript of `-1` appends:
 | `b<2,-1> = 'AV'` | `f1^v1\|v2\|AV^f3` — a new value in field 2 |
 
 **Writing past the end pads with empty fields rather than failing.**
-Measured: `insert(a, 9, 0, 0, 'FAR')` on a three-field array gives
+`insert(a, 9, 0, 0, 'FAR')` on a three-field array gives
 `f1^v1|v2^f3^^^^^^FAR` — five empty fields appear to fill the gap. A loop with
 an off-by-one index therefore grows the record silently instead of raising
 anything.
@@ -129,7 +129,7 @@ del array<field {, value {, subvalue}}>
 ins string before array<field {, value {, subvalue}}>
 ```
 
-`del` and `ins` change the variable in place. Measured: `del b<2>` gives
+`del` and `ins` change the variable in place. `del b<2>` gives
 `f1^f3`, and `ins 'X' before b<2>` gives `f1^X^v1|v2^f3`.
 
 ## Searching
@@ -149,7 +149,7 @@ one, `setting` receives **the position where it would be inserted** to keep the
 order — which is what makes it the standard way to add to a sorted list.
 
 **The number of subscripts chooses the level searched. this is the thing
-people get wrong.** Measured, with `vals` holding `apple|cherry|damson` as
+people get wrong.** With `vals` holding `apple|cherry|damson` as
 three values in one field:
 
 | Statement | Result |
@@ -166,7 +166,7 @@ right up until the data has two fields.
 **The statement form requires the angle brackets.** `locate 'x' in vals setting
 p` does not compile: *"Field reference not found where expected"*.
 
-The starting subscript really does start there. Measured: with
+The starting subscript really does start there. With
 `vals<1,2>`, `locate 'apple'` — which is value 1 — **misses**, and reports an
 insertion point of 4.
 
@@ -192,7 +192,7 @@ passes the place the value would go, and reports that place.
 | **dl** | descending, left-justified |
 | **dr** | descending, right-justified |
 
-Measured on `apple|cherry|damson`:
+For `apple|cherry|damson`:
 
 | Search | Insert at |
 |---|---|
@@ -200,7 +200,7 @@ Measured on `apple|cherry|damson`:
 | `'banana' by 'al'` | `2` |
 | `'zebra' by 'al'` | `4` |
 
-**And the justification is not a detail.** Measured on the values `2`, `10`,
+**And the justification is not a detail.** For the values `2`, `10`,
 `30`, looking for `9`:
 
 | | Insert at |
@@ -225,7 +225,7 @@ findstr string in array {, occurrence} setting field {, value {, subvalue}}
 the string**. Both report the position as separate field, value and subvalue
 numbers rather than one index.
 
-Measured on `p^q|r`:
+For `p^q|r`:
 
 | | Result |
 |---|---|
@@ -242,8 +242,8 @@ remove variable from array setting delimiter
 followed it. It is much faster than repeated `extract()` on a long record,
 because it does not rescan from the start each time.
 
-**The delimiter code is the mark's level, and zero means the end.** Measured
-on `p^q|r\s`:
+**The delimiter code is the mark's level, and zero means the end.** For
+`p^q|r\s`:
 
 | Code | Meaning |
 |---|---|
@@ -270,7 +270,7 @@ on an internal pointer into that variable:
 | `getrem(string)` | how far through the string the pointer has reached |
 | `setrem offset on string` | move the pointer |
 
-Measured: after one `remove` from `aaa^bbb`, `getrem()` is `4`.
+After one `remove` from `aaa^bbb`, `getrem()` is `4`.
 
 **Changing the string resets the pointer.** A loop that both `remove`s from a
 string and assigns to it will restart from the beginning, silently.
@@ -283,7 +283,7 @@ lower(string)
 ```
 
 `raise` promotes every mark one level — subvalues become values, values become
-fields. `lower` demotes them. Measured: `lower('x' : @fm : 'y')` has one field
+fields. `lower` demotes them. `lower('x' : @fm : 'y')` has one field
 and two values; `raise('x' : @vm : 'y')` has two fields.
 
 These are how you move a nested structure between levels without walking it —
@@ -297,8 +297,8 @@ for example turning a multivalued field into a record.
 vslice(array, value.number)
 ```
 
-Takes the *n*-th value of **every** field and returns them as fields. Measured
-on `a1|a2^b1|b2`: `vslice(h, 2)` gives `a2^b2`.
+Takes the *n*-th value of **every** field and returns them as fields. On
+`a1|a2^b1|b2`, `vslice(h, 2)` gives `a2^b2`.
 
 That is the idiom for pulling one column out of a set of associated multivalued
 fields.
@@ -311,7 +311,7 @@ fields.
 | `fieldstore(string, delimiter, start, count, replacement)` | replace or insert delimited fields — a *count* of zero inserts |
 | `splice(array1, string, array2)` | joins the arrays element by element with *string* between |
 
-Measured: `splice('a' : @vm : 'b', '-', '1' : @vm : '2')` gives `a-1|b-2`.
+`splice('a' : @vm : 'b', '-', '1' : @vm : '2')` gives `a-1|b-2`.
 
 ### `substitute`
 
@@ -319,7 +319,7 @@ Measured: `splice('a' : @vm : 'b', '-', '1' : @vm : '2')` gives `a-1|b-2`.
 substitute(array, old.list, new.list {, delimiter})
 ```
 
-Replaces whole **elements** that match. Measured: substituting `b` with `Z` in
+Replaces whole **elements** that match. Substituting `b` with `Z` in
 the values `a`, `b`, `c` gives `a|Z|c`.
 
 ### `reuse`
@@ -330,7 +330,6 @@ reuse(expression)
 
 Makes a single value behave as though it repeated for every element of the
 other operand. **Without it, arithmetic only reaches the first element.**
-Measured:
 
 | Expression | Result |
 |---|---|
@@ -349,7 +348,7 @@ the operation to every element instead of to the whole string:
 `strs()`, `fmts()`, `iconvs()`, `oconvs()`, `folds()`, `cats()`.
 
 **When two Arrays are different lengths, the shorter is treated as empty, not
-truncated.** Measured with `1|2|3` and `10|20`:
+truncated.** With `1|2|3` and `10|20`:
 
 | Call | Result | |
 |---|---|---|
@@ -371,8 +370,6 @@ string are false and anything else is true.
 | `ands(a, b)` · `ors(a, b)` | element-by-element AND and OR |
 | `eqs` · `nes` · `gts` · `ges` · `lts` · `les` | element-by-element comparison, giving 1 or 0 |
 | `ifs(control, true.values, false.values)` | picks from one array or the other per element |
-
-Measured:
 
 | Call | Result |
 |---|---|

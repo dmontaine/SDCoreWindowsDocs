@@ -25,7 +25,7 @@ oconv(expression, conversion)
 
 `iconvs()` and `oconvs()` do the same to every element of a dynamic array.
 
-**A failed `iconv()` returns the null string and sets `status()`.** Measured:
+**A failed `iconv()` returns the null string and sets `status()`.**
 `iconv('nonsense', 'D')` returns empty and `status()` afterwards is **1**.
 
 ```
@@ -46,7 +46,7 @@ iconv(text, 'D')
 oconv(daynumber, 'D{n}{separator}{format}')
 ```
 
-**Day zero is 31 December 1967.** Measured: `oconv(0, 'D4/')` is
+**Day zero is 31 December 1967.** `oconv(0, 'D4/')` is
 `12/31/1967`. Dates before that are negative. `26 AUG 2026` is day **21423**.
 
 | Conversion | Result for day 21423 |
@@ -63,9 +63,9 @@ oconv(daynumber, 'D{n}{separator}{format}')
 The digit after `D` is how many digits of year to show; the character after
 that is the separator.
 
-> **The default order is month, day, year.** Measured: `D2/` gives
-> `08/26/26` for the 26th of August. **`E` puts it in day-month-year order** —
-> measured, `D2/E` gives `26/08/26` and `D4/E` gives `26/08/2026`. A site that
+> **The default order is month, day, year.** `D2/` gives
+> `08/26/26` for the 26th of August. **`E` puts it in day-month-year order**:
+> `D2/E` gives `26/08/26` and `D4/E` gives `26/08/2026`. A site that
 > expects day-first must say `E` on **every** conversion; a report that mixes
 > the two is a formatting bug that reads as a data bug.
 
@@ -80,7 +80,7 @@ iconv(text, 'MT')
 oconv(seconds, 'MT{H}{S}')
 ```
 
-A time is the number of seconds since midnight. Measured: `14:30:05` is
+A time is the number of seconds since midnight. `14:30:05` is
 **52205**.
 
 | Conversion | Result |
@@ -112,7 +112,7 @@ integer and the displayed one has decimals.
 | `oconv(1234567, 'MD0,')` | `1,234,567` |
 | `oconv(-42, 'MD2')` | `-0.42` |
 
-> **`MD2` divides by 100 — it does not round to two places.** Measured:
+> **`MD2` divides by 100 — it does not round to two places.**
 > `oconv(-42, 'MD2')` is `-0.42`, not `-42.00`. It is for money held as whole
 > pence or cents. **To show two decimals of a value that is already scaled, use
 > `fmt()`** with a `2` after the justification.
@@ -161,7 +161,7 @@ The specification is a width, a justification, and optional extras.
 The character before the justification letter is the fill character; a digit
 after it is the number of decimal places.
 
-> **A value longer than the width is wrapped, not truncated.** Measured:
+> **A value longer than the width is wrapped, not truncated.**
 > `fmt('abcdefgh', '4L')` returns `abcd` and `efgh` separated by a **text
 > mark**, not `abcd`. A field written straight to a screen or a file therefore
 > gains a stray character rather than being cut short. **To truncate, take a
@@ -176,7 +176,7 @@ value, with nothing between them**:
 print total '10r2'
 ```
 
-Measured: with `t` holding `1234.5`, `t '10R2'` gives `␣␣␣1234.50`. **There is
+With `t` holding `1234.5`, `t '10R2'` gives `␣␣␣1234.50`. **There is
 no `fmt` keyword in this form** — writing `t fmt '10R2'` compiles `fmt` as a
 variable name and aborts at run time with *"Unassigned variable FMT"*. The
 qualifier is recognised by juxtaposition alone, which is why it is allowed only
@@ -201,7 +201,7 @@ where an expression cannot be followed by something else.
 | `dtx()` | a number to hexadecimal text, **in lower case**, optionally zero-padded to a width |
 | `ascii()` · `ebcdic()` | translate a string between the two character sets |
 
-Measured: `ascii(char(193))` is `A` — EBCDIC 193 is the letter A.
+`ascii(char(193))` is `A` — EBCDIC 193 is the letter A.
 
 **`char()` is how you write a mark character or a control code as a constant**,
 and `equate` is the place to put it:
