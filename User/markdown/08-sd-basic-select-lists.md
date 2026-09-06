@@ -39,7 +39,7 @@ formlist array {to list}
 | `selectindex` | from an alternate key index — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | `formlist` | builds a list from a dynamic array you already have |
 
-Measured on a file holding two records:
+On a file holding two records:
 
 | | Result |
 |---|---|
@@ -95,7 +95,7 @@ selectinfo(list, key)
 | `1` | is the list active? |
 | `3` | how many entries it holds |
 
-Measured: after `select f to 3`, `selectinfo(3, 1)` is `1`; after
+After `select f to 3`, `selectinfo(3, 1)` is `1`; after
 `clearselect 3` it is `0`.
 
 **Key 3 is the only reliable way to count a file's records** — `fileinfo()` has
@@ -127,7 +127,7 @@ deletelist name
 A saved list is a record in the account's `&SAVEDLISTS&` file and outlives the
 session.
 
-Measured: `savelist` of a two-id list followed by `getlist ... to 5` and a
+A `savelist` of a two-id list followed by `getlist ... to 5` and a
 `readnext` loop on list 5 returned the same **2** ids.
 
 > **`savelist` and `getlist` require a `then` or `else` clause, and the
@@ -184,16 +184,16 @@ formlist keep to 3
 ```
 
 > **`selectv` does not give you a dynamic array.** It puts the list into a
-> variable of its own kind: measured, `vartype()` of a `selectv` target is
+> variable of its own kind: `vartype()` of a `selectv` target is
 > **11**, a select list. Concatenating it or calling `dcount()` on it fails
 > with *"Data cannot be converted to a string"*. **Read it with
-> `readnext variable from list.variable`** — measured, that returns the same
+> `readnext variable from list.variable`**, which returns the same
 > three ids. `selectv` is for passing a list to a subroutine, not for
 > inspecting one.
 
-> **A trailing field mark becomes an extra, empty id.** Measured: an array
+> **A trailing field mark becomes an extra, empty id.** An array
 > of three ids built with `keep := id : @fm` ends in a mark, and
-> `formlist keep to 3` produced **four** entries — the fourth being the null
+> `formlist keep to 3` gives **four** entries — the fourth being the null
 > string, which then reads a record that does not exist. **Strip the trailing
 > mark**, or append the mark *before* each id except the first.
 

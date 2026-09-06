@@ -27,7 +27,7 @@ build.index file.name field.name
 
 then reopen the file.
 
-### What each step actually did, measured
+### What each step actually does
 
 A dynamic file with three records, `TOWN` being field 2, holding `LONDON`,
 `LEEDS` and `LONDON`:
@@ -56,7 +56,7 @@ A dynamic file with three records, `TOWN` being field 2, holding `LONDON`,
 > always does.
 
 > **`build.index` needs exclusive access and your own session counts.**
-> Measured: with the file open in the same program, it refused with
+> With the file open in the same program, it refuses with
 > *"Cannot gain exclusive access to file"* and `@system.return.code` **3021**.
 > **Test that return code** — the message goes to the capture variable, not to
 > the screen, so a program that does not look at it carries on with an unbuilt
@@ -64,7 +64,7 @@ A dynamic file with three records, `TOWN` being field 2, holding `LONDON`,
 
 ## Once it is built, it maintains itself
 
-Measured: after `build.index`, writing a fourth record with `TOWN` of `LONDON`
+After `build.index`, writing a fourth record with `TOWN` of `LONDON`
 made `selectindex 'TOWN', 'LONDON'` return **3** ids without any further
 action. Ordinary `write` and `delete` keep every index on the file up to date.
 
@@ -78,7 +78,7 @@ selectindex index.name {, value} from file.variable {to list}
 ```
 
 **With and without a value it returns completely different things, and
-neither form says so.** Measured on the file above:
+neither form says so.** On the file above:
 
 | Call | What comes back |
 |---|---|
@@ -103,8 +103,8 @@ selectright index.name from file.variable {setting variable} {to list}
 `selectright` then moves to the next value and selects its ids; `selectleft`
 moves back.
 
-**`setting` receives the index value the scan landed on.** Measured: after
-`setleft 'TOWN' from f`, a `selectright` returned **1 id** with `setting`
+**`setting` receives the index value the scan landed on.** After
+`setleft 'TOWN' from f`, a `selectright` returns **1 id** with `setting`
 holding **`LEEDS`** — the first value in order.
 
 > **These four take no `then` or `else` clause.** Writing one is a compile
@@ -129,7 +129,7 @@ indices(file.variable, index.name)
 | one argument | the index names, as a dynamic array |
 | two arguments | the definition of one index |
 
-Measured: `indices(f2, 'TOWN')` returned a **nine-field** definition whose
+`indices(f2, 'TOWN')` returns a **nine-field** definition whose
 field 2 is the **field number** the index is built on — `2` for a `TOWN` in
 field 2. Field 1 holds the dictionary-style definition the index was made from.
 

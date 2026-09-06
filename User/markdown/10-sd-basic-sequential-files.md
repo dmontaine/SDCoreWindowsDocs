@@ -33,8 +33,8 @@ allowed to read.
 | `then` | the file **already existed** |
 | `else` | it did **not** exist, and has been created — **or** the open genuinely failed |
 
-Measured: `openseq 'ZZDIR', 'LINES'` on a name that did not exist took the
-`else` branch and gave a usable file variable.
+`openseq 'ZZDIR', 'LINES'` on a name that does not exist takes the
+`else` branch and gives a usable file variable.
 
 **So `else` is not an error branch**, and a program that writes `stop 'cannot
 open'` there will refuse to create a file it was supposed to create. To tell
