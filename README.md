@@ -44,6 +44,23 @@ CRLF, and it **proves the two halves rebuild the original body byte for byte**
 before it writes either file — the one property of a split that a diff cannot
 show.
 
+### The `00` letters are the exception: they are order, not halves
+
+`00a-copyright-and-licence` and `00b-start-here` are not two halves of one
+page. **The letter there does one job: it puts the licence page first.**
+`00-` sorts before `00a-`, so a set whose introduction was called `00-` opened
+with the introduction and left the licence page behind it — which is what
+`GettingStarted` and `User` did until 6 Sep 2026 (PRE_RELEASE 181). The two
+introductions became `00b-` so that all three sets read the way
+`Administrator` already did, in the HTML and in the PDF alike, on the owner's
+ruling that day.
+
+**Neither the book nor the website is ordered by hand, and that is why the
+filename had to change rather than the code.** Both take `add_nav.py:78`'s
+plain `sorted()`, and special-casing one of them would put the book in a
+different order from the website's prev/next chain — `mkbook.py`'s own
+docstring calls that "two documents claiming to be one".
+
 ### The copyright and the licence appear once per set
 
 **Owner's instruction, 5 September 2026, looking at a PDF**: the licence block
@@ -63,6 +80,17 @@ there are. **`add_nav.py` refuses a set that has anything other than exactly
 one page carrying it** — that is a question about a whole set, which is the one
 thing `mkdoc.py` cannot see, and a set that lost its licence page would
 otherwise render clean, link clean and ship.
+
+**And the licence page is the FIRST page of every set, which is checked as
+well.** Counting it was not enough: on 6 Sep 2026 all three sets carried the
+block exactly once and that check was green, while two of the three sat it
+after the introduction — a PDF is read from page one, and the bound book's
+front matter states no licence of its own precisely because the first document
+states it in full. `add_nav.py` now refuses a set whose licence page is not
+first, and `mkbook.py` refuses to write a book whose first document is not the
+licence page. **Both refusals were tested against the pre-fix layout**, and
+`release.ps1` reads their exit codes, so a set in the wrong order stops the
+release rather than shipping.
 
 **The `User` set is measured, not compiled from the old help tree.** Its roster
 comes from `BCOMP`'s own tables, and every example was run before it was

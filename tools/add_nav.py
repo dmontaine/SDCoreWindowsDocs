@@ -363,7 +363,24 @@ def check_licence_block(set_name, pages):
             'add_nav: %s has %d page(s) carrying the licence block and must '
             'have exactly 1%s' % (set_name, len(carriers),
                                   (' - ' + ', '.join(carriers)) if carriers else ''))
-    print(f"  {set_name}: licence block on {carriers[0]}, and on no other page")
+    # AND IT MUST BE THE FIRST PAGE OF THE SET.  Counting it was not enough:
+    # on 6 Sep 2026 all three sets carried the block exactly once and this
+    # check was green, yet GettingStarted and User sat it AFTER the
+    # introduction because the order is a plain sorted() and "00-" sorts
+    # before "00a-".  Administrator was right only by accident - it is the
+    # one set with no "00-" file.  The owner's ruling that day was to follow
+    # Administrator's pattern in both the HTML and the PDF, so position is
+    # now a number too, and it is checked where the order is decided rather
+    # than left to whoever next reads a rendered set.  PRE_RELEASE 181.
+    if carriers[0] != pages[0]:
+        raise SystemExit(
+            'add_nav: %s opens with %s and its licence page is %s - the '
+            'licence page must sort first.  Rename so it does; do not '
+            'special-case the order here, because the book takes this same '
+            'order and the two must agree' % (set_name, pages[0], carriers[0]))
+
+    print(f"  {set_name}: licence block on {carriers[0]}, first page of the "
+          f"set, and on no other page")
 
 
 # ── Create set index pages ────────────────────────────────────

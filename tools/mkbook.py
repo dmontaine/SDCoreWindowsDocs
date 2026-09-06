@@ -19,8 +19,9 @@ the standard way and Chromium has never implemented them.  The ONLY mechanism
 is printToPDF's footerTemplate, which is page furniture rather than content and
 therefore cannot be orphaned, split or covered.  mkbookpdf.ps1 supplies it.
 
-So the copyright appears ONCE, in this book's front matter, and the running
-strip is drawn by the printer.
+So the copyright appears ONCE, on the book's first page - stated by the licence
+document that opens every set, which is why the front matter states no licence
+of its own - and the running strip is drawn by the printer.
 
 THE OUTLINE IS NOT BUILT HERE EITHER.  printToPDF's generateDocumentOutline
 derives it from the heading elements, and every page already carries an
@@ -92,7 +93,19 @@ BOOK_CSS = """
 # properly, and it now sits on page one directly beneath this - so a legal
 # block here said the same thing twice on the same sheet.  The copyright still
 # appears once on the first page, which is what was asked for; it just comes
-# from the page whose job that is.  The guard in main() checks it is there.
+# from the page whose job that is.
+#
+# THAT SENTENCE WAS TRUE OF ONE SET AND FALSE OF TWO WHEN IT WAS WRITTEN, AND
+# THAT IS PRE_RELEASE 181.  "Every set opens with 00a-copyright-and-licence"
+# was an assumption about the sort, not a fact: "00-" sorts before "00a-", so
+# GettingStarted and User opened with their introduction and the licence page
+# landed after it - while the guard below, which only asked whether the
+# copyright was in the book ANYWHERE, stayed green.  The two "00-" pages were
+# renamed "00b-" on the owner's ruling of 6 Sep 2026 (Administrator's pattern,
+# in the HTML and the PDF alike), so the claim is now true of all three; and
+# because reasoning that depends on an order must be checked where nothing can
+# quietly change it, main()'s guards now assert the POSITION of that document
+# rather than trusting the filenames to stay as they are.
 FRONT = """<section class="bookfront">
 <p class="bf-product">@PRODUCT@ @VERSION@</p>
 <h1>@SETNAME@</h1>
@@ -277,6 +290,24 @@ def main():
         sys.exit('mkbook: the book rendered without its front matter')
     if COPYRIGHT not in book:
         sys.exit('mkbook: the book rendered without the copyright')
+
+    # WHERE, NOT MERELY WHETHER - PRE_RELEASE 181.  The check above is
+    # satisfied by a copyright anywhere in 53 documents, which is how two of
+    # the three books shipped with the licence page sitting after the
+    # introduction and nothing reporting it.  The front matter carries no legal
+    # block of its own precisely because the first document carries one, so if
+    # that document is not the licence page the book has no licence on page
+    # one at all - and a PDF is read from page one.
+    if 'class="licenceblock"' not in sections[0]:
+        carrying = [s for s in stems
+                    if 'class="licenceblock"' in sections[stems.index(s)]]
+        sys.exit('mkbook: %s opens with %s and its licence page is %s - the '
+                 'front matter states no licence of its own, so the licence '
+                 'page must be the first document.  Rename so it sorts first '
+                 '(add_nav.py checks the same thing for the website, and the '
+                 'book must not disagree with it)'
+                 % (set_name, stems[0],
+                    ', '.join(carrying) if carrying else 'nowhere in the set'))
 
     out_dir = os.path.dirname(os.path.abspath(args.out))
     if out_dir and not os.path.isdir(out_dir):

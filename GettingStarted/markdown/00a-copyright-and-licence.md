@@ -16,5 +16,5 @@ of this page, under the same copyright and the same licence.
 
 ## The set this page belongs to
 
-Read [Start here](00-start-here.html) for what the GettingStarted set covers
+Read [Start here](00b-start-here.html) for what the GettingStarted set covers
 and the order to read it in.
