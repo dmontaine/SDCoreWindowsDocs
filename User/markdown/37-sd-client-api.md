@@ -37,18 +37,38 @@ C:\Program Files\SD\usr\clients\client64\     sdclilib.dll  sdclient.dll
 C:\Program Files\SD\usr\clients\client32\     qmclilib.dll  qmclient.dll
 ```
 
-**Nothing is put on the system PATH for you.** Copy the DLL your application
-needs either **beside the application's own executable** or into
-`C:\Windows\System32`. Those are the two supported routes and either works.
+Copy the DLL your application needs either **beside the application's own
+executable** or into `C:\Windows\System32`. Those are the two supported routes
+and either works.
 
-`usr\clients` holds the DLLs and nothing else — no import libraries and no
-headers travel with them. The header, `sdclilib.h`, reaches every installation
-anyway at `C:\ProgramData\SD\sdsys\syscom\sdclilib.h`.
+> **`C:\Program Files\SD\usr\bin` is normally on the system PATH**, because the
+> installer offers to put it there — the *"Add SD Core to the system PATH"*
+> task, which is ticked unless you untick it, and it is what makes `sd` run from
+> any directory. **All four client DLLs live in that directory too**, so an
+> application may find one without your having copied anything. That is
+> convenient, and it is not the same as choosing which copy it loads: PATH order
+> decides, and a stale copy earlier on the PATH wins. **Put the DLL where your
+> application will find it deliberately.**
 
-The 64-bit pair also appears in `C:\Program Files\SD\usr\bin`, beside `sd.exe`,
-and that copy is byte-identical to the one under `usr\clients`. It is the
-server's own, and it is not the copy you should be taking — with one exception,
-which is the next section.
+`usr\clients` holds the DLLs **and one import library for each** — `.dll.a`
+files, GNU-style, for linking rather than loading:
+
+```
+client64\     libsdclilib.dll.a  libsdclient.dll.a
+client32\     libqmclilib.dll.a  libqmclient.dll.a
+```
+
+They sit beside the DLLs so that everything a client *build* needs is in one
+place. **No header travels with them**: `sdclilib.h` reaches every installation
+at `C:\ProgramData\SD\sdsys\syscom\sdclilib.h`.
+
+**All four DLLs also appear in `C:\Program Files\SD\usr\bin`, beside `sd.exe`**,
+and each copy is byte-identical to the one under `usr\clients`. The 32-bit pair
+is there because `usr\bin` is on the PATH, and that is where a **32-bit
+administrative utility** finds its client. Those copies are the server's own and
+are not the ones you should be taking — with one exception, which is the next
+section. **The import libraries are deliberately not in `usr\bin`**: a linker
+input has no business in a directory that goes on the PATH.
 
 ## Connection
 
