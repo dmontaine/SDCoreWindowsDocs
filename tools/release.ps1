@@ -52,9 +52,29 @@ Say ("markdown    " + $mdDir)
 Say ("html        " + $htmlDir)
 Say ("pdf         " + $pdfDir)
 
-foreach ($d in @($mdDir, $htmlDir, $pdfDir)) {
+# 06 Sep 26 - THE SOURCE MUST EXIST; THE GENERATED DIRECTORIES GET CREATED.
+# PRE_RELEASE_FIXES 179.
+#
+# This loop tested all three the same way and refused on any one of them, so
+# A FRESH CLONE COULD NOT RENDER AT ALL: .gitignore tracks only markdown\, and
+# neither html\ nor pdf\ comes with the repository.  Measured 6 Sep 2026 on a
+# second machine - "no such directory: ...\GettingStarted\html", exit 1, with
+# nothing rendered.
+#
+# NOBODY MET IT BECAUSE THE MACHINE THE DOCUMENTATION WAS WRITTEN ON HAD BOTH
+# DIRECTORIES LEFT OVER from earlier renders.  That is the same shape as
+# PRE_RELEASE 173 and 177 in the other repository: a state the development box
+# had accumulated, hiding a gap from every run made on it.
+#
+# It was also inconsistent with the tool this script drives - mkpdf.ps1 creates
+# its own -Out directory with New-Item -Force and always has.
+if (-not (Test-Path -LiteralPath $mdDir)) {
+    Write-Error ("no such directory: " + $mdDir)
+}
+foreach ($d in @($htmlDir, $pdfDir)) {
     if (-not (Test-Path -LiteralPath $d)) {
-        Write-Error ("no such directory: " + $d)
+        Say ("creating    " + $d + "   (generated, not in the repository)")
+        $null = New-Item -ItemType Directory -Path $d -Force
     }
 }
 
