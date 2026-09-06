@@ -92,6 +92,69 @@ if ($orphans.Count -gt 0) {
     Write-Error ("" + $orphans.Count + " orphan(s) - delete them or restore the source, then run again")
 }
 
+# --- DOES THIS DOCUMENTATION STILL MATCH THE PRODUCT? ----------------------
+#
+# PRE_RELEASE 55, wired in 5 September 2026 on the owner's ruling.  Until now
+# this script rendered, printed, navigated and link-checked, and NOTHING in
+# either repository automatically asked whether the pages still describe the
+# product.  These four do: each computes a roster from sd4windows and exits
+# non-zero when the typed lists in this repository disagree.
+#
+# ***IT IS NOT HYPOTHETICAL.***  tclmap.py sat red from 30 Aug 2026 until the
+# W1.0-0 audit found it - a verb was added in sd4windows and the checker lives
+# HERE, where no check in that repository runs it.  Entry 80's own conclusion
+# was "the answer was more checkers, not more diligence", and then the wiring
+# was left out.  Measured 5 Sep 2026: all four together cost 3.6 s.
+#
+# ***scriptmap.py IS DELIBERATELY NOT ONE OF THEM.  OWNER, 5 September 2026:
+# "wire in the four only - documentation may not be updated on the same cycle
+# as the project."***  It reads the INSTALLED tree at C:\Program Files\SD
+# rather than the source, by design - entry 80's rule is that every claim is
+# checked against what a user actually receives.  Requiring one here would tie
+# a documentation release to the product's install cycle, and the two are
+# deliberately separate.  Measured: with no install it exits 1 on
+# "scriptmap: no install at ...", which would have failed releases for a reason
+# that is nothing to do with the documentation.  Run it by hand when there is a
+# current install; the line below says so rather than letting it be forgotten.
+#
+# THEY READ THE SIBLING TREE, which is the layout setup-devbox.ps1 builds.  A
+# missing sibling REFUSES rather than skipping: this script's whole purpose is
+# to stop a doubtful release, and "the checks did not run" is a doubt.
+$sd64 = Join-Path (Split-Path -Parent $root) 'sd4windows\sdb_ai\sd64'
+if (-not (Test-Path -LiteralPath $sd64)) {
+    Write-Error ("no sd4windows beside this repository at " + $sd64 +
+                 " - the roster checks cannot run, and a release is not made without them")
+}
+
+$rosterChecks = @(
+    @{ Name = 'docmap';     Script = 'docmap.py';     Arg = (Join-Path $sd64 'sdsys\gpl.bp\BCOMP') }
+    @{ Name = 'tclmap';     Script = 'tclmap.py';     Arg = (Join-Path $sd64 'sdsys\newvoc') }
+    @{ Name = 'confmap';    Script = 'confmap.py';    Arg = $sd64 }
+    @{ Name = 'verbcounts'; Script = 'verbcounts.py'; Arg = (Join-Path $sd64 'sdsys\newvoc') }
+)
+
+Say ("rosters     " + $rosterChecks.Count + " check(s) against " + $sd64)
+$rosterBad = @()
+foreach ($c in $rosterChecks) {
+    # A native exe on stderr terminates the script under ErrorActionPreference
+    # Stop, so the exit code is read explicitly - the same reason mkdoc.py is
+    # invoked the way it is below.
+    $out = & python (Join-Path $tools $c.Script) $c.Arg 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $rosterBad += $c.Name
+        Say ("  " + $c.Name + " REFUSED (exit " + $LASTEXITCODE + '):')
+        $out | ForEach-Object { Say ("    " + $_) }
+    } else {
+        Say ("  " + $c.Name.PadRight(11) + " ok")
+    }
+}
+if ($rosterBad.Count -gt 0) {
+    Write-Error ("" + $rosterBad.Count + " roster check(s) refused - " +
+                 ($rosterBad -join ', ') + ". Nothing was rendered and no zip was written")
+}
+Say '  scriptmap   not run here - it needs a current install; run it by hand:'
+Say ('              python ' + (Join-Path $tools 'scriptmap.py') + ' "C:\Program Files\SD"')
+
 # --- what needs rendering --------------------------------------------------
 function Needs($generated, $source) {
     if (-not (Test-Path -LiteralPath $generated)) { return $true }
