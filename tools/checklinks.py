@@ -27,7 +27,13 @@ print('checklinks: %d rendered page(s) read' % len(ids))
 if not ids:
     sys.exit('checklinks: no rendered pages - refusing to report a clean result')
 
-LINK = re.compile(r'\]\((\d\d-[a-z0-9.-]+\.html)(#[A-Za-z0-9_-]+)?\)')
+# THE OPTIONAL LETTER IS THE CONTINUATION PAGES AND IT IS NOT COSMETIC.  When a
+# long page was cut in two the second half took the first's number with a letter
+# after it - 04 and 04a - so that every link already written to 04 still lands.
+# This pattern was \d\d- and would have skipped every link to a continuation
+# WITHOUT SAYING SO: the count would have stayed plausible and the new pages
+# would have been the only unchecked ones in the tree.
+LINK = re.compile(r'\]\((\d\d[a-z]?-[a-z0-9.-]+\.html)(#[A-Za-z0-9_-]+)?\)')
 
 bad = 0
 checked = 0

@@ -82,9 +82,15 @@ if len(roster) < 100:
 
 DOCS = [
  ('User', '19-sd-tcl-command-processor.md', """
-   abort alias clear.abort clear.data clear.input clear.stack cleardata clr cs
-   display get.stack go if list.vars logto message off option pause quit
-   report.src save.stack set set.exit.status stop who who.am.i break
+   abort clear.data clear.input cleardata clr cs
+   display go if message off pause quit report.src stop break
+ """),
+ # The command stack, the @-variables and the session verbs left 19 for 19a
+ # when the page was cut in two.  The twelve below were named by tclmap itself,
+ # one NO EVIDENCE row each, which is the map working as designed.
+ ('User', '19a-sd-tcl-the-command-stack.md', """
+   alias clear.abort clear.stack get.stack list.vars logto option save.stack
+   set set.exit.status who who.am.i
  """),
  ('User', '20-sd-tcl-files-and-records.md', """
    analyse.file analyze.file clear.file cname configure.file copy copyp
@@ -129,8 +135,17 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   clean.account config create.account delete.account grant
-   list.grants modify.account modify.password revoke set.date update.accounts
+   create.account grant list.grants modify.account modify.password revoke
+ """),
+ # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
+ # reported set.date and passed the other four, because 01 still MENTIONS
+ # clean.account, config, delete.account and update.accounts - in the "two
+ # gates" paragraph and in a refusal example - and a backtick is evidence.
+ # That is the incidental-mention false positive this script exists for,
+ # arriving from the other direction: the name is on the page and the
+ # explanation is not.  Each verb is assigned where it is actually explained.
+ ('Administrator', '01a-account-maintenance.md', """
+   clean.account config delete.account set.date update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
    clear.locks list.locks list.readu listu lock logout unlock

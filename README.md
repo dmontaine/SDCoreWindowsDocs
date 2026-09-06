@@ -14,11 +14,35 @@ Three document sets, each with the same three folders:
 
 | | |
 |---|---|
-| `GettingStarted/` | 15 pages — installing SD Core on Windows, running it, and what differs from OpenQM and from SD on Linux. Named `Testing/` until the W1.0-0 audit, when the set stopped being for pre-release testers |
+| `GettingStarted/` | 18 pages — installing SD Core on Windows, running it, and what differs from OpenQM and from SD on Linux. Named `Testing/` until the W1.0-0 audit, when the set stopped being for pre-release testers |
 | `User/` | **two references, both complete.** `01`-`18` SD BASIC by subject, where `18` is Modern Program Structure — scope, local routines and objects. `19`-`31` SD TCL by subject; the administrator verbs are not here, they are their own set. `32`-`34` VOC and dictionaries. `35`-`40` file system, standard subroutines, client API, glossary, terminfo, and a tutorial with worked programs. **The generated syntax cards live at the end, `94` onwards**, so more can be added without renumbering anything: `94` SD BASIC (411 names), `95` SD TCL (147 verbs) |
-| `Administrator/` | **eleven documents, and a separate deliverable on purpose** — `01` accounts and security, `02` sessions and locks, `03` operating system access, `04` encryption and the SDEXT interface, `05` remote access and the machine, `06` system limits, `07` configuration, `08` installation and the service, `09` the 37 installed scripts, `10` restricted commands, `11` features the developers could not test. Everything in it is administrator-tier or unavailable to an application, **so an administrator can withhold the whole set.** `11` is why the other two sets carry no "this was not tested" footnotes: an application programmer needs the reference to read as settled, an administrator choosing what to put into production needs the gaps in one list |
+| `Administrator/` | **thirteen documents, and a separate deliverable on purpose** — `01` accounts and security, `01a` account maintenance, `02` sessions and locks, `03` operating system access, `04` encryption and the SDEXT interface, `05` remote access and the machine, `06` system limits, `07` configuration, `08` installation and the service, `09` and `09a` the 37 installed scripts, `10` restricted commands, `11` features the developers could not test. Everything in it is administrator-tier or unavailable to an application, **so an administrator can withhold the whole set.** `11` is why the other two sets carry no "this was not tested" footnotes: an application programmer needs the reference to read as settled, an administrator choosing what to put into production needs the gaps in one list |
 
 Inside each: `markdown/` is the source, `html/` and `pdf/` are generated.
+
+### A number with a letter after it is the second half of a long page
+
+**No page runs longer than about 14,000 characters of Markdown**, owner's
+ruling, 5 September 2026, taken together with dropping the sidebar table of
+contents from the HTML. A reader on screen now moves between pages rather than
+within one, so a page that scrolls for twenty screens has no navigation at all.
+Fourteen were over the line and were cut in two at a section boundary.
+
+**The first half keeps the number and the second takes a letter** — `04` and
+`04a`. That is deliberate and it is the same instinct that parks the syntax
+cards at `94`: every link, every map entry and every reference already written
+to `04` still lands on `04`, and nothing renumbered. `01-` sorts before `01a`
+and both before `02-`, so directory order is still reading order.
+
+**The one exception is `94`**, the SD BASIC syntax card, which stays whole at
+24 KB on the owner's ruling. It is a lookup table read with Ctrl-F rather than
+a page read start to finish, and splitting it would mean a name is on one of
+two pages with no way to tell which.
+
+`tools/split_page.py` did the cutting. It works in binary, so a CRLF page stays
+CRLF, and it **proves the two halves rebuild the original body byte for byte**
+before it writes either file — the one property of a split that a diff cannot
+show.
 
 **The `User` set is measured, not compiled from the old help tree.** Its roster
 comes from `BCOMP`'s own tables, and every example was run before it was

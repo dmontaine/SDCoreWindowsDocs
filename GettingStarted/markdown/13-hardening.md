@@ -68,7 +68,7 @@ There are three, and they are not interchangeable.
 
 | File | Where | For |
 |---|---|---|
-| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, **`logto`**, grants. See [Security](12-security.html#the-audit-trail) |
+| `audit` | `C:\ProgramData\SD\sdsys` | **who did what** — logins, refusals, **`logto`**, grants. See [Security and the operating system](12a-security-and-the-operating-system.html#the-audit-trail) |
 | `errlog` | `C:\ProgramData\SD\sdsys` | diagnostics, and API connection records |
 | `sd-elevate.log` | `C:\ProgramData\SD` | **what the elevation helper actually did** |
 

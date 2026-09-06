@@ -51,122 +51,83 @@ except ImportError:
 
 
 # ---------------------------------------------------------------------------
-# The stylesheet.  Shared by every page; written once, here.
+# The stylesheet.  Shared by every page; written once, here, and IMPORTED BY
+# add_nav.py for the index pages rather than copied into them.
 #
-# THE MEASURE IS SPLIT ON PURPOSE.  Paragraphs stop at 72 characters because
-# that is the readable line length; tables and code blocks are allowed the
-# full column, because a keyword table squeezed into prose width wraps in
-# every cell and a syntax line that wraps stops being a syntax line.  A single
-# max-width for both is the commonest way documentation ends up looking
-# amateur in one direction or the other.
+# ***THE SCREEN NOW LOOKS LIKE THE PDF.  OWNER'S INSTRUCTION, 5 September
+# 2026:*** "Change the formatting of the html pages to look as much like the
+# pdfs as possible, no side bar.  Allow the user to navigate forward and
+# backward through the pages using controls at both the top and bottom of the
+# pages."
+#
+# WHAT THAT MEANT IN PRACTICE was mostly promoting the @media print block to
+# the default rules rather than writing new ones - black on white, one column,
+# no sidebar, no masthead - because the browser IS the PDF exporter, so that
+# block already WAS the PDF's appearance.  What is left in @media print below
+# is only the part that is genuinely print-only: point sizes, page breaks, and
+# hiding the navigation controls.
+#
+# THE DARK PALETTE IS GONE, DELIBERATELY.  A PDF has one appearance and the
+# instruction was to match it.  A page that is grey-on-black on one machine and
+# black-on-white on another is not "as much like the pdf as possible" on the
+# first machine.
+#
+# THE SIDEBAR TABLE OF CONTENTS IS GONE, AND SPLITTING THE LONG PAGES IS WHAT
+# PAID FOR IT.  Dropping it means a reader moves between pages rather than
+# within one, which is only tolerable if no page is twenty screens long.  See
+# README.md, "A number with a letter after it is the second half of a long
+# page": fourteen pages were cut in two in the same change.
+#
+# THE MEASURE IS THE PRINTED PAGE'S, NOT THE BROWSER'S.  The sheet is sized so
+# a line of prose runs about as long as it does in the PDF.  Tables and code
+# blocks get the full sheet, because a keyword table squeezed into prose width
+# wraps in every cell and a syntax line that wraps stops being a syntax line.
 # ---------------------------------------------------------------------------
 
 CSS = '''
 :root {
-  --ink:        #1a1c1f;
-  --ink-soft:   #555c66;
-  --ink-faint:  #767d87;
+  --ink:        #000000;
+  --ink-soft:   #333333;
+  --ink-faint:  #555555;
   --bg:         #ffffff;
-  --panel:      #f5f7f9;
-  --rule:       #dde1e6;
-  --rule-firm:  #b9c0c8;
-  --accent:     #1a5fa8;
-  --accent-bg:  #eef4fb;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ink:       #dfe3e8;
-    --ink-soft:  #aab2bd;
-    --ink-faint: #868f9b;
-    --bg:        #16181c;
-    --panel:     #1e2127;
-    --rule:      #2c3038;
-    --rule-firm: #3d434d;
-    --accent:    #6fa8e0;
-    --accent-bg: #1b2530;
-  }
+  --panel:      #f4f4f4;
+  --rule:       #999999;
+  --rule-firm:  #333333;
+  --accent:     #000000;
+  --accent-bg:  #f4f4f4;
+  /* screen only: the ground the sheet sits on, the way a PDF viewer shows one */
+  --ground:     #d9dbdf;
+  --sheet-edge: #b6b9be;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--ground);
   color: var(--ink);
   font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.62;
+  line-height: 1.5;
   -webkit-text-size-adjust: 100%;
 }
 
-.masthead {
-  border-bottom: 1px solid var(--rule);
-  background: var(--panel);
-}
-.masthead div {
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 0.7rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-}
-.masthead strong { color: var(--ink); font-weight: 600; }
-
 .page {
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-  display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
-  gap: 3rem;
+  max-width: 52rem;
+  margin: 1.75rem auto;
+  padding: 0 3.25rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--sheet-edge);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
 }
-@media (max-width: 60rem) {
-  .page { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-top: 1.5rem; }
-}
-
-/* --- table of contents ------------------------------------------------- */
-
-nav.toc {
-  position: sticky;
-  top: 1.5rem;
-  align-self: start;
-  font-size: 0.875rem;
-  line-height: 1.45;
-  border-left: 2px solid var(--rule);
-  padding-left: 1rem;
-}
-nav.toc p {
-  margin: 0 0 0.6rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-nav.toc ul { list-style: none; margin: 0; padding: 0; }
-nav.toc ul ul { padding-left: 0.9rem; }
-nav.toc li { margin: 0.28rem 0; }
-nav.toc a { color: var(--ink-soft); text-decoration: none; }
-nav.toc a:hover { color: var(--accent); text-decoration: underline; }
-@media (max-width: 60rem) {
-  nav.toc {
-    position: static;
-    border-left: 0;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 1rem 1.25rem;
-    background: var(--panel);
-  }
+@media (max-width: 54rem) {
+  .page { margin: 0; border: 0; box-shadow: none; padding: 0 1.25rem 1rem; }
 }
 
 /* --- the prose column -------------------------------------------------- */
 
-main { max-width: 46rem; }
-main > p, main > ul, main > ol, main > blockquote { max-width: 72ch; }
+main { max-width: none; }
+main > p, main > ul, main > ol, main > blockquote { max-width: none; }
 
 h1, h2, h3, h4 { line-height: 1.25; font-weight: 600; }
 h1 {
@@ -194,6 +155,10 @@ p { margin: 0 0 1rem; }
 ul, ol { margin: 0 0 1rem; padding-left: 1.4rem; }
 li { margin: 0.25rem 0; }
 
+/* The PDF prints links as plain black text.  On screen they stay black and
+   keep the underline: black with no underline would be faithful and would also
+   make every cross-reference invisible, which is a worse page than a slightly
+   less faithful one. */
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
 .headerlink {
@@ -269,12 +234,59 @@ blockquote p:last-child { margin-bottom: 0; }
 blockquote code { background: var(--bg); }
 
 footer {
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 1.5rem;
+  margin: 0;
+  padding: 1.25rem 0 1rem;
   border-top: 1px solid var(--rule);
   color: var(--ink-faint);
   font-size: 0.82rem;
+}
+
+/* --- prev/next controls, top and bottom --------------------------------
+   OWNER'S INSTRUCTION, 5 September 2026: "controls at both the top and bottom
+   of the pages".  tools/add_nav.py inserts both bars AFTER the PDFs are
+   printed - a "Next page" link is meaningless inside a PDF - so these rules
+   describe elements that exist only in the HTML.  They live here rather than
+   in add_nav.py so that the whole appearance of a page is decided in one
+   file. */
+
+.pagenav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.9rem 0;
+}
+.pagenav-top    { border-bottom: 1px solid var(--rule); margin-bottom: 0.5rem; }
+.pagenav-bottom { border-top: 1px solid var(--rule); margin-top: 2.5rem; }
+
+.pagenav a {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+.pagenav a:hover { color: var(--ink); border-color: var(--rule-firm); background: var(--panel); }
+.pagenav .pn-prev { text-align: left; }
+.pagenav .pn-next { text-align: right; }
+.pagenav .pn-up   { flex: 0 0 auto; text-align: center; align-self: center; }
+.pagenav .pn-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.1rem;
+}
+.pagenav .pn-spacer { flex: 1 1 0; }
+@media (max-width: 34rem) {
+  .pagenav { flex-wrap: wrap; }
+  .pagenav .pn-up { flex: 1 1 100%; }
 }
 
 /* --- title page ---------------------------------------------------------
@@ -284,14 +296,12 @@ footer {
    mkdoc.py so that every document says the same thing. */
 
 .titlepage {
-  /* .page IS A GRID, AND THIS IS A GRID ITEM.  Without the span it is placed
-     in the first 14rem track - the one the table of contents lives in - and
-     the whole cover renders as a narrow column beside the contents list.  It
-     looked like a styling nicety and was a layout fault. */
-  grid-column: 1 / -1;
+  /* The grid-column span that used to be here went with the grid.  .page is a
+     plain block now that the sidebar has gone, so the cover simply sits at the
+     top of the sheet. */
   max-width: 40rem;
-  margin: 0 auto 3.5rem;
-  padding: 3rem 0 2.5rem;
+  margin: 0 auto 3rem;
+  padding: 2.5rem 0 2.5rem;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -375,35 +385,37 @@ footer {
 }
 
 /* --- print -------------------------------------------------------------
-   The browser IS the PDF exporter, so this is not a nicety.  Colours are
-   forced back to black on white because a dark-mode machine would otherwise
-   print a dark page, and the sidebar goes because a table of contents with
-   no clickable anchors is a column of dead text down the side of every
-   page. */
+   The browser IS the PDF exporter, and this block is now SHORT because the
+   screen rules above already are the PDF's appearance - that was the point of
+   the 5 September 2026 change.  What is left is the part that only makes sense
+   on paper: point sizes, page breaks, the sheet's screen chrome removed, and
+   the prev/next controls hidden.
+
+   THE PALETTE IS NO LONGER RESET HERE AND DOES NOT NEED TO BE.  It used to be,
+   because a machine in dark mode would otherwise print pale grey on white -
+   every rule that read a variable kept the dark value.  There is one palette
+   now and it is the printed one, so there is nothing to undo. */
 
 @media print {
 
-  /* THE VARIABLES ARE RESET FIRST, AND THAT IS THE WHOLE POINT OF THIS BLOCK.
-     Setting body{color:#000} is not enough: on a machine in dark mode the
-     palette above is still the dark one, so every rule that reads a variable -
-     the subtitle, the section labels, the table headings, the panel behind a
-     code block - keeps printing a pale grey on white.  Found by looking at the
-     rendered page, not by reading the CSS.  Overriding the two elements that
-     happened to be visible would have left the rest. */
+  body { background: #fff; font-size: 10.5pt; line-height: 1.45; }
 
-  :root {
-    --ink: #000;      --ink-soft: #333;   --ink-faint: #555;
-    --bg:  #fff;      --panel: #f4f4f4;
-    --rule: #999;     --rule-firm: #333;
-    --accent: #000;   --accent-bg: #f4f4f4;
+  /* The sheet is a screen device: on paper the paper is the sheet. */
+  .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
   }
 
-  body { background: #fff; color: #000; font-size: 10.5pt; line-height: 1.45; }
-  .masthead, nav.toc { display: none; }
-  .page { display: block; max-width: none; padding: 0; }
-  main { max-width: none; }
-  main > p, main > ul, main > ol, main > blockquote { max-width: none; }
-  a { color: #000; text-decoration: none; }
+  /* A "Next page" link pointing at an .html file is meaningless in a PDF.
+     add_nav.py also runs after mkpdf so they are not usually there at all;
+     this is the belt to that braces, for anyone printing from the browser
+     after the bars have been inserted. */
+  .pagenav { display: none; }
+
+  a { text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3, h4 { break-after: avoid; page-break-after: avoid; }
   pre, table, blockquote { break-inside: avoid; page-break-inside: avoid; }
@@ -485,6 +497,27 @@ TITLEPAGE = '''<section class="titlepage">
 '''
 
 
+# THE TWO MARKERS ARE WHERE add_nav.py PUTS THE PREV/NEXT BARS, and they are
+# comments rather than an anchor guessed from the markup.  add_nav runs AFTER
+# mkpdf, deliberately, so the bars are not in the PDFs; that means mkdoc cannot
+# write them itself, and add_nav needs somewhere reliable to put them.  Both
+# scripts REFUSE a page missing either marker rather than inserting one bar and
+# reporting two.
+#
+# THE BOTTOM MARKER SITS BEFORE <footer>, NOT INSIDE IT.  add_nav used to
+# insert before </footer>, which put the page controls UNDERNEATH the copyright
+# line - the last thing on the page was the licence and the reader had to scroll
+# back up past it to find "Next".
+#
+# THE MASTHEAD AND THE SIDEBAR ARE GONE.  Both were hidden in @media print
+# already, which is to say neither was ever in the PDF; the 5 September 2026
+# instruction was to make the screen match, so they are no longer emitted at
+# all rather than emitted and hidden.
+#
+# THE FOOTER IS INSIDE .page NOW.  It used to sit outside, so on screen it was
+# a strip below the sheet - and add_nav inserts the bottom bar before
+# </footer>, which would have put the page controls off the paper.
+
 PAGE = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -494,14 +527,15 @@ PAGE = '''<!DOCTYPE html>
 <style>@CSS@</style>
 </head>
 <body>
-<div class="masthead"><div><strong>@PRODUCT@</strong><span>@VERSION@</span></div></div>
 <div class="page">
+<!--PAGENAV-TOP-->
 @TITLEPAGE@
-@TOC@<main>
+<main>
 @BODY@
 </main>
-</div>
+<!--PAGENAV-BOTTOM-->
 <footer>@PRODUCT@ @VERSION@. @COPYRIGHT@. Licensed under @LICENCE_NAME@. Generated from @SOURCE@.</footer>
+</div>
 </body>
 </html>
 '''
@@ -538,11 +572,12 @@ def build(path, out_dir, product, version):
     if not body.strip():
         raise RuntimeError('%s rendered to an empty document' % path)
 
-    toc_html = ''
-    if toc.count('<a ') >= 3:
-        toc_html = ('<nav class="toc"><p>On this page</p>%s</nav>\n'
-                    % toc.replace('<div class="toc">', '').replace('</div>', ''))
-
+    # THE TOC IS STILL COMPUTED AND IS NO LONGER RENDERED.  The sidebar went
+    # with the 5 September 2026 change; the "toc" extension stays on because it
+    # is what puts an id="" on every heading, and checklinks.py verifies every
+    # "#..." link against those ids.  Turning the extension off to remove the
+    # sidebar would have broken every anchor in the tree silently.  The count is
+    # still reported, as the anchors-per-page figure.
     sub_html = ''
     if subtitle:
         sub_html = '<p class="tp-subtitle">%s</p>' % html.escape(subtitle)
@@ -560,7 +595,6 @@ def build(path, out_dir, product, version):
             .replace('@TITLE@', html.escape(title))
             .replace('@COPYRIGHT@', COPYRIGHT)
             .replace('@LICENCE_NAME@', LICENCE_NAME)
-            .replace('@TOC@', toc_html)
             .replace('@BODY@', body)
             .replace('@SOURCE@', html.escape(os.path.basename(path))))
 
@@ -571,6 +605,12 @@ def build(path, out_dir, product, version):
     if COPYRIGHT not in page or LICENCE_URL not in page:
         raise RuntimeError('%s rendered without the copyright or licence'
                            % path)
+    # The same argument for the marker add_nav.py needs: a page without it gets
+    # no top bar and looks exactly like a page that has one and did not need it.
+    for marker in ('<!--PAGENAV-TOP-->', '<!--PAGENAV-BOTTOM-->'):
+        if marker not in page:
+            raise RuntimeError('%s rendered without the %s marker'
+                               % (path, marker))
 
     stem = os.path.splitext(os.path.basename(path))[0]
     out = os.path.join(out_dir, stem + '.html')

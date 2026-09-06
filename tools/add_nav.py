@@ -25,7 +25,16 @@ downward only.
 
 import os
 import re
+import sys
 import html as html_mod
+
+# THE PALETTE IS IMPORTED, NOT COPIED.  It used to be written out three times -
+# here for the set index, here again for the master index, and in mkdoc.py for
+# every content page - so a colour change had to be made in three places and
+# was twice made in one.  mkdoc.py defines CSS at module level and guards its
+# main() behind __name__, so importing it costs nothing and runs nothing.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mkdoc
 
 DOCS_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRODUCT = "SD Core for Windows"
@@ -36,95 +45,62 @@ VERSION = "W1.0-0"
 SETS = {
     "GettingStarted": {
         "desc": "Installing and running SD Core on Windows, and what differs from OpenQM and SD on Linux.",
-        "pages": [
-            "00-start-here", "01-installation", "02-first-run",
-            "03-running-sd", "04-scheduled-jobs", "05-account-types",
-            "06-administrator-commands", "07-programmer-commands",
-            "08-ssh-access", "09-api-access", "10-client-distribution",
-            "11-lower-case", "12-security", "13-hardening",
-            "14-not-in-sd-core",
-        ],
     },
     "User": {
         "desc": "For programmers and operators. SDBasic, TCL, the VOC, dictionaries, the file system, and the client API.",
-        "pages": [
-            "00-sd-introduction", "01-sd-basic-program-structure",
-            "02-sd-basic-program-control", "03-sd-basic-math-functions",
-            "04-sd-basic-string-functions", "05-sd-basic-dynamic-arrays",
-            "06-sd-basic-data-conversion", "07-sd-basic-file-handling",
-            "08-sd-basic-select-lists", "09-sd-basic-alternate-key-indexes",
-            "10-sd-basic-sequential-files", "11-sd-basic-csv-files",
-            "12-sd-basic-terminal-input-and-output", "13-sd-basic-printing",
-            "14-sd-basic-locks-and-transactions", "15-sd-basic-sockets",
-            "16-sd-basic-system-and-environment", "17-sd-basic-debugging",
-            "18-sd-basic-modern-program-structure",
-            "19-sd-tcl-command-processor", "20-sd-tcl-files-and-records",
-            "21-sd-tcl-query-processor", "22-sd-tcl-select-lists",
-            "23-sd-tcl-alternate-key-indexes",
-            "24-sd-tcl-programs-and-the-catalogue",
-            "25-sd-tcl-ed", "26-sd-tcl-edit", "27-sd-tcl-micro",
-            "28-sd-tcl-printing-and-spooling",
-            "29-sd-tcl-the-terminal-and-the-session",
-            "30-sd-tcl-processes-and-phantoms", "31-sd-tcl-locks",
-            "32-sd-voc-structure-and-usage", "33-sd-dicts-structure",
-            "34-sd-dicts-conversions", "35-sd-file-system",
-            "36-sd-standard-subroutines", "37-sd-client-api",
-            "38-sd-glossary", "39-sd-terminfo", "40-sd-programming-tutorial",
-            "94-sd-basic-syntax", "95-sd-tcl-syntax",
-        ],
     },
     "Administrator": {
         "desc": "For administrators. Accounts, security, remote access, encryption, configuration, installation, and what an ordinary program may not compile.",
-        "pages": [
-            "01-accounts-and-security", "02-sessions-and-locks",
-            "03-operating-system-access", "04-sd-encryption",
-            "05-remote-access-and-the-machine", "06-sd-system-limits",
-            "07-sd-admin-configuration", "08-sd-installation",
-            "09-the-installed-scripts",
-            "10-sd-basic-restricted-commands",
-        ],
     },
 }
 
+
+# ── The page order is READ, not typed ────────────────────────
+#
+# THIS LIST USED TO BE THREE HAND-KEPT ARRAYS AND IT HAD ALREADY GONE STALE.
+# Administrator/11, Features the Developers Could Not Test, was written on
+# 5 Sep 2026 and never added: it had no prev/next bar and no line on its own set
+# index, and nothing said so, because a page missing from the list is a page the
+# script never looks at.  Splitting fourteen long pages would have added
+# fourteen more chances to do the same thing.
+#
+# The directory sorted is exactly the order that was typed - "01-" sorts before
+# "01a" because "-" is 0x2D and "a" is 0x61, and both before "02-" - so reading
+# it removes the class rather than checking for it.  A page cannot be missing
+# from a list derived from the pages.
+#
+# It REFUSES A SET IT FOUND NOTHING IN.  A wrong DOCS_ROOT would otherwise leave
+# every set empty and every step reporting that it navigated nothing, which is
+# the "passes because it did nothing" failure.
+
+def pages_of(set_name):
+    md_dir = os.path.join(DOCS_ROOT, set_name, "markdown")
+    stems = sorted(n[:-3] for n in os.listdir(md_dir) if n.endswith(".md"))
+    if not stems:
+        raise SystemExit("add_nav: no .md files in %s - refusing" % md_dir)
+    return stems
+
+
+for _name, _info in SETS.items():
+    _info["pages"] = pages_of(_name)
+    print("  %-14s %2d page(s): %s ... %s"
+          % (_name, len(_info["pages"]), _info["pages"][0], _info["pages"][-1]))
+
 # ── CSS for navigation and index pages ───────────────────────
 
-NAV_CSS = """
-/* prev/next page navigation */
-.pagenav {
-  max-width: 46rem;
-  margin: 2.5rem 0 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.pagenav a {
-  color: var(--ink-soft);
-  text-decoration: none;
-  font-size: 0.92rem;
-  line-height: 1.4;
-  max-width: 48%;
-}
-.pagenav a:hover { color: var(--accent); text-decoration: underline; }
-.pagenav .pn-prev { text-align: left; }
-.pagenav .pn-next { text-align: right; }
-.pagenav .pn-label {
-  display: block;
-  font-size: 0.72rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 0.15rem;
-}
-.pagenav .pn-spacer { flex: 1; }
-@media print { .pagenav { display: none; } }
+# THE .pagenav RULES MOVED TO mkdoc.py.  They used to be injected into every
+# rendered page from here, which meant the look of a page was decided in two
+# files - and the top bar added on 5 September 2026 needed rules the injected
+# copy did not have.  mkdoc.CSS now carries them, so a content page needs
+# nothing added to its stylesheet at all and this string is only what the two
+# index pages need on top of it.
 
+NAV_CSS = """
 /* set index page */
 .setindex {
-  max-width: 46rem;
+  max-width: none;
   margin: 0;
-  padding: 0;
+  padding: 2.5rem 0 0;
 }
 .setindex h1 { margin-bottom: 0.35rem; }
 .setindex .si-subtitle {
@@ -144,9 +120,20 @@ NAV_CSS = """
   font-size: 0.78rem;
   color: var(--ink-faint);
 }
-.setindex table { font-size: 0.92rem; }
-.setindex td:nth-child(2) { white-space: normal; }
-.setindex td:nth-child(3) { white-space: nowrap; }
+/* THE THREE COLUMNS ARE GIVEN WIDTHS BECAUSE THE SOURCE COLUMN TOOK THEM
+   OTHERWISE.  It is monospace and nowrap, so a name like
+   05-remote-access-and-the-machine.md demanded about 45% of the table and
+   squeezed the description into a two-word-per-line ribbon. */
+.setindex table { font-size: 0.92rem; table-layout: fixed; }
+.setindex th:nth-child(1), .setindex td:nth-child(1) {
+  width: 30%; white-space: normal; padding-right: 1.25rem;
+}
+.setindex th:nth-child(2), .setindex td:nth-child(2) {
+  width: 44%; white-space: normal; padding-right: 1.25rem;
+}
+.setindex th:nth-child(3), .setindex td:nth-child(3) {
+  width: 26%; white-space: normal; overflow-wrap: anywhere;
+}
 @media print {
   .setindex .si-source { display: none; }
 }
@@ -242,73 +229,97 @@ def get_subtitle(html_path):
 
 # ── Add prev/next navigation to all pages ─────────────────────
 
+TOP_MARKER = "<!--PAGENAV-TOP-->"
+BOTTOM_MARKER = "<!--PAGENAV-BOTTOM-->"
+
+
+def nav_bar(where, i, pages, titles, set_name):
+    """One prev / set index / next bar.  Same links at both ends of the page."""
+    parts = ['<nav class="pagenav pagenav-%s">' % where]
+
+    if i > 0:
+        parts.append(
+            f'<a class="pn-prev" href="{pages[i-1]}.html">'
+            f'<span class="pn-label">&larr; Previous</span>'
+            f'{html_mod.escape(titles[i-1])}</a>')
+    else:
+        parts.append('<span class="pn-spacer"></span>')
+
+    parts.append(f'<a class="pn-up" href="index.html">'
+                 f'<span class="pn-label">Contents</span>'
+                 f'{html_mod.escape(set_name)}</a>')
+
+    if i < len(pages) - 1:
+        parts.append(
+            f'<a class="pn-next" href="{pages[i+1]}.html">'
+            f'<span class="pn-label">Next &rarr;</span>'
+            f'{html_mod.escape(titles[i+1])}</a>')
+    else:
+        parts.append('<span class="pn-spacer"></span>')
+
+    parts.append('</nav>')
+    return '\n'.join(parts)
+
+
 def add_navigation(set_name, pages):
-    """Add prev/next links to every HTML page in a set."""
+    """Put a prev/next bar at BOTH ends of every HTML page in a set.
+
+    OWNER'S INSTRUCTION, 5 September 2026: "controls at both the top and bottom
+    of the pages".  There was only a bottom bar before, inserted before
+    </footer>; the top one goes at the marker mkdoc.py leaves for it.
+
+    IT REFUSES A PAGE WITH NO MARKER rather than inserting one bar and
+    reporting two.  A page rendered by an older mkdoc has no marker, and a
+    top bar that silently did not appear would look exactly like a page the
+    reader had scrolled past."""
     html_dir = os.path.join(DOCS_ROOT, set_name, "html")
-    md_dir = os.path.join(DOCS_ROOT, set_name, "markdown")
 
     titles = {}
     for i, page in enumerate(pages):
-        html_path = os.path.join(html_dir, page + ".html")
-        titles[i] = get_title(html_path)
+        titles[i] = get_title(os.path.join(html_dir, page + ".html"))
 
+    done = 0
+    already = 0
     for i, page in enumerate(pages):
-        html_path = os.path.join(html_path)
         html_path = os.path.join(html_dir, page + ".html")
         with open(html_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # Skip if already has pagenav
-        if 'class="pagenav"' in content:
+        # Idempotent: release.ps1 runs this on every set, every release.
+        #
+        # THE CLOSING QUOTE IS NOT IN THIS PATTERN AND THAT IS THE POINT.  It
+        # was 'class="pagenav"' until the bars gained a position -
+        # class="pagenav pagenav-top" - and then it matched nothing, so a
+        # second run treated an already-done page as undone, found its marker
+        # consumed, and refused.  A guard that stops matching when the thing it
+        # guards changes shape is worse than no guard.
+        if 'class="pagenav' in content:
+            already += 1
             continue
 
-        # Build navigation HTML
-        nav_parts = ['<nav class="pagenav">']
+        for marker in (TOP_MARKER, BOTTOM_MARKER):
+            if marker not in content:
+                raise SystemExit(
+                    'add_nav: %s has no %s - re-render it with mkdoc.py before '
+                    'adding navigation' % (html_path, marker))
 
-        if i > 0:
-            prev_page = pages[i-1]
-            prev_title = titles[i-1]
-            nav_parts.append(
-                f'<a class="pn-prev" href="{prev_page}.html">'
-                f'<span class="pn-label">&larr; Previous</span>'
-                f'{html_mod.escape(prev_title)}</a>'
-            )
-        else:
-            nav_parts.append('<span class="pn-spacer"></span>')
+        content = content.replace(
+            TOP_MARKER, nav_bar('top', i, pages, titles, set_name))
+        content = content.replace(
+            BOTTOM_MARKER, nav_bar('bottom', i, pages, titles, set_name))
 
-        # Link to set index
-        nav_parts.append('<span class="pn-spacer"></span>')
-
-        if i < len(pages) - 1:
-            next_page = pages[i+1]
-            next_title = titles[i+1]
-            nav_parts.append(
-                f'<a class="pn-next" href="{next_page}.html">'
-                f'<span class="pn-label">Next &rarr;</span>'
-                f'{html_mod.escape(next_title)}</a>'
-            )
-        else:
-            nav_parts.append('<span class="pn-spacer"></span>')
-
-        nav_parts.append('</nav>')
-        nav_html = '\n'.join(nav_parts)
-
-        # Insert nav_html before </footer>
-        # Also add a link to the set index page
-        set_index_link = f'<p style="margin:0.5rem 0 0;font-size:0.82rem;color:var(--ink-faint)"><a href="index.html">{set_name} set index</a></p>'
-
-        # Insert before </footer>
-        content = content.replace('</footer>',
-                                  nav_html + '\n' + set_index_link + '\n</footer>')
-
-        # Add the nav CSS to the <style> block (before </style>)
-        if NAV_CSS not in content:
-            content = content.replace('</style>', NAV_CSS + '\n</style>')
+        # Both bars, or neither.  A page with one is a page this script got
+        # half way through, and it must not be reported as done.
+        if content.count('class="pagenav') != 2:
+            raise SystemExit('add_nav: %s ended with %d bar(s), expected 2'
+                             % (html_path, content.count('class="pagenav')))
 
         with open(html_path, 'w', encoding='utf-8', newline='\n') as f:
             f.write(content)
+        done += 1
 
-    print(f"  {set_name}: added prev/next nav to {len(pages)} pages")
+    print(f"  {set_name}: top and bottom bars on {done} page(s)"
+          f"{f', {already} already had them' if already else ''}")
 
 
 # ── Create set index pages ────────────────────────────────────
@@ -347,131 +358,14 @@ def create_set_index(set_name, set_desc, pages):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{set_name} set - {PRODUCT}</title>
 <style>
-:root {{
-  --ink:        #1a1c1f;
-  --ink-soft:   #555c66;
-  --ink-faint:  #767d87;
-  --bg:         #ffffff;
-  --panel:      #f5f7f9;
-  --rule:       #dde1e6;
-  --rule-firm:  #b9c0c8;
-  --accent:     #1a5fa8;
-  --accent-bg:  #eef4fb;
-}}
-@media (prefers-color-scheme: dark) {{
-  :root {{
-    --ink:       #dfe3e8;
-    --ink-soft:  #aab2bd;
-    --ink-faint: #868f9b;
-    --bg:        #16181c;
-    --panel:     #1e2127;
-    --rule:      #2c3038;
-    --rule-firm: #3d434d;
-    --accent:    #6fa8e0;
-    --accent-bg: #1b2530;
-  }}
-}}
-* {{ box-sizing: border-box; }}
-body {{
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.62;
-  -webkit-text-size-adjust: 100%;
-}}
-.masthead {{
-  border-bottom: 1px solid var(--rule);
-  background: var(--panel);
-}}
-.masthead div {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 0.7rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-}}
-.masthead strong {{ color: var(--ink); font-weight: 600; }}
-.page {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-  display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
-  gap: 3rem;
-}}
-@media (max-width: 60rem) {{
-  .page {{ grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-top: 1.5rem; }}
-}}
-main {{ max-width: 46rem; }}
-h1, h2, h3 {{ line-height: 1.25; font-weight: 600; }}
-h1 {{
-  font-size: 2rem;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.01em;
-}}
-h2 {{
-  font-size: 1.4rem;
-  margin: 2.75rem 0 0.9rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-}}
-p {{ margin: 0 0 1rem; }}
-a {{ color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }}
-table {{
-  border-collapse: collapse;
-  width: 100%;
-  margin: 0 0 1.5rem;
-  font-size: 0.94rem;
-}}
-th, td {{
-  text-align: left;
-  vertical-align: baseline;
-  padding: 0.5rem 0.9rem 0.5rem 0;
-  border-bottom: 1px solid var(--rule);
-}}
-th {{
-  border-bottom: 2px solid var(--rule-firm);
-  font-weight: 600;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink-soft);
-}}
-td:first-child {{ white-space: nowrap; padding-right: 1.5rem; }}
-footer {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 1.5rem;
-  border-top: 1px solid var(--rule);
-  color: var(--ink-faint);
-  font-size: 0.82rem;
-}}
+{mkdoc.CSS}
 {NAV_CSS}
 @media print {{
-  :root {{
-    --ink: #000;      --ink-soft: #333;   --ink-faint: #555;
-    --bg:  #fff;      --panel: #f4f4f4;
-    --rule: #999;     --rule-firm: #333;
-    --accent: #000;   --accent-bg: #f4f4f4;
-  }}
-  body {{ background: #fff; color: #000; font-size: 10.5pt; line-height: 1.45; }}
-  .masthead {{ display: none; }}
-  .page {{ display: block; max-width: none; padding: 0; }}
-  main {{ max-width: none; }}
-  a {{ color: #000; text-decoration: none; }}
   .si-source {{ display: none; }}
-  footer {{ border-top: 0.5pt solid #999; padding: 0.5rem 0; }}
 }}
 </style>
 </head>
 <body>
-<div class="masthead"><div><strong>{PRODUCT}</strong><span>{VERSION}</span></div></div>
 <div class="page">
 <main class="setindex">
 <h1>{set_name}</h1>
@@ -490,8 +384,8 @@ footer {{
 </tbody>
 </table>
 </main>
-</div>
 <footer>{PRODUCT} {VERSION}. Copyright &copy; 2026 Donald Montaine. Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</footer>
+</div>
 </body>
 </html>
 """
@@ -527,113 +421,15 @@ def create_master_index():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{PRODUCT} - Documentation</title>
 <style>
-:root {{
-  --ink:        #1a1c1f;
-  --ink-soft:   #555c66;
-  --ink-faint:  #767d87;
-  --bg:         #ffffff;
-  --panel:      #f5f7f9;
-  --rule:       #dde1e6;
-  --rule-firm:  #b9c0c8;
-  --accent:     #1a5fa8;
-  --accent-bg:  #eef4fb;
-}}
-@media (prefers-color-scheme: dark) {{
-  :root {{
-    --ink:       #dfe3e8;
-    --ink-soft:  #aab2bd;
-    --ink-faint: #868f9b;
-    --bg:        #16181c;
-    --panel:     #1e2127;
-    --rule:      #2c3038;
-    --rule-firm: #3d434d;
-    --accent:    #6fa8e0;
-    --accent-bg: #1b2530;
-  }}
-}}
-* {{ box-sizing: border-box; }}
-body {{
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.62;
-  -webkit-text-size-adjust: 100%;
-}}
-.masthead {{
-  border-bottom: 1px solid var(--rule);
-  background: var(--panel);
-}}
-.masthead div {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 0.7rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-}}
-.masthead strong {{ color: var(--ink); font-weight: 600; }}
-.page {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-  display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
-  gap: 3rem;
-}}
-@media (max-width: 60rem) {{
-  .page {{ grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-top: 1.5rem; }}
-}}
-main {{ max-width: 46rem; }}
-h1, h2, h3, h4 {{ line-height: 1.25; font-weight: 600; }}
-h1 {{
-  font-size: 2rem;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.01em;
-}}
-h2 {{
-  font-size: 1.4rem;
-  margin: 2.75rem 0 0.9rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-}}
-p {{ margin: 0 0 1rem; }}
-a {{ color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }}
-footer {{
-  max-width: 66rem;
-  margin: 0 auto;
-  padding: 1.5rem;
-  border-top: 1px solid var(--rule);
-  color: var(--ink-faint);
-  font-size: 0.82rem;
-}}
+{mkdoc.CSS}
 {NAV_CSS}
-@media print {{
-  :root {{
-    --ink: #000;      --ink-soft: #333;   --ink-faint: #555;
-    --bg:  #fff;      --panel: #f4f4f4;
-    --rule: #999;     --rule-firm: #333;
-    --accent: #000;   --accent-bg: #f4f4f4;
-  }}
-  body {{ background: #fff; color: #000; font-size: 10.5pt; line-height: 1.45; }}
-  .masthead {{ display: none; }}
-  .page {{ display: block; max-width: none; padding: 0; }}
-  main {{ max-width: none; }}
-  a {{ color: #000; text-decoration: none; }}
-  footer {{ border-top: 0.5pt solid #999; padding: 0.5rem 0; }}
-}}
 </style>
 </head>
 <body>
-<div class="masthead"><div><strong>{PRODUCT}</strong><span>{VERSION}</span></div></div>
 <div class="page">
-<main class="master-index" style="grid-column:1/-1;max-width:40rem;margin:0 auto;padding:3rem 0 2.5rem">
+<main class="master-index">
 <h1>Documentation</h1>
-<p class="mi-subtitle">The {PRODUCT} documentation is organised into four sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
+<p class="mi-subtitle">The {PRODUCT} documentation is organised into three sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
 <div class="mi-sets">
 {sets_html}
 </div>
@@ -642,8 +438,8 @@ footer {{
 <p>Copyright &copy; 2026 Donald Montaine.</p>
 </div>
 </main>
-</div>
 <footer>{PRODUCT} {VERSION}. Copyright &copy; 2026 Donald Montaine. Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</footer>
+</div>
 </body>
 </html>
 """

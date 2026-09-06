@@ -32,17 +32,23 @@ are never confused.
 
 ## The pages
 
-**There are fifteen, and they are numbered.** Read them in numerical order the
+**There are eighteen, and they are numbered.** Read them in numerical order the
 first time; after that they stand alone.
+
+**A number with a letter after it is the second half of a long page**, split so
+that no page runs longer than a reader will scroll: `01a` continues `01`, and
+so on. Nothing was renumbered when they were split.
 
 | | | |
 |---|---|---|
 | **00** | Start here | this page — what the set is and what it leaves out |
-| **01** | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, upgrading and uninstalling |
+| **01** | [Installing SD Core](01-installation.html) | What the installer does, the two kinds of installation, and the choices it offers |
+| **01a** | [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) | Installing a new release over an existing one, and taking SD off the machine |
 | **02** | **[Your first thirty minutes](02-first-run.html)** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
 | **03** | [Running SD](03-running-sd.html) | The service, starting and stopping, and recovering from an unclean shutdown |
 | **04** | [Scheduled jobs](04-scheduled-jobs.html) | Running an SD command on a timer, and the permit list that decides which ones |
-| **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator, Suspended and Group — what each one is, how to make one, and how to change it afterwards |
+| **05** | [Account types](05-account-types.html) | Standard, Programmer, Administrator, Suspended and Group — what each one is, and how to make one |
+| **05a** | [Managing accounts](05a-managing-accounts.html) | Group accounts, sharing one, changing an account afterwards, and deleting it |
 | **06** | [Administrator commands](06-administrator-commands.html) | The verbs an administrator account gets, and how to use them |
 | **07** | [Programmer commands](07-programmer-commands.html) | The development verbs a standard account does not get |
 | **08** | [ssh access](08-ssh-access.html) | How people reach SD on this machine, and why it is ssh |
@@ -50,6 +56,7 @@ first time; after that they stand alone.
 | **10** | [Client distribution](10-client-distribution.html) | Which library an application needs, and the one file no installer can update |
 | **11** | [Lower case](11-lower-case.html) | Case in commands, file names, record ids and account names |
 | **12** | [Security](12-security.html) | The identity model, and what protects the database |
+| **12a** | [Security and the operating system](12a-security-and-the-operating-system.html) | Reaching the machine from inside SD, how privileged work is done, and the audit trail |
 | **13** | [Other hardening](13-hardening.html) | Auditing, the shell permit list, and the rest |
 | **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 

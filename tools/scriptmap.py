@@ -37,7 +37,14 @@ if len(sys.argv) < 2:
 
 ROOT = sys.argv[1]
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PAGE = os.path.join('Administrator', 'markdown', '09-the-installed-scripts.md')
+# TWO PAGES SINCE THE SPLIT, AND BOTH ARE READ.  09 was cut in two - the
+# scripts you may run yourself stayed on it, the ones the installer, the verbs,
+# the uninstaller and SD itself run went to 09a.  Reading only 09 would have
+# reported about half the tree as undocumented; reading only the first of them
+# that happened to exist would have been worse, because it would have looked
+# like a result.  Both are required to be present.
+PAGES = [os.path.join('Administrator', 'markdown', '09-the-installed-scripts.md'),
+         os.path.join('Administrator', 'markdown', '09a-scripts-sd-runs-itself.md')]
 
 if not os.path.isdir(ROOT):
     sys.exit('scriptmap: no install at %s' % ROOT)
@@ -46,7 +53,13 @@ installed = sorted(n for n in os.listdir(ROOT) if n.lower().endswith('.ps1'))
 if not installed:
     sys.exit('scriptmap: found no scripts at %s - that is not a result' % ROOT)
 
-text = io.open(os.path.join(HERE, PAGE), encoding='utf-8').read()
+parts = []
+for p in PAGES:
+    full = os.path.join(HERE, p)
+    if not os.path.exists(full):
+        sys.exit('scriptmap: %s is missing - refusing to report a clean result' % p)
+    parts.append(io.open(full, encoding='utf-8').read())
+text = '\n'.join(parts)
 
 # Names the page may mention that are NOT installed, with the reason.  These are
 # build-tree scripts named to tell the reader where the boundary is.

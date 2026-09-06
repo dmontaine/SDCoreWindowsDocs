@@ -127,7 +127,7 @@ the identity a task runs as.
 
 **It fails closed.** Every path that does not reach the end of the check leaves
 the command refused, and each one writes a reason to the
-[audit trail](12-security.html#the-audit-trail):
+[audit trail](12a-security-and-the-operating-system.html#the-audit-trail):
 
 | What is wrong | Recorded as |
 |---|---|
