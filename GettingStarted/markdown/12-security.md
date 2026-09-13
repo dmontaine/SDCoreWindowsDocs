@@ -156,7 +156,7 @@ The global catalogue and the pcode library are locked the same way.
 > one you already have, run this once per path from an elevated prompt:
 >
 > ```
-> powershell -File "C:\Program Files\SD\secure-sysdirs.ps1" -Path "C:\ProgramData\SD\sdsys\accounts"
+> powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\secure-sysdirs.ps1" -Path "C:\ProgramData\SD\sdsys\accounts"
 > ```
 
 ### The credential file

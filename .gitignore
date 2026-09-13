@@ -5,7 +5,7 @@
 # question 15) so a clone needs nothing else:
 #
 #   python tools\mkdoc.py --in Testing\markdown --out Testing\html
-#   powershell -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
+#   powershell -ExecutionPolicy Bypass -File tools\mkpdf.ps1 -In Testing\html -Out Testing\pdf
 #
 # or tools\release.ps1, which renders only what changed and zips the result.
 #

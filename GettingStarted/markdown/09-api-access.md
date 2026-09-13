@@ -79,8 +79,8 @@ client straight at port 4243 on the server.
 installation.** To change it afterwards, from an elevated prompt:
 
 ```
-powershell -File "C:\Program Files\SD\api-firewall.ps1" -Open
-powershell -File "C:\Program Files\SD\api-firewall.ps1" -Restrict
+powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\api-firewall.ps1" -Open
+powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\api-firewall.ps1" -Restrict
 ```
 
 **To turn the API off altogether**, comment out the `APIPORT` line in

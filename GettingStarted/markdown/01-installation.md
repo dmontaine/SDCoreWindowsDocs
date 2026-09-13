@@ -188,7 +188,7 @@ It is the same command either way, and it is repeated here because the closing
 report is easy to close. From an elevated prompt:
 
 ```
-powershell -File "C:\Program Files\SD\install-ssh.ps1"
+powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\install-ssh.ps1"
 ```
 
 It exits **0** installed and running, **2** installed but Windows wants a
@@ -246,7 +246,7 @@ The underlying scripts are still on the machine and can be run directly if you
 prefer, from an elevated prompt:
 
 ```
-powershell -File "C:\Program Files\SD\api-firewall.ps1" -Open
+powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\api-firewall.ps1" -Open
 ```
 
 ## At the end

@@ -126,7 +126,7 @@ managed by policy. On such a machine, apply the confinement yourself, once,
 from an elevated prompt:
 
 ```
-powershell -File "C:\Program Files\SD\allow-ssh-groups.ps1" -Installed
+powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\allow-ssh-groups.ps1" -Installed
 ```
 
 It checks the result with `sshd -T` and puts the original back if anything is
@@ -150,7 +150,7 @@ installation.** The rule is scoped to `127.0.0.1,::1` otherwise.
 > affected. Fix it with:
 >
 > ```
-> powershell -File "C:\Program Files\SD\ssh-firewall.ps1" -Installed -Restrict
+> powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\ssh-firewall.ps1" -Installed -Restrict
 > ```
 >
 > It now reports *"ssh is reachable FROM THIS MACHINE ONLY"*. Check the current

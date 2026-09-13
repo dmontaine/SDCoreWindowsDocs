@@ -122,7 +122,7 @@ The two steps it drives can also be run alone:
 
 ```
 python tools\mkdoc.py --in GettingStarted\markdown --out GettingStarted\html
-powershell -File tools\mkpdf.ps1 -In GettingStarted\html -Out GettingStarted\pdf
+powershell -ExecutionPolicy Bypass -File tools\mkpdf.ps1 -In GettingStarted\html -Out GettingStarted\pdf
 ```
 
 `mkdoc.py` needs **python-markdown** (`pacman -S msys/python-markdown` on the
