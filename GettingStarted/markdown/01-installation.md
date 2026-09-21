@@ -251,9 +251,11 @@ powershell -ExecutionPolicy Bypass -File "C:\Program Files\SD\api-firewall.ps1" 
 
 ## At the end
 
-The installer **finishes, and then opens a window** with three steps in turn:
-the SDSYS password, your own SD Core password if you have none yet, and the
-installation check. It does not leave a wizard page waiting behind the session.
+The wizard's last page lists what Setup did, and any step that did not
+complete with the command to run. There are no popups. The installer then
+**finishes, and opens a window** with three steps in turn: the SDSYS password,
+your own SD Core password if you have none yet, and the installation check. It
+does not leave a wizard page waiting behind the session.
 
 A Start Menu entry, **Check the SD installation**, runs the check again at any
 time. It closes on a keypress.
