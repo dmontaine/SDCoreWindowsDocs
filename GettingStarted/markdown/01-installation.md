@@ -224,8 +224,8 @@ per-user copy is one they can never reach.
 ## Changing any of it afterwards
 
 Every choice on the tasks page has a verb that changes it later, and that is
-why an upgrade does not ask again. All four need an elevated administrator
-session, and all four report when given no keyword:
+why an upgrade does not ask again. All four are SDSYS's — signed in to
+Windows as SDSYS, elevated — and all four report when given no keyword:
 
 | | |
 |---|---|
@@ -333,12 +333,11 @@ Every reason, warning and caveat that used to appear on them is here.
   ssh or the SD API. Without one, your account works at the keyboard but not
   from another computer, and SD Core asks for one at the next elevated
   sign-in. Change it at any time with `MODIFY.PASSWORD` in SD Core.
-- **Giving somebody else access.** At the machine itself, type `sd`, then
-  `LOGTO SDSYS`, then `CREATE.ACCOUNT USER <name> SSH`. The access keyword is
-  required (`CREATE.ACCOUNT` refuses without one). Windows asks you to confirm
-  at the `LOGTO`: do it at the machine, because over ssh or through most
-  remote-control tools the prompt cannot be shown and the screen freezes. The
-  new account then signs in with `ssh <name>@localhost`.
+- **Giving somebody else access.** At the machine itself, sign in to Windows
+  as SDSYS and type `sd`, elevated, then `CREATE.ACCOUNT USER <name> SSH`.
+  Windows asks you to confirm at the UAC prompt: do it at the machine,
+  because over a remote-control tool that cannot display it the screen
+  freezes instead. The new account then signs in with `ssh <name>@localhost`.
 - **After a reinstall over a kept database**, the Windows groups that decide
   who may reach SD were recreated: the ssh-only confinement is restored from
   the account register, ssh is restored for every member of `sdusers` (including
