@@ -91,7 +91,7 @@ ed customers 1001
 to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.
 
-A programmer account can also use `edit` (Microsoft Edit, a full-screen
+Every account can also use `edit` (Microsoft Edit, a full-screen
 editor) or `micro` (a full-screen editor with syntax highlighting).
 Both need `OS.EXECUTE` permission — see the administrator documentation.
 

@@ -153,7 +153,7 @@ your edits survive both upgrade and removal.
 | | |
 |---|---|
 | `sdusers` | grants access to the files under `C:\ProgramData\SD`. Everyone who uses SD needs it |
-| `sdsshonly` | carries the two deny rights that confine an account to ssh. Every non-administrator account SD creates joins it |
+| `sdsshonly` | carries the two deny rights that confine an account to ssh. Every account **`create.account`** makes joins it, unconditionally |
 | `sdu_<name>` | one per account, created by **`create.account`** |
 | the service | **String Database (SD)** |
 | ACLs | inheritance is broken on `C:\ProgramData\SD` and access granted narrowly. This is what makes the database private from the rest of the machine |
@@ -203,8 +203,8 @@ nothing.
 because the **`edit`** and **`micro`** verbs run them. Current Windows builds
 already carry `edit.exe`; micro never ships with Windows, so it is always a
 winget install. Neither is offered as a choice, for the same reason the ssh
-server is not: a programmer account with a verb that does nothing is worse
-than either answer.
+server is not: an account with a verb that does nothing is worse than either
+answer.
 
 **If one cannot be installed, the install still succeeds.** No winget, no
 network or a policy in the way all end the same: SD is complete and one editor
