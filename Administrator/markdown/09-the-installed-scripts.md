@@ -82,7 +82,7 @@ If the `MachinePolicy` or `UserPolicy` row says anything other than
 `Bypass` there is fine** — SD's scripts are written on the machine by the
 installer, not downloaded. **A policy of `Restricted` or `AllSigned` will stop
 SD's administrative commands**, and the symptom is the *"running scripts is
-disabled on this system"* message from `logto sdsys`, `append.sd.path`,
+disabled on this system"* message from `create.account`, `append.sd.path`,
 `remote.api`, `remote.ssh` or an editor verb. **That needs your Windows
 administrator to relax the policy.** SD has no way around it, deliberately: a
 program that could defeat Group Policy would be a worse thing to have
