@@ -12,8 +12,8 @@ writes to.
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case.
 
-> Every listing on this page was produced by running it, on SD Core for Windows
-> W1.0-0, from an unelevated session in an administrator account.
+> Every listing on this page was produced by running it, on SD Core for Windows,
+> from an SDSYS session.
 
 ## The file
 
