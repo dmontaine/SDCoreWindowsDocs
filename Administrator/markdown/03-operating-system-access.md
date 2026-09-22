@@ -214,35 +214,30 @@ refused, and an ordinary account admitted over that same remote route as the
 control — so a future change that quietly reopened it shows up as a failing test
 rather than as a page that had silently become false.
 
-## The first logto out of the system account ends elevation
+## Leaving SDSYS by `logto` is one-way
 
-An administrator working in `SDSYS` is elevated. **The moment they `logto`
-anywhere else, that elevation is given up** — the administrator flag is cleared
-and the elevated helper is stopped.
-
-This is deliberate. Without it the helper would outlive the rights it belongs
-to, leaving a session able to do privileged work from an ordinary account.
-
-The consequence a reader meets first is that **a second hop is refused**:
+Working in `SDSYS` is elevated. **The moment that session `logto`s anywhere
+else, the administrator flag is cleared and the elevated helper is
+stopped** — and there is no `logto` back.
 
 ```
 :logto sales
-:logto payroll
 ```
 
-The second `logto` is not running as an administrator any more, so it costs a
-fresh UAC prompt. Recover by going back:
+This session is now `sales`, an ordinary account, permanently for its own
+lifetime. `logto sdsys` from here — or from any other account — is refused
+outright, whatever the session's elevation: SDSYS is reached one way only,
+by signing in to Windows as the `sdsys` account and starting `sd` fresh. See
+[Accounts and Security](01-accounts-and-security.html#read-this-before-anything-else-being-sdsys-is-the-whole-of-it).
 
-```
-:logto sdsys
-```
+**This is deliberate, and stricter than the old design it replaced.** A
+session that could `logto` back into SDSYS would let the elevated helper
+outlive the rights it belongs to; refusing the return closes that rather
+than relying on the helper alone to behave.
 
-An administrator who chains two hops and does not know this will read it as a
-fault. It is the design working.
-
-The step is quiet for the ordinary case: a session moving between two ordinary
-accounts never had privilege, so nothing is given up and nothing is written to
-the audit trail.
+The step is quiet for the ordinary case: a session moving between two
+ordinary accounts never had privilege, so nothing is given up and nothing
+is written to the audit trail.
 
 ## See also
 
