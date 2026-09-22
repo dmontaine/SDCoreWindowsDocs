@@ -12,15 +12,15 @@ SD opens its API socket, and whether `sd` runs from any directory.
 | `remote.api` | decides whether SD opens its API socket, and who may reach it |
 | `append.sd.path` | puts SD's program directory on the Windows system PATH, or takes it off |
 
-> **None of these gives an administrator remote access, and no setting does.**
-> Opening ssh or the API to other computers opens it for ordinary and programmer
-> accounts. **An administrator account is refused a session from any machine but
-> this one**, over either route, after its password has been checked — so a
-> route you have just opened will still turn your own administrator account away
-> if you try it from your laptop. That is deliberate: administration needs a
-> session Windows can show a consent prompt on, which means the console, or a
-> remote desktop or remote-control product installed as a service. The operating
-> system access page covers why the tier is treated this way.
+> **None of these gives SDSYS remote access, and no setting does.** Opening
+> ssh or the API to other computers opens it for ordinary accounts. **SDSYS
+> has neither route, from anywhere, under any setting these four verbs
+> control** — it is never joined to `sdssh` or `sdapi`, and it carries no SD
+> credential to authenticate an API session with, so there is no local/remote
+> distinction to make: opening a route here does not touch SDSYS at all.
+> Administration needs a session Windows can show a consent prompt on, which
+> means the console, or a remote desktop or remote-control product installed
+> as a service. The operating system access page covers this in full.
 
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,
@@ -29,7 +29,7 @@ SD opens its API socket, and whether `sd` runs from any directory.
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case.
 
-## All four need an elevated session, including to report
+## All four need SDSYS, including to report
 
 Each of them begins by testing the administrator flag, and stops if it is not
 set:
@@ -39,21 +39,22 @@ set:
 Command requires administrator privileges
 ```
 
-That was an administrator account. Holding the administrator tier is not
-enough — **the session itself has to be elevated**, and the test runs before
-the keyword is read, so the reporting forms are refused too.
+That was run from an ordinary account. **The test runs before the keyword is
+read, so the reporting forms are refused too** — there is nothing softer
+about asking one of these verbs to just report the current setting.
 
 The reason is the work they do rather than the information they give. Each one
-reaches Windows through SD's elevated helper, and an unelevated session has no
-helper to reach it through. Reading the answer costs the same rights as
+reaches Windows through SD's elevated helper, and a session that is not SDSYS
+has no helper to reach it through. Reading the answer costs the same rights as
 changing it: `Get-WindowsCapability` cannot report whether a Windows capability
 is installed without administrator rights either.
 
-An administrator gets an elevated session by signing in at the console as a
-Windows administrator, which elevates at login. A session that reached an
-ordinary account by `logto` does not have one, and cannot get one — the first
-`logto` out of the system account ends elevation deliberately, which is covered
-under operating system access in this set.
+**There is no route to this that does not already carry the flag.** Signing
+in to Windows as SDSYS and starting `sd` elevated is the only way in, and it
+sets the flag at session start; a session that reached an ordinary account by
+`logto` never had it, and `logto sdsys` from there is refused outright — see
+[SDSYS is the only administrator](01-accounts-and-security.html#read-this-before-anything-else-being-sdsys-is-the-whole-of-it)
+in this set's own *Accounts and Security* chapter.
 
 ## Every one of them reports when given no keyword
 
