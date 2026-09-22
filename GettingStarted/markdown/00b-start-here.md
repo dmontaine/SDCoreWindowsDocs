@@ -92,7 +92,7 @@ against the old protocol will not connect. See [API access](09-api-access.html).
 
 ## What this release is
 
-**W1.0-0.** Windows only. There are no `#ifdef` branches keeping Linux alive in
+**W1.1-0.** Windows only. There are no `#ifdef` branches keeping Linux alive in
 this source — Linux SD is a separate project and this is not a build of it.
 
 **It is a hobby project with no release schedule.**
@@ -136,7 +136,7 @@ differently from OpenQM and is not described here**, and **anything in these
 pages that turns out not to be true of the build you are running**. The second
 is as valuable as the first.
 
-**Quote the version as `W1.0-0`** — the string in the header bar of every
+**Quote the version as `W1.1-0`** — the string in the header bar of every
 page here, in the installer's file name, and in what `sd --version` reports.
-The bare `1.0-0` is the same release; the `W` says it is the Windows one, and
+The bare `1.1-0` is the same release; the `W` says it is the Windows one, and
 that is the part worth keeping in a report.

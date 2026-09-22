@@ -1,6 +1,6 @@
 # SD Core for Windows — documentation
 
-Documentation for **SD Core for Windows W1.0-0**. The server source is in a
+Documentation for **SD Core for Windows W1.1-0**. The server source is in a
 separate repository, `sd4windows`; nothing here is needed to build SD, and
 nothing in `sd4windows` is needed to build these pages.
 

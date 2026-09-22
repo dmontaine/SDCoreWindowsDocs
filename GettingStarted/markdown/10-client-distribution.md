@@ -145,7 +145,7 @@ DLLs.**
 | Not in it | source code of any kind |
 | Where the source is | GitHub only — <https://github.com/dmontaine/sd4windows>. The installer creates a `docs` subdirectory and names the repository there |
 
-**That installer is not what W1.0-0 ships.** It is a change to the installer
+**That installer is not what W1.1-0 ships.** It is a change to the installer
 and it has not been made yet. What exists today is what the section above
 describes: the server installer builds and places all four DLLs, and there is
 no client-only package.

@@ -49,7 +49,7 @@ system(key)
 | `1006` | Windows NT style? | **`0`** |
 | `1009` | endian — 0 little | `0` |
 | `1010` | platform name | `Windows` |
-| `1012` | SD version | `W1.0-0` |
+| `1012` | SD version | `W1.1-0` |
 | `1013` / `1014` | user limit, without / with the phantom pool | `20` / `20` |
 | `1015` | computer name | `Gitorli` (example) |
 | `1017` | port number of a tcp connection | `0` |

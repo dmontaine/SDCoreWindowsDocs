@@ -2,7 +2,7 @@ Title: Installing SD Core
 Subtitle: What the installer does to the machine, the two kinds of installation, and the choices it puts in front of you.
 
 There is no compiler to run and no dependency to resolve. SD Core for Windows
-ships as a single `sd-setup-W1.0-0.exe`, carries its own runtime beside
+ships as a single `sd-setup-W1.1-0.exe`, carries its own runtime beside
 `sd.exe`, and installs in one pass.
 
 This is the largest single difference from the regular SD version — that, and

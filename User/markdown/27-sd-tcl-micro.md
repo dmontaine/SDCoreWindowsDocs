@@ -24,7 +24,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 > **The keys below are micro's own**, read from the default bindings and the
 > help text inside the executable SD installs — **micro 2.0.15**. The SD half of
-> the page describes SD Core for Windows W1.0-0.
+> the page describes SD Core for Windows W1.1-0.
 
 ## Both editors are installed with SD
 
@@ -77,28 +77,16 @@ commands, and the two worth knowing on the first day are:
 | `> help keybindings` | every key, including the ones not listed above |
 | `> set` *option* *value* | change a setting for this session |
 
-## Saving is broken for an ordinary account in W1.0-0
+## Saving works for an ordinary account
 
-> **`micro` draws, edits and highlights correctly and then cannot save**,
-> unless the session is elevated:
->
-> ```
-> Permission denied. Save with sudo not supported on Windows
-> ```
->
-> **The record you were editing is not touched and nothing is lost** — the
-> failure is on micro's side of the working copy, and quitting without saving
-> leaves the record exactly as it was.
->
-> **It is not a permission problem with your file or your account.** SD points
-> micro's configuration directory at a folder under `C:\Program Files`, which
-> micro has to write to and an ordinary account may not. It is recorded as a
-> release blocker in the project's fix lists.
->
-> **Until it is fixed, use `ed` for anything you intend to save.** It runs
-> inside SD, needs no external editor and no operating-system access, and is
-> documented on [SD TCL - The ed Line Editor](25-sd-tcl-ed.html). `micro` is
-> still useful for reading a record with syntax highlighting.
+**An earlier build failed here and it is fixed.** Saving used to fail with
+`Permission denied. Save with sudo not supported on Windows` unless the session
+was elevated, because SD pointed micro's configuration directory at a folder
+under `C:\Program Files`, which micro has to write to and an ordinary account
+may not. `micro`'s configuration directory is now per-user — resolved at
+start by `micro-home.ps1` (`~/.micro`, or a fallback under local application
+data) — so every account, elevated or not, can write it. Saving gives no
+message; it just works.
 
 ## Highlighting SD BASIC
 
