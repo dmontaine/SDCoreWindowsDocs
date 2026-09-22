@@ -3,12 +3,17 @@ Subtitle: Microsoft Edit, a menu bar and a dozen keys — the one to reach for w
 
 ```
 edit {dict} file record
+nano {dict} file record
 ```
 
 `edit` opens a record in **Microsoft Edit**, a small full-screen editor that
 ships with Windows. It has a menu bar, the shortcuts everyone already knows,
 and nothing else to learn. **That is the point of it**: if you want to fix a
 line in a record and get on with your day, this is the one.
+
+**`nano` is a second name for exactly this**, added for anyone arriving with
+Linux or `nano` habits — same catalogued program, same editor, same keys.
+There is no separate `nano` to learn.
 
 It has no syntax highlighting and no command language. For SD BASIC source —
 or for anything where you want highlighting, split windows, or a command bar —
