@@ -64,3 +64,8 @@ deletes the database**, whatever the prompt would have offered.
 something else. It does restore `sshd_config`, keeping the original as
 `sshd_config.before-sd` — but it deliberately does **not** widen the firewall
 rule back, because restoring it would mean opening a port on the way out.
+
+## Continued in
+
+[Differences from W1.0-0](01b-differences-from-w1-0-0.html) — everything
+that changed since the previous release, and what an upgrade might break.

@@ -398,3 +398,6 @@ PowerShell prompt. This is what each failure means until it is put right:
 
 [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) — upgrading
 an existing installation, and uninstalling.
+
+[Differences from W1.0-0](01b-differences-from-w1-0-0.html) — what changed
+since the previous release, for somebody upgrading into it.
