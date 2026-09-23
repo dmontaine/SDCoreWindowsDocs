@@ -223,3 +223,6 @@ well, and the two are independent records of the same act.
 
 [Account Maintenance](01a-account-maintenance.html) — clean.account,
 update.accounts, [locked], config, set.date and delete.account.
+
+[Differences from W1.0-0](12-differences-from-w1-0-0.html) — what changed
+since the previous release, for an administrator upgrading into it.
