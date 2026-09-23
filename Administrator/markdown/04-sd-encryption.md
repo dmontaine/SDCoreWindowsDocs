@@ -33,7 +33,15 @@ encrypt fields needs to know before it writes the application, not after.
 |---|---|
 | The `encrypt.field` verb | Removed. It pointed at a program, `$CRYPTO`, which never existed in the GPL release, so the verb could not have worked in any build derived from it |
 | `encrypt()` and `decrypt()` | Removed upstream in July 2024 and replaced by `sdencrypt()` and `sddecrypt()`. The old names do not compile |
-| The Python half of SDEXT | Removed with the embedded interpreter. The `SD_Py*` keys, `SDPYFUNC.H`, twenty `PY_*` programs and the object opcode all went. A program referencing a Python key does not compile, and the state it tested for cannot be reached |
+
+**The Python half of SDEXT is no longer on this list.** It was removed along
+with the embedded interpreter, then rebuilt on 12 Sep 2026 as a separate
+helper process, `sdpy.exe`, rather than restored as a library inside
+`sd.exe` - the two cannot safely share a process (`long` is a different
+width on each side of the MSYS2 boundary). `SDPYFUNC.H` and its twenty-one
+`PY_*` functions are documented in full in the User set's *SD BASIC -
+Python Integration* chapter, including the `os.users` field 2 gate that
+governs it, the same one that governs `SH` and `OS.EXECUTE`.
 
 ## sdencrypt() and sddecrypt()
 

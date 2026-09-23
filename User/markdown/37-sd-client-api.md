@@ -291,3 +291,9 @@ Per-arity `CFUNCTYPE` definitions are provided for `SDCall` and
 | Open files outside the account | refused (status 3035 — *not permitted*) |
 | Reach the credential file | never, and cannot be added |
 | Enumerate accounts | refused; all three failure cases give the same message |
+
+## Continued in
+
+[SD BASIC - Python Integration](37a-sd-basic-python-integration.html) — the
+other direction: a BASIC program reaching out to Python, rather than a
+program outside SD reaching in.

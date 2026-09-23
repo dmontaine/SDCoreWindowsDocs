@@ -127,7 +127,9 @@ same process at all.
 and so on) — there is no TCL verb, so this is a programming capability, not
 a command you type at the prompt. Access is gated per session, at the
 moment Python starts, by the same `os.users` field 2 permission that gates
-`OS.EXECUTE` — a session without it cannot start the helper at all.
+`OS.EXECUTE` — a session without it cannot start the helper at all. All
+twenty-one functions, their arguments and their error codes are in the User
+set's *SD BASIC - Python Integration* chapter.
 
 ## Field-level encryption
 

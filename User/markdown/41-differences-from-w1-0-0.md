@@ -76,11 +76,12 @@ its name.
 
 ## Python (`PY_` functions) is back, and runs outside the database
 
-**All twenty `PY_` functions are available again** — `PY_INITIALIZE`,
+**All twenty-one `PY_` functions are available** — `PY_INITIALIZE`,
 `PY_RUNSTRING`, `PY_RUNFILE`, `PY_GETATTR`, the dictionary and list
 families, and `PY_LISTCREATE`, which is new: a program could append to a
 Python list and read one back before, but had no way to make one. Declare
-them all with `$INCLUDE SDPYFUNC.H`.
+them all with `$INCLUDE SDPYFUNC.H`. Full reference, every function and
+every error code: *SD BASIC - Python Integration*, earlier in this set.
 
 **Python no longer runs inside `sd.exe`.** It runs in a separate program,
 `sdpy.exe`, and your session talks to it down a pipe — the first `PY_` call

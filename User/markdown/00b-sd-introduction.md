@@ -149,7 +149,7 @@ are not in SD Core for Windows:
 | Gone | Why |
 |---|---|
 | QMNet (remote files) | Removed; the API is the supported way to reach another SD server |
-| Embedded Python | Dropped; the intended use is as a back end data store reached through the API |
+| Embedded Python (a Python interpreter loaded into `sd.exe` itself) | Gone permanently - `sd.exe`'s MSYS2 runtime cannot safely share a process with Python. Calling Python **from** a BASIC program is not gone: it runs as a separate helper process instead - see *SD BASIC - Python Integration* |
 | `sdlnxd` daemon | Linux-only; the Windows service replaces it |
 | `ENCRYPT.FIELD` verb | Removed; `sdencrypt()` and `sddecrypt()` in SDBasic are the supported route |
 | `sed`, `update.record`, `modify` editors | Gone; use `edit`, `micro` or `ed` |
