@@ -14,7 +14,7 @@ build**:
 | Build | Names | For |
 |---|---|---|
 | 64-bit | `sdclilib.dll` · `sdclient.dll` | new work, and existing SD applications |
-| 32-bit | `qmclilib.dll` · `qmclient.dll` | QM applications, and **mvDeveloper** |
+| 32-bit | `qmclilib.dll` · `qmclient.dll` | QM applications |
 
 **The `*clilib` names are what existing applications ask for and they never
 move.** `qmclilib.dll` in particular is the original QMClient library name —
@@ -47,7 +47,6 @@ reads as a wrong password.
 |---|---|
 | A 64-bit application | `sdclient.dll`, or `sdclilib.dll` if it already asks for that name |
 | A 32-bit application | `qmclient.dll`, or `qmclilib.dll` if it already asks for that name |
-| **mvDeveloper** | `qmclilib.dll`, 32-bit — and see the warning below |
 
 **The architecture must match the application, not the machine.** A 32-bit
 application on 64-bit Windows needs the 32-bit DLL. **The 32-bit build is a
@@ -55,22 +54,14 @@ shipping deliverable, not a testing convenience.**
 
 ## The one file no installer can update
 
-**mvDeveloper is free, and is a 32-bit application** —
-<https://www.brianleach.co.uk/mvDeveloper>.
-
-**It loads its own copy of the client**, from:
-
-```
-C:\Program Files (x86)\BLC\mvDeveloper\qmclilib.dll
-```
-
-That is **beside the executable, and Windows searches an executable's own
-directory before `PATH`** — so no installer entry and no `PATH` change will
-ever update it. It has to be replaced by hand.
+**An application that carries its own copy of the client** keeps it beside
+its executable, and **Windows searches an executable's own directory before
+`PATH`** — so no installer entry and no `PATH` change will ever update it. It
+has to be replaced by hand.
 
 **This is the most likely way to test an old client without realising it.**
-If mvDeveloper cannot log in after an upgrade, check that file's date before
-anything else.
+If an application cannot log in after an upgrade, check the date of the client
+DLL beside its executable before anything else.
 
 ## The library must match the release
 

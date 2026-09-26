@@ -271,7 +271,7 @@ supplier` parse.
 
 ```
 001  X
-002  Most of SD is licensed under the GPL v3.0 ...
+002  SD, including the API, is licensed under the GPL v3.0.
 ```
 
 This is `$licence`. An X-record is **not a command** — it is miscellaneous

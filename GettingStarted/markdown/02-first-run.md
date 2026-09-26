@@ -180,10 +180,7 @@ off
    tunnel any more. It needs a client library from this release, because the
    old cleartext login is gone. **The architecture must match the
    application**, and **The DLL goes in the same directory as the application
-   that loads it** — Windows searches there before `PATH`.
-   **If you have no client of your own, mvDeveloper is free** and is a 32-bit
-   application, so it wants the 32-bit `qmclilib.dll`:
-   <https://www.brianleach.co.uk/mvDeveloper>. See
+   that loads it** — Windows searches there before `PATH`. See
    [API access](09-api-access.html) and
    [Client distribution](10-client-distribution.html).
 3. **Locking an account down.** Every account gets the full VOC now, so

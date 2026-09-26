@@ -243,6 +243,5 @@ To build against a different tree, set `SRCDIR` (make) or edit it in
 
 ## License
 
-Licensed under the GNU Lesser General Public License, version 3 or later
-(LGPL-3.0-or-later), with the same linking exception as the 64-bit project.
-See [LICENSE](../winsdclilib/LICENSE) and [GPLv3.txt](../winsdclilib/GPLv3.txt).
+Licensed under the GNU General Public License, version 3 or later
+(GPL-3.0-or-later). See [LICENSE](../winsdclilib/LICENSE) and [GPLv3.txt](../winsdclilib/GPLv3.txt).
