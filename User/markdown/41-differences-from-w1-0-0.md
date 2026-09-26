@@ -92,7 +92,8 @@ no longer tied to SD's.
 
 **You need an all-users install of Python 3.13 or later** — a "for me only"
 install cannot be used. Without one, every `PY_` function returns `-12040`
-and nothing else about SD is affected.
+and nothing else about SD is affected. The installer offers to install one
+from the release zip.
 
 **Access follows whoever may reach the operating system.** The same test
 that gates `SH` and `OS.EXECUTE` — an `OS.USERS` grant, or being SDSYS —

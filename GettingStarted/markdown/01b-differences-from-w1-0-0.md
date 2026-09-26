@@ -208,7 +208,8 @@ Python no longer runs inside `sd.exe`.** It runs in a separate program,
 starts it and it goes away when the session ends. You need an all-users
 install of Python 3.13 or later — a "for me only" install cannot be used —
 and without one, every `PY_` function simply returns `-12040` and nothing
-else is affected.
+else is affected. The installer can install Python for you from the release
+zip: see *Installation*.
 
 **Access follows the same rule as the shell.** Whatever governs `SH` and
 `OS.EXECUTE` for an account — the `OS.USERS` grant, or being SDSYS — governs

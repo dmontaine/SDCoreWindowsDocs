@@ -21,12 +21,12 @@ Running Python as a separate program avoids the conflict by never being the
 same process at all - and, as a side effect, a Python crash can no longer
 take the database down with it.
 
-**Requires an all-users install of Python 3.13 or later, and it is yours to
-install.** Unlike a Linux machine, where Python is typically present
-already, Windows does not ship Python and SD Core's installer does not
-bring one - if this feature matters to you, install Python yourself,
-for all users, before you need it. A "for me only" install cannot be found
-or used. Without a usable Python on the machine, every `PY_` function
+**Requires an all-users install of Python 3.13 or later.** Windows does
+not ship Python. The SD Core release zip carries python.org's installer,
+and SD Core's installer offers to install it for all users (an unticked
+box, shown only when no suitable Python is there already); restart Windows
+afterwards. You can also install Python yourself - for all users. A "for
+me only" install cannot be found or used. Without a usable Python on the machine, every `PY_` function
 returns `-12040` and nothing else about SD is affected -
 `PY_IS_INITIALIZED()` still works and answers `0`.
 

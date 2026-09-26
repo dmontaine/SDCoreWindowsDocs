@@ -47,7 +47,8 @@ can only promise that about a server it installed and configured itself.**
 ## What you are asked
 
 There is one kind of installation. What varies is how the machine can be
-reached afterwards, and that is three tick boxes on one page.
+reached afterwards, and whether Python is installed with it — a few tick
+boxes on one page.
 
 The boxes appear only on a **first** install. An upgrade shows no tasks page at
 all: the machine already carries the answers, and every one of these settings
@@ -103,6 +104,21 @@ Again the second box is a child of the first. The pair appears only when there
 is no existing configuration file to read the answer from.
 
 Changed afterwards with `remote.api on`, `local` or `off`.
+
+### 4. Python
+
+| | Default |
+|---|---|
+| Install Python for all users | **unticked** |
+
+**Python is needed only for SD BASIC's `PY_` functions.** The release zip
+carries python.org's own Python installer in its `python\` folder, so nothing
+is downloaded. The box appears only when that folder is beside the installer
+and the machine has no all-users Python 3.13 or later already. Ticked, it
+installs Python for every user of the computer and adds it to the system PATH.
+
+Python is a separate product with its own entry in *Apps*; uninstalling SD Core
+leaves it in place.
 
 ### An installation with neither is a supported choice
 
@@ -309,6 +325,10 @@ Every reason, warning and caveat that used to appear on them is here.
   computer's current firewall rule, so leaving it alone changes nothing. Open
   ssh sessions are dropped when the service restarts, so check that your
   server accepts SD Core accounts.
+- **Installing Python runs with nothing else on screen** but the installer's
+  *Installing Python...* line. Do not stop it. It must be an all-users install — a
+  "for me only" Python cannot be reached by SD Core — which is the only kind
+  the installer makes. Its own log is `C:\ProgramData\SD\python-install.log`.
 - **Accounts are separate from each other.** The permissions on each account's
   directory allow only SYSTEM, administrators and that account's own `sdu_`
   group. Administrators and SDSYS can read everything.
@@ -333,6 +353,9 @@ Every reason, warning and caveat that used to appear on them is here.
   ssh or the SD API. Without one, your account works at the keyboard but not
   from another computer, and SD Core asks for one at the next elevated
   sign-in. Change it at any time with `MODIFY.PASSWORD` in SD Core.
+- **If the installer installed Python, restart Windows** before using the
+  `PY_` functions, so that SD Core's service and every session see Python on
+  the PATH.
 - **Giving somebody else access.** At the machine itself, sign in to Windows
   as SDSYS and type `sd`, elevated, then `CREATE.ACCOUNT USER <name> SSH`.
   Windows asks you to confirm at the UAC prompt: do it at the machine,
